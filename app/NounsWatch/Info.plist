@@ -18,7 +18,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>NounsWatch</string>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>ca.mohammedibrahim.Nouns</string>
+	<string>ca.mohammedibrahim.nouns</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>WKWatchKitApp</key>
@@ -27,5 +27,7 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 </dict>
 </plist>
