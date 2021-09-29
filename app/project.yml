@@ -1,0 +1,113 @@
+name: Nouns
+options:
+  createIntermediateGroups: true
+  indentWidth: 2
+  tabWidth: 2
+  bundleIdPrefix: "ca.mohammedibrahim"
+
+settings:
+  base:
+    MARKETING_VERSION: 1
+    CURRENT_PROJECT_VERSION: 1
+
+targets:
+# Nouns iOS App
+  Nouns:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: Nouns
+    settings:
+      base:
+        INFOPLIST_FILE: Nouns/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns
+    scheme:
+      testTargets:
+        - Nouns iOS Tests
+        - Nouns iOS UITests
+
+# Nouns iOS Unit Tests
+  Nouns iOS Tests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: NounsTests
+    settings:
+      base:
+        INFOPLIST_FILE: NounsTests/Info.plist
+    dependencies:
+      - target: Nouns
+
+# Nouns iOS UI Tests
+  Nouns iOS UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: NounsUITests
+    settings:
+      base:
+        INFOPLIST_FILE: NounsUITests/Info.plist
+    dependencies:
+      - target: Nouns
+
+# Nouns Watch App
+  Nouns Watch:
+    type: application.watchapp2
+    platform: watchOS
+    deploymentTarget: "8.0"
+    sources:
+      - path: NounsWatch
+    dependencies:
+      - target: "Nouns WatchKit Extension"
+    settings:
+      base:
+        INFOPLIST_FILE: NounsWatch/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp
+  
+  # Nouns WatchKit Extension
+  Nouns WatchKit Extension:
+    type: watchkit2-extension
+    platform: watchOS
+    deploymentTarget: "8.0"
+    sources:
+      - path: NounsWatch WatchKit Extension
+    settings:
+      base:
+        INFOPLIST_FILE:  NounsWatch WatchKit Extension/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.watchextension
+    scheme:
+      testTargets:
+        - Nouns Watch Tests
+
+# Nouns Watch Unit Tests
+  Nouns Watch Tests:
+    type: bundle.unit-test
+    platform: watchOS
+    deploymentTarget: "8.0"
+    sources:
+      - path: NounsWatchTests
+    settings:
+      base:
+        INFOPLIST_FILE:  NounsWatchTests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.tests
+        TEST_HOST: Nouns WatchKit Extension
+    dependencies:
+      - target: Nouns WatchKit Extension
+
+# Nouns Watch UI Tests
+  Nouns Watch UITests:
+    type: bundle.ui-testing
+    platform: watchOS
+    deploymentTarget: "8.0"
+    sources:
+      - path: NounsWatchUITests
+    settings:
+      base:
+        INFOPLIST_FILE:  NounsWatchUITests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.uitest
+        TEST_TARGET_NAME: Nouns Watch
+    dependencies:
+      - target: Nouns Watch
