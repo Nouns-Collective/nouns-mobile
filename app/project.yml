@@ -1,0 +1,51 @@
+name: Nouns
+options:
+  createIntermediateGroups: true
+  indentWidth: 2
+  tabWidth: 2
+  bundleIdPrefix: "ca.mohammedibrahim"
+
+settings:
+  base:
+    CURRENT_PROJECT_VERSION: 1
+    CURRENT_VERSION_NUMBER: 1
+
+targets: # The List of our targets
+  Nouns:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: Nouns
+    settings:
+      base:
+        INFOPLIST_FILE: Nouns/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns
+    scheme:
+      testTargets:
+        - Nouns_iOS_Tests
+        - Nouns_iOS_UITests
+
+  Nouns_iOS_Tests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: NounsTests
+    settings:
+      base:
+        INFOPLIST_FILE: NounsTests/Info.plist
+    dependencies:
+      - target: Nouns
+
+  Nouns_iOS_UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: NounsUITests
+    settings:
+      base:
+        INFOPLIST_FILE: NounsUITests/Info.plist
+    dependencies:
+      - target: Nouns
