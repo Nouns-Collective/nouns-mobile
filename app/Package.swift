@@ -4,8 +4,9 @@
 import PackageDescription
 
 let package = Package(
-    name: "app",
+    name: "BuildTools",
     dependencies: [
+        .package(url: "https://github.com/Realm/SwiftLint", from: "0.44.0"),
         .package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.25.0"),
     ]
 )
