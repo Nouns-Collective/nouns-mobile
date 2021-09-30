@@ -185,6 +185,4 @@ lint/tmp/
 xcodebuild.json
 
 # Generated Assets
-Generated/iOS/*
-Generated/Watch/*
-Generated/WatchKit-Extension/*
+*.generated.swift

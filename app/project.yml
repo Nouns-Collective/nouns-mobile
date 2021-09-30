@@ -4,6 +4,10 @@ options:
   indentWidth: 2
   tabWidth: 2
   bundleIdPrefix: "ca.mohammedibrahim"
+packages:
+  Rswift:
+    url: https://github.com/mac-cain13/R.swift.Library.git
+    from: 5.4.0
 
 settings:
   base:
@@ -18,15 +22,24 @@ targets:
     deploymentTarget: "15.0"
     sources:
       - path: Nouns
-      - path: Generated/iOS/Assets.swift
     settings:
       base:
         INFOPLIST_FILE: Nouns/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns
+    dependencies:
+      - package: Rswift
     scheme:
       testTargets:
         - Nouns iOS Tests
         - Nouns iOS UITests
+    preBuildScripts:
+      - script: |
+                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/Nouns/Utils/R.generated.swift"
+        name: R.swift
+        inputFiles:
+          - $TEMP_DIR/rswift-lastrun
+        outputFiles:
+          - $SRCROOT/Nouns/Utils/R.generated.swift
     postBuildScripts:
       - script: |
                 /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
@@ -65,7 +78,6 @@ targets:
     deploymentTarget: "8.0"
     sources:
       - path: NounsWatch
-      - path: Generated/Watch/Assets.swift
     dependencies:
       - target: "Nouns WatchKit Extension"
     settings:
@@ -80,14 +92,27 @@ targets:
     deploymentTarget: "8.0"
     sources:
       - path: NounsWatch WatchKit Extension
-      - path: Generated/WatchKit-Extension/Assets.swift
     settings:
       base:
         INFOPLIST_FILE:  NounsWatch WatchKit Extension/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.watchextension
+    dependencies:
+      - package: Rswift
     scheme:
       testTargets:
         - Nouns Watch Tests
+    preBuildScripts:
+      - script: |
+                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/NounsWatch WatchKit Extension/Utils/R.generated.swift"
+        name: R.swift
+        inputFiles:
+          - $TEMP_DIR/rswift-lastrun
+        outputFiles:
+          - $SRCROOT/NounsWatch WatchKit Extension/Utils/R.generated.swift
+    postBuildScripts:
+      - script: |
+                /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
+        name: SwiftLint
 
 # Nouns Watch Unit Tests
   Nouns Watch Tests:

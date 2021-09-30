@@ -9,6 +9,7 @@ disabled_rules:
   - cyclomatic_complexity
   - function_parameter_count
   - trailing_comma
+  - nesting
 
 opt_in_rules:
   - array_init
@@ -39,3 +40,5 @@ excluded:
   - NounsWatchTests
   - NounsWatchUITests
   - .build # Where Swift Package Manager checks out dependency sources
+  - Nouns/Utils/R.generated.swift
+  - NounsWatch WatchKit Extension/Utils/R.generated.swift

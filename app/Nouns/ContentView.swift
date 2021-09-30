@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct ContentView: View {
     var body: some View {
-      Image(uiImage: Asset.placeholder.image)
+      Image(R.image.placeholder.name)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 200, height: 200, alignment: .center)
