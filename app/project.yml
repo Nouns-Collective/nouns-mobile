@@ -29,11 +29,7 @@ targets:
         - Nouns iOS UITests
     postBuildScripts:
       - script: |
-                cd BuildTools
-                SDKROOT=macosx
-
-                #Run your build tool
-                swift run swiftlint lint "$SRCROOT"
+                /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
         name: SwiftLint
 
 # Nouns iOS Unit Tests
