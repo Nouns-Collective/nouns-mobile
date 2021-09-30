@@ -27,6 +27,10 @@ targets:
       testTargets:
         - Nouns iOS Tests
         - Nouns iOS UITests
+    postBuildScripts:
+      - script: |
+                /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
+        name: SwiftLint
 
 # Nouns iOS Unit Tests
   Nouns iOS Tests:
