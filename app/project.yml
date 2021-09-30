@@ -18,6 +18,7 @@ targets:
     deploymentTarget: "15.0"
     sources:
       - path: Nouns
+      - path: Generated/iOS/Assets.swift
     settings:
       base:
         INFOPLIST_FILE: Nouns/Info.plist
@@ -60,6 +61,7 @@ targets:
     deploymentTarget: "8.0"
     sources:
       - path: NounsWatch
+      - path: Generated/Watch/Assets.swift
     dependencies:
       - target: "Nouns WatchKit Extension"
     settings:
@@ -74,6 +76,7 @@ targets:
     deploymentTarget: "8.0"
     sources:
       - path: NounsWatch WatchKit Extension
+      - path: Generated/WatchKit-Extension/Assets.swift
     settings:
       base:
         INFOPLIST_FILE:  NounsWatch WatchKit Extension/Info.plist
