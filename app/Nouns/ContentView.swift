@@ -10,7 +10,7 @@ import CoreData
 
 struct ContentView: View {
     var body: some View {
-        Image("placeholder")
+      Image(uiImage: Asset.placeholder.image)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 200, height: 200, alignment: .center)

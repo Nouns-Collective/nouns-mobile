@@ -180,3 +180,11 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# xcpretty
+xcodebuild.json
+
+# Generated Assets
+Generated/iOS/*
+Generated/Watch/*
+Generated/WatchKit-Extension/*

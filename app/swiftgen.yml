@@ -1,0 +1,14 @@
+xcassets:
+  - inputs: Nouns/Assets.xcassets
+    outputs:
+      - templateName: swift5
+        output: Generated/iOS/Assets.swift
+  - inputs: NounsWatch/Assets.xcassets
+    outputs:
+      - templateName: swift5
+        output: Generated/Watch/Assets.swift
+  - inputs: NounsWatch WatchKit Extension/Assets.xcassets
+    outputs:
+      - templateName: swift5
+        output: Generated/WatchKit-Extension/Assets.swift
+        
