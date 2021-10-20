@@ -53,21 +53,6 @@ public enum CachePolicy {
   case returnCacheDataDontFetch
   /// Return data from the cache if available, and always fetch results from the server.
   case returnCacheDataAndFetch
-  
-  func policy() -> Apollo.CachePolicy {
-    switch self {
-    case .returnCacheDataElseFetch:
-      return .returnCacheDataElseFetch
-    case .fetchIgnoringCacheData:
-      return .fetchIgnoringCacheData
-    case .fetchIgnoringCacheCompletely:
-      return .fetchIgnoringCacheCompletely
-    case .returnCacheDataDontFetch:
-      return .returnCacheDataDontFetch
-    case .returnCacheDataAndFetch:
-      return .returnCacheDataAndFetch
-    }
-  }
 }
 
 /// GraphQLQuerier protocol will essentially let us write
@@ -75,9 +60,9 @@ public enum CachePolicy {
 public protocol GraphQLQuerier {
   associatedtype ApolloQuery: GraphQLQuery
   associatedtype Response: GraphResponse
+  
   func query() -> ApolloQuery
 }
-
 
 // EXAMPLE QUERY
 struct NounsListGraphQuery: GraphQLQuerier {
