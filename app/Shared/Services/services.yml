@@ -3,6 +3,8 @@ options:
   createIntermediateGroups: true
   indentWidth: 2
   tabWidth: 2
+  groupOrdering: 
+    - order: [Sources, ServicesTests]
 packages:
   Apollo:
     url: https://github.com/apollographql/apollo-ios
