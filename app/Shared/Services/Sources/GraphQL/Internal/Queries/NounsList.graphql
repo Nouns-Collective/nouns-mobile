@@ -1,0 +1,15 @@
+query NounsList {
+  nouns {
+    id
+    seed {
+      background
+      body
+      accessory
+      head
+      glasses
+    }
+    owner {
+      id
+    }
+  }
+}
