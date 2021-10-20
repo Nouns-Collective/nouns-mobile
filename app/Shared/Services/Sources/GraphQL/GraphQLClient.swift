@@ -74,8 +74,21 @@ public enum CachePolicy {
 /// various “queries” for different GraphQL implementations.
 public protocol GraphQLQuerier {
   associatedtype ApolloQuery: GraphQLQuery
+  associatedtype Response: GraphResponse
   func query() -> ApolloQuery
 }
+
+
+// EXAMPLE QUERY
+struct NounsListGraphQuery: GraphQLQuerier {
+  typealias ApolloQuery = NounsListQuery
+  typealias Response = NounsList
+  
+  func query() -> ApolloQuery {
+    return NounsListQuery()
+  }
+}
+
 public protocol GraphQLClient {
   
   /// Fetches a query from the server or from the local cache, depending on
@@ -88,7 +101,7 @@ public protocol GraphQLClient {
   ///   - cachePolicy: A cache policy that specifies whether results should be fetched or loaded from local.
   ///
   /// - Returns: A publisher emitting a `Decodable` type  instance. The publisher will emit on the *main* thread.
-  func fetch<T: Decodable, Query: GraphQLQuerier>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError>
+  func fetch<Query>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<Query.Response, QueryError> where Query : GraphQLQuerier
   
   /// Registers a publisher that publishes state changes
   ///
@@ -107,26 +120,28 @@ public class ApolloGraphQLClient: GraphQLClient {
     self.apolloClient = apolloClient
   }
   
-  public func fetch<T, Query>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T : Decodable, Query : GraphQLQuerier {
+  public func fetch<Query>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<Query.Response, QueryError> where Query : GraphQLQuerier {
     let apolloQuery = query.query()
-    let subject = PassthroughSubject<T, QueryError>()
+    let subject = PassthroughSubject<Query.Response, QueryError>()
 
     var cancellable: Apollo.Cancellable?
 
     cancellable = self.apolloClient.fetch(query: apolloQuery, cachePolicy: cachePolicy.policy()) { result in
       if let errors = try? result.get().errors {
+        // TODO: - Pass array of errors
         subject.send(completion: .failure(QueryError.noData))
         return
       }
 
       do {
         let graphResult = try result.get()
-        guard let data = graphResult.data else {
+        guard let data = graphResult.data, let response = Query.Response(data) else {
           subject.send(completion: .failure(QueryError.noData))
           return
         }
-        subject.send(data)
-
+        
+        subject.send(response)
+        
         if graphResult.source == .server {
           subject.send(completion: .finished)
         }
