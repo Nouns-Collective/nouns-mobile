@@ -9,10 +9,6 @@ import Foundation
 import Apollo
 
 public struct Noun {
-  var background: Int
-  var glasses: Int
-  var head: Int
-  var body: Int
-  var accessory: Int
+  var seed: Seed
 }
 
