@@ -40,14 +40,16 @@ public enum QueryError: Error {
   case request(error: Error?)
 }
 
-// A cache policy that specifies whether results should be fetched
-// from the server or loaded from the local cache.
+/// A cache policy that specifies whether results should be fetched
+/// from the server or loaded from the local cache.
 public enum CachePolicy {
   // TODO: available cache policy cases
 }
 
+/// GraphQLQuerier protocol will essentially let us write
+/// various “queries” for different GraphQL implementations.
 public protocol GraphQLQuerier {
-  
+  // TODO: Generic implementation
 }
 
 public protocol GraphQLClient {
