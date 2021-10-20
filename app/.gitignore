@@ -185,4 +185,4 @@ lint/tmp/
 xcodebuild.json
 
 # Generated Assets
-*.generated.swift
+#*.generated.swift

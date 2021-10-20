@@ -21,10 +21,10 @@ targets:
     platform: iOS
     deploymentTarget: "15.0"
     sources:
-      - path: Nouns
+      - path: iOS/Nouns
     settings:
       base:
-        INFOPLIST_FILE: Nouns/Info.plist
+        INFOPLIST_FILE: iOS/Nouns/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns
     dependencies:
       - package: Rswift
@@ -34,12 +34,12 @@ targets:
         - Nouns iOS UITests
     preBuildScripts:
       - script: |
-                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/Nouns/Utils/R.generated.swift"
+                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Nouns/Utils/R.generated.swift"
         name: R.swift
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/Nouns/Utils/R.generated.swift
+          - $SRCROOT/iOS/Nouns/Utils/R.generated.swift
     postBuildScripts:
       - script: |
                 /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
@@ -51,10 +51,10 @@ targets:
     platform: iOS
     deploymentTarget: "15.0"
     sources:
-      - path: NounsTests
+      - path: iOS/NounsTests
     settings:
       base:
-        INFOPLIST_FILE: NounsTests/Info.plist
+        INFOPLIST_FILE: iOS/NounsTests/Info.plist
     dependencies:
       - target: Nouns
 
@@ -64,10 +64,10 @@ targets:
     platform: iOS
     deploymentTarget: "15.0"
     sources:
-      - path: NounsUITests
+      - path: iOS/NounsUITests
     settings:
       base:
-        INFOPLIST_FILE: NounsUITests/Info.plist
+        INFOPLIST_FILE: iOS/NounsUITests/Info.plist
     dependencies:
       - target: Nouns
 
@@ -77,12 +77,12 @@ targets:
     platform: watchOS
     deploymentTarget: "8.0"
     sources:
-      - path: NounsWatch
+      - path: WatchOS/NounsWatch
     dependencies:
       - target: "Nouns WatchKit Extension"
     settings:
       base:
-        INFOPLIST_FILE: NounsWatch/Info.plist
+        INFOPLIST_FILE: WatchOS/NounsWatch/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp
   
   # Nouns WatchKit Extension
@@ -91,10 +91,10 @@ targets:
     platform: watchOS
     deploymentTarget: "8.0"
     sources:
-      - path: NounsWatch WatchKit Extension
+      - path: WatchOS/NounsWatch WatchKit Extension
     settings:
       base:
-        INFOPLIST_FILE:  NounsWatch WatchKit Extension/Info.plist
+        INFOPLIST_FILE:  WatchOS/NounsWatch WatchKit Extension/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.watchextension
     dependencies:
       - package: Rswift
@@ -103,12 +103,12 @@ targets:
         - Nouns Watch Tests
     preBuildScripts:
       - script: |
-                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/NounsWatch WatchKit Extension/Utils/R.generated.swift"
+                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift"
         name: R.swift
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/NounsWatch WatchKit Extension/Utils/R.generated.swift
+          - $SRCROOT/WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift
     postBuildScripts:
       - script: |
                 /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
@@ -120,10 +120,10 @@ targets:
     platform: watchOS
     deploymentTarget: "8.0"
     sources:
-      - path: NounsWatchTests
+      - path: WatchOS/NounsWatchTests
     settings:
       base:
-        INFOPLIST_FILE:  NounsWatchTests/Info.plist
+        INFOPLIST_FILE:  WatchOS/NounsWatchTests/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.tests
         TEST_HOST: Nouns WatchKit Extension
     dependencies:
@@ -135,10 +135,10 @@ targets:
     platform: watchOS
     deploymentTarget: "8.0"
     sources:
-      - path: NounsWatchUITests
+      - path: WatchOS/NounsWatchUITests
     settings:
       base:
-        INFOPLIST_FILE:  NounsWatchUITests/Info.plist
+        INFOPLIST_FILE:  WatchOS/NounsWatchUITests/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.uitest
         TEST_TARGET_NAME: Nouns Watch
     dependencies:
