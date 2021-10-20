@@ -63,6 +63,13 @@ public protocol GraphQLQuerier {
   func query() -> Query
 }
 
+public protocol GraphQLSubscriber {
+  associatedtype Subscription: GraphQLSubscription
+  associatedtype Response: GraphResponse
+  
+  func subscription() -> Subscription
+}
+
 public protocol GraphQLClient {
   
   /// Fetches a query from the server or from the local cache, depending on
@@ -84,7 +91,7 @@ public protocol GraphQLClient {
   /// - Parameters:
   ///
   /// - Returns: A publisher emitting a `Decodable` type  instance. The publisher will emit on the *main* thread.
-  func subscription<T: Decodable>() -> AnyPublisher<T, QueryError>
+  func subscription<Subscription>(_ subscription: Subscription) -> AnyPublisher<Subscription.Response, QueryError> where Subscription : GraphQLSubscriber
 }
 
 public class ApolloGraphQLClient: GraphQLClient {
@@ -95,12 +102,11 @@ public class ApolloGraphQLClient: GraphQLClient {
   }
   
   public func fetch<Query>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<Query.Response, QueryError> where Query : GraphQLQuerier {
-    let apolloQuery = query.query()
     let subject = PassthroughSubject<Query.Response, QueryError>()
 
     var cancellable: Apollo.Cancellable?
 
-    cancellable = self.apolloClient.fetch(query: apolloQuery, cachePolicy: cachePolicy.policy()) { result in
+    cancellable = self.apolloClient.fetch(query: query.query(), cachePolicy: cachePolicy.policy()) { result in
       switch result {
       case .success(let result):
         if let errors = result.errors {
@@ -129,7 +135,33 @@ public class ApolloGraphQLClient: GraphQLClient {
       .eraseToAnyPublisher()
   }
   
-  public func subscription<T>() -> AnyPublisher<T, QueryError> where T : Decodable {
-    fatalError("You need to implement \(#function) to support Apollo.")
+  public func subscription<Subscription>(_ subscription: Subscription) -> AnyPublisher<Subscription.Response, QueryError> where Subscription : GraphQLSubscriber {
+    let subject = PassthroughSubject<Subscription.Response, QueryError>()
+
+    var cancellable: Apollo.Cancellable?
+
+    cancellable = self.apolloClient.subscribe(subscription: subscription.subscription()) { result in
+      switch result {
+      case .success(let result):
+        if let errors = result.errors {
+          subject.send(completion: .failure(errors.queryError()))
+          return
+        }
+
+        guard let data = result.data, let response = Subscription.Response(data) else {
+          subject.send(completion: .failure(QueryError.noData))
+          return
+        }
+        
+        subject.send(response)
+      case .failure(let error):
+        subject.send(completion: .failure(QueryError.request(error: error)))
+      }
+    }
+
+    return subject.handleEvents(receiveCancel: {
+      cancellable?.cancel()
+    }).upstream
+      .eraseToAnyPublisher()
   }
 }
