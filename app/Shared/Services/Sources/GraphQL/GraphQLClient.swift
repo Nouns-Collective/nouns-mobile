@@ -43,15 +43,39 @@ public enum QueryError: Error {
 /// A cache policy that specifies whether results should be fetched
 /// from the server or loaded from the local cache.
 public enum CachePolicy {
-  // TODO: available cache policy cases
+  /// Return data from the cache if available, else fetch results from the server.
+  case returnCacheDataElseFetch
+  ///  Always fetch results from the server.
+  case fetchIgnoringCacheData
+  ///  Always fetch results from the server, and don't store these in the cache.
+  case fetchIgnoringCacheCompletely
+  /// Return data from the cache if available, else return nil.
+  case returnCacheDataDontFetch
+  /// Return data from the cache if available, and always fetch results from the server.
+  case returnCacheDataAndFetch
+  
+  func policy() -> Apollo.CachePolicy {
+    switch self {
+    case .returnCacheDataElseFetch:
+      return .returnCacheDataElseFetch
+    case .fetchIgnoringCacheData:
+      return .fetchIgnoringCacheData
+    case .fetchIgnoringCacheCompletely:
+      return .fetchIgnoringCacheCompletely
+    case .returnCacheDataDontFetch:
+      return .returnCacheDataDontFetch
+    case .returnCacheDataAndFetch:
+      return .returnCacheDataAndFetch
+    }
+  }
 }
 
 /// GraphQLQuerier protocol will essentially let us write
 /// various “queries” for different GraphQL implementations.
 public protocol GraphQLQuerier {
-  // TODO: Generic implementation
+  associatedtype ApolloQuery: GraphQLQuery
+  func query() -> ApolloQuery
 }
-
 public protocol GraphQLClient {
   
   /// Fetches a query from the server or from the local cache, depending on
@@ -84,7 +108,37 @@ public class ApolloGraphQLClient: GraphQLClient {
   }
   
   public func fetch<T, Query>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T : Decodable, Query : GraphQLQuerier {
-    fatalError("You need to implement \(#function) to support Apollo.")
+    let apolloQuery = query.query()
+    let subject = PassthroughSubject<T, QueryError>()
+
+    var cancellable: Apollo.Cancellable?
+
+    cancellable = self.apolloClient.fetch(query: apolloQuery, cachePolicy: cachePolicy.policy()) { result in
+      if let errors = try? result.get().errors {
+        subject.send(completion: .failure(QueryError.noData))
+        return
+      }
+
+      do {
+        let graphResult = try result.get()
+        guard let data = graphResult.data else {
+          subject.send(completion: .failure(QueryError.noData))
+          return
+        }
+        subject.send(data)
+
+        if graphResult.source == .server {
+          subject.send(completion: .finished)
+        }
+      } catch let error {
+        subject.send(completion: .failure(QueryError.request(error: error)))
+      }
+    }
+
+    return subject.handleEvents(receiveCancel: {
+      cancellable?.cancel()
+    }).upstream
+      .eraseToAnyPublisher()
   }
   
   public func subscription<T>() -> AnyPublisher<T, QueryError> where T : Decodable {
