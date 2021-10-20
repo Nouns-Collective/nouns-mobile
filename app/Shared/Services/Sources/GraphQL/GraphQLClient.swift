@@ -55,23 +55,11 @@ public enum CachePolicy {
   case returnCacheDataAndFetch
 }
 
-/// GraphQLQuerier protocol will essentially let us write
-/// various “queries” for different GraphQL implementations.
 public protocol GraphQLQuerier {
-  associatedtype ApolloQuery: GraphQLQuery
+  associatedtype Query: GraphQLQuery
   associatedtype Response: GraphResponse
   
-  func query() -> ApolloQuery
-}
-
-// EXAMPLE QUERY
-struct NounsListGraphQuery: GraphQLQuerier {
-  typealias ApolloQuery = NounsListQuery
-  typealias Response = NounsList
-  
-  func query() -> ApolloQuery {
-    return NounsListQuery()
-  }
+  func query() -> Query
 }
 
 public protocol GraphQLClient {
@@ -112,25 +100,24 @@ public class ApolloGraphQLClient: GraphQLClient {
     var cancellable: Apollo.Cancellable?
 
     cancellable = self.apolloClient.fetch(query: apolloQuery, cachePolicy: cachePolicy.policy()) { result in
-      if let errors = try? result.get().errors {
-        // TODO: - Pass array of errors
-        subject.send(completion: .failure(QueryError.noData))
-        return
-      }
+      switch result {
+      case .success(let result):
+        if let errors = result.errors {
+          subject.send(completion: .failure(errors.queryError()))
+          return
+        }
 
-      do {
-        let graphResult = try result.get()
-        guard let data = graphResult.data, let response = Query.Response(data) else {
+        guard let data = result.data, let response = Query.Response(data) else {
           subject.send(completion: .failure(QueryError.noData))
           return
         }
         
         subject.send(response)
         
-        if graphResult.source == .server {
+        if result.source == .server {
           subject.send(completion: .finished)
         }
-      } catch let error {
+      case .failure(let error):
         subject.send(completion: .failure(QueryError.request(error: error)))
       }
     }
