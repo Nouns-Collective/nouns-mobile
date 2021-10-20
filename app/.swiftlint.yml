@@ -26,8 +26,7 @@ opt_in_rules:
   - multiline_function_chains
   - multiline_parameters
   - object_literal 
-  - operator_usage_whitespace  
-  - overridden_super_call
+  - operator_usage_whitespace
   - prohibited_super_call
   - redundant_nil_coalescing
   - sorted_first_last
@@ -40,5 +39,5 @@ excluded:
   - NounsWatchTests
   - NounsWatchUITests
   - .build # Where Swift Package Manager checks out dependency sources
-  - Nouns/Utils/R.generated.swift
-  - NounsWatch WatchKit Extension/Utils/R.generated.swift
+  - iOS/Nouns/Utils/R.generated.swift
+  - WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift
