@@ -59,6 +59,7 @@ public protocol GraphQLQuerier {
   associatedtype Query: GraphQLQuery
   associatedtype Response: GraphResponse
   
+  /// Factory method for generating an Apollo-ready GraphQL query
   func query() -> Query
 }
 
