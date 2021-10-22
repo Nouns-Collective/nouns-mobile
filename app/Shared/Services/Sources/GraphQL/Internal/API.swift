@@ -8,8 +8,8 @@ public final class NounsListQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query NounsList {
-      nouns {
+    query NounsList($skip: Int, $first: Int) {
+      nouns(skip: $skip, first: $first) {
         __typename
         id
         seed {
@@ -30,7 +30,16 @@ public final class NounsListQuery: GraphQLQuery {
 
   public let operationName: String = "NounsList"
 
-  public init() {
+  public var skip: Int?
+  public var first: Int?
+
+  public init(skip: Int? = nil, first: Int? = nil) {
+    self.skip = skip
+    self.first = first
+  }
+
+  public var variables: GraphQLMap? {
+    return ["skip": skip, "first": first]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -38,7 +47,7 @@ public final class NounsListQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("nouns", type: .nonNull(.list(.nonNull(.object(Noun.selections))))),
+        GraphQLField("nouns", arguments: ["skip": GraphQLVariable("skip"), "first": GraphQLVariable("first")], type: .nonNull(.list(.nonNull(.object(Noun.selections))))),
       ]
     }
 

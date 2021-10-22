@@ -12,9 +12,7 @@ import ApolloWebSocket
 
 /// GraphQL query error.
 public enum QueryError: Error {
-  
-  public struct Reason {
-    
+  public struct Reason: Equatable {
     /// The error message associated with the line and column number
     public let message: String?
     
@@ -22,7 +20,7 @@ public enum QueryError: Error {
     public let locations: [Location]?
   }
   
-  public struct Location {
+  public struct Location: Equatable {
     /// Line on which the error occurred
     public let line: Int?
     
@@ -38,6 +36,9 @@ public enum QueryError: Error {
   
   /// A non-HTTPURLResponse was received
   case request(error: Error?)
+  
+  /// No matching client query
+  case noMatchingQuery
 }
 
 /// A cache policy that specifies whether results should be fetched
@@ -88,9 +89,9 @@ public protocol GraphQLClient {
 }
 
 public class ApolloGraphQLClient: GraphQLClient {
-  private let apolloClient: ApolloClient
+  private let apolloClient: ApolloClientProtocol
   
-  public init(apolloClient: ApolloClient) {
+  public init(apolloClient: ApolloClientProtocol) {
     self.apolloClient = apolloClient
   }
   
@@ -100,7 +101,10 @@ public class ApolloGraphQLClient: GraphQLClient {
 
     var cancellable: Apollo.Cancellable?
 
-    cancellable = self.apolloClient.fetch(query: apolloQuery, cachePolicy: cachePolicy.policy()) { result in
+    cancellable = self.apolloClient.fetch(query: apolloQuery,
+                                          cachePolicy: cachePolicy.policy(),
+                                          contextIdentifier: nil,
+                                          queue: .main) { result in
       switch result {
       case .success(let result):
         if let errors = result.errors {
