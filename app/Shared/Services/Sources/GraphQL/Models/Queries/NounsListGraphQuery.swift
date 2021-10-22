@@ -8,18 +8,22 @@
 import Foundation
 import Apollo
 
-struct NounsListGraphQuery {
-  static let pageSize: Int = 20
+public struct NounsListGraphQuery {
+  public static let pageSize: Int = 20
   
   var skip: Int? = nil
   var pageSize: Int = NounsListGraphQuery.pageSize
+  
+  public init(skip: Int? = nil, pageSize: Int = NounsListGraphQuery.pageSize) {
+    
+  }
 }
 
 extension NounsListGraphQuery: GraphQLQuerier {
-  typealias Query = NounsListQuery
-  typealias Response = NounsList
+  public typealias Query = NounsListQuery
+  public typealias Response = NounsList
   
-  func query() -> Query {
+  public func query() -> Query {
     NounsListQuery(skip: skip, first: pageSize)
   }
 }

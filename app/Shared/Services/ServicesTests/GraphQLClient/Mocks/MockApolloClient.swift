@@ -14,7 +14,27 @@ class MockApolloClient: ApolloClientProtocol {
   
   var cacheKeyForObject: CacheKeyForObject?
   
-  private var result: GraphQLSelectionSet?
+  struct MockResult {
+    var data: GraphQLSelectionSet?
+    var errors: [GraphQLError]?
+    var source: MockSource
+    
+    enum MockSource {
+      case server
+      case cache
+      
+      func source<T>() -> GraphQLResult<T>.Source where T: GraphQLSelectionSet {
+        switch self {
+        case .server:
+          return .server
+        case .cache:
+          return .cache
+        }
+      }
+    }
+  }
+  
+  private var result: MockResult?
   private var error: Error?
   
   init(store: ApolloStore = ApolloStore()) {
@@ -22,7 +42,7 @@ class MockApolloClient: ApolloClientProtocol {
     self.cacheKeyForObject = { $0["id"] }
   }
   
-  func set(result: GraphQLSelectionSet?, error: Error?) {
+  func set(result: MockResult?, error: Error?) {
     self.result = result
     self.error = error
   }
@@ -38,11 +58,17 @@ class MockApolloClient: ApolloClientProtocol {
   }
   
   func fetch<Query>(query: Query, cachePolicy: Apollo.CachePolicy, contextIdentifier: UUID?, queue: DispatchQueue, resultHandler: GraphQLResultHandler<Query.Data>?) -> Apollo.Cancellable where Query : GraphQLQuery {
-    if let data = self.result as? Query.Data, let responseData = try? Query.Data(data) {
-      resultHandler?(.success(GraphQLResult(data: responseData, extensions: nil, errors: nil, source: .server, dependentKeys: nil)))
-    } else if let error = self.error {
-      resultHandler?(.failure(error))
-    }
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+      if let result = self.result  {
+        if let data = result.data, let responseData = try? Query.Data(data) {
+          resultHandler?(.success(GraphQLResult(data: responseData, extensions: nil, errors: result.errors, source: result.source.source(), dependentKeys: nil)))
+        } else {
+          resultHandler?(.success(GraphQLResult(data: nil, extensions: nil, errors: result.errors, source: result.source.source(), dependentKeys: nil)))
+        }
+      } else if let error = self.error {
+        resultHandler?(.failure(error))
+      }
+    })
     return EmptyCancellable()
   }
   
