@@ -107,7 +107,7 @@ public class ApolloGraphQLClient: GraphQLClient {
 
     var cancellable: Apollo.Cancellable?
 
-    cancellable = self.apolloClient.fetch(query: apolloQuery,
+    cancellable = self.apolloClient.fetch(query: query.query(),
                                           cachePolicy: cachePolicy.policy(),
                                           contextIdentifier: nil,
                                           queue: .main) { result in
@@ -145,7 +145,7 @@ public class ApolloGraphQLClient: GraphQLClient {
 
     var cancellable: Apollo.Cancellable?
 
-    cancellable = self.apolloClient.subscribe(subscription: subscription.subscription()) { result in
+    cancellable = self.apolloClient.subscribe(subscription: subscription.subscription(), queue: .main) { result in
       switch result {
       case .success(let result):
         if let errors = result.errors {

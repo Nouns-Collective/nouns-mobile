@@ -15,7 +15,8 @@ public struct NounsListGraphQuery {
   var pageSize: Int = NounsListGraphQuery.pageSize
   
   public init(skip: Int? = nil, pageSize: Int = NounsListGraphQuery.pageSize) {
-    
+    self.skip = skip
+    self.pageSize = pageSize
   }
 }
 

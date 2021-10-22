@@ -14,27 +14,34 @@ class MockApolloClient: ApolloClientProtocol {
   
   var cacheKeyForObject: CacheKeyForObject?
   
-  struct MockResult {
-    var data: GraphQLSelectionSet?
-    var errors: [GraphQLError]?
-    var source: MockSource
+  enum MockSource {
+    case server
+    case cache
     
-    enum MockSource {
-      case server
-      case cache
-      
-      func source<T>() -> GraphQLResult<T>.Source where T: GraphQLSelectionSet {
-        switch self {
-        case .server:
-          return .server
-        case .cache:
-          return .cache
-        }
+    func source<T>() -> GraphQLResult<T>.Source where T: GraphQLSelectionSet {
+      switch self {
+      case .server:
+        return .server
+      case .cache:
+        return .cache
       }
     }
   }
   
-  private var result: MockResult?
+  struct MockQueryResult {
+    var data: GraphQLSelectionSet?
+    var errors: [GraphQLError]?
+    var source: MockSource
+  }
+  
+  struct MockSubscriptionResult {
+    /// An array of GraphQLSelectionSet mimics multiple responses from a websocket subscription. One entry in the array is one "response" from the server.
+    var data: [GraphQLSelectionSet]?
+    var errors: [GraphQLError]?
+  }
+  
+  private var queryResult: MockQueryResult?
+  private var subscriptionResult: MockSubscriptionResult?
   private var error: Error?
   
   init(store: ApolloStore = ApolloStore()) {
@@ -42,13 +49,21 @@ class MockApolloClient: ApolloClientProtocol {
     self.cacheKeyForObject = { $0["id"] }
   }
   
-  func set(result: MockResult?, error: Error?) {
-    self.result = result
+  func set(queryResult: MockQueryResult?, error: Error?) {
+    self.queryResult = queryResult
+    self.subscriptionResult = nil
+    self.error = error
+  }
+  
+  func set(subscriptionResult: MockSubscriptionResult?, error: Error?) {
+    self.queryResult = nil
+    self.subscriptionResult = subscriptionResult
     self.error = error
   }
   
   func reset() {
-    result = nil
+    queryResult = nil
+    subscriptionResult = nil
     error = nil
   }
   
@@ -59,7 +74,7 @@ class MockApolloClient: ApolloClientProtocol {
   
   func fetch<Query>(query: Query, cachePolicy: Apollo.CachePolicy, contextIdentifier: UUID?, queue: DispatchQueue, resultHandler: GraphQLResultHandler<Query.Data>?) -> Apollo.Cancellable where Query : GraphQLQuery {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-      if let result = self.result  {
+      if let result = self.queryResult  {
         if let data = result.data, let responseData = try? Query.Data(data) {
           resultHandler?(.success(GraphQLResult(data: responseData, extensions: nil, errors: result.errors, source: result.source.source(), dependentKeys: nil)))
         } else {
@@ -88,7 +103,20 @@ class MockApolloClient: ApolloClientProtocol {
   }
   
   func subscribe<Subscription>(subscription: Subscription, queue: DispatchQueue, resultHandler: @escaping GraphQLResultHandler<Subscription.Data>) -> Apollo.Cancellable where Subscription : GraphQLSubscription {
-    // Left intentionally blank
-    fatalError("Implementation for \(#function) missing")
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+      if let result = self.subscriptionResult {
+        if let data = result.data {
+          for data in data {
+            let responseData = try? Subscription.Data(data)
+            resultHandler(.success(GraphQLResult(data: responseData, extensions: nil, errors: result.errors, source: .server, dependentKeys: nil)))
+          }
+        } else {
+          resultHandler(.success(GraphQLResult(data: nil, extensions: nil, errors: result.errors, source: .server, dependentKeys: nil)))
+        }
+      } else if let error = self.error {
+        resultHandler(.failure(error))
+      }
+    })
+    return EmptyCancellable()
   }
 }

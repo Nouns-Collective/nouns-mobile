@@ -30,7 +30,7 @@ class GraphQLFetchTests: XCTestCase {
     let query = MockQuery<NounsListQuery, NounsList>(query: NounsListQuery())
     
     let mockApolloClient = MockApolloClient()
-    mockApolloClient.set(result: nil, error: expectedError)
+    mockApolloClient.set(queryResult: nil, error: expectedError)
     
     let client = ApolloGraphQLClient(apolloClient: mockApolloClient)
 
@@ -54,7 +54,7 @@ class GraphQLFetchTests: XCTestCase {
     let query = MockQuery<NounsListQuery, NounsList>(query: NounsListQuery())
     
     let mockApolloClient = MockApolloClient()
-    mockApolloClient.set(result: .init(data: MockResponses.mockNounsList(), errors: nil, source: .server), error: nil)
+    mockApolloClient.set(queryResult: .init(data: MockResponses.mockNounsList(), errors: nil, source: .server), error: nil)
     
     let client = ApolloGraphQLClient(apolloClient: mockApolloClient)
     
@@ -82,7 +82,7 @@ class GraphQLFetchTests: XCTestCase {
                                   GraphQLError(["description": "test description for error two"])]
     
     let mockApolloClient = MockApolloClient()
-    mockApolloClient.set(result: .init(data: nil, errors: errors, source: .server), error: nil)
+    mockApolloClient.set(queryResult: .init(data: nil, errors: errors, source: .server), error: nil)
     
     let client = ApolloGraphQLClient(apolloClient: mockApolloClient)
     
@@ -108,7 +108,7 @@ class GraphQLFetchTests: XCTestCase {
     let query = MockQuery<NounsListQuery, NounsList>(query: NounsListQuery())
         
     let mockApolloClient = MockApolloClient()
-    mockApolloClient.set(result: .init(data: nil, errors: nil, source: .server), error: nil)
+    mockApolloClient.set(queryResult: .init(data: nil, errors: nil, source: .server), error: nil)
     
     let client = ApolloGraphQLClient(apolloClient: mockApolloClient)
     

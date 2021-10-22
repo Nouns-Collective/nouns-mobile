@@ -4,6 +4,141 @@
 import Apollo
 import Foundation
 
+public final class AuctionSubscription: GraphQLSubscription {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    subscription Auction {
+      auctions(orderBy: settled, first: 1) {
+        __typename
+        id
+        amount
+        startTime
+        endTime
+        settled
+      }
+    }
+    """
+
+  public let operationName: String = "Auction"
+
+  public init() {
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Subscription"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("auctions", arguments: ["orderBy": "settled", "first": 1], type: .nonNull(.list(.nonNull(.object(Auction.selections))))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(auctions: [Auction]) {
+      self.init(unsafeResultMap: ["__typename": "Subscription", "auctions": auctions.map { (value: Auction) -> ResultMap in value.resultMap }])
+    }
+
+    public var auctions: [Auction] {
+      get {
+        return (resultMap["auctions"] as! [ResultMap]).map { (value: ResultMap) -> Auction in Auction(unsafeResultMap: value) }
+      }
+      set {
+        resultMap.updateValue(newValue.map { (value: Auction) -> ResultMap in value.resultMap }, forKey: "auctions")
+      }
+    }
+
+    public struct Auction: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["Auction"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
+          GraphQLField("amount", type: .nonNull(.scalar(String.self))),
+          GraphQLField("startTime", type: .nonNull(.scalar(String.self))),
+          GraphQLField("endTime", type: .nonNull(.scalar(String.self))),
+          GraphQLField("settled", type: .nonNull(.scalar(Bool.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: GraphQLID, amount: String, startTime: String, endTime: String, settled: Bool) {
+        self.init(unsafeResultMap: ["__typename": "Auction", "id": id, "amount": amount, "startTime": startTime, "endTime": endTime, "settled": settled])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// The Noun's ERC721 token id
+      public var id: GraphQLID {
+        get {
+          return resultMap["id"]! as! GraphQLID
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The current highest bid amount
+      public var amount: String {
+        get {
+          return resultMap["amount"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "amount")
+        }
+      }
+
+      /// The time that the auction started
+      public var startTime: String {
+        get {
+          return resultMap["startTime"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "startTime")
+        }
+      }
+
+      /// The time that the auction is scheduled to end
+      public var endTime: String {
+        get {
+          return resultMap["endTime"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "endTime")
+        }
+      }
+
+      /// Whether or not the auction has been settled
+      public var settled: Bool {
+        get {
+          return resultMap["settled"]! as! Bool
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "settled")
+        }
+      }
+    }
+  }
+}
+
 public final class NounsListQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
