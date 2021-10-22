@@ -129,8 +129,9 @@ public class ApolloGraphQLClient: GraphQLClient {
 
     return subject.handleEvents(receiveCancel: {
       cancellable?.cancel()
-    }).upstream
-      .eraseToAnyPublisher()
+    })
+    .upstream
+    .eraseToAnyPublisher()
   }
   
   public func subscription<T>() -> AnyPublisher<T, QueryError> where T : Decodable {
