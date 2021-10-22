@@ -14,12 +14,22 @@ class MockApolloClient: ApolloClientProtocol {
   
   var cacheKeyForObject: CacheKeyForObject?
   
-  var result: GraphQLSelectionSet?
-  var error: Error?
+  private var result: GraphQLSelectionSet?
+  private var error: Error?
   
   init(store: ApolloStore = ApolloStore()) {
     self.store = store
     self.cacheKeyForObject = { $0["id"] }
+  }
+  
+  func set(result: GraphQLSelectionSet?, error: Error?) {
+    self.result = result
+    self.error = error
+  }
+  
+  func reset() {
+    result = nil
+    error = nil
   }
   
   func clearCache(callbackQueue: DispatchQueue, completion: ((Result<Void, Error>) -> Void)?) {
@@ -28,13 +38,12 @@ class MockApolloClient: ApolloClientProtocol {
   }
   
   func fetch<Query>(query: Query, cachePolicy: Apollo.CachePolicy, contextIdentifier: UUID?, queue: DispatchQueue, resultHandler: GraphQLResultHandler<Query.Data>?) -> Apollo.Cancellable where Query : GraphQLQuery {
-    return MockCancellable {
-      if let data = self.result as? Query.Data, let responseData = try? Query.Data(data) {
-        resultHandler?(.success(GraphQLResult(data: responseData, extensions: nil, errors: nil, source: .server, dependentKeys: nil)))
-      } else if let error = self.error {
-        resultHandler?(.failure(error))
-      }
+    if let data = self.result as? Query.Data, let responseData = try? Query.Data(data) {
+      resultHandler?(.success(GraphQLResult(data: responseData, extensions: nil, errors: nil, source: .server, dependentKeys: nil)))
+    } else if let error = self.error {
+      resultHandler?(.failure(error))
     }
+    return EmptyCancellable()
   }
   
   func watch<Query>(query: Query, cachePolicy: Apollo.CachePolicy, callbackQueue: DispatchQueue, resultHandler: @escaping GraphQLResultHandler<Query.Data>) -> GraphQLQueryWatcher<Query> where Query : GraphQLQuery {
@@ -55,10 +64,5 @@ class MockApolloClient: ApolloClientProtocol {
   func subscribe<Subscription>(subscription: Subscription, queue: DispatchQueue, resultHandler: @escaping GraphQLResultHandler<Subscription.Data>) -> Apollo.Cancellable where Subscription : GraphQLSubscription {
     // Left intentionally blank
     fatalError("Implementation for \(#function) missing")
-  }
-  
-  func reset() {
-    result = nil
-    error = nil
   }
 }
