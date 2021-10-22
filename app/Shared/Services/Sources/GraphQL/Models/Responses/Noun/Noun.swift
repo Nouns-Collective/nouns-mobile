@@ -13,8 +13,8 @@ public struct Noun {
 }
 
 extension Noun: GraphResponse {
-  public init?(_ apolloResponse: GraphQLSelectionSet?) {
-    guard let response = apolloResponse as? NounsListQuery.Data.Noun,
+  public init?(_ response: GraphQLSelectionSet?) {
+    guard let response = response as? NounsListQuery.Data.Noun,
           let seed = Seed(response.seed) else { return nil }
     
     self.seed = seed

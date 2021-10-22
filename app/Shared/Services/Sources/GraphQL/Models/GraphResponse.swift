@@ -9,5 +9,5 @@ import Foundation
 import Apollo
 
 public protocol GraphResponse {
-  init?(_ apolloResponse: GraphQLSelectionSet?)
+  init?(_ response: GraphQLSelectionSet?)
 }

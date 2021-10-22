@@ -17,8 +17,8 @@ public struct Seed {
 }
 
 extension Seed: GraphResponse {
-  public init?(_ apolloResponse: GraphQLSelectionSet?) {
-    guard let response = apolloResponse as? NounsListQuery.Data.Noun.Seed else { return nil }
+  public init?(_ response: GraphQLSelectionSet?) {
+    guard let response = response as? NounsListQuery.Data.Noun.Seed else { return nil }
     
     guard let background = Int(response.background),
           let glasses = Int(response.glasses),

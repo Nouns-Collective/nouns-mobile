@@ -1,5 +1,5 @@
-query NounsList {
-  nouns {
+query NounsList($skip: Int, $first: Int) {
+  nouns(skip: $skip, first: $first) {
     id
     seed {
       background
