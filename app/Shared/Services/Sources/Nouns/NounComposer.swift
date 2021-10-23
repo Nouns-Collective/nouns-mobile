@@ -8,7 +8,7 @@
 import Foundation
 
 /// The Noun's trait.
-public struct Part {
+public struct Trait {
   
   /// `RLE` data compression of the Noun's trait.
   public let rleData: String
@@ -36,19 +36,19 @@ public protocol NounComposer {
   
   /// Array containing all the bodies mapped from the RLE data.
   /// to the shapes to draw Noun's parts.
-  var bodies: [Part] { get }
+  var bodies: [Trait] { get }
   
   /// Array containing all the accessories mapped from the RLE data.
   /// to the shapes to draw Noun's parts.
-  var accessories: [Part] { get }
+  var accessories: [Trait] { get }
   
   /// Array containing all the heads mapped from the RLE data
   /// to the shapes to draw Noun's parts.
-  var heads: [Part] { get }
+  var heads: [Trait] { get }
   
   /// Array containing all the glasses mapped from the RLE data
   /// to the shapes to draw Noun's parts.
-  var glasses: [Part] { get }
+  var glasses: [Trait] { get }
 }
 
 public class OfflineNounComposer: NounComposer {
@@ -61,19 +61,19 @@ public class OfflineNounComposer: NounComposer {
     layer.partcolors
   }()
   
-  public lazy var bodies: [Part] = {
+  public lazy var bodies: [Trait] = {
     layer.parts[0]
   }()
   
-  public lazy var accessories: [Part] = {
+  public lazy var accessories: [Trait] = {
     layer.parts[1]
   }()
   
-  public lazy var heads: [Part] = {
+  public lazy var heads: [Trait] = {
     layer.parts[2]
   }()
   
-  public lazy var glasses: [Part] = {
+  public lazy var glasses: [Trait] = {
     layer.parts[3]
   }()
   
@@ -81,7 +81,7 @@ public class OfflineNounComposer: NounComposer {
   private struct Layer: Decodable {
     let partcolors: [String]
     let bgcolors: [String]
-    let parts: [[Part]]
+    let parts: [[Trait]]
   }
   
   private let layer: Layer
@@ -92,7 +92,7 @@ public class OfflineNounComposer: NounComposer {
   }
 }
 
-extension Part: Decodable {
+extension Trait: Decodable {
   
   private enum CodingKeys: String, CodingKey {
     case assetImage = "name"
