@@ -9,6 +9,9 @@ packages:
   Apollo:
     url: https://github.com/apollographql/apollo-ios
     from: 0.49.1
+  SnapshotTesting:
+    url: https://github.com/pointfreeco/swift-snapshot-testing.git
+    from: 1.9.0
 
 targets:
 # Services (Framework)
@@ -96,4 +99,5 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: ca.byziad.nouns.services.tests
     dependencies:
       - target: Services
+      - package: SnapshotTesting
 
