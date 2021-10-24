@@ -77,7 +77,7 @@ targets:
                 fi
 
                 cd "${SRCROOT}/Sources"
-                "${SCRIPT_PATH}"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile="./GraphQL/internal/schema.json" GraphQL/internal/API.swift
+                "${SCRIPT_PATH}"/run-bundled-codegen.sh codegen:generate --namespace=Apollolib --target=swift --includes=./**/*.graphql --localSchemaFile="./GraphQL/internal/schema.json" GraphQL/internal/API.swift
         name: Apollo API Codegen
         inputFiles:
           - $SRCROOT/Sources/GraphQL/Internal/schema.json

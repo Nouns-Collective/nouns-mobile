@@ -10,6 +10,10 @@ import Foundation
 /// The Noun's trait.
 public struct Trait {
   
+  private enum ImageType: String {
+    case png
+  }
+  
   /// `RLE` data compression of the Noun's trait.
   public let rleData: String
   
@@ -18,8 +22,7 @@ public struct Trait {
   
   /// Load Noun's trait bundled image.
   public lazy var data: Data? = {
-    guard
-      let url = Bundle.main.url(forResource: assetImage, withExtension: "png")
+    guard let url = Bundle.main.url(forResource: assetImage, withExtension: ImageType.png.rawValue)
     else { return nil }
     return try? Data(contentsOf: url)
   }()

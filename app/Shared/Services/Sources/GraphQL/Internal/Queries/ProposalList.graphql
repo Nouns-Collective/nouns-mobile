@@ -1,0 +1,8 @@
+query ProposalsList($skip: Int, $first: Int) {
+  proposals(skip: $skip, first: $first, orderBy: startBlock, orderDirection: desc) {
+    startBlock
+    endBlock
+    description
+    status
+  }
+}

@@ -12,6 +12,7 @@ import ApolloWebSocket
 
 /// GraphQL query error.
 public enum QueryError: Error {
+  
   public struct Reason: Equatable {
     /// The error message associated with the line and column number
     public let message: String?
@@ -39,6 +40,12 @@ public enum QueryError: Error {
   
   /// No matching client query
   case noMatchingQuery
+  
+  /// A malformed query prevented a request from being initiate
+  case badQuery
+  
+  /// An indication that the data is corrupted or otherwise invalid.
+  case dataCorrupted
 }
 
 /// A cache policy that specifies whether results should be fetched
@@ -56,21 +63,6 @@ public enum CachePolicy {
   case returnCacheDataAndFetch
 }
 
-public protocol GraphQLQuerier {
-  associatedtype Query: GraphQLQuery
-  associatedtype Response: GraphResponse
-  
-  /// Factory method for generating an Apollo-ready GraphQL query
-  func query() -> Query
-}
-
-public protocol GraphQLSubscriber {
-  associatedtype Subscription: GraphQLSubscription
-  associatedtype Response: GraphResponse
-  
-  func subscription() -> Subscription
-}
-
 public protocol GraphQLClient {
   
   /// Fetches a query from the server or from the local cache, depending on
@@ -83,16 +75,16 @@ public protocol GraphQLClient {
   ///   - cachePolicy: A cache policy that specifies whether results should be fetched or loaded from local.
   ///
   /// - Returns: A publisher emitting a `Decodable` type  instance. The publisher will emit on the *main* thread.
-  func fetch<Query>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<Query.Response, QueryError> where Query : GraphQLQuerier
+  func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T: Decodable
   
-  /// Registers a publisher that publishes state changes
+  /// Registers a publisher that publishes state changes.
   ///
   /// The publisher will emit events on the **main** thread.
   ///
   /// - Parameters:
   ///
   /// - Returns: A publisher emitting a `Decodable` type  instance. The publisher will emit on the *main* thread.
-  func subscription<Subscription>(_ subscription: Subscription) -> AnyPublisher<Subscription.Response, QueryError> where Subscription : GraphQLSubscriber
+  func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T: Decodable
 }
 
 public class ApolloGraphQLClient: GraphQLClient {
@@ -102,71 +94,90 @@ public class ApolloGraphQLClient: GraphQLClient {
     self.apolloClient = apolloClient
   }
   
-  public func fetch<Query>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<Query.Response, QueryError> where Query : GraphQLQuerier {
-    let subject = PassthroughSubject<Query.Response, QueryError>()
-
-    var cancellable: Apollo.Cancellable?
-
-    cancellable = self.apolloClient.fetch(query: query.query(),
-                                          cachePolicy: cachePolicy.policy(),
-                                          contextIdentifier: nil,
-                                          queue: .main) { result in
+  public func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T : Decodable {
+    guard let query = query as? AnyApolloQuery<Apollolib.NounsListQuery.Data> else {
+      return Fail(error: .badQuery).eraseToAnyPublisher()
+    }
+    
+    let subject = PassthroughSubject<T, QueryError>()
+    let cancellable = apolloClient.fetch(query: query,
+                                         cachePolicy: cachePolicy.policy(),
+                                         contextIdentifier: nil,
+                                         queue: .main) { result in
       switch result {
-      case .success(let result):
-        if let errors = result.errors {
-          subject.send(completion: .failure(errors.queryError()))
-          return
-        }
-
-        guard let data = result.data, let response = Query.Response(data) else {
-          subject.send(completion: .failure(QueryError.noData))
-          return
+      case .success(let graphQLResult):
+        if let errors = graphQLResult.errors {
+          return subject.send(completion: .failure(errors.queryError()))
         }
         
-        subject.send(response)
+        do {
+          guard let jsonObject = graphQLResult.data?.jsonObject else {
+            return subject.send(completion: .failure(.noData))
+          }
+          
+          let response: T = try self.processResponse(jsonObject: jsonObject)
+          subject.send(response)
+          
+        } catch {
+          subject.send(completion: .failure(.dataCorrupted))
+        }
         
-        if result.source == .server {
+        if graphQLResult.source == .server {
           subject.send(completion: .finished)
         }
       case .failure(let error):
-        subject.send(completion: .failure(QueryError.request(error: error)))
+        subject.send(completion: .failure(.request(error: error)))
       }
     }
-
-    return subject.handleEvents(receiveCancel: {
-      cancellable?.cancel()
-    })
-    .upstream
-    .eraseToAnyPublisher()
+    
+    return subject
+      .handleEvents(receiveCancel: {
+        cancellable.cancel()
+      })
+      .upstream
+      .eraseToAnyPublisher()
   }
   
-  public func subscription<Subscription>(_ subscription: Subscription) -> AnyPublisher<Subscription.Response, QueryError> where Subscription : GraphQLSubscriber {
-    let subject = PassthroughSubject<Subscription.Response, QueryError>()
-
-    var cancellable: Apollo.Cancellable?
-
-    cancellable = self.apolloClient.subscribe(subscription: subscription.subscription(), queue: .main) { result in
+  public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T : Decodable {
+    guard let subscription = subscription as? AnyApolloSubscription<Apollolib.AuctionSubscription.Data> else {
+      return Fail(error: .badQuery).eraseToAnyPublisher()
+    }
+    
+    let subject = PassthroughSubject<T, QueryError>()
+    let cancellable = apolloClient.subscribe(subscription: subscription, queue: .main) { result in
       switch result {
-      case .success(let result):
-        if let errors = result.errors {
-          subject.send(completion: .failure(errors.queryError()))
-          return
-        }
-
-        guard let data = result.data, let response = Subscription.Response(data) else {
-          subject.send(completion: .failure(QueryError.noData))
-          return
+      case .success(let graphQLResult):
+        if let errors = graphQLResult.errors {
+          return subject.send(completion: .failure(errors.queryError()))
         }
         
-        subject.send(response)
+        do {
+          guard let jsonObject = graphQLResult.data?.jsonObject else {
+            return subject.send(completion: .failure(.noData))
+          }
+          
+          let response: T = try self.processResponse(jsonObject: jsonObject)
+          subject.send(response)
+          
+        } catch {
+          subject.send(completion: .failure(.dataCorrupted))
+        }
+        
       case .failure(let error):
         subject.send(completion: .failure(QueryError.request(error: error)))
       }
     }
-
-    return subject.handleEvents(receiveCancel: {
-      cancellable?.cancel()
-    }).upstream
+    
+    return subject
+      .handleEvents(receiveCancel: {
+        cancellable.cancel()
+      })
+      .upstream
       .eraseToAnyPublisher()
+  }
+  
+  internal func processResponse<T: Decodable>(jsonObject: JSONObject) throws -> T {
+    let serialized = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
+    return try JSONDecoder().decode(T.self, from: serialized)
   }
 }
