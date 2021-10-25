@@ -8,6 +8,23 @@
 import Foundation
 import Combine
 
+enum ResponseDecodingError: Error {
+  case typeNotFound(type: Any.Type)
+}
+
+struct CodingKeys: CodingKey {
+  init?(intValue: Int) {
+    return nil
+  }
+  
+  init(stringValue: String) {
+    self.stringValue = stringValue
+  }
+  
+  let stringValue: String
+  let intValue: Int? = nil
+}
+
 /// The Auction
 public struct Auction {
   
@@ -42,8 +59,8 @@ public struct Noun {
   
   public let owner: Account
   
-//  /// The seed used to determine the Noun's traits.
-//  public let seed: Seed
+  //  /// The seed used to determine the Noun's traits.
+  //  public let seed: Seed
 }
 
 /// The seed used to determine the Noun's traits.
@@ -151,17 +168,23 @@ public class NounSubgraphProvider: Nouns {
   }
 }
 
-extension Page: Decodable where T == Array<Noun> {
-  private enum CodingKeys: String, CodingKey {
-    case nouns
-  }
-  
+extension Page: Decodable where T: Decodable {
   public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    data = try container.decode(T.self, forKey: .nouns)
+    switch T.self {
+    case is Array<Noun>.Type:
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "nouns"))
+    case is Array<Proposal>.Type:
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "proposals"))
+    default:
+      throw ResponseDecodingError.typeNotFound(type: T.self)
+    }
   }
 }
 
 extension Noun: Decodable { }
 extension Account: Decodable { }
 extension Auction: Decodable { }
+extension Proposal: Decodable { }
+extension ProposalStatus: Decodable { }
