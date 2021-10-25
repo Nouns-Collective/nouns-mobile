@@ -29,7 +29,7 @@ class MockGraphQLClient<Responder: MockGraphQLResponder>: GraphQLClient {
 //    }
   }
   
-  func subscription<Subscription>(_ subscription: Subscription) -> AnyPublisher<Subscription.Response, QueryError> where Subscription : GraphQLSubscriber {
+  func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T : Decodable {
     fatalError("You need to implement \(#function) in your mock.")
   }
 }
