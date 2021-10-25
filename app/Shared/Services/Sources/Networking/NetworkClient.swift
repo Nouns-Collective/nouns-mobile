@@ -8,19 +8,19 @@
 import Foundation
 import Combine
 
-public enum NetworkError: Error {
+public enum RequestError: Error {
   /// The response is empty
-  case emptyResponse
+  case noData
   
   /// The response has a non-successful status code
-  case responseError(statusCode: Int)
+  case http(statusCode: Int)
   
   /// Any other error, potentially unrelated to the URLSession, was received
-  case error(error: Error)
+  case request(error: Error)
 }
 
 public protocol NetworkingClient: AnyObject {
-  func data(for request: NetworkRequest) -> AnyPublisher<Data, NetworkError>
+  func data(for request: NetworkRequest) -> AnyPublisher<Data, RequestError>
 }
 
 public class URLSessionNetworkClient: NetworkingClient {
@@ -30,22 +30,23 @@ public class URLSessionNetworkClient: NetworkingClient {
     self.urlSession = urlSession
   }
   
-  public func data(for request: NetworkRequest) -> AnyPublisher<Data, NetworkError> {
+  public func data(for request: NetworkRequest) -> AnyPublisher<Data, RequestError> {
     urlSession.dataTaskPublisher(for: URLRequest(for: request))
       .tryMap() { try self.processResponse(from: $0) }
-      .mapError { $0 as? NetworkError ?? NetworkError.error(error: $0) }
+      .mapError { $0 as? RequestError ?? RequestError.request(error: $0) }
       .eraseToAnyPublisher()
   }
   
   internal func processResponse(from element: URLSession.DataTaskPublisher.Output) throws -> Data {
     guard let httpResponse = element.response as? HTTPURLResponse else {
-      throw NetworkError.emptyResponse
+      throw RequestError.noData
     }
     
-    guard httpResponse.statusCode == 200 else {
-      throw NetworkError.responseError(statusCode: httpResponse.statusCode)
+    switch httpResponse.statusCode {
+    case 200:
+      return element.data
+    default:
+      throw RequestError.http(statusCode: httpResponse.statusCode)
     }
-    
-    return element.data
   }
 }
