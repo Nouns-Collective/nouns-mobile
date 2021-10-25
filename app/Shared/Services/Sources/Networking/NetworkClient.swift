@@ -9,6 +9,14 @@ import Foundation
 import Combine
 
 public protocol NetworkingClient: AnyObject {
+  /// Performs an HTTP request on a server
+  ///
+  /// The publisher will emit events on the **main** thread.
+  ///
+  /// - Parameters:
+  ///   - request: The request to perform on the server
+  ///
+  /// - Returns: A publisher emitting a `Data` type  instance. The publisher will emit on the *main* thread.
   func data(for request: NetworkRequest) -> AnyPublisher<Data, URLError>
 }
 

@@ -7,8 +7,6 @@
 
 import Foundation
 import Combine
-import Apollo
-import ApolloWebSocket
 
 /// GraphQL query error.
 public enum QueryError: Error {
@@ -87,97 +85,43 @@ public protocol GraphQLClient {
   func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T: Decodable
 }
 
-public class ApolloGraphQLClient: GraphQLClient {
-  private let apolloClient: ApolloClientProtocol
+public class GraphQL: GraphQLClient {
+  private let networkingClient: NetworkingClient
   
-  public init(apolloClient: ApolloClientProtocol) {
-    self.apolloClient = apolloClient
+  public init(networkingClient: NetworkingClient) {
+    self.networkingClient = networkingClient
   }
   
   public func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T : Decodable {
-    guard let query = query as? AnyApolloQuery<Apollolib.NounsListQuery.Data> else {
+    guard let query = query as? GraphQLQuery else {
       return Fail(error: .badQuery).eraseToAnyPublisher()
     }
-    
-    let subject = PassthroughSubject<T, QueryError>()
-    let cancellable = apolloClient.fetch(query: query,
-                                         cachePolicy: cachePolicy.policy(),
-                                         contextIdentifier: nil,
-                                         queue: .main) { result in
-      switch result {
-      case .success(let graphQLResult):
-        if let errors = graphQLResult.errors {
-          return subject.send(completion: .failure(errors.queryError()))
-        }
         
-        do {
-          guard let jsonObject = graphQLResult.data?.jsonObject else {
-            return subject.send(completion: .failure(.noData))
+    let operation = GraphQLOperation(query: query)
+    do {
+      let request = NetworkDataRequest(
+        url: operation.url,
+        httpMethod: .post(contentType: .json),
+        httpBody: try JSONEncoder().encode(operation)
+      )
+      
+      return networkingClient.data(for: request)
+        .decode(type: T.self, decoder: JSONDecoder())
+        .mapError({ error in
+          switch error {
+          case is Swift.DecodingError:
+            return .dataCorrupted
+          default:
+            return .request(error: error)
           }
-          
-          let response: T = try self.processResponse(jsonObject: jsonObject)
-          subject.send(response)
-          
-        } catch {
-          subject.send(completion: .failure(.dataCorrupted))
-        }
-        
-        if graphQLResult.source == .server {
-          subject.send(completion: .finished)
-        }
-      case .failure(let error):
-        subject.send(completion: .failure(.request(error: error)))
-      }
+        })
+        .eraseToAnyPublisher()
+    } catch {
+      return Fail(error: .request(error: error)).eraseToAnyPublisher()
     }
-    
-    return subject
-      .handleEvents(receiveCancel: {
-        cancellable.cancel()
-      })
-      .upstream
-      .eraseToAnyPublisher()
   }
   
   public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T : Decodable {
-    guard let subscription = subscription as? AnyApolloSubscription<Apollolib.AuctionSubscription.Data> else {
-      return Fail(error: .badQuery).eraseToAnyPublisher()
-    }
-    
-    let subject = PassthroughSubject<T, QueryError>()
-    let cancellable = apolloClient.subscribe(subscription: subscription, queue: .main) { result in
-      switch result {
-      case .success(let graphQLResult):
-        if let errors = graphQLResult.errors {
-          return subject.send(completion: .failure(errors.queryError()))
-        }
-        
-        do {
-          guard let jsonObject = graphQLResult.data?.jsonObject else {
-            return subject.send(completion: .failure(.noData))
-          }
-          
-          let response: T = try self.processResponse(jsonObject: jsonObject)
-          subject.send(response)
-          
-        } catch {
-          subject.send(completion: .failure(.dataCorrupted))
-        }
-        
-      case .failure(let error):
-        subject.send(completion: .failure(QueryError.request(error: error)))
-      }
-    }
-    
-    return subject
-      .handleEvents(receiveCancel: {
-        cancellable.cancel()
-      })
-      .upstream
-      .eraseToAnyPublisher()
-  }
-  
-  internal func processResponse<T: Decodable>(jsonObject: JSONObject) throws -> T {
-    let serialized = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
-    return try JSONDecoder().decode(T.self, from: serialized)
+    fatalError("Implementaiton for \(#function) missing")
   }
 }

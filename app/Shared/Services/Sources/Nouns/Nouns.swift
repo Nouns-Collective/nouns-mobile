@@ -132,8 +132,7 @@ public protocol Nouns {
   func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error>
 }
 
-///  
-public class TheGraphNounsProvider: Nouns {
+public class NounSubgraphProvider: Nouns {
   private let graphQLClient: GraphQLClient
   
   init(graphQLClient: GraphQLClient) {
@@ -141,7 +140,7 @@ public class TheGraphNounsProvider: Nouns {
   }
   
   public func fetchOnChainNouns(limit: Int, after cursor: Int) -> AnyPublisher<[Noun], Error> {
-    let query = AnyApolloQuery(Apollolib.NounsListQuery(skip: cursor, first: cursor))
+    let query = NounsSubgraph.NounsListQuery(first: limit, skip: cursor)
     return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
       .compactMap { (page: Page<[Noun]>) in
         return page.data
@@ -151,30 +150,24 @@ public class TheGraphNounsProvider: Nouns {
   }
   
   public func liveAuctionStateDidChange() -> AnyPublisher<Auction, Error> {
-    let subscription = AnyApolloSubscription(Apollolib.AuctionSubscription())
-    return graphQLClient.subscription(subscription)
-      .mapError { $0 as Error }
-      .eraseToAnyPublisher()
+    fatalError("Implementation for \(#function) missing")
   }
   
   public func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error> {
-//    let query = ProposalListGraphQuery(skip: cursor, pageSize: limit)
-//    return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-//      .mapError { $0 as Error }
-//      .map { $0.proposals }
-//      .eraseToAnyPublisher()
+    fatalError("Implementation for \(#function) missing")
   }
-  
 }
 
 extension Page: Decodable where T == Array<Noun> {
   private enum CodingKeys: String, CodingKey {
-    case data = "nouns"
+    case data
+    case nouns
   }
   
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    data = try container.decode(T.self, forKey: .data)
+    let response = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
+    data = try response.decode(T.self, forKey: .nouns)
   }
 }
 

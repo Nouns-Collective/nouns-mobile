@@ -21,10 +21,10 @@ final class FetchOnChainNounsTests: XCTestCase {
     
     // given
     let graphQLClient = MockGraphQLClient<MockDataGraphQLResponder>()
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
-    let ensFetchExpectation = expectation(description: #function)
+    let fetchExpectation = expectation(description: #function)
     
     // when
     nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
@@ -38,12 +38,12 @@ final class FetchOnChainNounsTests: XCTestCase {
       } receiveValue: { nouns in
         XCTAssertTrue(Thread.isMainThread)
         
-        ensFetchExpectation.fulfill()
+        fetchExpectation.fulfill()
       }
       .store(in: &cancellables)
     
     // then
-    wait(for: [ensFetchExpectation], timeout: 1.0)
+    wait(for: [fetchExpectation], timeout: 1.0)
   }
   
   func testFetchOnChainNounsFailure() {
@@ -56,10 +56,10 @@ final class FetchOnChainNounsTests: XCTestCase {
     
     // given
     let graphQLClient = MockGraphQLClient<MockFailureGraphQLResponder>()
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
-    let ensFetchExpectation = expectation(description: #function)
+    let fetchExpectation = expectation(description: #function)
     
     // when
     nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
@@ -67,7 +67,7 @@ final class FetchOnChainNounsTests: XCTestCase {
         if case let .failure(error) = completion {
           XCTAssertTrue(Thread.isMainThread)
           
-          ensFetchExpectation.fulfill()
+          fetchExpectation.fulfill()
         }
       } receiveValue: { domain in
         XCTFail("💥 result unexpected")
@@ -75,6 +75,6 @@ final class FetchOnChainNounsTests: XCTestCase {
       .store(in: &cancellables)
     
     // then
-    wait(for: [ensFetchExpectation], timeout: 1.0)
+    wait(for: [fetchExpectation], timeout: 1.0)
   }
 }
