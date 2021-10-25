@@ -24,6 +24,7 @@ public struct NetworkDataRequest: NetworkRequest {
 }
 
 extension URLRequest {
+  
   public init(for request: NetworkRequest) {
     var urlRequest = URLRequest(url: request.url)
     if let dataRequest = request as? NetworkDataRequest {

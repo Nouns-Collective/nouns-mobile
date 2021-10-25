@@ -163,6 +163,7 @@ public class TheGraphNounsProvider: Nouns {
 //      .mapError { $0 as Error }
 //      .map { $0.proposals }
 //      .eraseToAnyPublisher()
+    fatalError()
   }
   
 }
