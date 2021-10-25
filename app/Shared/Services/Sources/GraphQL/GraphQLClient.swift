@@ -106,6 +106,7 @@ public class GraphQL: GraphQLClient {
       )
       
       return networkingClient.data(for: request)
+//        .tryMap { try self.trySomething(data: $0) }
         .decode(type: T.self, decoder: JSONDecoder())
         .mapError({ error in
           switch error {
@@ -119,6 +120,11 @@ public class GraphQL: GraphQLClient {
     } catch {
       return Fail(error: .request(error: error)).eraseToAnyPublisher()
     }
+  }
+  
+  public func trySomething(data: Data) throws -> Data {
+    print(String(data: data, encoding: .utf8))
+    throw QueryError.dataCorrupted
   }
   
   public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T : Decodable {

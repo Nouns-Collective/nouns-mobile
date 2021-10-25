@@ -83,13 +83,13 @@ public struct Seed: Decodable {
 }
 
 /// Status of the proposal
-public enum ProposalStatus {
-  case pending
-  case active
-  case cancelled
-  case vetoed
-  case queued
-  case executed
+public enum ProposalStatus: String {
+  case pending = "PENDING"
+  case active = "ACTIVE"
+  case cancelled = "CANCELLED"
+  case vetoed = "VETOED"
+  case queued = "QUEUED"
+  case executed = "EXECUTED"
 }
 
 /// The Proposal
@@ -164,7 +164,13 @@ public class NounSubgraphProvider: Nouns {
   }
   
   public func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error> {
-    fatalError("Implementation for \(#function) missing")
+    let query = NounsSubgraph.ProposalListQuery(first: limit, skip: cursor)
+    return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+      .compactMap { (responseData: HTTPResponse<Page<[Proposal]>>) in
+        return responseData.data.data
+      }
+      .mapError { $0 as Error }
+      .eraseToAnyPublisher()
   }
 }
 
