@@ -11,6 +11,8 @@ import Combine
 
 final class NetworkingClientDataRequestTests: XCTestCase {
   
+  fileprivate static let baseURL = "https://nouns.wtf"
+  
   func testNetworkingClientDataRequestSucceed() throws {
     
     enum MockDataURLResponder: MockURLResponder {
@@ -23,7 +25,7 @@ final class NetworkingClientDataRequestTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
     let request = NetworkDataRequest(
-      url: URL(string: "https://nouns.wtf")!,
+      url: URL(string: Self.baseURL)!,
       httpBody: Data()
     )
     
@@ -60,7 +62,7 @@ final class NetworkingClientDataRequestTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
     let request = NetworkDataRequest(
-      url: URL(string: "https://nouns.wtf")!,
+      url: URL(string: Self.baseURL)!,
       httpBody: Data()
     )
     
@@ -70,7 +72,7 @@ final class NetworkingClientDataRequestTests: XCTestCase {
     // when
     client.data(for: request)
       .sink { completion in
-        if case let .failure(.request(error)) = completion{
+        if case let .failure(.request(error)) = completion {
           XCTAssertEqual((error as? URLError)?.code, .badURL)
           
           expectation.fulfill()
