@@ -23,6 +23,9 @@ final class GraphQLClientHitRealBackendTests: XCTestCase {
     // when
     client.fetch(query, cachePolicy: .fetchIgnoringCacheData)
       .receive(on: DispatchQueue.main)
+      .compactMap { (responseData: HTTPResponse<Page<[Noun]>>) in
+        return responseData.data.data
+      }
       .sink { completion in
         switch completion {
         case .finished:
@@ -30,9 +33,9 @@ final class GraphQLClientHitRealBackendTests: XCTestCase {
         case let .failure(error):
           XCTFail("💥 Something went wrong: \(error)")
         }
-      } receiveValue: { (nouns: Page<[Noun]>) in
+      } receiveValue: { (nouns: [Noun]) in
         XCTAssertTrue(Thread.isMainThread)
-        XCTAssertFalse(nouns.data.isEmpty)
+        XCTAssertFalse(nouns.isEmpty)
         expectation.fulfill()
       }
       .store(in: &subscriptions)

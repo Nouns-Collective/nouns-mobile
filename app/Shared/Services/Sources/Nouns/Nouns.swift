@@ -8,13 +8,6 @@
 import Foundation
 import Combine
 
-/// Pagination.
-public struct Page<T> {
-  
-  /// Data retrived from the response.
-  public let data: T
-}
-
 /// The Auction
 public struct Auction {
   
@@ -142,8 +135,8 @@ public class NounSubgraphProvider: Nouns {
   public func fetchOnChainNouns(limit: Int, after cursor: Int) -> AnyPublisher<[Noun], Error> {
     let query = NounsSubgraph.NounsListQuery(first: limit, skip: cursor)
     return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-      .compactMap { (page: Page<[Noun]>) in
-        return page.data
+      .compactMap { (responseData: HTTPResponse<Page<[Noun]>>) in
+        return responseData.data.data
       }
       .mapError { $0 as Error }
       .eraseToAnyPublisher()
@@ -160,14 +153,12 @@ public class NounSubgraphProvider: Nouns {
 
 extension Page: Decodable where T == Array<Noun> {
   private enum CodingKeys: String, CodingKey {
-    case data
     case nouns
   }
   
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    let response = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
-    data = try response.decode(T.self, forKey: .nouns)
+    data = try container.decode(T.self, forKey: .nouns)
   }
 }
 
