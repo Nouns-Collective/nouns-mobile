@@ -32,7 +32,9 @@ public class URLSessionNetworkClient: NetworkingClient {
   
   public func data(for request: NetworkRequest) -> AnyPublisher<Data, RequestError> {
     urlSession.dataTaskPublisher(for: URLRequest(for: request))
-      .tryMap() { try self.processResponse(from: $0) }
+      .tryCompactMap() { [weak self] in
+        try self?.processResponse(from: $0)
+      }
       .mapError { $0 as? RequestError ?? RequestError.request(error: $0) }
       .eraseToAnyPublisher()
   }
