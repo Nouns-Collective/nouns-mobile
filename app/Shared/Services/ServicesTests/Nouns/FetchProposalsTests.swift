@@ -10,24 +10,18 @@ import Combine
 @testable import Services
 
 final class FetchProposalsTests: XCTestCase {
-  
+
   func testFetchProposalsSucceed() throws {
-    
-    enum MockDataGraphQLResponder: MockGraphQLResponder {
-        static func respond() throws -> Data {
-            Data()
-        }
-    }
-    
     // given
-    let graphQLClient = MockGraphQLClient<MockDataGraphQLResponder>()
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let data = Fixtures.data(contentOf: "ProposalListResponse", withExtension: "json")
+    let graphQLClient = MockGraphQLClient(data: data)
+    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
-    let ensFetchExpectation = expectation(description: #function)
+    let fetchExpectation = expectation(description: #function)
     
     // when
-    nounsProvider.liveAuctionStateDidChange()
+    nounsProvider.fetchProposals(limit: 10, after: 0)
       .sink { completion in
         switch completion {
         case .finished:
@@ -35,45 +29,38 @@ final class FetchProposalsTests: XCTestCase {
         case let .failure(error):
           XCTFail("💥 Something went wrong: \(error)")
         }
-      } receiveValue: { nouns in
+      } receiveValue: { proposals in
         XCTAssertTrue(Thread.isMainThread)
-        
-        ensFetchExpectation.fulfill()
+        XCTAssertFalse(proposals.isEmpty)
+        fetchExpectation.fulfill()
       }
       .store(in: &cancellables)
     
     // then
-    wait(for: [ensFetchExpectation], timeout: 1.0)
+    wait(for: [fetchExpectation], timeout: 1.0)
   }
-  
+
   func testFetchProposalsFailure() {
-    
-    enum MockFailureGraphQLResponder: MockGraphQLResponder {
-        static func respond() throws -> Data {
-          throw QueryError.noData
-        }
-    }
-    
     // given
-    let graphQLClient = MockGraphQLClient<MockFailureGraphQLResponder>()
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let graphQLClient = MockGraphQLClient(error: QueryError.badQuery)
+    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
-    let ensFetchExpectation = expectation(description: #function)
+    let fetchExpectation = expectation(description: #function)
     
     // when
-    nounsProvider.liveAuctionStateDidChange()
+    nounsProvider.fetchProposals(limit: 10, after: 0)
       .sink { completion in
-        if case let .failure(error) = completion {
-          
-          ensFetchExpectation.fulfill()
+        if case .failure(_) = completion {
+          XCTAssertTrue(Thread.isMainThread)
+          fetchExpectation.fulfill()
         }
-      } receiveValue: { domain in
+      } receiveValue: { proposals in
         XCTFail("💥 result unexpected")
       }
       .store(in: &cancellables)
     
     // then
-    wait(for: [ensFetchExpectation], timeout: 1.0)
+    wait(for: [fetchExpectation], timeout: 1.0)
   }
 }

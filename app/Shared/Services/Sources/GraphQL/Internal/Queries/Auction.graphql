@@ -1,9 +1,0 @@
-subscription Auction {
-  auctions(orderBy: settled, first: 1) {
-    id
-    amount
-    startTime
-    endTime
-    settled
-  }
-}

@@ -12,19 +12,13 @@ import Combine
 final class FetchOnChainNounsTests: XCTestCase {
   
   func testFetchOnChainNounsSucceed() throws {
-    
-    enum MockDataGraphQLResponder: MockGraphQLResponder {
-        static func respond() throws -> Data {
-            Data()
-        }
-    }
-    
     // given
-    let graphQLClient = MockGraphQLClient<MockDataGraphQLResponder>()
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let data = Fixtures.data(contentOf: "NounsListResponse", withExtension: "json")
+    let graphQLClient = MockGraphQLClient(data: data)
+    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
-    let ensFetchExpectation = expectation(description: #function)
+    let fetchExpectation = expectation(description: #function)
     
     // when
     nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
@@ -37,44 +31,36 @@ final class FetchOnChainNounsTests: XCTestCase {
         }
       } receiveValue: { nouns in
         XCTAssertTrue(Thread.isMainThread)
-        
-        ensFetchExpectation.fulfill()
+        XCTAssertFalse(nouns.isEmpty)
+        fetchExpectation.fulfill()
       }
       .store(in: &cancellables)
     
     // then
-    wait(for: [ensFetchExpectation], timeout: 1.0)
+    wait(for: [fetchExpectation], timeout: 1.0)
   }
   
   func testFetchOnChainNounsFailure() {
-    
-    enum MockFailureGraphQLResponder: MockGraphQLResponder {
-        static func respond() throws -> Data {
-          throw QueryError.noData
-        }
-    }
-    
     // given
-    let graphQLClient = MockGraphQLClient<MockFailureGraphQLResponder>()
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let graphQLClient = MockGraphQLClient(error: QueryError.badQuery)
+    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
-    let ensFetchExpectation = expectation(description: #function)
+    let fetchExpectation = expectation(description: #function)
     
     // when
     nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
       .sink { completion in
-        if case let .failure(error) = completion {
+        if case .failure(_) = completion {
           XCTAssertTrue(Thread.isMainThread)
-          
-          ensFetchExpectation.fulfill()
+          fetchExpectation.fulfill()
         }
-      } receiveValue: { domain in
+      } receiveValue: { nouns in
         XCTFail("💥 result unexpected")
       }
       .store(in: &cancellables)
     
     // then
-    wait(for: [ensFetchExpectation], timeout: 1.0)
+    wait(for: [fetchExpectation], timeout: 1.0)
   }
 }
