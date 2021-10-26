@@ -8,11 +8,21 @@
 import Foundation
 import Combine
 
-/// Pagination.
-public struct Page<T> {
+enum ResponseDecodingError: Error {
+  case typeNotFound(type: Any.Type)
+}
+
+struct CodingKeys: CodingKey {
+  init?(intValue: Int) {
+    return nil
+  }
   
-  /// Data retrived from the response.
-  public let data: T
+  init(stringValue: String) {
+    self.stringValue = stringValue
+  }
+  
+  let stringValue: String
+  let intValue: Int? = nil
 }
 
 /// The Auction
@@ -49,8 +59,8 @@ public struct Noun {
   
   public let owner: Account
   
-//  /// The seed used to determine the Noun's traits.
-//  public let seed: Seed
+  //  /// The seed used to determine the Noun's traits.
+  //  public let seed: Seed
 }
 
 /// The seed used to determine the Noun's traits.
@@ -73,13 +83,13 @@ public struct Seed: Decodable {
 }
 
 /// Status of the proposal
-public enum ProposalStatus {
-  case pending
-  case active
-  case cancelled
-  case vetoed
-  case queued
-  case executed
+public enum ProposalStatus: String {
+  case pending = "PENDING"
+  case active = "ACTIVE"
+  case cancelled = "CANCELLED"
+  case vetoed = "VETOED"
+  case queued = "QUEUED"
+  case executed = "EXECUTED"
 }
 
 /// The Proposal
@@ -132,8 +142,7 @@ public protocol Nouns {
   func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error>
 }
 
-///  
-public class TheGraphNounsProvider: Nouns {
+public class NounSubgraphProvider: Nouns {
   private let graphQLClient: GraphQLClient
   
   init(graphQLClient: GraphQLClient) {
@@ -141,43 +150,47 @@ public class TheGraphNounsProvider: Nouns {
   }
   
   public func fetchOnChainNouns(limit: Int, after cursor: Int) -> AnyPublisher<[Noun], Error> {
-    let query = AnyApolloQuery(Apollolib.NounsListQuery(skip: cursor, first: cursor))
+    let query = NounsSubgraph.NounsListQuery(first: limit, skip: cursor)
     return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-      .compactMap { (page: Page<[Noun]>) in
-        return page.data
+      .compactMap { (responseData: HTTPResponse<Page<[Noun]>>) in
+        return responseData.data.data
       }
       .mapError { $0 as Error }
       .eraseToAnyPublisher()
   }
   
   public func liveAuctionStateDidChange() -> AnyPublisher<Auction, Error> {
-    let subscription = AnyApolloSubscription(Apollolib.AuctionSubscription())
-    return graphQLClient.subscription(subscription)
-      .mapError { $0 as Error }
-      .eraseToAnyPublisher()
+    fatalError("Implementation for \(#function) missing")
   }
   
   public func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error> {
-//    let query = ProposalListGraphQuery(skip: cursor, pageSize: limit)
-//    return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-//      .mapError { $0 as Error }
-//      .map { $0.proposals }
-//      .eraseToAnyPublisher()
+    let query = NounsSubgraph.ProposalListQuery(first: limit, skip: cursor)
+    return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+      .compactMap { (responseData: HTTPResponse<Page<[Proposal]>>) in
+        return responseData.data.data
+      }
+      .mapError { $0 as Error }
+      .eraseToAnyPublisher()
   }
-  
 }
 
-extension Page: Decodable where T == Array<Noun> {
-  private enum CodingKeys: String, CodingKey {
-    case data = "nouns"
-  }
-  
+extension Page: Decodable where T: Decodable {
   public init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    data = try container.decode(T.self, forKey: .data)
+    switch T.self {
+    case is Array<Noun>.Type:
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "nouns"))
+    case is Array<Proposal>.Type:
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "proposals"))
+    default:
+      throw ResponseDecodingError.typeNotFound(type: T.self)
+    }
   }
 }
 
 extension Noun: Decodable { }
 extension Account: Decodable { }
 extension Auction: Decodable { }
+extension Proposal: Decodable { }
+extension ProposalStatus: Decodable { }
