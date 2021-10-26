@@ -36,4 +36,8 @@ final class MockNetworkClient: NetworkingClient {
     return Empty()
       .eraseToAnyPublisher()
   }
+  
+  func receive(for request: NetworkRequest) -> AnyPublisher<Data, RequestError> {
+    fatalError("You need to implement \(#function) in your mock.")
+  }
 }
