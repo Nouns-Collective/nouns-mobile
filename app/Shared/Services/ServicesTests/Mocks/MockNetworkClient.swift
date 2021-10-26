@@ -11,22 +11,22 @@ import Combine
 
 final class MockNetworkClient: NetworkingClient {
   var data: Data?
-  var error: URLError?
+  var error: RequestError?
   
   init(data: Data) {
     self.data = data
     self.error = nil
   }
   
-  init(error: URLError) {
+  init(error: RequestError) {
     self.data = nil
     self.error = error
   }
   
-  func data(for request: NetworkRequest) -> AnyPublisher<Data, URLError> {
+  func data(for request: NetworkRequest) -> AnyPublisher<Data, RequestError> {
     if let data = data {
       return Just(data)
-        .setFailureType(to: URLError.self)
+        .setFailureType(to: RequestError.self)
         .eraseToAnyPublisher()
     } else if let error = error {
       return Fail(error: error)

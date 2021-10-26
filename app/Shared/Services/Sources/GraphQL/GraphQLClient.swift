@@ -123,11 +123,6 @@ public class GraphQL: GraphQLClient {
     }
   }
   
-  public func trySomething(data: Data) throws -> Data {
-    print(String(data: data, encoding: .utf8))
-    throw QueryError.dataCorrupted
-  }
-  
   public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T : Decodable {
     fatalError("Implementaiton for \(#function) missing")
   }
