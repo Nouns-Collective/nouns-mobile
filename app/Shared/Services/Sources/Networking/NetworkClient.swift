@@ -53,7 +53,7 @@ public class URLSessionNetworkClient: NetworkingClient {
       .tryCompactMap() { [weak self] in
         try self?.processResponse(from: $0)
       }
-      .mapError { $0 as? RequestError ?? RequestError.request(error: $0) }
+      .mapError { $0 as? RequestError ?? RequestError.request($0) }
       .eraseToAnyPublisher()
   }
   
