@@ -46,7 +46,7 @@ final class GraphQLClientFetchTests: XCTestCase {
   /// Tests a bad server response
   func testGraphQLClientFetchQueryFailureWithBadServerResponseError() throws {
     // given
-    let mockError = RequestError.request(error: URLError(.badServerResponse))
+    let mockError = RequestError.request(URLError(.badServerResponse))
     let networkClient = MockNetworkClient(error: mockError)
     let graphQLClient = GraphQL(networkingClient: networkClient)
     let query = NounsSubgraph.NounsListQuery(first: 10, skip: 0)
