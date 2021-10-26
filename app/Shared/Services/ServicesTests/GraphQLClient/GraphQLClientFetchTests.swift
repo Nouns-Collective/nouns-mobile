@@ -13,23 +13,17 @@ final class GraphQLClientFetchTests: XCTestCase {
   
   /// Tests a successful request and response against the GraphQL client
   func testGraphQLClientFetchQuerySucceed() throws {
-    /*
     // given
-    let queryResult = MockApolloClient.MockQueryResult(
-      data: MockResponses.mockNounsList(),
-      errors: nil,
-      source: .server
-    )
-    let graphQLClient = MockApolloClient()
-    graphQLClient.set(queryResult: queryResult, error: nil)
-    let client = ApolloGraphQLClient(apolloClient: graphQLClient)
-    let query = MockQuery<NounsListQuery, NounsList>(query: NounsListQuery())
+    let response = Fixtures.data(contentOf: "NounsListResponse", withExtension: "json")
+    let networkClient = MockNetworkClient(data: response)
+    let graphQLClient = GraphQL(networkingClient: networkClient)
+    let query = NounsSubgraph.NounsListQuery(first: 10, skip: 0)
 
     let expectation = expectation(description: #function)
     var subscriptions = Set<AnyCancellable>()
 
     // when
-    client.fetch(query, cachePolicy: .fetchIgnoringCacheData)
+    graphQLClient.fetch(query, cachePolicy: .fetchIgnoringCacheData)
       .sink { completion in
         switch completion {
         case .finished:
@@ -37,9 +31,9 @@ final class GraphQLClientFetchTests: XCTestCase {
         case let .failure(error):
           XCTFail("💥 Something went wrong: \(error)")
         }
-      } receiveValue: { nounsList in
+      } receiveValue: { (response: HTTPResponse<Page<[Noun]>>) in
         XCTAssertTrue(Thread.isMainThread)
-        XCTAssertFalse(nounsList.nouns.isEmpty)
+        XCTAssertFalse(response.data.data.isEmpty)
 
         expectation.fulfill()
       }
@@ -47,119 +41,40 @@ final class GraphQLClientFetchTests: XCTestCase {
 
     // then
     wait(for: [expectation], timeout: 1.0)
-     */
-    fatalError("Implementation for \(#function) is missing")
   }
   
   /// Tests a bad server response
   func testGraphQLClientFetchQueryFailureWithBadServerResponseError() throws {
-    /*
     // given
-    let query = MockQuery<NounsListQuery, NounsList>(query: NounsListQuery())
-    let mockApolloClient = MockApolloClient()
-    mockApolloClient.set(queryResult: nil, error: URLError(.badServerResponse))
-    let client = ApolloGraphQLClient(apolloClient: mockApolloClient)
+    let mockError = URLError(.badServerResponse)
+    let networkClient = MockNetworkClient(error: mockError)
+    let graphQLClient = GraphQL(networkingClient: networkClient)
+    let query = NounsSubgraph.NounsListQuery(first: 10, skip: 0)
 
-    var cancellables = Set<AnyCancellable>()
     let expectation = expectation(description: #function)
+    var subscriptions = Set<AnyCancellable>()
 
     // when
-    client.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+    graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
       .sink { completion in
         if case let .failure(error) = completion {
           XCTAssertTrue(Thread.isMainThread)
-          XCTAssertEqual(error, .request(error: URLError(.badServerResponse)))
-
-          expectation.fulfill()
-        }
-
-      } receiveValue: { value in
-        XCTFail("💥 result unexpected")
-      }
-      .store(in: &cancellables)
-
-    // then
-    wait(for: [expectation], timeout: 1.0)
-     */
-    fatalError("Implementation for \(#function) is missing")
-  }
-  
-  /// Tests when errors are returned from Apollo-related tasks
-  func testGraphQLClientFetchQueryFailureWithErrors() throws {
-    /*
-    // given
-    let errors = [
-      GraphQLError(["description": "test description for error one"]),
-      GraphQLError(["description": "test description for error two"]),
-    ]
-
-    let queryResult = MockApolloClient.MockQueryResult(
-      data: nil,
-      errors: errors,
-      source: .server
-    )
-    let mockApolloClient = MockApolloClient()
-    mockApolloClient.set(queryResult: queryResult, error: nil)
-    let query = MockQuery<NounsListQuery, NounsList>(query: NounsListQuery())
-    let client = ApolloGraphQLClient(apolloClient: mockApolloClient)
-
-    var cancellables = Set<AnyCancellable>()
-    let expectation = expectation(description: #function)
-
-    // when
-    client.fetch(query, cachePolicy: .fetchIgnoringCacheData)
-      .sink { completion in
-        if case let .failure(error) = completion {
-          XCTAssertTrue(Thread.isMainThread)
-          XCTAssertEqual(error, errors.queryError())
-
-          expectation.fulfill()
-        }
-      } receiveValue: { domain in
-        XCTFail("💥 result unexpected")
-      }
-      .store(in: &cancellables)
-
-    // then
-    wait(for: [expectation], timeout: 1.0)
-     */
-    fatalError("Implementation for \(#function) is missing")
-  }
-  
-  /// Tests when there are no errors, but when data is nil
-  func testGraphQLClientFetchQueryFailureWithNoDataError() throws {
-    /*
-    // given
-    let queryResult = MockApolloClient.MockQueryResult(
-      data: nil,
-      errors: nil,
-      source: .server
-    )
-    let mockApolloClient = MockApolloClient()
-    mockApolloClient.set(queryResult: queryResult, error: nil)
-    let query = MockQuery<NounsListQuery, NounsList>(query: NounsListQuery())
-    let client = ApolloGraphQLClient(apolloClient: mockApolloClient)
-    
-    var cancellables = Set<AnyCancellable>()
-    let expectation = expectation(description: #function)
-    
-    // when
-    client.fetch(query, cachePolicy: .fetchIgnoringCacheData)
-      .sink { completion in
-        if case let .failure(error) = completion {
-          XCTAssertTrue(Thread.isMainThread)
-          XCTAssertEqual(error, .noData)
+          XCTAssertEqual(error, .request(error: mockError))
           
           expectation.fulfill()
         }
-      } receiveValue: { domain in
+
+      } receiveValue: { (response: HTTPResponse<Page<[Noun]>>) in
         XCTFail("💥 result unexpected")
       }
-      .store(in: &cancellables)
-    
+      .store(in: &subscriptions)
+
     // then
     wait(for: [expectation], timeout: 1.0)
-     */
-    fatalError("Implementation for \(#function) is missing")
+  }
+  
+  /// Tests a no data response
+  func testGraphQLClientFetchQueryFailureWithNoDataError() throws {
+    fatalError("Implementation for \(#function) missing")
   }
 }

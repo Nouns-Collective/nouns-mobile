@@ -12,15 +12,9 @@ import Combine
 final class FetchOnChainNounsTests: XCTestCase {
   
   func testFetchOnChainNounsSucceed() throws {
-    
-    enum MockDataGraphQLResponder: MockGraphQLResponder {
-        static func respond() throws -> Data {
-            Data()
-        }
-    }
-    
     // given
-    let graphQLClient = MockGraphQLClient<MockDataGraphQLResponder>()
+    let data = Fixtures.data(contentOf: "NounsListResponse", withExtension: "json")
+    let graphQLClient = MockGraphQLClient(data: data)
     let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
@@ -37,7 +31,7 @@ final class FetchOnChainNounsTests: XCTestCase {
         }
       } receiveValue: { nouns in
         XCTAssertTrue(Thread.isMainThread)
-        
+        XCTAssertFalse(nouns.isEmpty)
         fetchExpectation.fulfill()
       }
       .store(in: &cancellables)
@@ -47,15 +41,8 @@ final class FetchOnChainNounsTests: XCTestCase {
   }
   
   func testFetchOnChainNounsFailure() {
-    
-    enum MockFailureGraphQLResponder: MockGraphQLResponder {
-        static func respond() throws -> Data {
-          throw QueryError.noData
-        }
-    }
-    
     // given
-    let graphQLClient = MockGraphQLClient<MockFailureGraphQLResponder>()
+    let graphQLClient = MockGraphQLClient(error: QueryError.badQuery)
     let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
@@ -64,12 +51,11 @@ final class FetchOnChainNounsTests: XCTestCase {
     // when
     nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
       .sink { completion in
-        if case let .failure(error) = completion {
+        if case .failure(_) = completion {
           XCTAssertTrue(Thread.isMainThread)
-          
           fetchExpectation.fulfill()
         }
-      } receiveValue: { domain in
+      } receiveValue: { nouns in
         XCTFail("💥 result unexpected")
       }
       .store(in: &cancellables)

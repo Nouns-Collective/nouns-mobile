@@ -50,7 +50,7 @@ final class GraphQLClientHitRealBackendTests: XCTestCase {
   
   func testFetchProposals() throws {
     // given
-    let query = NounsSubgraph.ProposalListQuery(first: 10, skip: 0)
+    let query = NounsSubgraph.ProposalListQuery(first: 1, skip: 0)
     let networkingClient = URLSessionNetworkClient(urlSession: URLSession.shared)
     let client = GraphQL(networkingClient: networkingClient)
     

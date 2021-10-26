@@ -106,12 +106,13 @@ public class GraphQL: GraphQLClient {
       )
       
       return networkingClient.data(for: request)
-//        .tryMap { try self.trySomething(data: $0) }
         .decode(type: T.self, decoder: JSONDecoder())
         .mapError({ error in
           switch error {
           case is Swift.DecodingError:
             return .dataCorrupted
+          case let error as URLError:
+            return .request(error: error)
           default:
             return .request(error: error)
           }
