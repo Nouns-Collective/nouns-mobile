@@ -24,10 +24,7 @@ final class NetworkingClientDataRequestTests: XCTestCase {
     // given
     let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
-    let request = NetworkDataRequest(
-      url: URL(string: Self.baseURL)!,
-      httpBody: Data()
-    )
+    let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
     
     var cancellables = Set<AnyCancellable>()
     let expectation = expectation(description: #function)
@@ -61,10 +58,7 @@ final class NetworkingClientDataRequestTests: XCTestCase {
     // given
     let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
-    let request = NetworkDataRequest(
-      url: URL(string: Self.baseURL)!,
-      httpBody: Data()
-    )
+    let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
     
     var cancellables = Set<AnyCancellable>()
     let expectation = expectation(description: #function)

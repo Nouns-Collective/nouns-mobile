@@ -16,7 +16,7 @@ public struct NetworkDataRequest: NetworkRequest {
   public var httpMethod: HTTPMethod
   public var httpBody: Data?
   
-  init(url: URL, httpMethod: HTTPMethod = .get, httpBody: Data?) {
+  init(url: URL, httpMethod: HTTPMethod = .get, httpBody: Data? = nil) {
     self.url = url
     self.httpMethod = httpMethod
     self.httpBody = httpBody

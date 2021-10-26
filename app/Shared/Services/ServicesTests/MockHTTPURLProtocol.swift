@@ -12,7 +12,7 @@ protocol MockURLResponder {
   static func respond(to request: URLRequest) throws -> Data
 }
 
-class MockURLProtocol<Responder: MockURLResponder>: URLProtocol {
+class MockHTTPURLProtocol<Responder: MockURLResponder>: URLProtocol {
   
   override class func canInit(with request: URLRequest) -> Bool {
     return true
@@ -50,8 +50,8 @@ extension URLSession {
   
   convenience init<T: MockURLResponder>(mockResponder: T.Type) {
     let config = URLSessionConfiguration.ephemeral
-    config.protocolClasses = [MockURLProtocol<T>.self]
+    config.protocolClasses = [MockHTTPURLProtocol<T>.self]
     self.init(configuration: config)
-    URLProtocol.registerClass(MockURLProtocol<T>.self)
+    URLProtocol.registerClass(MockHTTPURLProtocol<T>.self)
   }
 }
