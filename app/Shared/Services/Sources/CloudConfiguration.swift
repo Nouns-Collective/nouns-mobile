@@ -29,7 +29,7 @@ internal enum CloudConfiguration {
     var url: URL {
       switch self {
       case .query:
-        return URL(string: "https://api.thegraph.com/subgraphs/name/")!
+        return URL(string: "https://api.thegraph.com/subgraphs/name/ensdomains/ens")!
       }
     }
   }

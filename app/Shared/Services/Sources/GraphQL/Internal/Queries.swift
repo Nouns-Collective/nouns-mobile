@@ -8,10 +8,10 @@
 import Foundation
 
 protocol NounsGraphQLQuery: GraphQLQuery {}
+extension NounsGraphQLQuery { var url: URL { CloudConfiguration.Nouns.query.url } }
 
-extension NounsGraphQLQuery {
-  var url: URL { CloudConfiguration.Nouns.query.url }
-}
+protocol ENSGraphQLQuery: GraphQLQuery {}
+extension ENSGraphQLQuery { var url: URL { CloudConfiguration.ENS.query.url }}
 
 struct NounsSubgraph {
   struct NounsListQuery: NounsGraphQLQuery {
@@ -51,6 +51,23 @@ struct NounsSubgraph {
             endBlock
             description
             status
+          }
+        }
+      """
+    }
+  }
+}
+
+struct ENSSubgraph {
+  struct DomainLookupQuery: ENSGraphQLQuery {
+    var token: String
+    
+    var query: String {
+      """
+        {
+          domains(where: { id: "\(token)" }) {
+            id
+            name
           }
         }
       """

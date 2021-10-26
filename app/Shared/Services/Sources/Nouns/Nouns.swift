@@ -183,6 +183,9 @@ extension Page: Decodable where T: Decodable {
     case is Array<Proposal>.Type:
       let container = try decoder.container(keyedBy: CodingKeys.self)
       data = try container.decode(T.self, forKey: CodingKeys(stringValue: "proposals"))
+    case is Array<ENSDomain>.Type:
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "domains"))
     default:
       throw ResponseDecodingError.typeNotFound(type: T.self)
     }
