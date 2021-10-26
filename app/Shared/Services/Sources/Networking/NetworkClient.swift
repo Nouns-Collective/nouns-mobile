@@ -85,7 +85,7 @@ public class URLSessionNetworkClient: NetworkingClient {
           subject.send(data)
         } catch {
           subject.send(
-            completion: .failure( error as? RequestError ?? .request(error))
+            completion: .failure(error as? RequestError ?? .request(error))
           )
         }
         
