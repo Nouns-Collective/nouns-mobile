@@ -29,14 +29,14 @@ public protocol ENS {
 }
 
 public struct ENSDomain {
-  /// The address
+  /// The ETH address
   public let id: String
   
   /// The domain name
   public let name: String
 }
 
-public class ENSSubgraphProvider: ENS {
+public class TheGraphEnsProvider: ENS {
   private let graphQLClient: GraphQLClient
   
   init(graphQLClient: GraphQLClient) {

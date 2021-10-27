@@ -142,7 +142,7 @@ public protocol Nouns {
   func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error>
 }
 
-public class NounSubgraphProvider: Nouns {
+public class TheGraphNounsProvider: Nouns {
   private let graphQLClient: GraphQLClient
   
   init(graphQLClient: GraphQLClient) {
@@ -171,24 +171,6 @@ public class NounSubgraphProvider: Nouns {
       }
       .mapError { $0 as Error }
       .eraseToAnyPublisher()
-  }
-}
-
-extension Page: Decodable where T: Decodable {
-  public init(from decoder: Decoder) throws {
-    switch T.self {
-    case is Array<Noun>.Type:
-      let container = try decoder.container(keyedBy: CodingKeys.self)
-      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "nouns"))
-    case is Array<Proposal>.Type:
-      let container = try decoder.container(keyedBy: CodingKeys.self)
-      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "proposals"))
-    case is Array<ENSDomain>.Type:
-      let container = try decoder.container(keyedBy: CodingKeys.self)
-      data = try container.decode(T.self, forKey: CodingKeys(stringValue: "domains"))
-    default:
-      throw ResponseDecodingError.typeNotFound(type: T.self)
-    }
   }
 }
 

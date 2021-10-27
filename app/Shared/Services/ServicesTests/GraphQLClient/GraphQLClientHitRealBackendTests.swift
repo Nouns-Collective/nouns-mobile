@@ -83,7 +83,7 @@ final class GraphQLClientHitRealBackendTests: XCTestCase {
   
   func testFetchENSDomain() throws {
     // given
-    let query = ENSSubgraph.DomainLookupQuery(token: "0x0000044a32f0964f4bf8fb4d017e230ad33595c0e149b6b2d0c34b733dcf906a")
+    let query = ENSSubgraph.DomainLookupQuery(token: ENSFetchDomainTests.token)
     let networkingClient = URLSessionNetworkClient(urlSession: URLSession.shared)
     let client = GraphQL(networkingClient: networkingClient)
     

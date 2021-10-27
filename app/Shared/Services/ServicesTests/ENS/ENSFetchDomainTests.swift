@@ -10,19 +10,19 @@ import Combine
 @testable import Services
 
 final class ENSFetchDomainTests: XCTestCase {
-  fileprivate let token = "0x2573c60a6d127755aa2dc85e342f7da2378a0cc5"
+  static let token = "0x2573c60a6d127755aa2dc85e342f7da2378a0cc5"
 
   func testENSFetchDomain() throws {
     // given
     let data = Fixtures.data(contentOf: "ENSDomainResponse", withExtension: "json")
     let graphQLClient = MockGraphQLClient(data: data)
-    let ensProvider = ENSSubgraphProvider(graphQLClient: graphQLClient)
+    let ensProvider = TheGraphEnsProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
     let fetchExpectation = expectation(description: #function)
     
     // when
-    ensProvider.fetchDomain(token: token)
+    ensProvider.fetchDomain(token: ENSFetchDomainTests.token)
       .sink { completion in
         switch completion {
         case .finished:
@@ -43,13 +43,13 @@ final class ENSFetchDomainTests: XCTestCase {
   func testENSFetchDomainFailure() {
     // given
     let graphQLClient = MockGraphQLClient(error: QueryError.badQuery)
-    let ensProvider = ENSSubgraphProvider(graphQLClient: graphQLClient)
+    let ensProvider = TheGraphEnsProvider(graphQLClient: graphQLClient)
 
     var cancellables = Set<AnyCancellable>()
     let fetchExpectation = expectation(description: #function)
     
     // when
-    ensProvider.fetchDomain(token: token)
+    ensProvider.fetchDomain(token: ENSFetchDomainTests.token)
       .sink { completion in
         if case .failure(_) = completion {
           XCTAssertTrue(Thread.isMainThread)

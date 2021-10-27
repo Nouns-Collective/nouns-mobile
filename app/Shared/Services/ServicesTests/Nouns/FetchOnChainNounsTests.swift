@@ -15,7 +15,7 @@ final class FetchOnChainNounsTests: XCTestCase {
     // given
     let data = Fixtures.data(contentOf: "NounsListResponse", withExtension: "json")
     let graphQLClient = MockGraphQLClient(data: data)
-    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
     let fetchExpectation = expectation(description: #function)
@@ -43,7 +43,7 @@ final class FetchOnChainNounsTests: XCTestCase {
   func testFetchOnChainNounsFailure() {
     // given
     let graphQLClient = MockGraphQLClient(error: QueryError.badQuery)
-    let nounsProvider = NounSubgraphProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     var cancellables = Set<AnyCancellable>()
     let fetchExpectation = expectation(description: #function)
