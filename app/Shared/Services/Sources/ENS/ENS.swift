@@ -25,17 +25,37 @@ public protocol ENS {
   ///   - token: The address resource.
   ///
   /// - Returns: A publisher emitting the domain in a `String` type  instance or an error was encountered.
-  func fetchDomain(token: String) -> AnyPublisher<String, ENSError>
+  func fetchDomain(token: String) -> AnyPublisher<String, Error>
 }
 
-public class TheGraphENSProvider: ENS {
+public struct ENSDomain {
+  /// The ETH address
+  public let id: String
+  
+  /// The domain name
+  public let name: String
+}
+
+public class TheGraphEnsProvider: ENS {
   private let graphQLClient: GraphQLClient
   
   init(graphQLClient: GraphQLClient) {
     self.graphQLClient = graphQLClient
   }
   
-  public func fetchDomain(token: String) -> AnyPublisher<String, ENSError> {
-    fatalError("You need to implement \(#function) to support Apollo.")
+  public func fetchDomain(token: String) -> AnyPublisher<String, Error> {
+    let query = ENSSubgraph.DomainLookupQuery(token: token)
+    return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+      .tryCompactMap { (responseData: HTTPResponse<Page<[ENSDomain]>>) in
+        if let name = responseData.data.data.first?.name {
+          return name
+        } else {
+          throw ENSError.noDomain
+        }
+      }
+      .mapError { $0 }
+      .eraseToAnyPublisher()
   }
 }
+
+extension ENSDomain: Decodable {}
