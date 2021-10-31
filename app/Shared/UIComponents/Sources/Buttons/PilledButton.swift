@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// The button style configuration for the StandardButton
-internal struct PilledButtonStyle<Label: View>: ButtonStyle {
+public struct PilledButtonStyle<Label: View>: ButtonStyle {
     
     /// The appearance of the button (light/dark)
     let appearance: PilledButton<Label>.Appearance
@@ -16,7 +16,7 @@ internal struct PilledButtonStyle<Label: View>: ButtonStyle {
     /// The height of the button
     let fill: Set<PilledButton<Label>.Fill>
     
-    func makeBody(configuration: Self.Configuration) -> some View {
+    public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label
             .frame(maxWidth: fill.contains(.width) ? .infinity : nil, maxHeight: fill.contains(.height) ? .infinity : nil)
@@ -31,7 +31,8 @@ internal struct PilledButtonStyle<Label: View>: ButtonStyle {
     }
 }
 
-internal struct StandardButtonLabel: View {
+///
+public struct StandardButtonLabel: View {
     
     /// The icon for the button
     let image: Image?
@@ -43,7 +44,7 @@ internal struct StandardButtonLabel: View {
         return image != nil && text == nil
     }
     
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 6) {
             if let image = image {
                 image
@@ -58,15 +59,16 @@ internal struct StandardButtonLabel: View {
     }
 }
 
-struct PilledButton<Label: View>: View {
+///
+public struct PilledButton<Label: View>: View {
     
     /// Enumeration declaration for the style for the button appearance (light/dark)
-    enum Appearance {
+    public enum Appearance {
         case dark, light
     }
     
     /// Enumeration declaration for the fill mode of the button
-    enum Fill {
+    public enum Fill {
         case height, width
     }
     
@@ -84,13 +86,28 @@ struct PilledButton<Label: View>: View {
     
     /// Initializes a standard button with a custom view for the label and a designated action for when the button is tapped
     ///
+    /// Using a custom label view.
+    ///
+    /// ```swift
+    /// PilledButton {
+    ///     HStack {
+    ///         Image(systemName: "arrow.clockwise")
+    ///             .font(Font.body.weight(.medium))
+    ///
+    ///         Text("Black Button")
+    ///             .font(Font.body.weight(.medium))
+    ///     }.padding(.horizontal, 6)
+    /// } action: {
+    ///     print("Tapped")
+    /// }
+    /// ```
     ///
     /// - Parameters:
     ///   - label: A view for the label of the button
     ///   - action: The action function for when the button is tapped
     ///   - appearance: The appearance of the button (dark/light)
     ///   - fill: A value to set the fill mode for the button's height and width
-    @inlinable public init(
+    public init(
         @ViewBuilder label: () -> Label,
         action: @escaping () -> (),
         appearance: Appearance = .dark,
@@ -104,6 +121,23 @@ struct PilledButton<Label: View>: View {
     
     /// Initializes a standard button with an optional system icon and optional text to create a standard button, as well as a designated action
     ///
+    /// Using a standard button label.
+    ///
+    /// ```swift
+    /// PilledButton(systemImage: "xmark",
+    ///              text: "Cancel",
+    ///              action: {},
+    ///              appearance: .dark)
+    /// ```
+    ///
+    /// Using a standard button label, with only an icon.
+    ///
+    /// ```swift
+    /// PilledButton(systemImage: "xmark",
+    ///              action: {},
+    ///              appearance: .light)
+    ///
+    /// ```
     ///
     /// - Parameters:
     ///   - systemImage: The name of a system image for the button's icon (optional)
@@ -111,7 +145,7 @@ struct PilledButton<Label: View>: View {
     ///   - action: The action function for when the button is tapped
     ///   - appearance: The appearance of the button (dark/light)
     ///   - fill: A value to set the fill mode for the button's height and width
-    @inlinable public init(
+    public init(
         systemImage: String,
         text: String? = nil,
         action: @escaping () -> (),
@@ -129,6 +163,29 @@ struct PilledButton<Label: View>: View {
     
     /// Initializes a standard button with an optional system icon and optional text to create a standard button, as well as a designated action
     ///
+    /// Using a standard button label, with only text
+    ///
+    /// ```swift
+    /// PilledButton(text: "Cancel",
+    ///              action: {},
+    ///              appearance: .light)
+    ///
+    /// HStack {
+    ///     PilledButton(text: "Cancel",
+    ///                  action: {},
+    ///                  appearance: .light,
+    ///                  fill: [.width, .height])
+    ///         .frame(maxHeight: .infinity)
+    ///
+    ///     PilledButton(text: "Save",
+    ///                  action: {},
+    ///                  appearance: .dark,
+    ///                 fill: [.width, .height])
+    ///         .frame(maxWidth: .infinity)
+    ///
+    ///  }.frame(height: 50)
+    /// ```
+    ///
     ///
     /// - Parameters:
     ///   - image: The image for the button's icon (optional)
@@ -136,7 +193,7 @@ struct PilledButton<Label: View>: View {
     ///   - action: The action function for when the button is tapped
     ///   - appearance: The appearance of the button (dark/light)
     ///   - fill: A value to set the fill mode for the button's height and width
-    @inlinable public init(
+    public init(
         image: Image? = nil,
         text: String? = nil,
         action: @escaping () -> (),
@@ -152,7 +209,7 @@ struct PilledButton<Label: View>: View {
         self.fill = fill
     }
     
-    var body: some View {
+    public var body: some View {
         Button {
             action()
         } label: {
@@ -160,44 +217,5 @@ struct PilledButton<Label: View>: View {
                 .padding(12)
         }
         .buttonStyle(PilledButtonStyle(appearance: appearance, fill: fill))
-    }
-}
-
-struct PilledButton_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            /// Using a custom label view
-            PilledButton {
-                HStack {
-                    Image(systemName: "arrow.clockwise")
-                        .font(Font.body.weight(.medium))
-                    
-                    Text("Black Button")
-                        .font(Font.body.weight(.medium))
-                }.padding(.horizontal, 6)
-            } action: {
-                print("Tapped")
-            }
-            
-            /// Using a standard button label
-            PilledButton(systemImage: "xmark", text: "Cancel", action: {}, appearance: .dark)
-            
-            /// Using a standard button label, with only text
-            PilledButton(text: "Cancel", action: {}, appearance: .light)
-            
-            /// Using a standard button label, with only an icon
-            PilledButton(systemImage: "xmark", action: {}, appearance: .light)
-            
-            HStack {
-                PilledButton(text: "Cancel", action: {}, appearance: .light, fill: [.width, .height])
-                    .frame(maxHeight: .infinity)
-                
-                PilledButton(text: "Save", action: {}, appearance: .dark, fill: [.width, .height])
-                    .frame(maxWidth: .infinity)
-            }.frame(height: 50)
-        }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .background(Color.blue)
     }
 }
