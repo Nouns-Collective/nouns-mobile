@@ -23,7 +23,6 @@ internal struct PilledButtonStyle<Label: View>: ButtonStyle {
             .multilineTextAlignment(.center)
             .lineLimit(1)
             .foregroundColor(appearance == .dark ? Color.white : Color.black)
-            .offset(y: -1)
             .background(appearance == .dark ? Color.black.opacity(0.85) : Color.white.opacity(0.85))
             .clipShape(Capsule())
             .scaleEffect(configuration.isPressed ? 0.95 : 1)
@@ -35,19 +34,19 @@ internal struct PilledButtonStyle<Label: View>: ButtonStyle {
 internal struct StandardButtonLabel: View {
     
     /// The icon for the button
-    let systemImage: String?
+    let image: Image?
     
     /// The text for the button, appearing on the right side of the icon
     let text: String?
     
-    private var singleItem: Bool {
-        return systemImage == nil || text == nil
+    private var iconOnly: Bool {
+        return image != nil && text == nil
     }
     
     var body: some View {
         HStack(spacing: 6) {
-            if let systemImage = systemImage {
-                Image(systemName: systemImage)
+            if let image = image {
+                image
                     .font(Font.body.weight(.medium))
             }
             
@@ -55,7 +54,7 @@ internal struct StandardButtonLabel: View {
                 Text(text)
                     .font(Font.body.weight(.medium))
             }
-        }.padding(.horizontal, singleItem ? 0 : 6)
+        }.padding(.horizontal, iconOnly ? 0 : 6)
     }
 }
 
@@ -107,19 +106,45 @@ struct PilledButton<Label: View>: View {
     ///
     ///
     /// - Parameters:
-    ///   - label: A view for the label of the button
+    ///   - systemImage: The name of a system image for the button's icon (optional)
+    ///   - text: The text for the button (optional)
     ///   - action: The action function for when the button is tapped
     ///   - appearance: The appearance of the button (dark/light)
     ///   - fill: A value to set the fill mode for the button's height and width
     @inlinable public init(
-        systemImage: String? = nil,
+        systemImage: String,
         text: String? = nil,
         action: @escaping () -> (),
         appearance: Appearance = .dark,
         fill: Set<Fill> = []
     ) where Label == StandardButtonLabel {
         self.label = {
-            return StandardButtonLabel(systemImage: systemImage, text: text)
+            return StandardButtonLabel(image: Image(systemName: systemImage), text: text)
+        }()
+        
+        self.action = action
+        self.appearance = appearance
+        self.fill = fill
+    }
+    
+    /// Initializes a standard button with an optional system icon and optional text to create a standard button, as well as a designated action
+    ///
+    ///
+    /// - Parameters:
+    ///   - image: The image for the button's icon (optional)
+    ///   - text: The text for the button (optional)
+    ///   - action: The action function for when the button is tapped
+    ///   - appearance: The appearance of the button (dark/light)
+    ///   - fill: A value to set the fill mode for the button's height and width
+    @inlinable public init(
+        image: Image? = nil,
+        text: String? = nil,
+        action: @escaping () -> (),
+        appearance: Appearance = .dark,
+        fill: Set<Fill> = []
+    ) where Label == StandardButtonLabel {
+        self.label = {
+            return StandardButtonLabel(image: image, text: text)
         }()
         
         self.action = action
