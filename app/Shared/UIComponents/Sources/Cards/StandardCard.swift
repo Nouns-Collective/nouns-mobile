@@ -22,7 +22,7 @@ public struct TitleAndIconLabelSpacedStyle: LabelStyle {
     }
 }
 
-public extension LabelStyle where Self == TitleAndIconLabelSpacedStyle {
+extension LabelStyle where Self == TitleAndIconLabelSpacedStyle {
     
     /// A label style that shows both the title and icon of the label using a
     /// system-standard layout with a spacing.
