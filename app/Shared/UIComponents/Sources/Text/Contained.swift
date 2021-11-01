@@ -11,12 +11,12 @@ import SwiftUI
 /// A label style that shows has a rounded rectangle as it's background
 /// with a matching background and label colour.
 public struct ContainedLabel: ViewModifier {
-    static let defaultPadding = EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
- 
-    let color: Color
-    let padding: EdgeInsets
+    static public let defaultPadding = EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
     
-    init(color: Color, padding: EdgeInsets) {
+    private let color: Color
+    private let padding: EdgeInsets
+    
+    public init(color: Color, padding: EdgeInsets) {
         self.padding = padding
         self.color = color
     }
@@ -42,7 +42,7 @@ extension Label {
     /// - Parameter color: The background and foreground color of the contained label
     /// - Parameter padding: The padding to apply to each edge of the resulting contained label
     ///
-    func contained(color: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
+    public func contained(color: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
         modifier(ContainedLabel(color: color, padding: padding))
     }
 }
@@ -59,25 +59,7 @@ extension Text {
     /// - Parameter color: The background and foreground color of the contained text
     /// - Parameter padding: The padding to apply to each edge of the resulting contained text
     ///
-    func contained(color: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
+    public func contained(color: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
         modifier(ContainedLabel(color: color, padding: padding))
-    }
-}
-
-struct ContainedLabel_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            Text("This is some sample text")
-                .contained(color: .green)
-            
-            Text("This is some sample text")
-                .contained(color: .blue)
-            
-            Text("00:00:88")
-                .contained(color: .red)
-            
-            Label("Sun", systemImage: "sun.max")
-                .contained(color: .orange)
-        }
     }
 }
