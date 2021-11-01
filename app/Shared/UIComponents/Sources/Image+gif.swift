@@ -16,7 +16,7 @@ public struct GIFImage: UIViewRepresentable {
     /// - Parameters:
     ///   - named: The name of the gif file.
     ///   - bundle: A representation of the resources stored in a bundle directory on disk.
-    public init(_ named: String, bundle: Bundle = Bundle.main) {
+    public init(_ named: String, bundle: Bundle? = Bundle.main) {
         self.named = named
         self.bundle = bundle
     }
