@@ -53,7 +53,6 @@ extension LabelStyle where Self == TitleAndIconLabelSpacedStyle {
     }
 }
 
-///
 public struct StandardCard<Media: View, Label: View>: View {
     
     /// The large media content appearing at the top of the card
