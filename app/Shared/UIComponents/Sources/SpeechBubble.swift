@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// <#Description#>
+/// A view to display a text view with a speech bubble background
 public struct SpeechBubble: View {
     private let content: String
     
