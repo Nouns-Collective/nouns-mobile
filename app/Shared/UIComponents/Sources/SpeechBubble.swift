@@ -26,12 +26,26 @@ public struct SpeechBubble: View {
     public var body: some View {
         ZStack {
             Image("speech.bubble", bundle: .module)
-            Text(content)
-                .fontWeight(.medium)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .padding(.bottom, 20)
-                .padding(.horizontal, 40)
+                .resizable()
+                .scaledToFit()
+                .overlay(label)
+        }
+    }
+    
+    private var label: some View {
+        GeometryReader { proxy in
+            VStack {
+                Spacer()
+                Text(content)
+                    .fontWeight(.medium)
+                    .minimumScaleFactor(0.5)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+                    .padding(.horizontal, proxy.size.width*0.11)
+                    .padding(.bottom, proxy.size.height*0.23)
+                Spacer()
+            }
+            
         }
     }
 }
