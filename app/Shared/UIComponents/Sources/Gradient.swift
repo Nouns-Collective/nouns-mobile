@@ -40,7 +40,8 @@ public struct PopsicleGradient: ShapeStyle, View {
                     
                 ], center: .bottomLeading,
                 startRadius: proxy.size.width*0.3,
-                endRadius: proxy.size.width+proxy.size.width*0.25)
+                endRadius: proxy.size.width+proxy.size.width*0.25
+          )
         }
     }
 }
