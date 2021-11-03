@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StandardCard<Media: View, Label: View>: View {
+public struct StandardCard<Media: View, Label: View>: View {
     
     /// The large media content appearing at the top of the card
     let media: Media
@@ -18,11 +18,38 @@ struct StandardCard<Media: View, Label: View>: View {
     
     /// Initializes a card with any view for the media and the label (footer)
     ///
+    /// ```swift
+    ///  StandardCard {
+    ///      Rectangle()
+    ///        .fill(Color.red)
+    ///
+    ///  } label: {
+    ///      HStack(alignment: .bottom) {
+    ///         VStack(alignment: .leading) {
+    ///              Text("Noun 64")
+    ///                 .font(.title2)
+    ///                 .fontWeight(.semibold)
+    ///
+    ///              Text("Oct 04 2021")
+    ///                 .font(.caption)
+    ///         }
+    ///
+    ///         Spacer()
+    ///
+    ///         VStack(alignment: .leading) {
+    ///             Text("bob.eth")
+    ///                 .fontWeight(.medium)
+    ///
+    ///             Text("Winner")
+    ///                 .font(.caption)
+    ///         }
+    ///  }
+    /// ```
     ///
     /// - Parameters:
     ///   - media: A view for the media portion of the card (top)
     ///   - label: A view for the label/footer portion of the card (bottom)
-    @inlinable public init(
+    public init(
         @ViewBuilder media: () -> Media,
         @ViewBuilder label: () -> Label
     ) {
@@ -32,6 +59,13 @@ struct StandardCard<Media: View, Label: View>: View {
     
     /// Initializes a card with any view for the media, but with a StandardCardFooter for the label
     ///
+    ///  ```swift
+    ///  StandardCard(media: {
+    ///     Rectangle()
+    ///         .fill(Color.red)
+    ///  }, header: "Noun 64", subheader: "Oct 04 2021",
+    ///     detail: "bob.eth", detailSubheader: "Winner")
+    ///  ```
     ///
     /// - Parameters:
     ///   - media: A view for the media portion of the card (top)
@@ -39,7 +73,7 @@ struct StandardCard<Media: View, Label: View>: View {
     ///   - subheader: The subheader text, located on the bottom left of the footer (beneath the header)
     ///   - detail: The detail text, located on the top right of the footer
     ///   - detailSubheader: The detail's subheader, located on the bottom right of the footer
-    @inlinable public init (
+    public init (
         @ViewBuilder media: () -> Media,
         header: String,
         subheader: String,
@@ -52,7 +86,7 @@ struct StandardCard<Media: View, Label: View>: View {
         }()
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             media
                 .frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.width - 40)
@@ -68,37 +102,41 @@ struct StandardCard<Media: View, Label: View>: View {
     }
 }
 
-struct StandardCard_Previews: PreviewProvider {
-    static var previews: some View {
-        StandardCard {
-            Rectangle()
-                .fill(Color.red)
-        } label: {
-            HStack(alignment: .bottom) {
-                VStack(alignment: .leading) {
-                    Text("Noun 64")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    Text("Oct 04 2021")
-                        .font(.caption)
-                }
+///
+public struct StandardCardFooter: View {
+    
+    /// The header text, located on the top left of the footer
+    let header: String
+    
+    /// The subheader text, located on the bottom left of the footer (beneath the header)
+    let subheader: String
+    
+    /// The detail text, located on the top right of the footer
+    let detail: String
+    
+    /// The detail's subheader, located on the bottom right of the footer
+    let detailSubheader: String
+    
+    public var body: some View {
+        HStack(alignment: .bottom) {
+            VStack(alignment: .leading) {
+                Text(header)
+                    .font(.title2)
+                    .fontWeight(.semibold)
                 
-                Spacer()
+                Text(subheader)
+                    .font(.caption)
+            }
+            
+            Spacer()
+            
+            VStack(alignment: .leading) {
+                Text(detail)
+                    .fontWeight(.medium)
                 
-                VStack(alignment: .leading) {
-                    Text("bob.eth")
-                        .fontWeight(.medium)
-                    
-                    Text("Winner")
-                        .font(.caption)
-                }
+                Text(detailSubheader)
+                    .font(.caption)
             }
         }
-        
-        StandardCard(media: {
-            Rectangle()
-                .fill(Color.red)
-        }, header: "Noun 64", subheader: "Oct 04 2021", detail: "bob.eth", detailSubheader: "Winner")
     }
 }
