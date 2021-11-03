@@ -17,12 +17,13 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
     }
     
     /// The current drag translation of the bottom sheet's drag gesture
-    @State var translation: CGFloat = 0
+    @State private var translation: CGFloat = 0
     
     /// The last recorded drag value of the bottom sheet's drag gesture
-    @State var lastDragPosition: DragGesture.Value?
+    @State private var lastDragPosition: DragGesture.Value?
     
-    let sheetContent: SheetContent
+    /// A view to be the shown as the main content in the bottom sheet
+    private let sheetContent: SheetContent
     
     /// Initializes a view modification with a binding boolean for presentation and any content for a bottom sheet
     ///
@@ -30,7 +31,7 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
     /// - Parameters:
     ///   - isPresented: A binding boolean value to indicate whether or not the bottom sheet should be shown
     ///   - content: Any view to be the content of the bottom sheet
-    init(
+    public init(
         isPresented: Binding<Bool>,
         @ViewBuilder content: () -> SheetContent
     ) {
@@ -60,22 +61,8 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
                         .offset(x: 0, y: translation)
                         .gesture(
                             DragGesture()
-                                .onChanged { gesture in
-                                    if gesture.translation.height > 0 {
-                                        self.lastDragPosition = gesture
-                                        self.translation = gesture.translation.height
-                                    }
-                                }
-                                .onEnded { gesture in
-                                    let timeDiff = gesture.time.timeIntervalSince(self.lastDragPosition!.time)
-                                    let speed: CGFloat = CGFloat(gesture.translation.height - self.lastDragPosition!.translation.height) / CGFloat(timeDiff)
-                                    
-                                    if speed > 10 || translation > 200 {
-                                        self.isPresented = false
-                                    } else {
-                                        self.translation = 0
-                                    }
-                                }
+                                .onChanged { self.dragChanged($0) }
+                                .onEnded { self.dragEnded($0) }
                         )
                         .shadow(color: Color.black.opacity(0.1), radius: 24, x: 0, y: 0)
                         .frame(maxWidth: .infinity)
@@ -84,6 +71,28 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
                 .transition(.move(edge: .bottom))
                 .animation(.spring())
             }
+        }
+    }
+    
+    private func dragChanged(_ value: DragGesture.Value) {
+        if value.translation.height > 0 {
+            lastDragPosition = value
+            translation = value.translation.height
+        }
+    }
+    
+    private func dragEnded(_ value: DragGesture.Value) {
+        var speed: CGFloat = 0
+        
+        if let lastDragPosition = lastDragPosition {
+            let timeDiff = value.time.timeIntervalSince(lastDragPosition.time)
+            speed = CGFloat(value.translation.height - lastDragPosition.translation.height) / CGFloat(timeDiff)
+        }
+        
+        if speed > 10 || translation > 200 {
+            self.isPresented = false
+        } else {
+            self.translation = 0
         }
     }
 }
@@ -95,7 +104,11 @@ extension View {
     /// An example of using this view modifier is:
     /// ```swift
     /// NavigationView {
-    ///     Text("Hello World")
+    ///     Button(action: {
+    ///         isPresented.toggle()
+    ///     }, label: {
+    ///         Text("Click Me")
+    ///     })
     /// }
     /// .bottomSheet(isPresented: $isPresented) {
     ///     Text("Sheet Content")

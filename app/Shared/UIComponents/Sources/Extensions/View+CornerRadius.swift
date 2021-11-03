@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  View+CornerRadius.swift
 //  
 //
 //  Created by Mohammed Ibrahim on 2021-11-02.
@@ -14,7 +14,7 @@ extension View {
     /// - Parameters:
     ///   - radius: The desired corner radius for the view
     ///   - corners: The corners to apply the corner radius too, exclusively. 
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+    public func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape(RoundedCorner(radius: radius, corners: corners) )
     }
 }
