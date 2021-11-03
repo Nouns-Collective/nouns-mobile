@@ -45,7 +45,6 @@ public struct SpeechBubble: View {
                     .padding(.bottom, proxy.size.height*0.23)
                 Spacer()
             }
-            
         }
     }
 }
