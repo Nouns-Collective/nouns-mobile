@@ -10,6 +10,8 @@ packages:
     from: 5.4.0
   UIComponents:
     path: Shared/UIComponents
+  Services:
+    path: Shared/Services
 
 settings:
   base:
@@ -33,6 +35,7 @@ targets:
     dependencies:
       - package: Rswift
       - package: UIComponents
+      - package: Services
     scheme:
       testTargets:
         - Nouns iOS Tests
