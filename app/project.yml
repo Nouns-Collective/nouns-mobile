@@ -8,6 +8,8 @@ packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
     from: 5.4.0
+  UIComponents:
+    path: Shared/UIComponents
 
 settings:
   base:
@@ -30,6 +32,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
     dependencies:
       - package: Rswift
+      - package: UIComponents
     scheme:
       testTargets:
         - Nouns iOS Tests
