@@ -3,7 +3,7 @@ options:
   createIntermediateGroups: true
   indentWidth: 2
   tabWidth: 2
-  bundleIdPrefix: "ca.mohammedibrahim"
+  bundleIdPrefix: "wtf.nouns"
 packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
@@ -13,6 +13,8 @@ settings:
   base:
     MARKETING_VERSION: 1
     CURRENT_PROJECT_VERSION: 1
+    DEVELOPMENT_TEAM: 9XX3PA6349
+    CODE_SIGN_STYLE: Manual
 
 targets:
 # Nouns iOS App
@@ -25,7 +27,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE: iOS/Nouns/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
     dependencies:
       - package: Rswift
     scheme:
@@ -83,7 +85,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE: WatchOS/NounsWatch/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp
   
   # Nouns WatchKit Extension
   Nouns WatchKit Extension:
@@ -95,7 +97,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE:  WatchOS/NounsWatch WatchKit Extension/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.watchextension
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.watchextension
     dependencies:
       - package: Rswift
     scheme:
@@ -124,7 +126,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE:  WatchOS/NounsWatchTests/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.tests
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.tests
         TEST_HOST: Nouns WatchKit Extension
     dependencies:
       - target: Nouns WatchKit Extension
@@ -139,7 +141,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE:  WatchOS/NounsWatchUITests/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: ca.mohammedibrahim.nouns.watchkitapp.uitest
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.uitest
         TEST_TARGET_NAME: Nouns Watch
     dependencies:
       - target: Nouns Watch
