@@ -88,7 +88,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE: WatchOS/NounsWatch/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.watchkitapp
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp
   
   # Nouns WatchKit Extension
   Nouns WatchKit Extension:
@@ -100,7 +100,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE:  WatchOS/NounsWatch WatchKit Extension/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.watchkitapp.watchextension
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.watchextension
     dependencies:
       - package: Rswift
     scheme:
@@ -129,7 +129,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE:  WatchOS/NounsWatchTests/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.watchkitapp.tests
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.tests
         TEST_HOST: Nouns WatchKit Extension
     dependencies:
       - target: Nouns WatchKit Extension
@@ -144,7 +144,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE:  WatchOS/NounsWatchUITests/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.watchkitapp.uitest
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.uitest
         TEST_TARGET_NAME: Nouns Watch
     dependencies:
       - target: Nouns Watch
