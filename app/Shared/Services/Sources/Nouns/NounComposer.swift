@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// The Noun's trait.
 public struct Trait {
@@ -22,9 +23,7 @@ public struct Trait {
   
   /// Load Noun's trait bundled image.
   public lazy var data: Data? = {
-    guard let url = Bundle.main.url(forResource: assetImage, withExtension: ImageType.png.rawValue)
-    else { return nil }
-    return try? Data(contentsOf: url)
+      NSDataAsset(name: assetImage)?.data
   }()
 }
 
