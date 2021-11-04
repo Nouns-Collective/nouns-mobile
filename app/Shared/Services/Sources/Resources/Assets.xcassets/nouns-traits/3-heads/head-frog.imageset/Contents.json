@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "head-frog.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
