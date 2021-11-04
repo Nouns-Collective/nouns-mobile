@@ -7,35 +7,30 @@
 
 import SwiftUI
 
-@resultBuilder
-public struct NounBuilder {
-    static func buildBlock(_ traits: Image...) -> [Image] {
-        traits.map { $0.interpolation(.none).resizable() }
-    }
-}
-
 /// Composes a Noun.
 public struct NounPuzzle: View {
     private let traits: [Image]
     
     /// Builds a Noun given the traits head, glass, body, and accessory.
     ///
-    ///     NounPuzzle {
-    ///         Image("accessory-aardvark", bundle: .module)
-    ///         Image("head-aardvark", bundle: .module)
-    ///         Image("body-green", bundle: .module)
-    ///         Image("glasses-hip-rose", bundle: .module)
-    ///     }
+    ///     NounPuzzle (
+    ///         head: Image("accessory-aardvark"),
+    ///         body: Image("head-aardvark"),
+    ///         glass: Image("glasses-hip-rose"),
+    ///         accessory: Image("body-green")
+    ///     )
     ///
-    /// - Parameter traits: The Noun's trait with priority order insensitive.
-    public init(@NounBuilder traits: () -> [Image]) {
-        self.traits = traits()
+    /// - Parameter traits: The Noun's trait.
+    public init(head: Image, body: Image, glass: Image, accessory: Image) {
+        self.traits = [head, body, glass, accessory]
     }
     
     public var body: some View {
         ZStack {
             ForEach(traits.indices) {
                 traits[$0]
+                    .interpolation(.none)
+                    .resizable()
             }
         }
         .scaledToFit()
