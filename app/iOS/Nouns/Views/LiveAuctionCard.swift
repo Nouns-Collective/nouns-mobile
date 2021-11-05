@@ -6,9 +6,8 @@
 //
 
 import SwiftUI
-
-// TODO: Should be removed after service importation
-typealias Auction = Any
+import UIComponents
+import Services
 
 /// <#Description#>
 /// - Parameters:
@@ -34,7 +33,54 @@ enum LiveAuctionAction {
 /// <#Description#>
 struct LiveAuctionCard: View {
   
+  let noun: String
+  
   var body: some View {
-    Text("Live Auction.")
+    StandardCard(media: {
+      NounPuzzle(
+        head: Image("head-baseball-gameball", bundle: Bundle.NounAssetBundle),
+        body: Image("body-grayscale-9", bundle: Bundle.NounAssetBundle),
+        glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
+        accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
+      )
+    }, label: {
+      HStack(alignment: .bottom) {
+          VStack(alignment: .leading, spacing: 4) {
+              Text(noun)
+                  .font(.title2)
+                  .fontWeight(.semibold)
+              
+              Text("Oct 5 2011")
+                  .font(.caption)
+          }
+          
+          Spacer()
+          
+          VStack(alignment: .leading, spacing: 4) {
+              Text("269.69")
+                  .fontWeight(.medium)
+              
+              Text("Current Bid")
+                  .font(.caption)
+          }
+        
+        Spacer()
+        
+        VStack(alignment: .leading, spacing: 4) {
+            Text("00:08:03")
+                .font(.caption)
+                .contained(color: Color.componentRaspberry)
+
+            Text("Remaining")
+                .font(.caption)
+        }
+      }
+    }, roundedCorners: [.bottomLeft, .bottomRight])
+  }
+}
+
+struct LiveAuctionCardPreview: PreviewProvider {
+  static var previews: some View {
+    LiveAuctionCard(noun: "Noun 64")
   }
 }

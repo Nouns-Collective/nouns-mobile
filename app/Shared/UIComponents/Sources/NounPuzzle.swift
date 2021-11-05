@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Composes a Noun.
-public struct NounPuzzle: View {
+public struct NounPuzzle: View {    
     private let traits: [Image]
     
     /// Builds a Noun given the traits head, glass, body, and accessory.
@@ -22,7 +22,7 @@ public struct NounPuzzle: View {
     ///
     /// - Parameter traits: The Noun's trait.
     public init(head: Image, body: Image, glass: Image, accessory: Image) {
-        self.traits = [head, body, glass, accessory]
+        self.traits = [body, accessory, head, glass]
     }
     
     public var body: some View {

@@ -124,7 +124,7 @@ public struct StandardCardFooter: View {
     
     public var body: some View {
         HStack(alignment: .bottom) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(header)
                     .font(.title2)
                     .fontWeight(.semibold)
@@ -135,7 +135,7 @@ public struct StandardCardFooter: View {
             
             Spacer()
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(detail)
                     .fontWeight(.medium)
                 

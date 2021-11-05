@@ -7,6 +7,13 @@
 
 import Foundation
 import UIKit
+import SwiftUI
+
+/// Temporary bridging of the module bundle so that the app layer can compose static noun views
+/// Should be removed once persistence & network fetching is implemented
+public extension Bundle {
+    static let NounAssetBundle = Bundle.module
+}
 
 /// The Noun's trait.
 public struct Trait {
@@ -23,7 +30,7 @@ public struct Trait {
   
   /// Load Noun's trait bundled image.
   public lazy var data: Data? = {
-      NSDataAsset(name: assetImage)?.data
+      NSDataAsset(name: assetImage, bundle: .module)?.data
   }()
 }
 

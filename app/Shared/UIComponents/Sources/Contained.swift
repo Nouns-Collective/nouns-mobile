@@ -11,7 +11,7 @@ import SwiftUI
 /// A label style that shows has a rounded rectangle as it's background
 /// with a matching background and label colour.
 public struct ContainedLabel: ViewModifier {
-    static public let defaultPadding = EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+    static public let defaultPadding = EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
     
     private let color: Color
     private let padding: EdgeInsets
@@ -25,8 +25,8 @@ public struct ContainedLabel: ViewModifier {
         content
             .foregroundColor(color)
             .padding(padding)
-            .background(color.opacity(0.25))
-            .cornerRadius(8)
+            .background(color.opacity(0.15))
+            .cornerRadius(4)
     }
 }
 

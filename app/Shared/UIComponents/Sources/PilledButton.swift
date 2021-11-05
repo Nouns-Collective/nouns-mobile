@@ -16,14 +16,36 @@ public struct PilledButtonStyle<Label: View>: ButtonStyle {
     /// The height of the button
     let fill: Set<PilledButton<Label>.Fill>
     
+    /// Background color determined by appearance property
+    private var backgroundColor: Color {
+        switch appearance {
+        case .dark:
+            return Color.black.opacity(0.85)
+        case .light:
+            return Color.white.opacity(0.85)
+        case .custom(let color):
+            return color
+        }
+    }
+    
+    /// Foreground color determined by appearance property
+    private var foregroundColor: Color {
+        switch appearance {
+        case .dark:
+            return Color.white
+        default:
+            return Color.black
+        }
+    }
+    
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label
             .frame(maxWidth: fill.contains(.width) ? .infinity : nil, maxHeight: fill.contains(.height) ? .infinity : nil)
             .multilineTextAlignment(.center)
             .lineLimit(1)
-            .foregroundColor(appearance == .dark ? Color.white : Color.black)
-            .background(appearance == .dark ? Color.black.opacity(0.85) : Color.white.opacity(0.85))
+            .foregroundColor(foregroundColor)
+            .background(backgroundColor)
             .clipShape(Capsule())
             .scaleEffect(configuration.isPressed ? 0.95 : 1)
             .opacity(configuration.isPressed ? 0.8 : 1)
@@ -64,7 +86,7 @@ public struct PilledButton<Label: View>: View {
     
     /// Enumeration declaration for the style for the button appearance (light/dark)
     public enum Appearance {
-        case dark, light
+        case dark, light, custom(color: Color)
     }
     
     /// Enumeration declaration for the fill mode of the button
@@ -76,9 +98,9 @@ public struct PilledButton<Label: View>: View {
     private let label: Label
     
     /// The action for the button once tapped
-    private let action: () -> ()
+    private let action: () -> Void
     
-    /// The appearance of the button (light/dark)
+    /// The appearance of the button (light/dark) or custom
     private let appearance: Appearance
     
     /// The fill mode for the buttons height and width
@@ -109,7 +131,7 @@ public struct PilledButton<Label: View>: View {
     ///   - fill: A value to set the fill mode for the button's height and width
     public init(
         @ViewBuilder label: () -> Label,
-        action: @escaping () -> (),
+        action: @escaping () -> Void,
         appearance: Appearance = .dark,
         fill: Set<Fill> = []
     ) {

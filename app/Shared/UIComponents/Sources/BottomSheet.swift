@@ -121,7 +121,7 @@ extension View {
     /// - Parameters:
     ///   - isPresented: A binding boolean value to indicate whether or not the bottom sheet should be shown
     ///   - content: Any view to be the content of the bottom sheet
-    func bottomSheet<Content: View>(
+    public func bottomSheet<Content: View>(
         isPresented: Binding<Bool>,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
