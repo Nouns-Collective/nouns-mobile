@@ -7,9 +7,11 @@
 
 import Foundation
 import UIKit
+import UIComponents
+import SwiftUI
 
 public extension Bundle {
-    public static let NounAssetBundle = Bundle.module
+    static let NounAssetBundle = Bundle.module
 }
 
 /// The Noun's trait.
@@ -110,4 +112,13 @@ extension Trait: Decodable {
     rleData = try container.decode(String.self, forKey: .rleData)
     assetImage = try container.decode(String.self, forKey: .assetImage)
   }
+}
+
+extension NounPuzzle {
+    init(seed: Seed) {
+        self.init(head: Image(seed.head.assetImage),
+                  body: Image(seed.body.assetImage),
+                  glass: Image(seed.glasses.assetImage),
+                  accessory: Image(seed.accessory.assetImage))
+    }
 }
