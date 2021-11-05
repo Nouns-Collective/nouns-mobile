@@ -19,9 +19,12 @@ struct OnChainNounCard: View {
   
   var body: some View {
     StandardCard(media: {
-      Image("placeholder")
-        .resizable()
-        .aspectRatio(nil, contentMode: .fit)
+      NounPuzzle(
+        head: Image("head-baseball-gameball", bundle: Bundle.NounAssetBundle),
+        body: Image("body-grayscale-9", bundle: Bundle.NounAssetBundle),
+        glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
+        accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
+      )
     }, header: noun, subheader: date, detail: owner, detailSubheader: status)
   }
 }

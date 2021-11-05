@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+public extension Bundle {
+    public static let NounAssetBundle = Bundle.module
+}
+
 /// The Noun's trait.
 public struct Trait {
   
