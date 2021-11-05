@@ -8,22 +8,28 @@
 import SwiftUI
 import UIComponents
 
-/// <#Description#>
+/// Card showing a noun with more details, including the ETH address of the owner, the date it was born, and a segue to look at a noun's activity.
 struct OnChainNounProfileCard: View {
+  var animation: Namespace.ID
   
   let noun: String
   let date: String
   let owner: String
   let status: String = "Winner"
+  var topPadding: CGFloat = 20
+  
+  @Binding var isShowingActivity: Bool
   
   var body: some View {
     StandardCard {
-      NounPuzzle(
-        head: Image("head-baseball-gameball", bundle: Bundle.NounAssetBundle),
-        body: Image("body-grayscale-9", bundle: Bundle.NounAssetBundle),
-        glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
-        accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
-      )
+        NounPuzzle(
+          head: Image("head-baseball-gameball", bundle: Bundle.NounAssetBundle),
+          body: Image("body-grayscale-9", bundle: Bundle.NounAssetBundle),
+          glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
+          accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
+        )
+        .matchedGeometryEffect(id: "\(noun)-puzzle", in: animation)
+        .padding(.top, topPadding)
     } label: {
       VStack {
         HStack(alignment: .center) {
@@ -39,7 +45,20 @@ struct OnChainNounProfileCard: View {
         VStack(alignment: .leading, spacing: 4) {
           Label("ETH Address", systemImage: "cpu")
           Label("Born on Oct 11 2021", systemImage: "gift")
-          Label("Taken care of by bobby.eth", systemImage: "suit.heart")
+          Label {
+            HStack {
+              Text("Taken care of by")
+              Button {
+                isShowingActivity.toggle()
+              } label: {
+                Text("bobby.eth")
+                  .foregroundColor(Color.componentRaspberry)
+              }
+            }
+          } icon: {
+            Image(systemName: "suit.heart")
+          }
+
         }.labelStyle(.titleAndIcon(spacing: 20))
           .padding(.top, 8)
           .frame(maxWidth: .infinity, alignment: .leading)
@@ -55,11 +74,5 @@ struct OnChainNounProfileCard: View {
         }.padding(.top, 20)
       }
     }
-  }
-}
-
-struct OnChainNounProfileCard_Previews: PreviewProvider {
-  static var previews: some View {
-    OnChainNounProfileCard(noun: "Noun 64", date: "Oct 11 2021", owner: "bobby.eth")
   }
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Services
+import UIComponents
 
 /// <#Description#>
 /// - Parameters:
@@ -33,7 +34,59 @@ enum ActivityAction {
 /// <#Description#>
 struct NounderActivitiesSheet: View {
   
+  @Binding var isPresented: Bool
+  
   var body: some View {
-    Text("Nounder Activity Sheet.")
+    VStack {
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 2) {
+          Text("bobby.eth")
+            .font(.title)
+            .fontWeight(.semibold)
+          
+          Text("DAO Activity")
+            .font(.headline)
+            .fontWeight(.regular)
+        }
+        
+        Spacer()
+        
+        PilledButton(systemImage: "xmark", action: {
+          isPresented.toggle()
+        }, appearance: .custom(color: Color.componentSoftGrey))
+      }.padding(.bottom, 40)
+      
+      VStack(spacing: 40) {
+        ForEach(0..<4) { _ in
+          HStack {
+            Label(title: {
+              Text("Voted for Nouns Bidder POAP")
+                .font(Font.system(size: 18, weight: .regular, design: .default))
+            }, icon: {
+              Image(systemName: "hand.thumbsup.fill")
+                .foregroundColor(Color.componentNuclear)
+            })
+            
+            Spacer()
+            Text("Succeeded")
+              .bold()
+              .font(Font.system(size: 13, design: .default))
+              .foregroundColor(Color.white)
+              .padding(.horizontal, 12)
+              .padding(.vertical, 4)
+              .background(Color.componentNuclear)
+              .clipShape(Capsule())
+          }
+        }
+      }
+    }
+    .padding(.horizontal, 20)
+    .padding(.top, 20)
+  }
+}
+
+struct NounderActivitiesSheet_Previews: PreviewProvider {
+  static var previews: some View {
+    NounderActivitiesSheet(isPresented: .constant(true))
   }
 }

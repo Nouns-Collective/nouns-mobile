@@ -9,8 +9,9 @@ import SwiftUI
 import UIComponents
 import Services
 
-/// <#Description#>
+/// Card showing a noun along with the date it was created, the owner of the noun, and a status label.
 struct OnChainNounCard: View {
+  var animation: Namespace.ID
   
   let noun: String
   let date: String
@@ -25,12 +26,7 @@ struct OnChainNounCard: View {
         glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
         accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
       )
+        .matchedGeometryEffect(id: "\(noun)-puzzle", in: animation)
     }, header: noun, subheader: date, detail: owner, detailSubheader: status)
-  }
-}
-
-struct OnChainNounCard_Previews: PreviewProvider {
-  static var previews: some View {
-    OnChainNounCard(noun: "Noun 64", date: "Oct 11 2021", owner: "bobby.eth")
   }
 }

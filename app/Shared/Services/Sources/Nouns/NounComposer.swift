@@ -7,9 +7,10 @@
 
 import Foundation
 import UIKit
-import UIComponents
 import SwiftUI
 
+/// Temporary bridging of the module bundle so that the app layer can compose static noun views
+/// Should be removed once persistence & network fetching is implemented
 public extension Bundle {
     static let NounAssetBundle = Bundle.module
 }
@@ -29,7 +30,7 @@ public struct Trait {
   
   /// Load Noun's trait bundled image.
   public lazy var data: Data? = {
-      NSDataAsset(name: assetImage)?.data
+      NSDataAsset(name: assetImage, bundle: .module)?.data
   }()
 }
 
@@ -112,13 +113,4 @@ extension Trait: Decodable {
     rleData = try container.decode(String.self, forKey: .rleData)
     assetImage = try container.decode(String.self, forKey: .assetImage)
   }
-}
-
-extension NounPuzzle {
-    init(seed: Seed) {
-        self.init(head: Image(seed.head.assetImage),
-                  body: Image(seed.body.assetImage),
-                  glass: Image(seed.glasses.assetImage),
-                  accessory: Image(seed.accessory.assetImage))
-    }
 }

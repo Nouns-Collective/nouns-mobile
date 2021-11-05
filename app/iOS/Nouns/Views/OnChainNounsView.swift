@@ -32,7 +32,27 @@ enum OnChainNounsAction {
 /// <#Description#>
 struct OnChainNounsView: View {
   
-    var body: some View {
-        Text("On Chains Nouns View")
+  var animation: Namespace.ID
+  @Binding var selected: Int?
+  @Binding var isPresentingActivity: Bool
+  
+  var body: some View {
+    ForEach(0..<5) { num in
+      if let selected = selected, selected == num {
+        OnChainNounProfileCard(animation: animation, noun: "Noun \(num)", date: "Oct 11 2021", owner: "bob.eth", isShowingActivity: $isPresentingActivity)
+          .id(num)
+          .matchedGeometryEffect(id: "noun-\(num)", in: animation)
+          .padding(.horizontal, -20)
+      } else {
+        OnChainNounCard(animation: animation, noun: "Noun \(num)", date: "Oct 11 2021", owner: "bob.eth")
+          .id(num)
+          .matchedGeometryEffect(id: "noun-\(num)", in: animation)
+          .onTapGesture {
+            withAnimation(.spring()) {
+              selected = num
+            }
+          }
+      }
     }
+  }
 }
