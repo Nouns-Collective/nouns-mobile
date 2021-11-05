@@ -17,8 +17,7 @@ extension QueryError: Equatable {
     case (.request(let lhsError), .request(let rhsError)):
       if let lhsError = lhsError, let rhsError = rhsError {
         return lhsError == rhsError
-      }
-      else {
+      } else {
         return lhsError == nil && rhsError == nil
       }
     default:

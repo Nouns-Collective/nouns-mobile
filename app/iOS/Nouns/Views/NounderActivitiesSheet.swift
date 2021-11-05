@@ -30,7 +30,6 @@ enum ActivityAction {
   case failure(Error)
 }
 
-
 /// <#Description#>
 struct NounderActivitiesSheet: View {
   

@@ -10,7 +10,7 @@ import Foundation
 /**
  This is a equality on any 2 instance of Error.
  */
-public func ==(_ lhs: Error, _ rhs: Error) -> Bool {
+public func == (_ lhs: Error, _ rhs: Error) -> Bool {
   return lhs.reflectedString == rhs.reflectedString
 }
 

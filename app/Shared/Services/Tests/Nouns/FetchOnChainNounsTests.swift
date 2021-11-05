@@ -51,11 +51,11 @@ final class FetchOnChainNounsTests: XCTestCase {
     // when
     nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
       .sink { completion in
-        if case .failure(_) = completion {
+        if case .failure = completion {
           XCTAssertTrue(Thread.isMainThread)
           fetchExpectation.fulfill()
         }
-      } receiveValue: { nouns in
+      } receiveValue: { _ in
         XCTFail("💥 result unexpected")
       }
       .store(in: &cancellables)

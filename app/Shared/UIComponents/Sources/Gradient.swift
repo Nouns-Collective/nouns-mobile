@@ -20,8 +20,8 @@ public struct RainbowGradient: ShapeStyle, View {
                     .componentPaleYellow,
                 ],
                 center: .bottomLeading,
-                startRadius: proxy.size.width*0.25,
-                endRadius: proxy.size.width+proxy.size.width*0.25
+                startRadius: proxy.size.width * 0.25,
+                endRadius: proxy.size.width + proxy.size.width * 0.25
             )
         }
     }
@@ -38,9 +38,10 @@ public struct PopsicleGradient: ShapeStyle, View {
                     .componentWineStain,
                     .componentSuperCyan,
                     
-                ], center: .bottomLeading,
-                startRadius: proxy.size.width*0.3,
-                endRadius: proxy.size.width+proxy.size.width*0.25
+                ],
+                center: .bottomLeading,
+                startRadius: proxy.size.width * 0.3,
+                endRadius: proxy.size.width + proxy.size.width * 0.25
           )
         }
     }
@@ -59,8 +60,8 @@ public struct WatermelonGradient: ShapeStyle, View {
                     .componentOuterRind,
                 ],
                 center: .bottomLeading,
-                startRadius: proxy.size.width*0.15,
-                endRadius: proxy.size.width+proxy.size.width*0.35
+                startRadius: proxy.size.width * 0.15,
+                endRadius: proxy.size.width + proxy.size.width * 0.35
             )
         }
     }
@@ -80,8 +81,8 @@ public struct CantalopeGradient: ShapeStyle, View {
                     .componentNuclear,
                 ],
                 center: .bottomLeading,
-                startRadius: proxy.size.width*0.15,
-                endRadius: proxy.size.width+proxy.size.width*0.35
+                startRadius: proxy.size.width * 0.15,
+                endRadius: proxy.size.width + proxy.size.width * 0.35
             )
         }
     }

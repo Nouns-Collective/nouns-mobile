@@ -64,7 +64,7 @@ final class GraphQLClientFetchTests: XCTestCase {
           expectation.fulfill()
         }
 
-      } receiveValue: { (response: HTTPResponse<Page<[Noun]>>) in
+      } receiveValue: { (_: HTTPResponse<Page<[Noun]>>) in
         XCTFail("💥 result unexpected")
       }
       .store(in: &subscriptions)

@@ -21,7 +21,7 @@ final class MockGraphQLClient: GraphQLClient {
     self.error = error
   }
   
-  func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T : Decodable {
+  func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T: Decodable {
     if let data = data {
       do {
         let result = try JSONDecoder().decode(T.self, from: data)
@@ -42,7 +42,7 @@ final class MockGraphQLClient: GraphQLClient {
     }
   }
   
-  func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T : Decodable {
+  func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T: Decodable {
     fatalError("Implementation for \(#function) missing")
   }
 }

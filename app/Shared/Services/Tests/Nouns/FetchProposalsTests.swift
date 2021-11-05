@@ -51,11 +51,11 @@ final class FetchProposalsTests: XCTestCase {
     // when
     nounsProvider.fetchProposals(limit: 10, after: 0)
       .sink { completion in
-        if case .failure(_) = completion {
+        if case .failure = completion {
           XCTAssertTrue(Thread.isMainThread)
           fetchExpectation.fulfill()
         }
-      } receiveValue: { proposals in
+      } receiveValue: { _ in
         XCTFail("💥 result unexpected")
       }
       .store(in: &cancellables)

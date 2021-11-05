@@ -8,11 +8,6 @@
 import Combine
 import Services
 
-// TODO: Remove after being replaced with the actual `Nouns` Service.
-typealias Nouns = AnyObject
-typealias Noun = Any
-typealias Activity = Any
-
 /// <#Description#>
 typealias Reducer<State, Action> = (State, Action) -> State
 
@@ -39,7 +34,6 @@ func liveAuctionMiddleware(service: Nouns) -> Middleware<LiveAuctionState, LiveA
 func activitiesMiddleware(service: Nouns) -> Middleware<ActivitiesState, ActivityAction> {
   fatalError("\(#function) must be implemented.")
 }
-
 
 /// <#Description#>
 class AppCore {

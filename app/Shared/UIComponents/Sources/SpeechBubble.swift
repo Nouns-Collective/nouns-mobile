@@ -41,8 +41,8 @@ public struct SpeechBubble: View {
                     .minimumScaleFactor(0.5)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
-                    .padding(.horizontal, proxy.size.width*0.11)
-                    .padding(.bottom, proxy.size.height*0.23)
+                    .padding(.horizontal, proxy.size.width * 0.11)
+                    .padding(.bottom, proxy.size.height * 0.23)
                 Spacer()
             }
         }

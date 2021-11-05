@@ -92,7 +92,7 @@ public class GraphQL: GraphQLClient {
     self.networkingClient = networkingClient
   }
   
-  public func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T : Decodable {
+  public func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T: Decodable {
     guard let query = query as? GraphQLQuery else {
       return Fail(error: .badQuery).eraseToAnyPublisher()
     }
@@ -123,7 +123,7 @@ public class GraphQL: GraphQLClient {
     }
   }
   
-  public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T : Decodable {
+  public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T: Decodable {
     fatalError("Implementaiton for \(#function) missing")
   }
 }

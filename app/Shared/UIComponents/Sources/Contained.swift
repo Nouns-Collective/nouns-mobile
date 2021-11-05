@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 /// A label style that shows has a rounded rectangle as it's background
 /// with a matching background and label colour.
 public struct ContainedLabel: ViewModifier {

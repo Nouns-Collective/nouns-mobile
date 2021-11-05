@@ -43,7 +43,7 @@ extension UIImage {
         guard
             let url = bundle?.url(forResource: named, withExtension: "gif"),
             let data = try? Data(contentsOf: url),
-            let (frames, duration)  = GIF(data: data).read()
+            let (frames, duration) = GIF(data: data).read()
         else {
             return nil
         }

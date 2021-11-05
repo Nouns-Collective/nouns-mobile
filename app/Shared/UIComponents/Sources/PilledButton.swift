@@ -170,7 +170,7 @@ public struct PilledButton<Label: View>: View {
     public init(
         systemImage: String,
         text: String? = nil,
-        action: @escaping () -> (),
+        action: @escaping () -> Void,
         appearance: Appearance = .dark,
         fill: Set<Fill> = []
     ) where Label == StandardButtonLabel {
@@ -218,7 +218,7 @@ public struct PilledButton<Label: View>: View {
     public init(
         image: Image? = nil,
         text: String? = nil,
-        action: @escaping () -> (),
+        action: @escaping () -> Void,
         appearance: Appearance = .dark,
         fill: Set<Fill> = []
     ) where Label == StandardButtonLabel {

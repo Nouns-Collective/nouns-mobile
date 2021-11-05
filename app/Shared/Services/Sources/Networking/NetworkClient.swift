@@ -50,7 +50,7 @@ public class URLSessionNetworkClient: NetworkingClient {
   
   public func data(for request: NetworkRequest) -> AnyPublisher<Data, RequestError> {
     urlSession.dataTaskPublisher(for: URLRequest(for: request))
-      .tryCompactMap() { [weak self] in
+      .tryCompactMap { [weak self] in
         try self?.processResponse(from: $0)
       }
       .mapError { $0 as? RequestError ?? RequestError.request($0) }
