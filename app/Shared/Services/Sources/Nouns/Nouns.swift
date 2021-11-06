@@ -8,6 +8,10 @@
 import Foundation
 import Combine
 
+public struct Activity: Decodable {
+    
+}
+
 enum ResponseDecodingError: Error {
   case typeNotFound(type: Any.Type)
 }
@@ -143,9 +147,9 @@ public protocol Nouns {
 }
 
 public class TheGraphNounsProvider: Nouns {
-  private let graphQLClient: GraphQLClient
+  private let graphQLClient: GraphQL
   
-  init(graphQLClient: GraphQLClient) {
+  public init(graphQLClient: GraphQL) {
     self.graphQLClient = graphQLClient
   }
   

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIComponents
 
 /// <#Description#>
 enum ActivityIndicatorState {
@@ -18,6 +19,21 @@ enum ActivityIndicatorState {
 struct ActivityIndicator: View {
   
   var body: some View {
-    Text("ActivityIndicator view.")
+    VStack {
+      GIFImage("noun")
+//        .frame(height: 350)
+      
+//      PilledButton(
+//        systemImage: "arrow.clockwise",
+//        text: "Try again",
+//        action: {},
+//        appearance: .dark)
+    }
+  }
+}
+
+struct ActivityIndicator_Preview: PreviewProvider {
+  static var previews: some View {
+    ActivityIndicator()
   }
 }

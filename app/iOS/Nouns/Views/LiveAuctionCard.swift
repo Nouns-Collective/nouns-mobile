@@ -10,11 +10,18 @@ import UIComponents
 import Services
 
 /// <#Description#>
+/// - Parameter service: <#service description#>
+/// - Returns: <#description#>
+func liveAuctionMiddleware(service: Nouns) -> Middleware<LiveAuctionState, LiveAuctionAction> {
+  fatalError("\(#function) must be implemented.")
+}
+
+/// <#Description#>
 /// - Parameters:
 ///   - state: <#state description#>
 ///   - action: <#action description#>
 /// - Returns: <#description#>
-func liveAuctionReducer(state: LiveAuctionState, action: LiveAuctionAction) -> LiveAuctionState {
+func liveAuctionReducer(state: inout LiveAuctionState, action: LiveAuctionAction) {
   fatalError("\(#function) must be implemented.")
 }
 

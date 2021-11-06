@@ -9,6 +9,15 @@ import Foundation
 import Combine
 
 /// <#Description#>
+typealias Reducer<State, Action> = (inout State, Action) -> Void
+
+/// <#Description#>
+typealias Middleware<State, Action> = (State, Action) -> AnyPublisher<Action, Never>
+
+/// <#Description#>
+typealias AppStore = Store<AppState, AppAction>
+
+/// <#Description#>
 class Store<State, Action>: ObservableObject {
   
   /// <#Description#>
@@ -39,21 +48,19 @@ class Store<State, Action>: ObservableObject {
   /// - Parameter action: <#action description#>
   func dispatch(_ action: Action) {
     queue.sync {
-      self.dispatch(self.state, action)
+      self.dispatch(&state, action)
     }
   }
   
-  private func dispatch(_ currentState: State, _ action: Action) {
-    let newState = reducer(currentState, action)
+  private func dispatch(_ state: inout State, _ action: Action) {
+    reducer(&state, action)
 
     middlewares.forEach { middleware in
-      let publisher = middleware(newState, action)
+      let publisher = middleware(state, action)
       publisher
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: dispatch)
         .store(in: &cancellables)
     }
-
-    state = newState
   }
 }

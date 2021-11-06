@@ -10,13 +10,13 @@ import SwiftUI
 /// Renders an Image object using a `gif` file.
 public struct GIFImage: UIViewRepresentable {
     private let named: String
-    private weak var bundle: Bundle?
+    private let bundle: Bundle
     
     /// Creates and returns an animated image from a given name `gif` file.
     /// - Parameters:
     ///   - named: The name of the gif file.
     ///   - bundle: A representation of the resources stored in a bundle directory on disk.
-    public init(_ named: String, bundle: Bundle? = Bundle.main) {
+    public init(_ named: String, bundle: Bundle = Bundle.main) {
         self.named = named
         self.bundle = bundle
     }
@@ -24,6 +24,7 @@ public struct GIFImage: UIViewRepresentable {
     public func makeUIView(context: Context) -> UIImageView {
         let imageView = UIImageView()
         imageView.image = UIImage.gifImage(named: named, bundle: bundle)
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }
     
@@ -39,10 +40,9 @@ extension UIImage {
     ///   - named: The name of the gif file.
     ///   - bundle: A representation of the resources stored in a bundle directory on disk.
     /// - Returns: The image object that best matches the desired traits with the given name, or nil if no `gif` file was found.
-    public class func gifImage(named: String, bundle: Bundle?) -> UIImage? {
+    public class func gifImage(named: String, bundle: Bundle) -> UIImage? {
         guard
-            let url = bundle?.url(forResource: named, withExtension: "gif"),
-            let data = try? Data(contentsOf: url),
+            let data = NSDataAsset(name: named, bundle: bundle)?.data,
             let (frames, duration) = GIF(data: data).read()
         else {
             return nil

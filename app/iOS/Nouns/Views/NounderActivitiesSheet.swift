@@ -10,6 +10,13 @@ import Services
 import UIComponents
 
 /// <#Description#>
+/// - Parameter service: <#service description#>
+/// - Returns: <#description#>
+func activitiesMiddleware(service: Nouns) -> Middleware<ActivitiesState, ActivityAction> {
+  fatalError("\(#function) must be implemented.")
+}
+
+/// <#Description#>
 /// - Parameters:
 ///   - state: <#state description#>
 ///   - action: <#action description#>

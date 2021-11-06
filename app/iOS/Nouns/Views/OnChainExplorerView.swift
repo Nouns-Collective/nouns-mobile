@@ -7,6 +7,33 @@
 
 import SwiftUI
 import UIComponents
+import Combine
+
+/// <#Description#>
+/// - Parameters:
+///   - state: <#state description#>
+///   - action: <#action description#>
+func onChainExplorerReducer(state: inout OnChainExplorerState, action: OnChainExplorerAction) {
+  switch action {
+//  case .liveAuctionAction(let action):
+//    liveAuctionReducer(state: &state.liveAuctionState, action: action)
+  case .onChainNounsAction(let action):
+    onChainNounsReducer(state: &state.onChainNounState, action: action)
+  }
+}
+
+/// <#Description#>
+struct OnChainExplorerState {
+  //var activityIndicatorState: ActivityIndicatorState
+  var onChainNounState: OnChainNounsState
+  //var liveAuctionState: LiveAuctionState
+}
+
+/// <#Description#>
+enum OnChainExplorerAction {
+//  case liveAuctionAction(action: LiveAuctionAction)
+  case onChainNounsAction(action: OnChainNounsAction)
+}
 
 /// Housing view for exploring on chain nouns, including the current on-goign auction and previously auctioned nouns
 struct OnChainExplorerView: View {
@@ -23,7 +50,11 @@ struct OnChainExplorerView: View {
             LiveAuctionCard(noun: "Noun 64")
               .padding(.horizontal, -20)
             
-            OnChainNounsView(animation: animation, selected: $selected, isPresentingActivity: $isPresentingActivity)
+            OnChainNounsView(
+              animation: animation,
+              selected: $selected,
+              isPresentingActivity: $isPresentingActivity
+            )
           }
         }
         .ignoresSafeArea()
