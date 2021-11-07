@@ -42,6 +42,9 @@ targets:
         - Nouns iOS UITests
     preBuildScripts:
       - script: |
+                /usr/bin/xcrun --sdk macosx swift run xcodegen
+        name: Xcodegen
+      - script: |
                 /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Nouns/Utils/R.generated.swift"
         name: R.swift
         inputFiles:
