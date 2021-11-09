@@ -81,6 +81,9 @@ extension Color {
     
     /// A context-dependent warm grey color suitable for use in UI elements.
     public static let componentWarmGrey = Color("warm.grey", bundle: .module)
+    
+    /// A context-dependent serious mango color suitable for use in UI elements.
+    public static let componentSeriousMango = Color("serious.mango", bundle: .module)
 }
 
 extension ShapeStyle where Self == Color {
