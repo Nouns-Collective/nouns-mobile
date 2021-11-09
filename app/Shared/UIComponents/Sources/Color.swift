@@ -10,144 +10,164 @@ import SwiftUI
 /// Various component colors.
 extension Color {
     
-    /// A context-dependent apple color suitable for use in UI elements.
-    public static let componentApple = Color("apple", bundle: .module)
+    /// A context-dependent aqua color suitable for use in UI elements.
+    public static let componentAqua = Color("aqua", bundle: .module)
     
-    /// A context-dependent blueberry color suitable for use in UI elements.
-    public static let componentBlueberry = Color("blueberry", bundle: .module)
+    /// A context-dependent brambleberry color suitable for use in UI elements.
+    public static let componentBrambleberry = Color("brambleberry", bundle: .module)
     
-    /// A context-dependent coolGrey color suitable for use in UI elements.
+    /// A context-dependent canadian sky color suitable for use in UI elements.
+    public static let componentCanadianSky = Color("canadian.sky", bundle: .module)
+    
+    /// A context-dependent clementine color suitable for use in UI elements.
+    public static let componentClementine = Color("clementine", bundle: .module)
+    
+    /// A context-dependent concord color suitable for use in UI elements.
+    public static let componentConcord = Color("concord", bundle: .module)
+    
+    /// A context-dependent cool grey color suitable for use in UI elements.
     public static let componentCoolGrey = Color("cool.grey", bundle: .module)
     
-    /// A context-dependent dragronfruit color suitable for use in UI elements.
-    public static let componentDragronfruit = Color("dragronfruit", bundle: .module)
+    /// A context-dependent eggplant color suitable for use in UI elements.
+    public static let componentEggplant = Color("eggplant", bundle: .module)
     
-    /// A context-dependent grape color suitable for use in UI elements.
-    public static let componentGrape = Color("grape", bundle: .module)
+    /// A context-dependent inside lime color suitable for use in UI elements.
+    public static let componentInsideLime = Color("inside.lime", bundle: .module)
     
-    /// A context-dependent greyDark color suitable for use in UI elements.
-    public static let componentGreyDark = Color("grey.dark", bundle: .module)
+    /// A context-dependent linen color suitable for use in UI elements.
+    public static let componentLinen = Color("linen", bundle: .module)
     
-    /// A context-dependent koolaid color suitable for use in UI elements.
-    public static let componentKoolaid = Color("koolaid", bundle: .module)
+    /// A context-dependent mountain sky color suitable for use in UI elements.
+    public static let componentMountainSky = Color("mountain.sky", bundle: .module)
     
-    /// A context-dependent lemonDrop color suitable for use in UI elements.
-    public static let componentLemonDrop = Color("lemon.drop", bundle: .module)
+    /// A context-dependent nouns black color suitable for use in UI elements.
+    public static let componentNounsBlack = Color("nouns.black", bundle: .module)
     
-    /// A context-dependent peach color suitable for use in UI elements.
-    public static let componentPeach = Color("peach", bundle: .module)
+    /// A context-dependent nuclear mint color suitable for use in UI elements.
+    public static let componentNuclearMint = Color("nuclear.mint", bundle: .module)
     
-    /// A context-dependent puke color suitable for use in UI elements.
-    public static let componentPuke = Color("puke", bundle: .module)
+    /// A context-dependent october sky color suitable for use in UI elements.
+    public static let componentOctoberSky = Color("october.sky", bundle: .module)
+    
+    /// A context-dependent orange cream color suitable for use in UI elements.
+    public static let componentOrangeCream = Color("orange.cream", bundle: .module)
+    
+    /// A context-dependent peachy color suitable for use in UI elements.
+    public static let componentPeachy = Color("peachy", bundle: .module)
+    
+    /// A context-dependent perriwinkle color suitable for use in UI elements.
+    public static let componentPerriwinkle = Color("perriwinkle", bundle: .module)
+    
+    /// A context-dependent purple cabbage color suitable for use in UI elements.
+    public static let componentPurpleCabbage = Color("purple.cabbage", bundle: .module)
     
     /// A context-dependent raspberry color suitable for use in UI elements.
     public static let componentRaspberry = Color("raspberry", bundle: .module)
     
-    /// A context-dependent softGrey color suitable for use in UI elements.
+    /// A context-dependent smoothie color suitable for use in UI elements.
+    public static let componentSmoothie = Color("smoothie", bundle: .module)
+    
+    /// A context-dependent soft cherry color suitable for use in UI elements.
+    public static let componentSoftCherry = Color("soft.cherry", bundle: .module)
+    
+    /// A context-dependent soft grey color suitable for use in UI elements.
     public static let componentSoftGrey = Color("soft.grey", bundle: .module)
     
     /// A context-dependent spearmint color suitable for use in UI elements.
     public static let componentSpearmint = Color("spearmint", bundle: .module)
     
-    /// A context-dependent warmGrey color suitable for use in UI elements.
+    /// A context-dependent unripe lemon color suitable for use in UI elements.
+    public static let componentUnripeLemon = Color("unripe.lemon", bundle: .module)
+    
+    /// A context-dependent warm grey color suitable for use in UI elements.
     public static let componentWarmGrey = Color("warm.grey", bundle: .module)
-    
-    /// A context-dependent cyanDream color suitable for use in UI elements.
-    public static let componentCyanDream = Color("cyan.dream", bundle: .module)
-    
-    /// A context-dependent softViolet color suitable for use in UI elements.
-    public static let componentSoftViolet = Color("soft.violet", bundle: .module)
-    
-    /// A context-dependent pinkPop color suitable for use in UI elements.
-    public static let componentPinkPop = Color("pink.pop", bundle: .module)
-    
-    /// A context-dependent paleYellow color suitable for use in UI elements.
-    public static let componentPaleYellow = Color("pale.yellow", bundle: .module)
-    
-    /// A context-dependent aubergine color suitable for use in UI elements.
-    public static let componentAubergine = Color("aubergine", bundle: .module)
-    
-    /// A context-dependent wineStain color suitable for use in UI elements.
-    public static let componentWineStain = Color("wine.stain", bundle: .module)
-    
-    /// A context-dependent superCyan color suitable for use in UI elements.
-    public static let componentSuperCyan = Color("super.cyan", bundle: .module)
-    
-    /// A context-dependent melon color suitable for use in UI elements.
-    public static let componentMelon = Color("melon", bundle: .module)
-    
-    /// A context-dependent whiteWash color suitable for use in UI elements.
-    public static let componentwhiteWash = Color("white.wash", bundle: .module)
-    
-    /// A context-dependent innerRind color suitable for use in UI elements.
-    public static let componentInnerRind = Color("inner.rind", bundle: .module)
-    
-    /// A context-dependent outerRind color suitable for use in UI elements.
-    public static let componentOuterRind = Color("outer.rind", bundle: .module)
-    
-    /// A context-dependent softPeach color suitable for use in UI elements.
-    public static let componentSoftPeach = Color("soft.peach", bundle: .module)
-    
-    /// A context-dependent softGreen color suitable for use in UI elements.
-    public static let componentSoftGreen = Color("soft.green", bundle: .module)
-    
-    /// A context-dependent paleGreen color suitable for use in UI elements.
-    public static let componentPaleGreen = Color("pale.green", bundle: .module)
-    
-    /// A context-dependent nuclear color suitable for use in UI elements.
-    public static let componentNuclear = Color("nuclear", bundle: .module)
 }
 
 extension ShapeStyle where Self == Color {
     
-    /// A context-dependent apple color suitable for use in UI elements.
-    public static var componentApple: Color {
-        .componentApple
+    /// A context-dependent aqua color suitable for use in UI elements.
+    public static var componentAqua: Color {
+        .componentAqua
     }
     
-    /// A context-dependent blueberry color suitable for use in UI elements.
-    public static var componentBlueberry: Color {
-        .componentBlueberry
+    /// A context-dependent brambleberry color suitable for use in UI elements.
+    public static var componentBrambleberry: Color {
+        .componentBrambleberry
     }
     
-    /// A context-dependent coolGrey color suitable for use in UI elements.
+    /// A context-dependent canadian sky color suitable for use in UI elements.
+    public static var componentCanadianSky: Color {
+        .componentCanadianSky
+    }
+    
+    /// A context-dependent clementine color suitable for use in UI elements.
+    public static var componentClementine: Color {
+        .componentClementine
+    }
+    
+    /// A context-dependent concord color suitable for use in UI elements.
+    public static var componentConcord: Color {
+        .componentConcord
+    }
+    
+    /// A context-dependent cool grey color suitable for use in UI elements.
     public static var componentCoolGrey: Color {
         .componentCoolGrey
     }
     
-    /// A context-dependent dragronfruit color suitable for use in UI elements.
-    public static var componentDragronfruit: Color {
-        .componentDragronfruit
+    /// A context-dependent eggplant color suitable for use in UI elements.
+    public static var componentEggplant: Color {
+        .componentEggplant
     }
     
-    /// A context-dependent grape color suitable for use in UI elements.
-    public static var componentGrape: Color {
-        .componentGrape
+    /// A context-dependent inside lime color suitable for use in UI elements.
+    public static var componentInsideLime: Color {
+        .componentInsideLime
     }
     
-    /// A context-dependent greyDark color suitable for use in UI elements.
-    public static var componentGreyDark: Color {
-        .componentGreyDark
+    /// A context-dependent linen color suitable for use in UI elements.
+    public static var componentLinen: Color {
+        .componentLinen
     }
     
-    /// A context-dependent koolaid color suitable for use in UI elements.
-    public static var componentKoolaid: Color {
-        .componentKoolaid
+    /// A context-dependent mountain sky color suitable for use in UI elements.
+    public static var componentMountainSky: Color {
+        .componentMountainSky
     }
     
-    /// A context-dependent lemonDrop color suitable for use in UI elements.
-    public static var componentLemonDrop: Color {
-        .componentLemonDrop
+    /// A context-dependent nouns black color suitable for use in UI elements.
+    public static var componentNounsBlack: Color {
+        .componentNounsBlack
     }
     
-    /// A context-dependent peach color suitable for use in UI elements.
-    public static var componentPeach: Color {
-        .componentPeach
+    /// A context-dependent nuclear mint color suitable for use in UI elements.
+    public static var componentNuclearMint: Color {
+        .componentNuclearMint
     }
     
-    /// A context-dependent puke color suitable for use in UI elements.
-    public static var componentPuke: Color {
-        .componentPuke
+    /// A context-dependent october sky color suitable for use in UI elements.
+    public static var componentOctoberSky: Color {
+        .componentOctoberSky
+    }
+    
+    /// A context-dependent orange cream color suitable for use in UI elements.
+    public static var componentOrangeCream: Color {
+        .componentOrangeCream
+    }
+    
+    /// A context-dependent peachy color suitable for use in UI elements.
+    public static var componentPeachy: Color {
+        .componentPeachy
+    }
+    
+    /// A context-dependent perriwinkle color suitable for use in UI elements.
+    public static var componentPerriwinkle: Color {
+        .componentPerriwinkle
+    }
+    
+    /// A context-dependent purple cabbage color suitable for use in UI elements.
+    public static var componentPurpleCabbage: Color {
+        .componentPurpleCabbage
     }
     
     /// A context-dependent raspberry color suitable for use in UI elements.
@@ -155,7 +175,17 @@ extension ShapeStyle where Self == Color {
         .componentRaspberry
     }
     
-    /// A context-dependent softGrey color suitable for use in UI elements.
+    /// A context-dependent smoothie color suitable for use in UI elements.
+    public static var componentSmoothie: Color {
+        .componentSmoothie
+    }
+    
+    /// A context-dependent soft cherry color suitable for use in UI elements.
+    public static var componentSoftCherry: Color {
+        .componentSoftCherry
+    }
+    
+    /// A context-dependent soft grey color suitable for use in UI elements.
     public static var componentSoftGrey: Color {
         .componentSoftGrey
     }
@@ -165,83 +195,13 @@ extension ShapeStyle where Self == Color {
         .componentSpearmint
     }
     
-    /// A context-dependent warmGrey color suitable for use in UI elements.
+    /// A context-dependent unripe lemon color suitable for use in UI elements.
+    public static var componentUnripeLemon: Color {
+        .componentUnripeLemon
+    }
+    
+    /// A context-dependent warm grey color suitable for use in UI elements.
     public static var componentWarmGrey: Color {
         .componentWarmGrey
-    }
-    
-    /// A context-dependent cyanDream color suitable for use in UI elements.
-    public static var componentCyanDream: Color {
-        .componentCyanDream
-    }
-    
-    /// A context-dependent softViolet color suitable for use in UI elements.
-    public static var componentSoftViolet: Color {
-        .componentSoftViolet
-    }
-    
-    /// A context-dependent pinkPop color suitable for use in UI elements.
-    public static var componentPinkPop: Color {
-        .componentPinkPop
-    }
-    
-    /// A context-dependent paleYellow color suitable for use in UI elements.
-    public static var componentPaleYellow: Color {
-        .componentPaleYellow
-    }
-    
-    /// A context-dependent aubergine color suitable for use in UI elements.
-    public static var componentAubergine: Color {
-        .componentAubergine
-    }
-    
-    /// A context-dependent wineStain color suitable for use in UI elements.
-    public static var componentWineStain: Color {
-        .componentWineStain
-    }
-    
-    /// A context-dependent superCyan color suitable for use in UI elements.
-    public static var componentSuperCyan: Color {
-        .componentSuperCyan
-    }
-    
-    /// A context-dependent melon color suitable for use in UI elements.
-    public static var componentMelon: Color {
-        .componentMelon
-    }
-    
-    /// A context-dependent whiteWash color suitable for use in UI elements.
-    public static var componentwhiteWash: Color {
-        .componentwhiteWash
-    }
-    
-    /// A context-dependent innerRind color suitable for use in UI elements.
-    public static var componentInnerRind: Color {
-        .componentInnerRind
-    }
-    
-    /// A context-dependent outerRind color suitable for use in UI elements.
-    public static var componentOuterRind: Color {
-        .componentOuterRind
-    }
-    
-    /// A context-dependent softPeach color suitable for use in UI elements.
-    public static var componentSoftPeach: Color {
-        .componentSoftPeach
-    }
-    
-    /// A context-dependent softGreen color suitable for use in UI elements.
-    public static var componentSoftGreen: Color {
-        .componentSoftGreen
-    }
-    
-    /// A context-dependent paleGreen color suitable for use in UI elements.
-    public static var componentPaleGreen: Color {
-        .componentPaleGreen
-    }
-    
-    /// A context-dependent nuclear color suitable for use in UI elements.
-    public static var componentNuclear: Color {
-        .componentNuclear
     }
 }
