@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Sm-Absent.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
