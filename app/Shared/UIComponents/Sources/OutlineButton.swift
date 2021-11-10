@@ -1,17 +1,17 @@
 //
-//  SoftButton.swift
+//  OutlineButton.swift
 //  
 //
-//  Created by Mohammed Ibrahim on 2021-10-29.
+//  Created by Mohammed Ibrahim on 2021-11-09.
 //
 
 import SwiftUI
 
-/// The button style configuration for the SoftButton
-public struct SoftButtonStyle<Label: View>: ButtonStyle {
+/// The button style configuration for the StandardButton
+public struct OutlineButtonStyle<Label: View>: ButtonStyle {
     
     /// The height of the button
-    let fill: Set<SoftButton<Label>.Fill>
+    let fill: Set<OutlineButton<Label>.Fill>
     
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
@@ -26,53 +26,22 @@ public struct SoftButtonStyle<Label: View>: ButtonStyle {
                     .offset(x: 0, y: 2)
                     .opacity(configuration.isPressed ? 1 : 0)
             }
-            .background(Color.black.opacity(configuration.isPressed ? 0.1 : 0.05))
+            .background(Color.white)
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundColor(Color.black.opacity(0.08))
+                    .opacity(configuration.isPressed ? 1 : 0)
+            }
             .cornerRadius(6)
+            .overlay {
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(Color.black, lineWidth: 2)
+            }
             .animation(.spring())
     }
 }
 
-///
-public struct StandardButtonLabel: View {
-    
-    /// The icon for the button
-    let image: Image?
-    
-    /// The text for the button, appearing on the right side of the icon
-    let text: String?
-    
-    /// Boolean value to determine whether the button should be full width
-    let fullWidth: Bool
-    
-    private var iconOnly: Bool {
-        return image != nil && text == nil
-    }
-    
-    public var body: some View {
-        HStack(spacing: 10) {
-            if let text = text {
-                Text(text)
-                    .font(Font.body.weight(.medium))
-            }
-            
-            if fullWidth {
-                Spacer()
-            }
-            
-            if let image = image {
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 25, height: 25, alignment: .center)
-                    .font(Font.body.weight(.medium))
-            }
-        }
-        .padding(16)
-    }
-}
-
-///
-public struct SoftButton<Label: View>: View {
+public struct OutlineButton<Label: View>: View {
     
     /// Enumeration declaration for the fill mode of the button
     public enum Fill {
@@ -93,7 +62,7 @@ public struct SoftButton<Label: View>: View {
     /// Using a custom label view.
     ///
     /// ```swift
-    /// SoftButton {
+    /// OutlineButton {
     ///     HStack {
     ///         Image(systemName: "arrow.clockwise")
     ///             .font(Font.body.weight(.medium))
@@ -125,7 +94,7 @@ public struct SoftButton<Label: View>: View {
     /// Using a standard button label.
     ///
     /// ```swift
-    /// SoftButton(systemImage: "xmark",
+    /// OutlineButton(systemImage: "xmark",
     ///              text: "Cancel",
     ///              action: {})
     /// ```
@@ -133,7 +102,7 @@ public struct SoftButton<Label: View>: View {
     /// Using a standard button label, with only an icon.
     ///
     /// ```swift
-    /// SoftButton(systemImage: "xmark",
+    /// OutlineButton(systemImage: "xmark",
     ///              action: {})
     ///
     /// ```
@@ -162,18 +131,18 @@ public struct SoftButton<Label: View>: View {
     /// Using a standard button label, with only text
     ///
     /// ```swift
-    /// SoftButton(text: "Cancel",
+    /// OutlineButton(text: "Cancel",
     ///              action: {})
     ///
     /// HStack {
-    ///     SoftButton(text: "Cancel",
+    ///     OutlineButton(text: "Cancel",
     ///                  action: {},
-    ///                  fill: [.width, .height])
+    ///                  fill: [.width])
     ///         .frame(maxHeight: .infinity)
     ///
-    ///     SoftButton(text: "Save",
+    ///     OutlineButton(text: "Save",
     ///                  action: {},
-    ///                 fill: [.width, .height])
+    ///                 fill: [.width])
     ///         .frame(maxWidth: .infinity)
     ///
     ///  }.frame(height: 50)
@@ -205,34 +174,34 @@ public struct SoftButton<Label: View>: View {
         } label: {
             label
         }
-        .buttonStyle(SoftButtonStyle(fill: fill))
+        .buttonStyle(OutlineButtonStyle(fill: fill))
     }
 }
 
-struct Previews: PreviewProvider {
+struct OutlineButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             VStack {
-                SoftButton(systemImage: "arrow.right", text: "Example", action: {}, fill: [.width])
+                OutlineButton(systemImage: "arrow.right", text: "Example", action: {}, fill: [.width])
                 
                 HStack {
-                    SoftButton(systemImage: "hand.thumbsup.fill", text: "Example", action: {}, fill: [.width])
-                    SoftButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
+                    OutlineButton(systemImage: "hand.thumbsup.fill", text: "Example", action: {}, fill: [.width])
+                    OutlineButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
                 }
             }.padding()
             .background(Color(.sRGB, red: 253/255, green: 226/255, blue: 129/255, opacity: 1.0))
             
             VStack {
-                SoftButton(systemImage: "arrow.right", text: "Example", action: {}, fill: [.width])
+                OutlineButton(systemImage: "arrow.right", text: "Example", action: {}, fill: [.width])
                 
                 HStack {
-                    SoftButton(systemImage: "hand.thumbsup.fill", text: "Example", action: {}, fill: [.width])
-                    SoftButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
+                    OutlineButton(systemImage: "hand.thumbsup.fill", text: "Example", action: {}, fill: [.width])
+                    OutlineButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
                 }
                 
                 HStack {
-                    SoftButton(systemImage: "hand.thumbsup.fill", action: {})
-                    SoftButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
+                    OutlineButton(systemImage: "hand.thumbsup.fill", action: {})
+                    OutlineButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
                 }
             }.padding()
         }
