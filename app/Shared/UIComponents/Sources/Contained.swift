@@ -13,20 +13,25 @@ import SwiftUI
 public struct ContainedLabel: ViewModifier {
     static public let defaultPadding = EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
     
-    private let color: Color
+    private let textColor: Color
+    
+    private let backgroundColor: Color
+    
     private let padding: EdgeInsets
     
-    public init(color: Color, padding: EdgeInsets) {
+    public init(textColor: Color, backgroundColor: Color, padding: EdgeInsets) {
+        self.textColor = textColor
+        self.backgroundColor = backgroundColor
         self.padding = padding
-        self.color = color
     }
 
     public func body(content: Content) -> some View {
         content
-            .foregroundColor(color)
-            .padding(padding)
-            .background(color.opacity(0.25))
-            .cornerRadius(8)
+            .padding(.vertical, 4)
+            .padding(.horizontal, 10)
+            .foregroundColor(textColor)
+            .background(backgroundColor)
+            .clipShape(Capsule())
     }
 }
 
@@ -37,13 +42,13 @@ extension Label {
     /// to a label view:
     ///
     ///     Label("Sun", systemImage: "sun.max")
-    ///         .contained(color: .red)
+    ///         .contained(textColor: .white, backgroundColor: .blue)
     ///
     /// - Parameter color: The background and foreground color of the contained label
     /// - Parameter padding: The padding to apply to each edge of the resulting contained label
     ///
-    public func contained(color: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
-        modifier(ContainedLabel(color: color, padding: padding))
+    public func contained(textColor: Color, backgroundColor: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
+        modifier(ContainedLabel(textColor: textColor, backgroundColor: backgroundColor, padding: padding))
     }
 }
 
@@ -54,12 +59,12 @@ extension Text {
     /// to a text view:
     ///
     ///     Text("Hello")
-    ///         .contained(color: .red)
+    ///         .contained(textColor: .white, backgroundColor: .blue)
     ///
     /// - Parameter color: The background and foreground color of the contained text
     /// - Parameter padding: The padding to apply to each edge of the resulting contained text
     ///
-    public func contained(color: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
-        modifier(ContainedLabel(color: color, padding: padding))
+    public func contained(textColor: Color, backgroundColor: Color, padding: EdgeInsets = ContainedLabel.defaultPadding) -> some View {
+        modifier(ContainedLabel(textColor: textColor, backgroundColor: backgroundColor, padding: padding))
     }
 }
