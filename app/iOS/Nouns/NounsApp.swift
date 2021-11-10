@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
+import UIComponents
 
 @main
 struct NounsApp: App {
-
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  
+  init() {
+    UIComponents.configure()
+  }
+  
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
     }
+  }
 }
