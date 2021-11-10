@@ -25,6 +25,9 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
     /// A view to be the shown as the main content in the bottom sheet
     private let sheetContent: SheetContent
     
+    /// A boolean value to show or hide the dimming view beneath the sheet and above the underlying content
+    private let showDimmingView: Bool
+    
     /// Initializes a view modification with a binding boolean for presentation and any content for a bottom sheet
     ///
     ///
@@ -33,41 +36,50 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
     ///   - content: Any view to be the content of the bottom sheet
     public init(
         isPresented: Binding<Bool>,
-        @ViewBuilder content: () -> SheetContent
+        @ViewBuilder content: () -> SheetContent,
+        showDimmingView: Bool = true
     ) {
         self._isPresented = isPresented
         self.sheetContent = content()
+        self.showDimmingView = showDimmingView
     }
     
     public func body(content: Content) -> some View {
         ZStack {
             content
+                .zIndex(1)
             
             if isPresented {
-                Color.clear
+                Color.black
+                    .zIndex(2)
+                    .opacity(showDimmingView ? 0.2 : 0)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         isPresented.toggle()
                     }
+                    .ignoresSafeArea()
                 
                 VStack {
                     Spacer()
                     
                     sheetContent
-                        .zIndex(1)
-                        .padding(.bottom, 20)
+                        .frame(maxWidth: .infinity)
                         .background(Color.white)
-                        .cornerRadius(32, corners: [.topLeft, .topRight])
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.black, lineWidth: 2)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 20)
                         .offset(x: 0, y: translation)
                         .gesture(
                             DragGesture()
                                 .onChanged { self.dragChanged($0) }
                                 .onEnded { self.dragEnded($0) }
                         )
-                        .shadow(color: Color.black.opacity(0.1), radius: 24, x: 0, y: 0)
-                        .frame(maxWidth: .infinity)
                 }
-                .ignoresSafeArea()
+                .zIndex(3)
                 .transition(.move(edge: .bottom))
                 .animation(.spring())
             }
@@ -131,7 +143,7 @@ extension View {
 
 // TODO: - Just an example for the review process, will remove once approved.
 struct BindingContainer : View {
-     @State private var isPresented = false
+     @State private var isPresented = true
 
      var body: some View {
          Button(action: {
@@ -140,20 +152,13 @@ struct BindingContainer : View {
              Text("Click Me")
          })
          .bottomSheet(isPresented: $isPresented) {
-             VStack(alignment: .center, spacing: 8) {
-                 Text("Are you sure you want to cancel?")
-                     .bold()
-                     .padding(.bottom, 8)
-                 Text("Yes")
-                     .bold()
-                     .padding()
-                     .foregroundColor(Color.black.opacity(0.4))
-                 Divider()
-                 Text("No")
-                     .bold()
-                     .padding()
-                     .foregroundColor(Color.black.opacity(0.4))
-             }.padding(24)
+             VStack(alignment: .leading, spacing: 20) {
+                 Text("What is this?")
+                     .font(Font.title.bold())
+                 Text("Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.")
+                     .font(.body)
+             }.padding(16)
+            .padding(.bottom, 4)
          }
      }
 }

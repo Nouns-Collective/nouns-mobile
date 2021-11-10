@@ -40,5 +40,4 @@ excluded:
   - NounsWatchUITests
   - .build # Where Swift Package Manager checks out dependency sources
   - iOS/Nouns/Utils/R.generated.swift
-  - Shared/Services/Sources/GraphQL/Internal
   - WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift
