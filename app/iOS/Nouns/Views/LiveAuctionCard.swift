@@ -43,39 +43,11 @@ struct LiveAuctionCard: View {
         glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
         accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
       )
-    }, label: {
-      HStack(alignment: .bottom) {
-          VStack(alignment: .leading, spacing: 4) {
-              Text(noun)
-                  .font(.title2)
-                  .fontWeight(.semibold)
-              
-              Text("Oct 5 2011")
-                  .font(.caption)
-          }
-          
-          Spacer()
-          
-          VStack(alignment: .leading, spacing: 4) {
-              Text("269.69")
-                  .fontWeight(.medium)
-              
-              Text("Current Bid")
-                  .font(.caption)
-          }
-        
-        Spacer()
-        
-        VStack(alignment: .leading, spacing: 4) {
-            Text("00:08:03")
-                .font(.caption)
-                .contained(color: Color.componentRaspberry)
-
-            Text("Remaining")
-                .font(.caption)
-        }
-      }
-    }, roundedCorners: [.bottomLeft, .bottomRight])
+    }, header: noun, accessoryImage: Image(systemName: "arrow.up.right")) {
+        CardDetailView(header: "4h 17m 23s", headerIcon: nil, subheader: "Remaining")
+    } rightDetail: {
+        CardDetailView(header: "89.00", headerIcon: Image(systemName: "dollarsign.circle"), subheader: "Current bid")
+    }
   }
 }
 

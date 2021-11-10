@@ -64,13 +64,13 @@ struct OnChainNounProfileCard: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         
         HStack {
-          PilledButton(systemImage: "square.and.arrow.up", text: "Share", action: {
+          SoftButton(systemImage: "square.and.arrow.up", text: "Share", action: {
             //
-          }, appearance: .custom(color: Color.componentSoftGrey), fill: [.width])
+          }, fill: [.width])
 
-          PilledButton(systemImage: "shuffle", text: "Remix", action: {
+          SoftButton(systemImage: "shuffle", text: "Remix", action: {
             //
-          }, appearance: .custom(color: Color.componentSoftGrey), fill: [.width])
+          }, fill: [.width])
         }.padding(.top, 20)
       }
     }

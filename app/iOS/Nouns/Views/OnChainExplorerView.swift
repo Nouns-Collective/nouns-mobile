@@ -19,12 +19,13 @@ struct OnChainExplorerView: View {
     ZStack(alignment: .topTrailing) {
       ScrollViewReader { proxy in
         ScrollView(.vertical, showsIndicators: false) {
-          VStack(spacing: 40) {
+          VStack(spacing: 20) {
             LiveAuctionCard(noun: "Noun 64")
-              .padding(.horizontal, -20)
             
             OnChainNounsView(animation: animation, selected: $selected, isPresentingActivity: $isPresentingActivity)
-          }
+          }.padding(.horizontal, 20)
+          .padding(.top, 60)
+          .padding(.bottom, 40)
         }
         .ignoresSafeArea()
         .onChange(of: selected) { newValue in
@@ -37,11 +38,11 @@ struct OnChainExplorerView: View {
       }
       
       if selected != nil {
-        PilledButton(systemImage: "xmark", action: {
+        SoftButton(systemImage: "xmark", action: {
           withAnimation(.spring()) {
             self.selected = nil
           }
-        }, appearance: .light).padding(.trailing, 20)
+        }).padding(.trailing, 20)
       }
     }.bottomSheet(isPresented: $isPresentingActivity) {
       NounderActivitiesSheet(isPresented: $isPresentingActivity)

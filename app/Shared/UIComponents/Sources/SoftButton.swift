@@ -13,28 +13,6 @@ public struct SoftButtonStyle<Label: View>: ButtonStyle {
     /// The height of the button
     public let fill: Set<SoftButton<Label>.Fill>
     
-    /// Background color determined by appearance property
-    private var backgroundColor: Color {
-        switch appearance {
-        case .dark:
-            return Color.black.opacity(0.85)
-        case .light:
-            return Color.white.opacity(0.85)
-        case .custom(let color):
-            return color
-        }
-    }
-    
-    /// Foreground color determined by appearance property
-    private var foregroundColor: Color {
-        switch appearance {
-        case .dark:
-            return Color.white
-        default:
-            return Color.black
-        }
-    }
-    
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label

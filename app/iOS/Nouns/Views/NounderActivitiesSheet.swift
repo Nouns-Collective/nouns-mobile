@@ -51,9 +51,9 @@ struct NounderActivitiesSheet: View {
         
         Spacer()
         
-        PilledButton(systemImage: "xmark", action: {
+        SoftButton(systemImage: "xmark", action: {
           isPresented.toggle()
-        }, appearance: .custom(color: Color.componentSoftGrey))
+        })
       }.padding(.bottom, 40)
       
       VStack(spacing: 40) {
