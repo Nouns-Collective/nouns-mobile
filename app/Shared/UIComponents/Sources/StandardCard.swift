@@ -24,7 +24,7 @@ public struct CardDetailView: View {
                 HStack {
                     Spacer().frame(width: headerIcon == nil ? 0 : 2)
                     Text(header)
-                        .fontWeight(.bold)
+                        .font(Font.custom(.bold, relativeTo: .footnote))
                 }
             } icon: {
                 headerIcon?
@@ -32,7 +32,7 @@ public struct CardDetailView: View {
             }.labelStyle(.titleAndIcon(spacing: 0))
             
             Text(subheader)
-                .font(.caption)
+                .font(Font.custom(.regular, relativeTo: .footnote))
         }
     }
 }
@@ -134,7 +134,7 @@ public struct StandardCard<Media: View, Label: View>: View {
                     Rectangle()
                         .stroke(Color.black, lineWidth: 2)
                 }
-
+            
             label
                 .padding(20)
         }
@@ -167,8 +167,7 @@ public struct StandardCardFooter: View {
         VStack(alignment: .leading, spacing: 25) {
             HStack(alignment: .top) {
                 Text(header)
-                    .font(.title)
-                    .fontWeight(.semibold)
+                    .font(Font.custom(.bold, relativeTo: .title2))
                 
                 Spacer()
                 
