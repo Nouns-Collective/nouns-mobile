@@ -1,5 +1,5 @@
 //
-//  PilledButton.swift
+//  SoftButton.swift
 //  
 //
 //  Created by Mohammed Ibrahim on 2021-10-29.
@@ -8,13 +8,10 @@
 import SwiftUI
 
 /// The button style configuration for the StandardButton
-public struct PilledButtonStyle<Label: View>: ButtonStyle {
-    
-    /// The appearance of the button (light/dark)
-    let appearance: PilledButton<Label>.Appearance
+public struct SoftButtonStyle<Label: View>: ButtonStyle {
     
     /// The height of the button
-    let fill: Set<PilledButton<Label>.Fill>
+    let fill: Set<SoftButton<Label>.Fill>
     
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
@@ -22,12 +19,16 @@ public struct PilledButtonStyle<Label: View>: ButtonStyle {
             .frame(maxWidth: fill.contains(.width) ? .infinity : nil, maxHeight: fill.contains(.height) ? .infinity : nil)
             .multilineTextAlignment(.center)
             .lineLimit(1)
-            .foregroundColor(appearance == .dark ? Color.white : Color.black)
-            .background(appearance == .dark ? Color.black.opacity(0.85) : Color.white.opacity(0.85))
-            .clipShape(Capsule())
-            .scaleEffect(configuration.isPressed ? 0.95 : 1)
-            .opacity(configuration.isPressed ? 0.8 : 1)
-            .animation(.spring(), value: 3)
+            .foregroundColor(Color.black)
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.black.opacity(0.2), lineWidth: 6)
+                    .offset(x: 0, y: 2)
+                    .opacity(configuration.isPressed ? 1 : 0)
+            }
+            .background(Color.black.opacity(configuration.isPressed ? 0.1 : 0.05))
+            .cornerRadius(6)
+            .animation(.spring())
     }
 }
 
@@ -40,32 +41,38 @@ public struct StandardButtonLabel: View {
     /// The text for the button, appearing on the right side of the icon
     let text: String?
     
+    /// Boolean value to determine whether the button should be full width
+    let fullWidth: Bool
+    
     private var iconOnly: Bool {
         return image != nil && text == nil
     }
     
     public var body: some View {
-        HStack(spacing: 6) {
-            if let image = image {
-                image
-                    .font(Font.body.weight(.medium))
-            }
-            
+        HStack(spacing: 10) {
             if let text = text {
                 Text(text)
                     .font(Font.body.weight(.medium))
             }
-        }.padding(.horizontal, iconOnly ? 0 : 6)
+            
+            if fullWidth {
+                Spacer()
+            }
+            
+            if let image = image {
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 25, height: 25, alignment: .center)
+                    .font(Font.body.weight(.medium))
+            }
+        }
+        .padding(16)
     }
 }
 
 ///
-public struct PilledButton<Label: View>: View {
-    
-    /// Enumeration declaration for the style for the button appearance (light/dark)
-    public enum Appearance {
-        case dark, light
-    }
+public struct SoftButton<Label: View>: View {
     
     /// Enumeration declaration for the fill mode of the button
     public enum Fill {
@@ -76,10 +83,7 @@ public struct PilledButton<Label: View>: View {
     private let label: Label
     
     /// The action for the button once tapped
-    private let action: () -> ()
-    
-    /// The appearance of the button (light/dark)
-    private let appearance: Appearance
+    private let action: () -> Void
     
     /// The fill mode for the buttons height and width
     private let fill: Set<Fill>
@@ -89,7 +93,7 @@ public struct PilledButton<Label: View>: View {
     /// Using a custom label view.
     ///
     /// ```swift
-    /// PilledButton {
+    /// SoftButton {
     ///     HStack {
     ///         Image(systemName: "arrow.clockwise")
     ///             .font(Font.body.weight(.medium))
@@ -109,13 +113,11 @@ public struct PilledButton<Label: View>: View {
     ///   - fill: A value to set the fill mode for the button's height and width
     public init(
         @ViewBuilder label: () -> Label,
-        action: @escaping () -> (),
-        appearance: Appearance = .dark,
+        action: @escaping () -> Void,
         fill: Set<Fill> = []
     ) {
         self.label = label()
         self.action = action
-        self.appearance = appearance
         self.fill = fill
     }
     
@@ -124,18 +126,16 @@ public struct PilledButton<Label: View>: View {
     /// Using a standard button label.
     ///
     /// ```swift
-    /// PilledButton(systemImage: "xmark",
+    /// SoftButton(systemImage: "xmark",
     ///              text: "Cancel",
-    ///              action: {},
-    ///              appearance: .dark)
+    ///              action: {})
     /// ```
     ///
     /// Using a standard button label, with only an icon.
     ///
     /// ```swift
-    /// PilledButton(systemImage: "xmark",
-    ///              action: {},
-    ///              appearance: .light)
+    /// SoftButton(systemImage: "xmark",
+    ///              action: {})
     ///
     /// ```
     ///
@@ -148,16 +148,14 @@ public struct PilledButton<Label: View>: View {
     public init(
         systemImage: String,
         text: String? = nil,
-        action: @escaping () -> (),
-        appearance: Appearance = .dark,
+        action: @escaping () -> Void,
         fill: Set<Fill> = []
     ) where Label == StandardButtonLabel {
         self.label = {
-            return StandardButtonLabel(image: Image(systemName: systemImage), text: text)
+            return StandardButtonLabel(image: Image(systemName: systemImage), text: text, fullWidth: fill.contains(.width))
         }()
         
         self.action = action
-        self.appearance = appearance
         self.fill = fill
     }
     
@@ -166,20 +164,17 @@ public struct PilledButton<Label: View>: View {
     /// Using a standard button label, with only text
     ///
     /// ```swift
-    /// PilledButton(text: "Cancel",
-    ///              action: {},
-    ///              appearance: .light)
+    /// SoftButton(text: "Cancel",
+    ///              action: {})
     ///
     /// HStack {
-    ///     PilledButton(text: "Cancel",
+    ///     SoftButton(text: "Cancel",
     ///                  action: {},
-    ///                  appearance: .light,
     ///                  fill: [.width, .height])
     ///         .frame(maxHeight: .infinity)
     ///
-    ///     PilledButton(text: "Save",
+    ///     SoftButton(text: "Save",
     ///                  action: {},
-    ///                  appearance: .dark,
     ///                 fill: [.width, .height])
     ///         .frame(maxWidth: .infinity)
     ///
@@ -196,16 +191,14 @@ public struct PilledButton<Label: View>: View {
     public init(
         image: Image? = nil,
         text: String? = nil,
-        action: @escaping () -> (),
-        appearance: Appearance = .dark,
+        action: @escaping () -> Void,
         fill: Set<Fill> = []
     ) where Label == StandardButtonLabel {
         self.label = {
-            return StandardButtonLabel(image: image, text: text)
+            return StandardButtonLabel(image: image, text: text, fullWidth: fill.contains(.width))
         }()
         
         self.action = action
-        self.appearance = appearance
         self.fill = fill
     }
     
@@ -214,8 +207,32 @@ public struct PilledButton<Label: View>: View {
             action()
         } label: {
             label
-                .padding(12)
         }
-        .buttonStyle(PilledButtonStyle(appearance: appearance, fill: fill))
+        .buttonStyle(SoftButtonStyle(fill: fill))
+    }
+}
+
+struct Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            VStack {
+                SoftButton(systemImage: "arrow.right", text: "Example", action: {}, fill: [.width])
+                
+                HStack {
+                    SoftButton(systemImage: "hand.thumbsup.fill", text: "Example", action: {}, fill: [.width])
+                    SoftButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
+                }
+            }.padding()
+            .background(Color(.sRGB, red: 253/255, green: 226/255, blue: 129/255, opacity: 1.0))
+            
+            VStack {
+                SoftButton(systemImage: "arrow.right", text: "Example", action: {}, fill: [.width])
+                
+                HStack {
+                    SoftButton(systemImage: "hand.thumbsup.fill", text: "Example", action: {}, fill: [.width])
+                    SoftButton(systemImage: "hand.thumbsdown", text: "Example", action: {}, fill: [.width])
+                }
+            }.padding()
+        }
     }
 }
