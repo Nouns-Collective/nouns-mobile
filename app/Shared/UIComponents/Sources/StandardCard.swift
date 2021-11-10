@@ -7,6 +7,36 @@
 
 import SwiftUI
 
+public struct CardDetailView: View {
+    
+    /// The string for the bold header of the detail view
+    let header: String
+    
+    /// An icon to display next to the header  (optional)
+    let headerIcon: Image?
+    
+    /// The string for the light caption text underneath the header in the detail view
+    let subheader: String
+    
+    public var body: some View {
+        VStack(alignment: .leading) {
+            Label {
+                HStack {
+                    Spacer().frame(width: headerIcon == nil ? 0 : 2)
+                    Text(header)
+                        .fontWeight(.bold)
+                }
+            } icon: {
+                headerIcon?
+                    .font(Font.body.bold())
+            }.labelStyle(.titleAndIcon(spacing: 0))
+            
+            Text(subheader)
+                .font(.caption)
+        }
+    }
+}
+
 public struct StandardCard<Media: View, Label: View>: View {
     
     /// The large media content appearing at the top of the card
@@ -65,29 +95,33 @@ public struct StandardCard<Media: View, Label: View>: View {
     ///
     ///  ```swift
     ///  StandardCard(media: {
-    ///     Rectangle()
-    ///         .fill(Color.red)
-    ///  }, header: "Noun 64", subheader: "Oct 04 2021",
-    ///     detail: "bob.eth", detailSubheader: "Winner")
+    ///      Rectangle()
+    ///          .fill(Color.gray.opacity(0.2))
+    ///          .frame(height: 400)
+    ///  }, header: "Noun 64", accessoryImage: Image(systemName: "arrow.up.right")) {
+    ///      CardDetailView(header: "4h 17m 23s", headerIcon: nil, subheader: "Remaining")
+    ///  } rightDetail: {
+    ///      CardDetailView(header: "89.00", headerIcon: Image(systemName: "dollarsign.circle"), subheader: "Current bid")
+    ///  }
     ///  ```
     ///
     /// - Parameters:
     ///   - media: A view for the media portion of the card (top)
     ///   - header: The header text, located on the top left of the footer
-    ///   - subheader: The subheader text, located on the bottom left of the footer (beneath the header)
-    ///   - detail: The detail text, located on the top right of the footer
-    ///   - detailSubheader: The detail's subheader, located on the bottom right of the footer
+    ///   - accessoryImage: A large image to display next to the header
+    ///   - leftDetail: A card detail view for the bottom left of the card
+    ///   - rightDetail: A card detail view for the bottom right of the card
     public init (
         @ViewBuilder media: () -> Media,
         header: String,
-        subheader: String,
-        detail: String,
-        detailSubheader: String,
+        accessoryImage: Image,
+        @ViewBuilder leftDetail: () -> CardDetailView,
+        @ViewBuilder rightDetail: () -> CardDetailView,
         roundedCorners: UIRectCorner = [.allCorners]
     ) where Label == StandardCardFooter {
         self.media = media()
         self.label = {
-            return StandardCardFooter(header: header, subheader: subheader, detail: detail, detailSubheader: detailSubheader)
+            return StandardCardFooter(header: header, accessoryImage: accessoryImage, leftDetail: leftDetail(), rightDetail: rightDetail())
         }()
         self.roundedCorners = roundedCorners
     }
@@ -96,13 +130,20 @@ public struct StandardCard<Media: View, Label: View>: View {
         VStack(spacing: 0) {
             media
                 .background(Color(uiColor: UIColor.lightGray.withAlphaComponent(0.2)))
+                .overlay {
+                    Rectangle()
+                        .stroke(Color.black, lineWidth: 2)
+                }
 
             label
                 .padding(20)
         }
         .background(Color.white)
-        .cornerRadius(20, corners: roundedCorners)
-        .shadow(color: Color.black.opacity(0.1), radius: 15, x: 0, y: 15)
+        .cornerRadius(12, corners: roundedCorners)
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.black, lineWidth: 2)
+        }
         .padding(.horizontal, 20)
     }
 }
@@ -113,34 +154,40 @@ public struct StandardCardFooter: View {
     /// The header text, located on the top left of the footer
     let header: String
     
-    /// The subheader text, located on the bottom left of the footer (beneath the header)
-    let subheader: String
+    /// A large image to display next to the header
+    let accessoryImage: Image
     
-    /// The detail text, located on the top right of the footer
-    let detail: String
+    /// A card detail view for the bottom left of the card
+    let leftDetail: CardDetailView
     
-    /// The detail's subheader, located on the bottom right of the footer
-    let detailSubheader: String
+    /// ThA card detail view for the bottom right of the card
+    let rightDetail: CardDetailView
     
     public var body: some View {
-        HStack(alignment: .bottom) {
-            VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 25) {
+            HStack(alignment: .top) {
                 Text(header)
-                    .font(.title2)
+                    .font(.title)
                     .fontWeight(.semibold)
                 
-                Text(subheader)
-                    .font(.caption)
+                Spacer()
+                
+                accessoryImage
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 25, height: 25, alignment: .top)
             }
             
-            Spacer()
-            
-            VStack(alignment: .leading) {
-                Text(detail)
-                    .fontWeight(.medium)
+            HStack(alignment: .bottom) {
+                HStack {
+                    leftDetail
+                    Spacer()
+                }
                 
-                Text(detailSubheader)
-                    .font(.caption)
+                HStack {
+                    rightDetail
+                    Spacer()
+                }
             }
         }
     }
