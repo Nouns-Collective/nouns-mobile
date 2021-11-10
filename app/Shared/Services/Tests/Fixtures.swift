@@ -8,6 +8,7 @@
 import Foundation
 @testable import Services
 
+// swiftlint:disable all
 final class Fixtures {
   
   static func data(contentOf filename: String, withExtension ext: String) -> Data {
