@@ -11,7 +11,7 @@ import SwiftUI
 public struct OutlineButtonStyle<Label: View>: ButtonStyle {
     
     /// The height of the button
-    let fill: Set<OutlineButton<Label>.Fill>
+    public let fill: Set<OutlineButton<Label>.Fill>
     
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration

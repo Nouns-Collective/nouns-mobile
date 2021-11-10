@@ -11,7 +11,7 @@ import SwiftUI
 public struct SoftButtonStyle<Label: View>: ButtonStyle {
     
     /// The height of the button
-    let fill: Set<SoftButton<Label>.Fill>
+    public let fill: Set<SoftButton<Label>.Fill>
     
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
