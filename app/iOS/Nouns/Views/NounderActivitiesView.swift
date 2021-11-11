@@ -9,28 +9,6 @@ import SwiftUI
 import Services
 import UIComponents
 
-/// <#Description#>
-/// - Parameters:
-///   - state: <#state description#>
-///   - action: <#action description#>
-/// - Returns: <#description#>
-func nounActivitiesReducer(state: ActivitiesState, action: ActivityAction) -> ActivitiesState {
-  fatalError("\(#function) must be implemented.")
-}
-
-/// <#Description#>
-struct ActivitiesState {
-  
-}
-
-/// <#Description#>
-enum ActivityAction {
-  case fetch(Noun)
-  case success([Activity])
-  case failure(Error)
-}
-
-/// <#Description#>
 struct NounderActivitiesView: View {
   @Binding var isPresented: Bool
   

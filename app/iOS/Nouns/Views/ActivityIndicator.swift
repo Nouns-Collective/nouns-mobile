@@ -8,14 +8,6 @@
 import SwiftUI
 import UIComponents
 
-/// <#Description#>
-enum ActivityIndicatorState {
-  case idle
-  case loading
-  case interactionRequired
-}
-
-/// <#Description#>
 struct ActivityIndicator: View {
   
   var body: some View {

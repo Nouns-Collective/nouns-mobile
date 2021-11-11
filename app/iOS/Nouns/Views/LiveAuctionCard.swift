@@ -9,35 +9,6 @@ import SwiftUI
 import UIComponents
 import Services
 
-/// <#Description#>
-/// - Parameter service: <#service description#>
-/// - Returns: <#description#>
-func liveAuctionMiddleware(service: Nouns) -> Middleware<LiveAuctionState, LiveAuctionAction> {
-  fatalError("\(#function) must be implemented.")
-}
-
-/// <#Description#>
-/// - Parameters:
-///   - state: <#state description#>
-///   - action: <#action description#>
-/// - Returns: <#description#>
-func liveAuctionReducer(state: inout LiveAuctionState, action: LiveAuctionAction) {
-  fatalError("\(#function) must be implemented.")
-}
-
-/// <#Description#>
-struct LiveAuctionState {
-  var auction: Auction
-}
-
-/// <#Description#>
-enum LiveAuctionAction {
-  case listen
-  case sink(Auction)
-  case failure(Error)
-}
-
-/// <#Description#>
 struct LiveAuctionCard: View {
   
   let noun: String
