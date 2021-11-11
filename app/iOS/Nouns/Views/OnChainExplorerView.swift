@@ -21,20 +21,18 @@ struct OnChainExplorerView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
       
-      ZStack(alignment: .topTrailing) {
-        ScrollView(.vertical, showsIndicators: false) {
-          VStack(spacing: 20) {
-            LiveAuctionCard(noun: "Noun 64")
-            
-            OnChainNounsView(animation: animation, selected: $selected, isPresentingActivity: $isPresentingActivity)
-          }.padding(.horizontal, 20)
-          .padding(.top, 60)
-          .padding(.bottom, 40)
-        }
-        .ignoresSafeArea()
-        .onChange(of: selected) { newValue in
-          isNounDetailPresented = newValue != nil
-        }
+      ScrollView(.vertical, showsIndicators: false) {
+        VStack(spacing: 20) {
+          LiveAuctionCard(noun: "Noun 64")
+          
+          OnChainNounsView(animation: animation, selected: $selected, isPresentingActivity: $isPresentingActivity)
+        }.padding(.horizontal, 20)
+        .padding(.top, 60)
+        .padding(.bottom, 40)
+      }
+      .ignoresSafeArea()
+      .onChange(of: selected) { newValue in
+        isNounDetailPresented = newValue != nil
       }
     }.sheet(isPresented: $isNounDetailPresented, onDismiss: {
       selected = nil

@@ -12,6 +12,8 @@ import UIComponents
 struct OnChainNounProfileView: View {
   @Binding var isPresented: Bool
   
+  @State var isActivityPresented: Bool = false
+  
   let noun: String
   let date: String
   let owner: String
@@ -78,16 +80,18 @@ struct OnChainNounProfileView: View {
                 Image("Holder", bundle: Bundle.SymbolBundle)
               }
               
-              Label {
+              Label(title: {
                 HStack {
                   Text("Activity")
                     .font(Font.custom(.regular, relativeTo: .subheadline))
                   Spacer()
                   Image("Md-Arrow-Right", bundle: Bundle.SymbolBundle)
                 }
-              } icon: {
+              }, icon: {
                 Image("History", bundle: Bundle.SymbolBundle)
-              }
+              })
+                .contentShape(Rectangle())
+                .onTapGesture { isActivityPresented.toggle() }
             }
             .labelStyle(.titleAndIcon(spacing: 14))
             .padding(.bottom, 40)
@@ -103,7 +107,9 @@ struct OnChainNounProfileView: View {
             }
           }
         }.padding([.bottom, .horizontal])
-      }
+      }.sheet(isPresented: $isActivityPresented, onDismiss: nil, content: {
+        NounderActivitiesView(isPresented: $isActivityPresented, domain: "bob.eth")
+      })
     }
   }
 }
