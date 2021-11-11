@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIComponents
 
 /// <#Description#>
 enum AppState {
@@ -14,6 +15,10 @@ enum AppState {
 
 @main
 struct AppMain: App {
+  
+  init() {
+    UIComponents.configure()
+  }
   
   var body: some Scene {
     WindowGroup {
