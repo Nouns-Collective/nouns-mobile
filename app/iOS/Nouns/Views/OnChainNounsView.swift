@@ -44,21 +44,14 @@ struct OnChainNounsView: View {
   var body: some View {
     LazyVGrid(columns: columns, spacing: 20) {
       ForEach(0..<6) { num in
-        if let selected = selected, selected == num {
-          OnChainNounProfileCard(animation: animation, noun: "Noun \(num)", date: "Oct 11 2021", owner: "bob.eth", isShowingActivity: $isPresentingActivity)
-            .id(num)
-            .matchedGeometryEffect(id: "noun-\(num)", in: animation)
-            .padding(.horizontal, -20)
-        } else {
-          OnChainNounCard(animation: animation, noun: "Noun \(num)", date: "Oct 11 2021", owner: "bob.eth")
-            .id(num)
-            .matchedGeometryEffect(id: "noun-\(num)", in: animation)
-            .onTapGesture {
-              withAnimation(.spring()) {
-                selected = num
-              }
+        OnChainNounCard(animation: animation, noun: "Noun \(num)", date: "Oct 11 2021", owner: "bob.eth")
+          .id(num)
+          .matchedGeometryEffect(id: "noun-\(num)", in: animation)
+          .onTapGesture {
+            withAnimation(.spring()) {
+              selected = num
             }
-        }
+          }
       }
     }
   }

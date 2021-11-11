@@ -12,12 +12,16 @@ import UIComponents
 struct OnChainExplorerView: View {
   @Namespace private var animation
   @State var selected: Int?
-  
+  @State var isNounDetailPresented: Bool = false
   @State var isPresentingActivity: Bool = false
   
   var body: some View {
-    ZStack(alignment: .topTrailing) {
-      ScrollViewReader { proxy in
+    ZStack {
+      LemonDrop()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ignoresSafeArea()
+      
+      ZStack(alignment: .topTrailing) {
         ScrollView(.vertical, showsIndicators: false) {
           VStack(spacing: 20) {
             LiveAuctionCard(noun: "Noun 64")
@@ -28,27 +32,15 @@ struct OnChainExplorerView: View {
           .padding(.bottom, 40)
         }
         .ignoresSafeArea()
-        .background(Gradie)
         .onChange(of: selected) { newValue in
-          if let newValue = newValue {
-            withAnimation {
-              proxy.scrollTo(newValue, anchor: .top)
-            }
-          }
+          isNounDetailPresented = newValue != nil
         }
       }
-      
-      if selected != nil {
-        SoftButton(systemImage: "xmark", action: {
-          withAnimation(.spring()) {
-            self.selected = nil
-          }
-        }).padding(.trailing, 20)
-      }
-    }.bottomSheet(isPresented: $isPresentingActivity) {
-      NounderActivitiesSheet(isPresented: $isPresentingActivity)
-        .padding(.bottom, 40)
-    }
+    }.sheet(isPresented: $isNounDetailPresented, onDismiss: {
+      selected = nil
+    }, content: {
+      OnChainNounProfileView(isPresented: $isNounDetailPresented, noun: "Noun: \(selected ?? 0)", date: "Oct 11 1961", owner: "bob.eth")
+    })
   }
 }
 

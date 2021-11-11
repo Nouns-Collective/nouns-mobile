@@ -62,7 +62,6 @@ struct NounderActivitiesSheet: View {
                 .font(Font.system(size: 18, weight: .regular, design: .default))
             }, icon: {
               Image(systemName: "hand.thumbsup.fill")
-                .foregroundColor(Color.componentNuclear)
             })
             
             Spacer()
@@ -72,7 +71,6 @@ struct NounderActivitiesSheet: View {
               .foregroundColor(Color.white)
               .padding(.horizontal, 12)
               .padding(.vertical, 4)
-              .background(Color.componentNuclear)
               .clipShape(Capsule())
           }
         }

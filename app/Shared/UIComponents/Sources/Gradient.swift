@@ -21,6 +21,8 @@ public struct CoolGreydient: ShapeStyle, View {
 /// A context-dependent WarmGreydient color suitable for use in UI elements.
 public struct WarmGreydient: ShapeStyle, View {
     
+    public init() {}
+    
     public var body: some View {
         LinearGradient(
             colors: [.componentWarmGrey, .componentOctoberSky],
@@ -42,7 +44,7 @@ public struct CherrySunset: ShapeStyle, View {
 
 /// A context-dependent Orangesicle color suitable for use in UI elements.
 public struct Orangesicle: ShapeStyle, View {
-    
+        
     public var body: some View {
         LinearGradient(
             colors: [.componentOrangeCream, .componentClementine],
@@ -65,6 +67,8 @@ public struct MangoChunks: ShapeStyle, View {
 /// A context-dependent LemonDrop color suitable for use in UI elements.
 public struct LemonDrop: ShapeStyle, View {
     
+    public init() {}
+
     public var body: some View {
         LinearGradient(
             colors: [.componentUnripeLemon, .componentSeriousMango],
