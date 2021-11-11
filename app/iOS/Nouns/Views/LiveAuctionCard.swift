@@ -43,11 +43,11 @@ struct LiveAuctionCard: View {
         glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
         accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
       )
-    }, header: noun, accessoryImage: Image(systemName: "arrow.up.right")) {
+    }, header: noun, accessoryImage: Image(systemName: "arrow.up.right"), leftDetail: {
         CardDetailView(header: "4h 17m 23s", headerIcon: nil, subheader: "Remaining")
-    } rightDetail: {
+    }, rightDetail: {
         CardDetailView(header: "89.00", headerIcon: Image(systemName: "dollarsign.circle"), subheader: "Current bid")
-    }
+    })
   }
 }
 
