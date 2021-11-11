@@ -28,6 +28,7 @@ struct OnChainExplorerView: View {
           .padding(.bottom, 40)
         }
         .ignoresSafeArea()
+        .background(Gradie)
         .onChange(of: selected) { newValue in
           if let newValue = newValue {
             withAnimation {

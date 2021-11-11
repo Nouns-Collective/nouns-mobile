@@ -27,8 +27,8 @@ struct OnChainNounCard: View {
         accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
       )
         .matchedGeometryEffect(id: "\(noun)-puzzle", in: animation)
-    }, smallHeader: noun, accessoryImage: Image(systemName: "arrow.up.right")) {
+    }, smallHeader: noun, accessoryImage: Image(systemName: "arrow.up.right"), detail: {
       CardDetailView(header: "89.00", headerIcon: Image(systemName: "dollarsign.circle"), subheader: nil)
-    }
+    })
   }
 }

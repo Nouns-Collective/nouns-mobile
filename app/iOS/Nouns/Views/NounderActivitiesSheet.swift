@@ -30,10 +30,8 @@ enum ActivityAction {
   case failure(Error)
 }
 
-
 /// <#Description#>
 struct NounderActivitiesSheet: View {
-  
   @Binding var isPresented: Bool
   
   var body: some View {
