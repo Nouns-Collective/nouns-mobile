@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A full width view that houses any content and adds a rounded black border and white background
-struct PlainCell<Content: View>: View {
+public struct PlainCell<Content: View>: View {
     
     /// A generic view for the content of the cell
     var content: Content
@@ -43,7 +43,7 @@ struct PlainCell<Content: View>: View {
         self.content = content()
     }
     
-    var body: some View {
+    public var body: some View {
         VStack {
             content
                 .padding()

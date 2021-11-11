@@ -18,6 +18,12 @@ public struct CardDetailView: View {
     /// The string for the light caption text underneath the header in the detail view (optional)
     let subheader: String?
     
+    public init(header: String, headerIcon: Image? = nil, subheader: String? = nil) {
+        self.header = header
+        self.headerIcon = headerIcon
+        self.subheader = subheader
+    }
+    
     public var body: some View {
         VStack(alignment: .leading) {
             Label {
