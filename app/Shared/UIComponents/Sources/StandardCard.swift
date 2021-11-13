@@ -245,14 +245,14 @@ public struct SmallCardFooter: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .top) {
                 Text(header)
-                    .font(Font.custom(.bold, relativeTo: .title3))
+                    .font(Font.custom(.bold, relativeTo: .body))
                 
                 Spacer()
                 
                 accessoryImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 25, height: 25, alignment: .top)
+                    .frame(width: 16, height: 16, alignment: .top)
             }
             
             detail

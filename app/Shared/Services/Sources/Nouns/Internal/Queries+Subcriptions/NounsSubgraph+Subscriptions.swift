@@ -9,23 +9,36 @@ import Foundation
 
 extension NounsSubgraph {
     
-    internal struct LiveAuctionSubscription: GraphQLSubscription {
-        internal var url: URL { CloudConfiguration.Nouns.subscription.url }
+    internal struct LiveAuctionSubscription: GraphQLQuery {//} GraphQLSubscription {
+        internal let url: URL = CloudConfiguration.Nouns.query.url
         
         internal var operationDefinition: String {
           """
           {
-            auctions(orderDirection: desc, first: 1, orderBy: startTime) {
+            auctions( where: {settled: false}) {
               id
               amount
               startTime
               endTime
+              settled
+          
+              noun {
+                id
+                owner {
+                  id
+                }
+                seed {
+                  background
+                  head
+                  glasses
+                  accessory
+                  body
+                }
+              }
+              
               bids(orderDirection: desc, first: 10) {
                 id
                 amount
-                noun {
-                  id
-                }
               }
             }
           }

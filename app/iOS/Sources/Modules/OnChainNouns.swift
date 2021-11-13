@@ -11,7 +11,7 @@ import Combine
 
 /// <#Description#>
 struct FetchOnChainNounsAction: Action {
-  let limit = 10
+  let limit = 100
   let after = 0
 }
 
@@ -32,6 +32,7 @@ func onChainNounsMiddleware() -> Middleware<AppState> {
    switch action {
    case let fetch as FetchOnChainNounsAction:
      return AppCore.shared.nounsService.fetchOnChainNouns(limit: fetch.limit, after: fetch.after)
+       .retry(2)
        .map { FetchOnChainNounsSucceeded(nouns: $0) }
        .catch { Just(FetchOnChainNounsFailed(error: $0)) }
        .eraseToAnyPublisher()
@@ -64,6 +65,7 @@ func onChainNounsReducer(state: OnChainNouns, action: Action) -> OnChainNouns {
   default:
     break
   }
+  
   return state
 }
 
@@ -72,4 +74,6 @@ struct OnChainNouns {
   var nouns: [Noun] = []
   var isLoading = false
   var error: Error?
+  
+  var activities = OnChainNounActivities()
 }

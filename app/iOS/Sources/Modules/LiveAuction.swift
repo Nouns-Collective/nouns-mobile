@@ -29,6 +29,7 @@ func liveAuctionMiddleware() -> Middleware<AppState> {
     switch action {
     case is ListenLiveAuctionAction:
       return AppCore.shared.nounsService.liveAuctionStateDidChange()
+        .retry(2)
         .map { SinkLiveAuctionAction(auction: $0) }
         .catch { Just(ListenLiveAuctionFailed(error: $0)) }
         .eraseToAnyPublisher()

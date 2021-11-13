@@ -13,7 +13,7 @@ struct OnChainNounsView: View {
   @EnvironmentObject var store: AppStore
   
   var animation: Namespace.ID
-  @Binding var selected: Int?
+  @Binding var selected: Noun?
   @Binding var isPresentingActivity: Bool
   
   let columns = [
@@ -23,17 +23,16 @@ struct OnChainNounsView: View {
   
   var body: some View {
     LazyVGrid(columns: columns, spacing: 20) {
-      ForEach(0..<6) { num in
+      ForEach(store.state.onChainNouns.nouns, id: \.id) { noun in
+        
         OnChainNounCard(
           animation: animation,
-          noun: "Noun \(num)",
-          date: "Oct 11 2021",
-          owner: "bob.eth")
-          .id(num)
-          .matchedGeometryEffect(id: "noun-\(num)", in: animation)
+          noun: noun)
+          .id(noun.id)
+          .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
           .onTapGesture {
             withAnimation(.spring()) {
-              selected = num
+              selected = noun
             }
           }
       }

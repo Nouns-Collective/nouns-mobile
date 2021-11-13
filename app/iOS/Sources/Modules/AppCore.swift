@@ -7,6 +7,7 @@
 
 import Combine
 import Services
+import UIKit
 
 /// <#Description#>
 class AppCore {
@@ -20,16 +21,11 @@ class AppCore {
     TheGraphNounsProvider(graphQLClient: graphQLClient)
   }()
   
-//  lazy var initialState: AppStore = {
-//    let onChainNounsState = OnChainNounsState(nouns: [])
-//    let onChainExplorerState = OnChainExplorerState(onChainNounState: onChainNounsState)
-//    let appState = AppState(onChainExplorerState: onChainExplorerState)
-//    return AppStore(
-//      initial: appState,
-//      reducer: appReduce,
-//      middlewares: [
-//        onChainNounsMiddleware(service: nounsService),
-//      ]
-//    )
-//  }()
+  lazy var nounComposer: NounComposer = {
+    do {
+      return try OfflineNounComposer.composer()
+    } catch {
+      fatalError("Couldn't instantiate the NounComposer: \(error)")
+    }
+  }()
 }

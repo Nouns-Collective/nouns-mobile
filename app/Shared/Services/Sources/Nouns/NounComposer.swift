@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Temporary bridging of the module bundle so that the app layer can compose static noun views
 /// Should be removed once persistence & network fetching is implemented
@@ -26,10 +27,11 @@ public struct Trait {
   /// Asset image of the Noun's trait stored locally.
   internal let assetImage: String
   
-//  /// Load Noun's trait bundled image.
-//  public lazy var data: Data? = {
+  /// Load Noun's trait bundled image.
+  public var data: Image {
+      Image(assetImage, bundle: .module)
 //      NSDataAsset(name: assetImage, bundle: .module)?.data
-//  }()
+  }
 }
 
 /// This provider class allows interacting with local Nouns' placed in disk.
@@ -97,6 +99,18 @@ public class OfflineNounComposer: NounComposer {
     let data = try Data(contentsOf: encodedLayersURL)
     layer = try JSONDecoder().decode(Layer.self, from: data)
   }
+}
+
+extension OfflineNounComposer {
+    
+    public static func composer() throws -> NounComposer {
+        guard let url = Bundle.module.url(forResource: "encoded-layers", withExtension: "json")
+        else {
+            throw URLError(.badURL)
+        }
+        
+        return try OfflineNounComposer(encodedLayersURL: url)
+    }
 }
 
 extension Trait: Decodable {

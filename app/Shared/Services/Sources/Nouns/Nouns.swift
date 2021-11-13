@@ -55,7 +55,7 @@ public protocol Nouns {
 public class TheGraphNounsProvider: Nouns {
     private let graphQLClient: GraphQL
     
-    public init(graphQLClient: GraphQL) {
+    public init(graphQLClient: GraphQL = GraphQLClient()) {
         self.graphQLClient = graphQLClient
     }
     
@@ -80,7 +80,13 @@ public class TheGraphNounsProvider: Nouns {
     }
     
     public func liveAuctionStateDidChange() -> AnyPublisher<Auction, Error> {
-        fatalError("Implementation for \(#function) missing")
+        let query = NounsSubgraph.LiveAuctionSubscription()
+        return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+            .compactMap { (page: Page<[Auction]>) in
+                return page.data.first
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
     
     public func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error> {

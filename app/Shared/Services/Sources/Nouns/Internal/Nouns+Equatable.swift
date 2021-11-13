@@ -39,3 +39,24 @@ extension Proposal: Equatable {
         lhs.status == rhs.status
     }
 }
+
+extension Auction: Equatable {
+    
+    public static func == (lhs: Auction, rhs: Auction) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.noun == rhs.noun &&
+        lhs.amount == rhs.amount &&
+        lhs.startTime == rhs.startTime &&
+        lhs.endTime == rhs.endTime &&
+        lhs.settled == rhs.settled &&
+        lhs.bids == rhs.bids
+    }
+}
+
+extension Bid: Equatable {
+    
+    public static func == (lhs: Bid, rhs: Bid) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.amount == rhs.amount
+    }
+}

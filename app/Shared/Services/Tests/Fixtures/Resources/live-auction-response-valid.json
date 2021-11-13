@@ -1,0 +1,36 @@
+{
+  "data": {
+    "auctions": [
+      {
+        "amount": "2000000000000000000",
+        "bids": [
+          {
+            "amount": "100000000000000000",
+            "id": "0xaf1efeeaedf13ad7cbaa66661d9411f6118ac4e4884daae6a3b81ab12d15f082"
+          },
+          {
+            "amount": "2000000000000000000",
+            "id": "0xcc9b27ae49d84e14103ee7abb52b23e050d2e5f2a4e7b0655177dcf4eed4bcb2"
+          }
+        ],
+        "endTime": "1636844955",
+        "id": "106",
+        "noun": {
+          "id": "106",
+          "owner": {
+            "id": "0x830bd73e4184cef73443c15111a1df14e495c706"
+          },
+          "seed": {
+            "accessory": "81",
+            "background": "1",
+            "body": "0",
+            "glasses": "16",
+            "head": "230"
+          }
+        },
+        "settled": false,
+        "startTime": "1636758555"
+      }
+    ]
+  }
+}

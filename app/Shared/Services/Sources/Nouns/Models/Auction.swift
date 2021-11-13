@@ -9,6 +9,8 @@ import Foundation
 
 /// The Auction
 public struct Auction: Decodable {
+    /// The Noun's ERC721 token id
+    public let id: String
     
     /// The Noun
     public let noun: Noun
@@ -24,4 +26,17 @@ public struct Auction: Decodable {
     
     /// Whether or not the auction has been settled
     public let settled: Bool
+    
+    /// The auction bids
+    public let bids: [Bid]
+}
+
+/// The auction's Bid
+public struct Bid: Decodable {
+    
+    /// Bid transaction hash
+    public let id: String
+    
+    /// Bid amount
+    public let amount: String
 }

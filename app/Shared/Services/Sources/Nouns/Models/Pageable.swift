@@ -23,6 +23,9 @@ public struct Page<T>: Decodable where T: Decodable {
         } else if T.self == [ENSDomain].self {
             data = try decoder.decode("data", "domains")
             
+        } else if T.self == [Auction].self {
+            data = try decoder.decode("data", "auctions")
+            
         } else {
             let context = DecodingError.Context(
                 codingPath: decoder.codingPath,

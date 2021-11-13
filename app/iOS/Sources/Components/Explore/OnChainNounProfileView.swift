@@ -7,24 +7,23 @@
 
 import SwiftUI
 import UIComponents
+import Services
 
 /// Profile view for showing noun details when selected from the explorer view
 struct OnChainNounProfileView: View {
   @Binding var isPresented: Bool
   @State var isActivityPresented: Bool = false
   
-  let noun: String
-  let date: String
-  let owner: String
+  let noun: Noun
   
   private var nounIDLabel: some View {
-    Text("Noun 62")
+    Text("Noun \(noun.id)")
       .font(.custom(.bold, relativeTo: .title2))
   }
   
   private var birthdateRow: some View {
     Label {
-      Text("Born \(date)")
+      Text("Born Oct 11 1961")
         .font(.custom(.regular, relativeTo: .subheadline))
     } icon: {
       Image.birthday
@@ -49,7 +48,7 @@ struct OnChainNounProfileView: View {
         Text("Held by ")
           .font(.custom(.regular, relativeTo: .subheadline))
         +
-        Text(owner)
+        Text("bob.eth")
           .font(.custom(.bold, relativeTo: .subheadline))
           .bold()
         
@@ -96,10 +95,10 @@ struct OnChainNounProfileView: View {
       Spacer()
       
       NounPuzzle(
-        head: Image("head-baseball-gameball", bundle: Bundle.NounAssetBundle),
-        body: Image("body-grayscale-9", bundle: Bundle.NounAssetBundle),
-        glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
-        accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
+        head: AppCore.shared.nounComposer.heads[noun.seed.head].data,
+        body: AppCore.shared.nounComposer.bodies[noun.seed.body].data,
+        glass: AppCore.shared.nounComposer.glasses[noun.seed.glasses].data,
+        accessory: AppCore.shared.nounComposer.accessories[noun.seed.accessory].data
       )
       
       PlainCell {
@@ -107,6 +106,7 @@ struct OnChainNounProfileView: View {
           HStack {
             nounIDLabel
             Spacer()
+            
             SoftButton(image: Image.xmark, text: nil) {
               isPresented.toggle()
             }
@@ -134,7 +134,7 @@ struct OnChainNounProfileView: View {
       
       NounderActivitiesView(
         isPresented: $isActivityPresented,
-        domain: "bob.eth")
+        noun: noun)
     }
   }
 }

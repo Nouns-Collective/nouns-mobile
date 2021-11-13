@@ -7,48 +7,55 @@
 
 import SwiftUI
 import UIComponents
+import Services
 
 /// Housing view for exploring on chain nouns, including the current on-goign auction and previously auctioned nouns
 struct OnChainExplorerView: View {
   @EnvironmentObject var store: AppStore
   
   @Namespace private var animation
-  @State var selected: Int?
-  @State var isNounDetailPresented: Bool = false
-  @State var isPresentingActivity: Bool = false
+  @State var selectedNoun: Noun?
+  @State var isNounProfilePresented: Bool = false
+  @State var isPresentingNounActivity: Bool = false
   
   var body: some View {
     
     ScrollView(.vertical, showsIndicators: false) {
       VStack(spacing: 20) {
-        LiveAuctionCard(noun: "Noun 64")
+        if let auction = store.state.liveAuction.auction {
+          LiveAuctionCard(auction: auction)
+        }
         
         OnChainNounsView(
           animation: animation,
-          selected: $selected,
-          isPresentingActivity: $isPresentingActivity)
+          selected: $selectedNoun,
+          isPresentingActivity: $isPresentingNounActivity)
       }
       .padding(.horizontal, 20)
       .padding(.top, 60)
       .padding(.bottom, 40)
     }
+    .activityIndicator(isPresented: store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading)
     .background(Gradient.lemonDrop)
-    .activityIndicator(isPresented: store.state.onChainNouns.isLoading)
     .ignoresSafeArea()
-    .onChange(of: selected) { newValue in
-      isNounDetailPresented = newValue != nil
+    .onChange(of: selectedNoun) { newValue in
+      isNounProfilePresented = newValue != nil
+    }
+    .onAppear {
+      store.dispatch(FetchOnChainNounsAction())
+      store.dispatch(ListenLiveAuctionAction())
     }
     .sheet(
-      isPresented: $isNounDetailPresented,
+      isPresented: $isNounProfilePresented,
       onDismiss: {
-        selected = nil
+        selectedNoun = nil
       },
       content: {
-        OnChainNounProfileView(
-          isPresented: $isNounDetailPresented,
-          noun: "Noun: \(selected ?? 0)",
-          date: "Oct 11 1961",
-          owner: "bob.eth")
+        if let selectedNoun = selectedNoun {
+          OnChainNounProfileView(
+            isPresented: $isNounProfilePresented,
+            noun: selectedNoun)
+        }
       })
   }
 }

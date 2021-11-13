@@ -10,39 +10,30 @@ import UIComponents
 import Services
 
 struct LiveAuctionCard: View {
-  
-  let noun: String
+  let auction: Auction
   
   var body: some View {
     StandardCard(
       media: {
         NounPuzzle(
-          head: Image("head-baseball-gameball", bundle: Bundle.NounAssetBundle),
-          body: Image("body-grayscale-9", bundle: Bundle.NounAssetBundle),
-          glass: Image("glasses-square-black-rgb", bundle: Bundle.NounAssetBundle),
-          accessory: Image("accessory-aardvark", bundle: Bundle.NounAssetBundle)
-        )
+          head: AppCore.shared.nounComposer.heads[auction.noun.seed.head].data,
+          body: AppCore.shared.nounComposer.bodies[auction.noun.seed.body].data,
+          glass: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].data,
+          accessory: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].data)
       },
-      header: noun,
+      header: "Noun \(auction.noun.id)",
       accessoryImage: Image.mdArrowCorner,
       leftDetail: {
-        CardDetailView(
-          header: "4h 17m 23s",
-          headerIcon: Image.timeleft,
-          subheader: "Remaining")
+          CardDetailView(
+            header: "9h 17m 23s",
+            headerIcon: nil,
+            subheader: "Remaining")
       },
       rightDetail: {
         CardDetailView(
-          header: "89.00",
+          header: "2.0",
           headerIcon: Image(systemName: "dollarsign.circle"),
           subheader: "Current bid")
       })
-  }
-}
-
-struct LiveAuctionCardPreview: PreviewProvider {
-  static var previews: some View {
-    LiveAuctionCard(noun: "Noun 64")
-      .previewLayout(.sizeThatFits)
   }
 }

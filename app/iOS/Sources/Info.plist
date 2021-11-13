@@ -29,8 +29,10 @@
 	<true/>
 	<key>UILaunchScreen</key>
 	<dict>
-		<key>UILaunchScreen</key>
-		<dict/>
+		<key>UIColorName</key>
+		<string>launch.screen.background</string>
+		<key>UIImageName</key>
+		<string>noun-logo</string>
 	</dict>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleDefault</string>
