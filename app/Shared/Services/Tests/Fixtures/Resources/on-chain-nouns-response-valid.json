@@ -1,0 +1,32 @@
+{
+   "data": {
+      "nouns": [
+         {
+            "id": "0",
+            "owner": {
+               "id": "0x2573c60a6d127755aa2dc85e342f7da2378a0cc5"
+            },
+            "seed": {
+               "accessory": "132",
+               "background": "0",
+               "body": "14",
+               "glasses": "18",
+               "head": "94"
+            }
+         },
+         {
+            "id": "1",
+            "owner": {
+               "id": "0x2536c09e5f5691498805884fa37811be3b2bddb4"
+            },
+            "seed": {
+               "accessory": "95",
+               "background": "1",
+               "body": "20",
+               "glasses": "14",
+               "head": "88"
+            }
+         },
+      ]
+   }
+}

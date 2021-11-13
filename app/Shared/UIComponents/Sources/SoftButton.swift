@@ -209,6 +209,7 @@ public struct SoftButton<Label: View>: View {
     }
 }
 
+// TODO: Remove the preview and put the example in the documentation.
 struct Previews: PreviewProvider {    
     static var previews: some View {
         VStack {
@@ -220,7 +221,7 @@ struct Previews: PreviewProvider {
                     SoftButton(systemImage: "hand.thumbsdown", text: "Get Started", action: {}, fill: [.width])
                 }
             }.padding()
-            .background(Color(.sRGB, red: 253/255, green: 226/255, blue: 129/255, opacity: 1.0))
+            .background(Color.componentSeriousMango)
             
             VStack {
                 SoftButton(systemImage: "arrow.right", text: "Get Started", action: {}, fill: [.width])

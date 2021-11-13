@@ -142,7 +142,7 @@ extension View {
 }
 
 // TODO: - Just an example for the review process, will remove once approved.
-struct BindingContainer : View {
+struct BindingContainer: View {
      @State private var isPresented = true
 
      var body: some View {

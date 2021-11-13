@@ -33,9 +33,6 @@ public enum QueryError: Error {
     /// The provided query was partially or completely invalid
     case invalidQuery(reasons: [Reason])
     
-    /// A non-HTTPURLResponse was received
-    case request(error: Error?)
-    
     /// No matching client query
     case noMatchingQuery
     
@@ -61,6 +58,7 @@ public enum CachePolicy {
     case returnCacheDataAndFetch
 }
 
+/// `GraphQL`
 public protocol GraphQL {
     
     /// Fetches a query from the server or from the local cache, depending on
@@ -73,7 +71,7 @@ public protocol GraphQL {
     ///   - cachePolicy: A cache policy that specifies whether results should be fetched or loaded from local.
     ///
     /// - Returns: A publisher emitting a `Decodable` type  instance. The publisher will emit on the *main* thread.
-    func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T: Decodable
+    func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, Error> where T: Decodable, Query: GraphQLQuery
     
     /// Registers a publisher that publishes state changes.
     ///
@@ -82,7 +80,7 @@ public protocol GraphQL {
     /// - Parameters:
     ///
     /// - Returns: A publisher emitting a `Decodable` type  instance. The publisher will emit on the *main* thread.
-    func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T: Decodable
+    func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, Error> where T: Decodable, Subscription: GraphQLSubscription
 }
 
 public class GraphQLClient: GraphQL {
@@ -92,17 +90,12 @@ public class GraphQLClient: GraphQL {
         self.networkingClient = networkingClient
     }
     
-    public func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, QueryError> where T: Decodable {
-        guard let query = query as? GraphQLQuery else {
-            return Fail(error: .badQuery).eraseToAnyPublisher()
-        }
-        
-        let operation = GraphQLOperation(query: query)
+    public func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, Error> where T: Decodable, Query: GraphQLQuery {
         do {
             let request = NetworkDataRequest(
-                url: operation.url,
+                url: query.url,
                 httpMethod: .post(contentType: .json),
-                httpBody: try JSONEncoder().encode(operation)
+                httpBody: try query.encode()
             )
             
             return networkingClient.data(for: request)
@@ -110,20 +103,19 @@ public class GraphQLClient: GraphQL {
                 .mapError({ error in
                     switch error {
                     case is Swift.DecodingError:
-                        return .dataCorrupted
-                    case let error as URLError:
-                        return .request(error: error)
+                        return QueryError.dataCorrupted
                     default:
-                        return .request(error: error)
+                        return error
                     }
                 })
                 .eraseToAnyPublisher()
+            
         } catch {
-            return Fail(error: .request(error: error)).eraseToAnyPublisher()
+            return Fail(error: error).eraseToAnyPublisher()
         }
     }
     
-    public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, QueryError> where T: Decodable {
+    public func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, Error> where T: Decodable, Subscription: GraphQLSubscription {
         fatalError("Implementaiton for \(#function) missing")
     }
 }

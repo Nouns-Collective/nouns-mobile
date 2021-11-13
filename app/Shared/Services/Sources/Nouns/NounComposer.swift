@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import UIKit
-import SwiftUI
 
 /// Temporary bridging of the module bundle so that the app layer can compose static noun views
 /// Should be removed once persistence & network fetching is implemented
@@ -28,10 +26,10 @@ public struct Trait {
   /// Asset image of the Noun's trait stored locally.
   internal let assetImage: String
   
-  /// Load Noun's trait bundled image.
-  public lazy var data: Data? = {
-      NSDataAsset(name: assetImage, bundle: .module)?.data
-  }()
+//  /// Load Noun's trait bundled image.
+//  public lazy var data: Data? = {
+//      NSDataAsset(name: assetImage, bundle: .module)?.data
+//  }()
 }
 
 /// This provider class allows interacting with local Nouns' placed in disk.
@@ -61,7 +59,7 @@ public protocol NounComposer {
 }
 
 public class OfflineNounComposer: NounComposer {
-  
+    
   public lazy var backgroundColors: [String] = {
     layer.bgcolors
   }()

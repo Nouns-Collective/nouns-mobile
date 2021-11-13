@@ -1,5 +1,5 @@
 //
-//  GraphQLOperation.swift
+//  GraphQLQuery.swift
 //  Services
 //
 //  Created by Mohammed Ibrahim on 2021-10-24.
@@ -7,28 +7,45 @@
 
 import Foundation
 
-struct GraphQLOperation: Encodable {
-  var url: URL
-  var query: String
+public enum GraphQLOperationType: String, CodingKey {
   
-  public init(url: URL, query: String) {
-    self.url = url
-    self.query = query
-  }
+  /// Sstandard HTTP methods.
+  case query
   
-  private enum CodingKeys: String, CodingKey {
-    case query
-  }
+  /// Realtime operation based on websockets.
+  case subscription
+}
+
+public protocol GraphQLOperation: Encodable {
   
-  public func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(query, forKey: .query)
-  }
+  /// Define the operation entry-points for the API.
+  var operationType: GraphQLOperationType { get }
+  
+  /// The raw GraphQL definition of this operation.
+  var operationDefinition: String { get }
+  
+  ///
+  var url: URL { get }
+}
+
+public protocol GraphQLQuery: GraphQLOperation {}
+extension GraphQLQuery {
+  public var operationType: GraphQLOperationType { .query }
+}
+
+public protocol GraphQLSubscription: GraphQLOperation {}
+extension GraphQLSubscription {
+  public var operationType: GraphQLOperationType { .subscription }
 }
 
 extension GraphQLOperation {
-  init(query: GraphQLQuery) {
-    self.url = query.url
-    self.query = query.query
+  
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: GraphQLOperationType.self)
+    try container.encode(operationDefinition, forKey: operationType)
+  }
+  
+  public func encode() throws -> Data {
+    try JSONEncoder().encode(self)
   }
 }

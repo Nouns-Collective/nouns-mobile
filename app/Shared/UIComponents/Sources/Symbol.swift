@@ -81,4 +81,10 @@ extension Image {
     public static let web = Image("web", bundle: .module)
     
     public static let wonPrice = Image("won-price", bundle: .module)
+    
+    public static let squareArrowDown = Image("square.and.arrow.down", bundle: .module)
+    
+    public static let splice = Image("splice", bundle: .module)
+    
+    public static let xmark = Image(systemName: "xmark")
 }

@@ -15,9 +15,6 @@ public enum RequestError: Error {
   /// The response has a non-successful status code
   case http(statusCode: Int)
   
-  /// Any other error, potentially unrelated to the URLSession, was received
-  case request(_ error: Error)
-  
   /// Unknown error
   case unknown
 }
@@ -30,7 +27,7 @@ public protocol NetworkingClient: AnyObject {
   ///   - request: The URL request for which to create a task.
   ///
   /// - Returns: The publisher publishes data when the task completes, or terminates if the task fails with an error.
-  func data(for request: NetworkRequest) -> AnyPublisher<Data, RequestError>
+  func data(for request: NetworkRequest) -> AnyPublisher<Data, Error>
   
   /// Reads a `WebSocket` message once all the frames of the message are available.
   ///
@@ -38,7 +35,7 @@ public protocol NetworkingClient: AnyObject {
   ///   - request: The URL request for which to create a `WebSocket` task.
   ///
   /// - Returns: The publisher publishes data when the task receives updates, or terminates if the task fails with an error.
-  func receive(for request: NetworkRequest) -> AnyPublisher<Data, RequestError>
+  func receive(for request: NetworkRequest) -> AnyPublisher<Data, Error>
 }
 
 public class URLSessionNetworkClient: NetworkingClient {
@@ -48,12 +45,11 @@ public class URLSessionNetworkClient: NetworkingClient {
     self.urlSession = urlSession
   }
   
-  public func data(for request: NetworkRequest) -> AnyPublisher<Data, RequestError> {
+  public func data(for request: NetworkRequest) -> AnyPublisher<Data, Error> {
     urlSession.dataTaskPublisher(for: URLRequest(for: request))
       .tryCompactMap { [weak self] in
         try self?.processResponse(from: $0)
       }
-      .mapError { $0 as? RequestError ?? RequestError.request($0) }
       .eraseToAnyPublisher()
   }
   
@@ -70,8 +66,8 @@ public class URLSessionNetworkClient: NetworkingClient {
     }
   }
   
-  public func receive(for request: NetworkRequest) -> AnyPublisher<Data, RequestError> {
-    let subject = PassthroughSubject<Data, RequestError>()
+  public func receive(for request: NetworkRequest) -> AnyPublisher<Data, Error> {
+    let subject = PassthroughSubject<Data, Error>()
     let websocketTask = urlSession.webSocketTask(with: URLRequest(for: request))
     let webSocketTransport = WebSocketTransport(task: websocketTask)
     
@@ -84,13 +80,11 @@ public class URLSessionNetworkClient: NetworkingClient {
           let data = try self.processResponse(from: message)
           subject.send(data)
         } catch {
-          subject.send(
-            completion: .failure(error as? RequestError ?? .request(error))
-          )
+          subject.send(completion: .failure(error))
         }
         
       case .failure(let error):
-        subject.send(completion: .failure(.request(error)))
+        subject.send(completion: .failure(error))
       }
     }
     

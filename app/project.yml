@@ -4,6 +4,8 @@ options:
   indentWidth: 2
   tabWidth: 2
   bundleIdPrefix: "wtf.nouns"
+  groupOrdering: 
+    - order: [iOS, WatchOS]
 packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
@@ -27,10 +29,10 @@ targets:
     platform: iOS
     deploymentTarget: "15.0"
     sources:
-      - path: iOS/Nouns
+      - path: iOS/Sources
     settings:
       base:
-        INFOPLIST_FILE: iOS/Nouns/Info.plist
+        INFOPLIST_FILE: iOS/Sources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
     dependencies:
       - package: Rswift
@@ -42,12 +44,12 @@ targets:
         - Nouns iOS UITests
     preBuildScripts:
       - script: |
-                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Nouns/Utils/R.generated.swift"
+                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Sources/Utils/R.generated.swift"
         name: R.swift
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/iOS/Nouns/Utils/R.generated.swift
+          - $SRCROOT/iOS/Sources/Utils/R.generated.swift
     postBuildScripts:
       - script: |
                 /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"

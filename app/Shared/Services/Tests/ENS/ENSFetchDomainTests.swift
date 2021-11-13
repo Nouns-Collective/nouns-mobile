@@ -10,19 +10,28 @@ import Combine
 @testable import Services
 
 final class ENSFetchDomainTests: XCTestCase {
-    static let token = "0x0000044a32f0964f4bf8fb4d017e230ad33595c0e149b6b2d0c34b733dcf906a"
+    
+    fileprivate static let token = "0x0000044a32f0964f4bf8fb4d017e230ad33595c0e149b6b2d0c34b733dcf906a"
     
     func testENSFetchDomain() throws {
+        
+        enum MockDataURLResponder: MockURLResponder {
+          static func respond(to request: URLRequest) throws -> Data? {
+              Fixtures.data(contentOf: "ens-domain-response-valid", withExtension: "json")
+          }
+        }
+        
         // given
-        let data = Fixtures.data(contentOf: "ENSDomainResponse", withExtension: "json")
-        let graphQLClient = MockGraphQLClient(data: data)
-        let ensProvider = TheGraphEnsProvider(graphQLClient: graphQLClient)
+        let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
+        let client = URLSessionNetworkClient(urlSession: urlSession)
+        let graphQLClient = GraphQLClient(networkingClient: client)
+        let ensProvider = TheGraphENSProvider(graphQLClient: graphQLClient)
         
         var cancellables = Set<AnyCancellable>()
         let fetchExpectation = expectation(description: #function)
         
         // when
-        ensProvider.fetchDomain(token: ENSFetchDomainTests.token)
+        ensProvider.domainLookup(token: ENSFetchDomainTests.token)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -43,18 +52,28 @@ final class ENSFetchDomainTests: XCTestCase {
     }
     
     func testENSFetchDomainFailure() {
+        
+        enum MockErrorURLResponder: MockURLResponder {
+          static func respond(to request: URLRequest) throws -> Data? {
+              throw URLError(.badURL)
+          }
+        }
+        
         // given
-        let graphQLClient = MockGraphQLClient(error: QueryError.badQuery)
-        let ensProvider = TheGraphEnsProvider(graphQLClient: graphQLClient)
+        let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
+        let client = URLSessionNetworkClient(urlSession: urlSession)
+        let graphQLClient = GraphQLClient(networkingClient: client)
+        let ensProvider = TheGraphENSProvider(graphQLClient: graphQLClient)
         
         var cancellables = Set<AnyCancellable>()
         let fetchExpectation = expectation(description: #function)
         
         // when
-        ensProvider.fetchDomain(token: ENSFetchDomainTests.token)
+        ensProvider.domainLookup(token: ENSFetchDomainTests.token)
             .sink { completion in
-                if case .failure = completion {
+                if case .failure(let error) = completion {
                     XCTAssertTrue(Thread.isMainThread)
+                    XCTAssertEqual((error as? URLError)?.code, .badURL)
                     
                     fetchExpectation.fulfill()
                 }

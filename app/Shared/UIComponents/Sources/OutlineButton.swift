@@ -178,6 +178,7 @@ public struct OutlineButton<Label: View>: View {
     }
 }
 
+// TODO: Removes the preview and place it in the documentation
 struct OutlineButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -189,7 +190,7 @@ struct OutlineButton_Previews: PreviewProvider {
                     OutlineButton(systemImage: "hand.thumbsdown", text: "Get Started", action: {}, fill: [.width])
                 }
             }.padding()
-            .background(Color(.sRGB, red: 253/255, green: 226/255, blue: 129/255, opacity: 1.0))
+                .background(Color.componentSeriousMango)
             
             VStack {
                 OutlineButton(systemImage: "arrow.right", text: "Get Started", action: {}, fill: [.width])

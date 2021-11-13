@@ -25,10 +25,12 @@ public protocol ENS {
   ///   - token: The address resource.
   ///
   /// - Returns: A publisher emitting the domain in a `String` type  instance or an error was encountered.
-  func fetchDomain(token: String) -> AnyPublisher<String, Error>
+  func domainLookup(token: String) -> AnyPublisher<String, Error>
 }
 
+/// Ethereum Name Service.
 public struct ENSDomain {
+    
   /// The ETH address
   public let id: String
   
@@ -36,24 +38,23 @@ public struct ENSDomain {
   public let name: String
 }
 
-public class TheGraphEnsProvider: ENS {
-  private let graphQLClient: GraphQLClient
+public class TheGraphENSProvider: ENS {
+  private let graphQLClient: GraphQL
   
-  init(graphQLClient: GraphQLClient) {
+  public init(graphQLClient: GraphQL) {
     self.graphQLClient = graphQLClient
   }
   
-  public func fetchDomain(token: String) -> AnyPublisher<String, Error> {
+  public func domainLookup(token: String) -> AnyPublisher<String, Error> {
     let query = ENSSubgraph.DomainLookupQuery(token: token)
     return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-      .tryCompactMap { (responseData: HTTPResponse<Page<[ENSDomain]>>) in
-        if let name = responseData.data.data.first?.name {
+      .tryCompactMap { (page: Page<[ENSDomain]>) in
+          guard let name = page.data.first?.name else {
+              throw ENSError.noDomain
+          }
           return name
-        } else {
-          throw ENSError.noDomain
-        }
       }
-      .mapError { $0 }
+      .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
   }
 }

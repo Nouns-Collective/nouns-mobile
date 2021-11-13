@@ -7,6 +7,52 @@
 
 import SwiftUI
 
+/// Various component gradients.
+extension Gradient {
+    
+    /// A context-dependent CoolGreydient gradient suitable for use in UI elements.
+    public static let coolGreydient = CoolGreydient()
+    
+    /// A context-dependent warmGreydient gradient suitable for use in UI elements.
+    public static let warmGreydient = WarmGreydient()
+    
+    /// A context-dependent cherrySunset gradient suitable for use in UI elements.
+    public static let cherrySunset = CherrySunset()
+    
+    /// A context-dependent orangesicle gradient suitable for use in UI elements.
+    public static let orangesicle = Orangesicle()
+    
+    /// A context-dependent mangoChunks gradient suitable for use in UI elements.
+    public static let mangoChunks = MangoChunks()
+    
+    /// A context-dependent lemonDrop gradient suitable for use in UI elements.
+    public static let lemonDrop = LemonDrop()
+    
+    /// A context-dependent keyLimePie gradient suitable for use in UI elements.
+    public static let keyLimePie = KeyLimePie()
+    
+    /// A context-dependent kiwiDream gradient suitable for use in UI elements.
+    public static let kiwiDream = KiwiDream()
+    
+    /// A context-dependent freshMint gradient suitable for use in UI elements.
+    public static let freshMint = FreshMint()
+    
+    /// A context-dependent oceanBreeze gradient suitable for use in UI elements.
+    public static let oceanBreeze = OceanBreeze()
+    
+    /// A context-dependent blueberryJam gradient suitable for use in UI elements.
+    public static let blueberryJam = BlueberryJam()
+    
+    /// A context-dependent grapeAttack gradient suitable for use in UI elements.
+    public static let grapeAttack = GrapeAttack()
+    
+    /// A context-dependent magnoliaGarden gradient suitable for use in UI elements.
+    public static let magnoliaGarden = MagnoliaGarden()
+    
+    /// A context-dependent bubbleGum gradient suitable for use in UI elements.
+    public static let bubbleGum  = BubbleGum()
+}
+
 /// A context-dependent CoolGreydient color suitable for use in UI elements.
 public struct CoolGreydient: ShapeStyle, View {
     
