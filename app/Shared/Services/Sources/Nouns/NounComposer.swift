@@ -49,31 +49,26 @@ public protocol NounComposer {
     var glasses: [Trait] { get }
 }
 
+/// A Flavour of the NounComposer to load local Nouns' trait.
 public class OfflineNounComposer: NounComposer {
     
-    public lazy var backgroundColors: [String] = {
-        layer.bgcolors
-    }()
+    /// The background list of colors.
+    public lazy var backgroundColors = layer.bgcolors
     
-    public lazy var palette: [String] = {
-        layer.partcolors
-    }()
+    /// The color palette used to draw `Nouns` with `RLE` data.
+    public lazy var palette = layer.partcolors
     
-    public lazy var bodies: [Trait] = {
-        layer.parts[0]
-    }()
+    /// The body list of traits.
+    public lazy var bodies = layer.parts[0]
     
-    public lazy var accessories: [Trait] = {
-        layer.parts[1]
-    }()
+    /// The accessory list of traits.
+    public lazy var accessories = layer.parts[1]
     
-    public lazy var heads: [Trait] = {
-        layer.parts[2]
-    }()
+    /// The head list of traits.
+    public lazy var heads = layer.parts[2]
     
-    public lazy var glasses: [Trait] = {
-        layer.parts[3]
-    }()
+    /// The glasses list of traits.
+    public lazy var glasses = layer.parts[3]
     
     /// Decodes offline Noun's traits.
     private struct Layer: Decodable {

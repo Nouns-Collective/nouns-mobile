@@ -46,15 +46,3 @@ extension Proposal: Decodable {
     }
     
 }
-
-extension Seed {
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: AnyCodingKey.self)
-        background = try Int(container.decode(String.self, forKey: AnyCodingKey("background")))!
-        body = try Int(container.decode(String.self, forKey: AnyCodingKey("body")))!
-        glasses = try Int(container.decode(String.self, forKey: AnyCodingKey("glasses")))!
-        head = try Int(container.decode(String.self, forKey: AnyCodingKey("head")))!
-        accessory = try Int(container.decode(String.self, forKey: AnyCodingKey("accessory")))!
-    }
-}
