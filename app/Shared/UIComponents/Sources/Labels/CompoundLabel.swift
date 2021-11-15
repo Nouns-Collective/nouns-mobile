@@ -49,15 +49,3 @@ public struct CompoundLabel<Title>: View where Title: View {
         }
     }
 }
-
-struct fefe: PreviewProvider {
-    
-    static var previews: some View {
-        CompoundLabel(Text("98.00"),
-                      icon: .currentBid,
-                      caption: "Current bid")
-            .onAppear {
-                UIComponents.configure()
-            }
-    }
-}
