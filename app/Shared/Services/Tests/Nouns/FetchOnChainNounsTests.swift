@@ -40,7 +40,14 @@ final class FetchOnChainNounsTests: XCTestCase {
                 
             } receiveValue: { nouns in
                 XCTAssertTrue(Thread.isMainThread)
-                XCTAssertEqual(nouns, Fixtures.validNouns)
+                XCTAssertFalse(nouns.isEmpty)
+                
+                let fetchNoun = nouns.first
+                let expectedNoun = Noun.fixture
+                
+                XCTAssertEqual(fetchNoun?.id, expectedNoun.id)
+                XCTAssertEqual(fetchNoun?.owner, expectedNoun.owner)
+                XCTAssertEqual(fetchNoun?.seed, expectedNoun.seed)
                 
                 fetchExpectation.fulfill()
             }

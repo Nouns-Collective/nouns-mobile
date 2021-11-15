@@ -22,6 +22,18 @@ public protocol Nouns {
     /// - Returns: A publisher emitting a list of `Noun` type  instance or an error was encountered.
     func fetchOnChainNouns(limit: Int, after cursor: Int) -> AnyPublisher<[Noun], Error>
     
+    /// Fetches the list of auction settled from the chain.
+    ///
+    /// The publisher will emit events on the **main** thread.
+    ///
+    /// - Parameters:
+    ///   - settled: Whether or not the auction has been settled.
+    ///   - limit: A limit up to the  `n` elements from the list.
+    ///   - cursor: A cursor for use in pagination.
+    ///
+    /// - Returns: A publisher emitting a list of `Auction` type  instance or an error was encountered.
+    func fetchAuctions(settled: Bool, limit: Int, cursor: Int) -> AnyPublisher<[Auction], Error>
+    
     /// Fetches the list of Activities of a given Noun from the chain.
     ///
     /// The publisher will emit events on the **main** thread.
@@ -69,6 +81,16 @@ public class TheGraphNounsProvider: Nouns {
             .eraseToAnyPublisher()
     }
     
+    public func fetchAuctions(settled: Bool, limit: Int = 10, cursor: Int = 0) -> AnyPublisher<[Auction], Error> {
+        let query = NounsSubgraph.AutionsQuery(settled: settled, first: limit, skip: cursor)
+        return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+            .compactMap { (page: Page<[Auction]>) in
+                return page.data
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
     public func fetchActivity(for nounID: String) -> AnyPublisher<[Vote], Error> {
         let query = NounsSubgraph.ActivitiesQuery(nounID: nounID)
         return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
@@ -89,7 +111,7 @@ public class TheGraphNounsProvider: Nouns {
             .eraseToAnyPublisher()
     }
     
-    public func fetchProposals(limit: Int, after cursor: Int) -> AnyPublisher<[Proposal], Error> {
+    public func fetchProposals(limit: Int = 10, after cursor: Int = 0) -> AnyPublisher<[Proposal], Error> {
         let query = NounsSubgraph.ProposalsQuery(first: limit, skip: cursor)
         return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
             .compactMap { (page: Page<[Proposal]>) in

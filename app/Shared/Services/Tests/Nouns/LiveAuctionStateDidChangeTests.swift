@@ -40,7 +40,7 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
               
           } receiveValue: { auction in
               XCTAssertTrue(Thread.isMainThread)
-              XCTAssertEqual(auction, Fixtures.auction)
+              XCTAssertEqual(auction, Auction.fixture)
               
               fetchExpectation.fulfill()
           }

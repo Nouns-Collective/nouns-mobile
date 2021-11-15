@@ -29,7 +29,7 @@ final class FetchProposalsTests: XCTestCase {
         let fetchExpectation = expectation(description: #function)
         
         // when
-        nounsProvider.fetchProposals(limit: 10, after: 0)
+        nounsProvider.fetchProposals()
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -40,6 +40,13 @@ final class FetchProposalsTests: XCTestCase {
             } receiveValue: { proposals in
                 XCTAssertTrue(Thread.isMainThread)
                 XCTAssertFalse(proposals.isEmpty)
+                
+                let fetchProposal = proposals.first
+                let expectProposal = Proposal.fixture
+                
+                XCTAssertEqual(fetchProposal?.id, expectProposal.id)
+                XCTAssertEqual(fetchProposal?.title, expectProposal.title)
+                XCTAssertEqual(fetchProposal?.description, expectProposal.description)
                 
                 fetchExpectation.fulfill()
             }

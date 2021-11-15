@@ -1,0 +1,16 @@
+{
+    "data": {
+        "noun": {
+            "votes": [
+                {
+                    "proposal": {
+                        "id": "14",
+                        "description": "# setProposalThresholdBPS(50)\n\n===thank you for your consideration ",
+                        "status": "QUEUED"
+                    },
+                    "supportDetailed": 1
+                },
+            ]
+        }
+    }
+}

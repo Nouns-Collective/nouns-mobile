@@ -7,6 +7,8 @@
 
 import Foundation
 
+import SwiftUI
+
 /// Markdown parser to extract all elements.
 internal class MarkdownParser {
     internal let content: String

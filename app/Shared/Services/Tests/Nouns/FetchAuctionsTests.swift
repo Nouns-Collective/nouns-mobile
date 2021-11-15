@@ -1,21 +1,21 @@
 //
-//  FetchNounActivitiesTests.swift
+//  FetchAuctionsTests.swift
 //  
 //
-//  Created by Ziad Tamim on 12.11.21.
+//  Created by Ziad Tamim on 14.11.21.
 //
 
 import XCTest
 import Combine
 @testable import Services
 
-final class FetchNounActivitiesTests: XCTestCase {
+final class FetchAuctionsTests: XCTestCase {
     
-    func testFetchNounActivitiesSucceed() throws {
+    func testFetchAuctionsSucceed() throws {
         
         enum MockDataURLResponder: MockURLResponder {
             static func respond(to request: URLRequest) throws -> Data? {
-                Fixtures.data(contentOf: "nouns-activities-response-valid", withExtension: "json")
+                Fixtures.data(contentOf: "auctions-response-valid", withExtension: "json")
             }
         }
         
@@ -29,7 +29,7 @@ final class FetchNounActivitiesTests: XCTestCase {
         let fetchExpectation = expectation(description: #function)
         
         // when
-        nounsProvider.fetchActivity(for: "0")
+        nounsProvider.fetchAuctions(settled: true)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -38,18 +38,19 @@ final class FetchNounActivitiesTests: XCTestCase {
                     XCTFail("💥 Something went wrong: \(error)")
                 }
                 
-            } receiveValue: { votes in
+            } receiveValue: { auctions in
                 XCTAssertTrue(Thread.isMainThread)
-                XCTAssertFalse(votes.isEmpty)
+                XCTAssertFalse(auctions.isEmpty)
                 
-                let fetchedVote = votes.first
-                let expectedVote = Vote.fixture
+                let expectedAuction = Auction.fixture
+                let fetchedAuction = auctions.first
                 
-                XCTAssertEqual(fetchedVote?.supportDetailed, expectedVote.supportDetailed)
-                XCTAssertEqual(fetchedVote?.proposal.id, expectedVote.proposal.id)
-                XCTAssertEqual(fetchedVote?.proposal.title, expectedVote.proposal.title)
-                XCTAssertEqual(fetchedVote?.proposal.description, expectedVote.proposal.description)
-                XCTAssertEqual(fetchedVote?.proposal.status, expectedVote.proposal.status)
+                XCTAssertEqual(fetchedAuction?.id, expectedAuction.id)
+                XCTAssertEqual(fetchedAuction?.noun, expectedAuction.noun)
+                XCTAssertEqual(fetchedAuction?.startTime, expectedAuction.startTime)
+                XCTAssertEqual(fetchedAuction?.endTime, expectedAuction.endTime)
+                XCTAssertEqual(fetchedAuction?.settled, expectedAuction.settled)
+                XCTAssertEqual(fetchedAuction?.bids, expectedAuction.bids)
                 
                 fetchExpectation.fulfill()
             }
@@ -59,7 +60,7 @@ final class FetchNounActivitiesTests: XCTestCase {
         wait(for: [fetchExpectation], timeout: 1.0)
     }
     
-    func testFetchNounActivitiesFailure() {
+    func testFetchAuctionsFailed() {
         
         enum MockErrorURLResponder: MockURLResponder {
           static func respond(to request: URLRequest) throws -> Data? {
@@ -77,7 +78,7 @@ final class FetchNounActivitiesTests: XCTestCase {
         let fetchExpectation = expectation(description: #function)
         
         // when
-        nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
+        nounsProvider.fetchAuctions(settled: true)
             .sink { completion in
                 if case .failure = completion {
                     XCTAssertTrue(Thread.isMainThread)

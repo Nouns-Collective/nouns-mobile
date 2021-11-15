@@ -31,8 +31,6 @@
 	<dict>
 		<key>UIColorName</key>
 		<string>launch.screen.background</string>
-		<key>UIImageName</key>
-		<string>noun-logo</string>
 	</dict>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleDefault</string>
@@ -46,8 +44,6 @@
 	<key>UISupportedInterfaceOrientations~iphone</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>

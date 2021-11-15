@@ -10,7 +10,7 @@ import Foundation
 internal enum NounsSubgraph {
     
     internal struct NounsQuery: GraphQLQuery {
-        internal let url: URL = CloudConfiguration.Nouns.query.url
+        internal let url = CloudConfiguration.Nouns.query.url
         internal let first: Int
         internal let skip: Int
         
@@ -36,7 +36,7 @@ internal enum NounsSubgraph {
     }
     
     internal struct ActivitiesQuery: GraphQLQuery {
-        internal var url: URL = CloudConfiguration.Nouns.query.url
+        internal var url = CloudConfiguration.Nouns.query.url
         internal let nounID: String
         
         internal var operationDefinition: String {
@@ -57,8 +57,42 @@ internal enum NounsSubgraph {
         }
     }
     
+    internal struct AutionsQuery: GraphQLQuery {
+        internal var url = CloudConfiguration.Nouns.query.url
+        internal let settled: Bool
+        internal let first: Int
+        internal let skip: Int
+        
+        var operationDefinition: String {
+        """
+          {
+            auctions(first: \(first), skip: \(skip), orderBy: startTime, where: { settled: \(settled) }) {
+              id
+              amount
+              startTime
+              endTime
+              settled
+              noun {
+                id
+                owner {
+                  id
+                }
+                seed {
+                  background
+                  head
+                  glasses
+                  accessory
+                  body
+                }
+              }
+            }
+          }
+          """
+        }
+    }
+    
     internal struct ProposalsQuery: GraphQLQuery {
-        internal var url: URL = CloudConfiguration.Nouns.query.url
+        internal var url = CloudConfiguration.Nouns.query.url
         internal let first: Int
         internal let skip: Int
         
@@ -66,8 +100,7 @@ internal enum NounsSubgraph {
           """
             {
               proposals(skip: \(skip), first: \(first), orderBy: startBlock, orderDirection: desc) {
-                startBlock
-                endBlock
+                id
                 description
                 status
               }

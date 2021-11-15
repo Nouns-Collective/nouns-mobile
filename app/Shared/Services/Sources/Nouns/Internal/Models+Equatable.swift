@@ -1,5 +1,5 @@
 //
-//  Nouns+Equatable.swift
+//  Models+Equatable.swift
 //  
 //
 //  Created by Ziad Tamim on 12.11.21.
@@ -11,7 +11,19 @@ extension Noun: Equatable {
     
     public static func == (lhs: Noun, rhs: Noun) -> Bool {
         lhs.id == rhs.id &&
-        lhs.owner == rhs.owner
+        lhs.owner == rhs.owner &&
+        lhs.seed == rhs.seed
+    }
+}
+
+extension Seed: Equatable {
+    
+    public static func == (lhs: Seed, rhs: Seed) -> Bool {
+        lhs.background == rhs.background &&
+        lhs.head == rhs.head &&
+        lhs.body == rhs.body &&
+        lhs.accessory == rhs.accessory &&
+        lhs.glasses == rhs.glasses
     }
 }
 
