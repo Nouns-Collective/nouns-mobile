@@ -56,8 +56,45 @@ public class EtherFormatter: Formatter {
     ///
     /// - Returns: A string literal of the converted integer value.
     func string(from stringVal: String) -> String {
-        let bint = BigInt(stringLiteral: stringVal)
-        let value = convert(bint)
+        let bigInt = BigInt(stringLiteral: stringVal)
+        let value = convert(bigInt)
         return String(value)
+    }
+    
+    /// Converts and returns an ether unit to another unit
+    ///
+    ///
+    /// - Parameters:
+    ///   - bigInt: A BigInt representation of the value to convert
+    ///
+    /// - Returns: A string literal of the converted integer value.
+    func string(from bigInt: BigInt) -> String {
+        let value = convert(bigInt)
+        return String(value)
+    }
+    
+    /// Converts and returns an ether unit to another unit
+    ///
+    ///
+    /// - Parameters:
+    ///   - stringVal: The string literal of the integer value we are converting. All characters must be digits.
+    ///
+    /// - Returns: A BigInt representation of the converted value
+    func bigInt(from stringVal: String) -> BigInt {
+        let bigInt = BigInt(stringLiteral: stringVal)
+        let value = convert(bigInt)
+        return value
+    }
+    
+    /// Converts and returns an ether unit to another unit
+    ///
+    ///
+    /// - Parameters:
+    ///   - bigInt: A BigInt representation of the value to convert
+    ///
+    /// - Returns: A BigInt representation of the converted value
+    func bigInt(from bigInt: BigInt) -> BigInt {
+        let value = convert(bigInt)
+        return value
     }
 }
