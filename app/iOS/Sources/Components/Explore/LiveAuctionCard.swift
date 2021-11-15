@@ -16,10 +16,11 @@ struct LiveAuctionCard: View {
     StandardCard(
       media: {
         NounPuzzle(
-          head: AppCore.shared.nounComposer.heads[auction.noun.seed.head].data,
-          body: AppCore.shared.nounComposer.bodies[auction.noun.seed.body].data,
-          glass: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].data,
-          accessory: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].data)
+          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[auction.noun.seed.head].assetImage),
+          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[auction.noun.seed.body].assetImage),
+          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].assetImage),
+          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].assetImage)
+        )
       },
       header: "Noun \(auction.noun.id)",
       accessoryImage: Image.mdArrowCorner,

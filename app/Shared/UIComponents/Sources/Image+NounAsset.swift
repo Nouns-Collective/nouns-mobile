@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension Image {
+public extension Image {
     
     /// This initializer creates an image using a Noun's trait-provided asset.
     ///

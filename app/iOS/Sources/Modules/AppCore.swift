@@ -23,7 +23,7 @@ class AppCore {
   
   lazy var nounComposer: NounComposer = {
     do {
-      return try OfflineNounComposer.composer()
+      return try OfflineNounComposer.default()
     } catch {
       fatalError("Couldn't instantiate the NounComposer: \(error)")
     }
