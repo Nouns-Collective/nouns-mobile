@@ -10,7 +10,7 @@ import SwiftUI
 /// A label for user interface items, consisting of
 /// a timer with a countdown to the date given.
 public struct TimerLabel: View {
-    @State private var now: Date = Date()
+    @State private var now = Date()
     private let until: Date
     
     init(until: Date) {
