@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "glasses-square-orange.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
