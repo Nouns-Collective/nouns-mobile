@@ -36,5 +36,18 @@ final class EtherFormatterTests: XCTestCase {
         
         XCTAssertEqual(result, expectedEthValue)
     }
+    
+    /// Tests behaviour if string does not only contain digits but also has other characters such as a decimal.
+    /// The response should be nil in this case
+    func testConvertingWithDecimalResultsInNil() throws {
+        // given
+        let weiValue = "100000000000000000000.0"
+        
+        let formatter = EtherFormatter(from: .wei)
+        formatter.unit = .eth
+        let result = formatter.string(from: weiValue)
+        
+        XCTAssertNil(result)
+    }
 }
 
