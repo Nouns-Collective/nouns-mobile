@@ -37,11 +37,11 @@ extension Noun {
 extension Seed {
     
     static var fixture: Self = {
-        Seed(background: 0,
-             glasses: 18,
-             head: 94,
-             body: 14,
-             accessory: 132)
+        Seed(background: "0",
+             glasses: "18",
+             head: "94",
+             body: "14",
+             accessory: "132")
     }()
 }
 

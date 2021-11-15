@@ -27,6 +27,14 @@ extension Seed: Equatable {
     }
 }
 
+extension Trait: Equatable {
+    
+    public static func == (lhs: Trait, rhs: Trait) -> Bool {
+        lhs.assetImage == rhs.assetImage &&
+        lhs.rleData == rhs.rleData
+    }
+}
+
 extension Account: Equatable {
     
     public static func == (lhs: Account, rhs: Account) -> Bool {

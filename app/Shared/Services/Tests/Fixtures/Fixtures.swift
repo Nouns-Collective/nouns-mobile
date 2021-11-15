@@ -10,11 +10,11 @@ import Foundation
 
 final class Fixtures {
     
-    static func data(contentOf filename: String, withExtension ext: String) -> Data {
+    static func data(contentOf filename: String, withExtension ext: String) -> Data? {
         guard let url = Bundle.module.url(forResource: filename, withExtension: ext),
               let data = try? Data(contentsOf: url)
         else {
-            fatalError("No file found for fixture with name `\(filename)`.")
+            return nil
         }
         return data
     }

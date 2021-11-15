@@ -32,19 +32,19 @@ public struct Noun: Decodable {
 public struct Seed: Decodable {
     
     /// The background trait.
-    public let background: Int//Trait
+    public let background: String
     
     /// The glasses trait.
-    public let glasses: Int//Trait
+    public let glasses: String
     
     /// The head trait.
-    public let head: Int//Trait
+    public let head: String
     
     /// The body trait.
-    public let body: Int//Trait
+    public let body: String
     
     /// The accessory trait.
-    public let accessory: Int//Trait
+    public let accessory: String
 }
 
 /// The owner of the Noun
