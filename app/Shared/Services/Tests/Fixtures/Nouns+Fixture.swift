@@ -10,7 +10,7 @@ import Foundation
 
 /// Various `Auction` fixtures.
 extension Auction {
- 
+    
     static var fixture: Self = {
         Auction(id: "106",
                 noun: .fixture,
@@ -27,8 +27,8 @@ extension Noun {
     
     static var fixture: Self = {
         Noun(id: "0",
-            owner: .fixture,
-            seed: .fixture
+             owner: .fixture,
+             seed: .fixture
         )
     }()
 }
