@@ -29,7 +29,7 @@ public protocol ENS {
 }
 
 /// Ethereum Name Service.
-public struct ENSDomain {
+public struct ENSDomain: Decodable, Equatable {
     
   /// The ETH address
   public let id: String
@@ -41,7 +41,7 @@ public struct ENSDomain {
 public class TheGraphENSProvider: ENS {
   private let graphQLClient: GraphQL
   
-  public init(graphQLClient: GraphQL) {
+  public init(graphQLClient: GraphQL = GraphQLClient()) {
     self.graphQLClient = graphQLClient
   }
   
@@ -58,5 +58,3 @@ public class TheGraphENSProvider: ENS {
       .eraseToAnyPublisher()
   }
 }
-
-extension ENSDomain: Decodable {}

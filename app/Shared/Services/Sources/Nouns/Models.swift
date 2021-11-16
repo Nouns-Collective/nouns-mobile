@@ -16,7 +16,7 @@ public struct Page<T> where T: Decodable {
 }
 
 /// The Noun
-public struct Noun: Decodable {
+public struct Noun: Equatable, Decodable {
     
     /// The Noun's ERC721 token id
     public let id: String
@@ -29,7 +29,7 @@ public struct Noun: Decodable {
 }
 
 /// The seed used to determine the Noun's traits.
-public struct Seed: Decodable {
+public struct Seed: Equatable, Decodable {
     
     /// The background trait.
     public let background: String
@@ -48,7 +48,7 @@ public struct Seed: Decodable {
 }
 
 /// The owner of the Noun
-public struct Account: Decodable {
+public struct Account: Equatable, Decodable {
     
     /// An Account is any address that holds any
     /// amount of Nouns, the id used is the blockchain address.
@@ -56,7 +56,7 @@ public struct Account: Decodable {
 }
 
 /// Historical votes for the Noun.
-public struct Vote: Decodable {
+public struct Vote: Equatable, Decodable {
     
     /// The support value: against, for, or abstain.
     public let supportDetailed: VoteSupportDetailed
@@ -83,7 +83,7 @@ public enum ProposalStatus: String, Decodable {
 }
 
 /// The Proposal.
-public struct Proposal {
+public struct Proposal: Equatable {
     
     /// Internal proposal ID
     public let id: String
@@ -99,7 +99,7 @@ public struct Proposal {
 }
 
 /// The Auction
-public struct Auction: Decodable {
+public struct Auction: Equatable, Decodable {
     /// The Noun's ERC721 token id
     public let id: String
     
@@ -123,7 +123,7 @@ public struct Auction: Decodable {
 }
 
 /// The auction's Bid
-public struct Bid: Decodable {
+public struct Bid: Equatable, Decodable {
     
     /// Bid transaction hash
     public let id: String
