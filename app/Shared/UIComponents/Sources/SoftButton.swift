@@ -81,7 +81,7 @@ public struct IconButtonLabel: View {
     public var body: some View {
         icon
             .aspectRatio(contentMode: .fit)
-            .padding(16)
+            .padding(8)
     }
 }
 
