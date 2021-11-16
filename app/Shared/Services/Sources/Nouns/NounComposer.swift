@@ -14,7 +14,7 @@ public struct Trait: Equatable {
     public let rleData: String
     
     /// Asset image of the Noun's trait stored locally.
-    internal let assetImage: String
+    public let assetImage: String
 }
 
 /// This provider class allows interacting with local Nouns' placed in disk.

@@ -10,7 +10,7 @@ import SwiftUI
 public struct UIComponents {
     
     /// Configures all the UI of the package
-    public static  func configure() {
+    public static func configure() {
         registerFonts()
     }
     
