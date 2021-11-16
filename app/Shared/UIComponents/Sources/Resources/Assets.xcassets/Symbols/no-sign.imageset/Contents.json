@@ -1,12 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "later.svg",
+      "filename" : "no-sign.svg",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
   }
 }
