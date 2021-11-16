@@ -30,31 +30,31 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
     /// Initializes an information cell with a left icon, some text, a callout string and icon, an accessory view, and optional tap action
     ///
     /// ```swift
-    /// InfoCell(icon: {
-    ///    Image.holder
-    ///     .resizable()
-    ///     .aspectRatio(contentMode: .fit)
-    ///     .frame(width: 35, height: 35, alignment: .center)
-    ///  }, text: "Held by", calloutText: "beautifulpunks.eth", accessory: {
+    /// InfoCell(text: "Held by", calloutText: "beautifulpunks.eth", icon: {
+    ///     Image.holder
+    ///         .resizable()
+    ///         .aspectRatio(contentMode: .fit)
+    ///         .frame(width: 35, height: 35, alignment: .center)
+    /// }, accessory: {
     ///     Image.mdArrowRight
-    ///     .resizable()
-    ///     .aspectRatio(contentMode: .fit)
-    ///     .frame(width: 20, height: 20, alignment: .center)
+    ///         .resizable()
+    ///         .aspectRatio(contentMode: .fit)
+    ///         .frame(width: 20, height: 20, alignment: .center)
     /// })
     /// ```
     ///
     /// - Parameters:
-    ///   - icon: The icon on the left of the information cell
     ///   - text: The main text for the information cell
-    ///   - calloutIcon: An optional callout icon view
     ///   - calloutText: An optional callout text property, which displays text after the main text in a bold font
+    ///   - icon: The icon on the left of the information cell
+    ///   - calloutIcon: An optional callout icon view
     ///   - accessory: An optional accessory icon view
     ///   - tapAction: An tap action for when the information cell is tapped
     public init(
-        @ViewBuilder icon: () -> Icon,
         text: String,
-        @ViewBuilder calloutIcon: () -> CalloutIcon,
         calloutText: String? = nil,
+        @ViewBuilder icon: () -> Icon,
+        @ViewBuilder calloutIcon: () -> CalloutIcon,
         @ViewBuilder accessory: () -> Accessory,
         tapAction: (() -> Void)? = nil
     ) {
@@ -66,28 +66,30 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         self.tapAction = tapAction
     }
     
-    /// Initializes an information cell with a left icon, some text, a callout string and icon,and optional tap action
+    /// Initializes an information cell with a left icon, some text, a callout string and icon, and optional tap action
     ///
     /// ```swift
-    /// InfoCell(icon: {
+    /// InfoCell(text: "Held by", calloutText: "beautifulpunks.eth", icon: {
     ///    Image.holder
     ///     .resizable()
     ///     .aspectRatio(contentMode: .fit)
     ///     .frame(width: 35, height: 35, alignment: .center)
-    ///  }, text: "Held by", calloutText: "beautifulpunks.eth")
+    ///  }, calloutIcon: {
+    ///     Image.eth
+    ///  )
     /// ```
     ///
     /// - Parameters:
-    ///   - icon: The icon on the left of the information cell
     ///   - text: The main text for the information cell
-    ///   - calloutIcon: An optional callout icon view
     ///   - calloutText: An optional callout text property, which displays text after the main text in a bold font
+    ///   - icon: The icon on the left of the information cell
+    ///   - calloutIcon: An optional callout icon view
     ///   - tapAction: An tap action for when the information cell is tapped
     public init(
-        @ViewBuilder icon: () -> Icon,
         text: String,
-        @ViewBuilder calloutIcon: () -> CalloutIcon,
         calloutText: String? = nil,
+        @ViewBuilder icon: () -> Icon,
+        @ViewBuilder calloutIcon: () -> CalloutIcon,
         tapAction: (() -> Void)? = nil
     ) where Accessory == EmptyView {
         self.icon = icon()
@@ -101,12 +103,12 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
     /// Initializes an information cell with a left icon, some text, a callout string, an accessory view, and optional tap action
     ///
     /// ```swift
-    /// InfoCell(icon: {
+    /// InfoCell(text: "Held by", calloutText: "beautifulpunks.eth", icon: {
     ///    Image.holder
     ///     .resizable()
     ///     .aspectRatio(contentMode: .fit)
     ///     .frame(width: 35, height: 35, alignment: .center)
-    ///  }, text: "Held by", calloutText: "beautifulpunks.eth", accessory: {
+    ///  }, accessory: {
     ///     Image.mdArrowRight
     ///     .resizable()
     ///     .aspectRatio(contentMode: .fit)
@@ -121,9 +123,9 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
     ///   - accessory: An optional accessory icon view
     ///   - tapAction: An tap action for when the information cell is tapped
     public init(
-        @ViewBuilder icon: () -> Icon,
         text: String,
         calloutText: String? = nil,
+        @ViewBuilder icon: () -> Icon,
         @ViewBuilder accessory: () -> Accessory,
         tapAction: (() -> Void)? = nil
     ) where CalloutIcon == EmptyView {
@@ -138,12 +140,12 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
     /// Initializes an information cell with a left icon, some text, a callout string, and optional tap action
     ///
     /// ```swift
-    /// InfoCell(icon: {
+    /// InfoCell(text: "Held by", calloutText: "beautifulpunks.eth", icon: {
     ///    Image.holder
     ///     .resizable()
     ///     .aspectRatio(contentMode: .fit)
     ///     .frame(width: 35, height: 35, alignment: .center)
-    ///  }, text: "Held by", calloutText: "beautifulpunks.eth")
+    ///  })
     /// ```
     ///
     /// - Parameters:
@@ -152,9 +154,9 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
     ///   - calloutText: An optional callout text property, which displays text after the main text in a bold font
     ///   - tapAction: An tap action for when the information cell is tapped
     public init(
-        @ViewBuilder icon: () -> Icon,
         text: String,
         calloutText: String? = nil,
+        @ViewBuilder icon: () -> Icon,
         tapAction: (() -> Void)? = nil
     ) where Accessory == EmptyView, CalloutIcon == EmptyView {
         self.icon = icon()
@@ -205,33 +207,33 @@ struct InfoCell_Previews: PreviewProvider {
         
         var body: some View {
             VStack(spacing: 20) {
-                InfoCell(icon: {
+                InfoCell(text: "Held by", calloutText: "beautifulpunks.eth", icon: {
                     Image.holder
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35, alignment: .center)
-                }, text: "Held by", calloutText: "beautifulpunks.eth", accessory: {
+                }, accessory: {
                     Image.mdArrowRight
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20, alignment: .center)
                 })
                 
-                InfoCell(icon: {
+                InfoCell(text: "Born", calloutText: "October 13, 2021", icon: {
                     Image.birthday
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35, alignment: .center)
-                }, text: "Born", calloutText: "October 13, 2021")
+                })
                 
-                InfoCell(icon: {
+                InfoCell(text: "Won for", calloutText: "140.0", icon: {
                     Image.wonPrice
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35, alignment: .center)
-                }, text: "Won for", calloutIcon: {
+                },  calloutIcon: {
                     Image.eth
-                }, calloutText: "140.0")
+                })
 
             }.padding()
         }
