@@ -54,13 +54,14 @@ extension Seed: Decodable {
               let glassesInt = Int(try container.decode(String.self, forKey: AnyCodingKey("glasses"))),
               let headInt = Int(try container.decode(String.self, forKey: AnyCodingKey("head"))),
               let bodyInt = Int(try container.decode(String.self, forKey: AnyCodingKey("body"))),
-              let accessoryInt = Int(try container.decode(String.self, forKey: AnyCodingKey("accessory"))) else {
-                  let context = DecodingError.Context(
-                      codingPath: decoder.codingPath,
-                      debugDescription: "Encoded payload not convertible to an Integer")
-                  
-                  throw DecodingError.dataCorrupted(context)
-              }
+              let accessoryInt = Int(try container.decode(String.self, forKey: AnyCodingKey("accessory")))
+        else {
+            let context = DecodingError.Context(
+                codingPath: decoder.codingPath,
+                debugDescription: "Encoded payload not convertible to an Integer")
+            
+            throw DecodingError.dataCorrupted(context)
+        }
         
         background = backgroundInt
         glasses = glassesInt
