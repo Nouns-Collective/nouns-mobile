@@ -29,7 +29,7 @@ public struct Noun: Equatable, Decodable {
 }
 
 /// The seed used to determine the Noun's traits.
-public struct Seed: Equatable, Decodable {
+public struct Seed: Equatable {
     
     /// The background trait.
     public let background: Int
