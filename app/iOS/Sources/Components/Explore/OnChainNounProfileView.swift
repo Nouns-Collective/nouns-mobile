@@ -99,10 +99,10 @@ struct OnChainNounProfileView: View {
       Spacer()
       
       NounPuzzle(
-        head: AppCore.shared.nounComposer.heads[noun.seed.head].data,
-        body: AppCore.shared.nounComposer.bodies[noun.seed.body].data,
-        glass: AppCore.shared.nounComposer.glasses[noun.seed.glasses].data,
-        accessory: AppCore.shared.nounComposer.accessories[noun.seed.accessory].data
+        head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
+        body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
+        glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[noun.seed.glasses].assetImage),
+        accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
       )
       
       PlainCell {

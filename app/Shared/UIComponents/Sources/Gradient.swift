@@ -50,7 +50,7 @@ extension Gradient {
     public static let magnoliaGarden = MagnoliaGarden()
     
     /// A context-dependent bubbleGum gradient suitable for use in UI elements.
-    public static let bubbleGum  = BubbleGum()
+    public static let bubbleGum = BubbleGum()
 }
 
 /// A context-dependent CoolGreydient color suitable for use in UI elements.

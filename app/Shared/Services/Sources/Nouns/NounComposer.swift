@@ -7,20 +7,14 @@
 
 import Foundation
 
-/// Temporary bridging of the module bundle so that the app layer can compose static noun views
-/// Should be removed once persistence & network fetching is implemented
-public extension Bundle {
-    static let NounAssetBundle = Bundle.module
-}
-
 /// The Noun's trait.
-public struct Trait {
+public struct Trait: Equatable {
     
     /// `RLE` data compression of the Noun's trait.
     public let rleData: String
     
     /// Asset image of the Noun's trait stored locally.
-    internal let assetImage: String
+    public let assetImage: String
 }
 
 /// This provider class allows interacting with local Nouns' placed in disk.

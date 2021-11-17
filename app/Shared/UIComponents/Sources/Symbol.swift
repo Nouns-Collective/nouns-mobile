@@ -38,7 +38,7 @@ extension Image {
     
     public static let holder = Image("holder", bundle: .module)
     
-    public static let later = Image("later", bundle: .module)
+    public static let noSign = Image("no-sign", bundle: .module)
     
     public static let mdArrowCorner = Image("md-arrow-corner", bundle: .module)
     
@@ -58,7 +58,7 @@ extension Image {
     
     public static let playOutline = Image("play-outline", bundle: .module)
     
-    public static let plus = Image("plus", bundle: .module)
+    public static let xmark = Image("xmark", bundle: .module)
     
     public static let rename = Image("rename", bundle: .module)
     
@@ -85,6 +85,4 @@ extension Image {
     public static let squareArrowDown = Image("square.and.arrow.down", bundle: .module)
     
     public static let splice = Image("splice", bundle: .module)
-    
-    public static let xmark = Image(systemName: "xmark")
 }
