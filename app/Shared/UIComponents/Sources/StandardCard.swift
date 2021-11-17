@@ -8,6 +8,7 @@
 import SwiftUI
 
 public struct StandardCard<Media: View, Label: View>: View {
+    @Environment(\.redactionReasons) private var reasons
     
     /// The large media content appearing at the top of the card
     private let media: Media
@@ -17,6 +18,11 @@ public struct StandardCard<Media: View, Label: View>: View {
     
     /// A set of corners to apply a rounded corner radius to
     private let roundedCorners: UIRectCorner
+    
+    /// Computed property to determine if the view should be redacted while it loads
+    private var isLoading: Bool {
+        reasons.contains(.loading)
+    }
     
     /// Initializes a card with any view for the media and the label (footer)
     ///
@@ -135,6 +141,15 @@ public struct StandardCard<Media: View, Label: View>: View {
                     Rectangle()
                         .stroke(Color.black, lineWidth: 2)
                 }
+                .opacity(isLoading ? 0 : 1)
+                .overlay {
+                    if isLoading {
+                        Rectangle()
+                            .fill(Color.black.opacity(0.5))
+                    } else {
+                        EmptyView()
+                    }
+                }
             
             label
                 .padding(20)
@@ -145,12 +160,14 @@ public struct StandardCard<Media: View, Label: View>: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.black, lineWidth: 2)
         }
+        .opacity(isLoading ? 0.1 : 1.0)
     }
 }
 
 ///
 public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: View {
-    
+    @Environment(\.redactionReasons) private var reasons
+
     /// The header text, located on the top left of the footer
     let header: String
     
@@ -168,6 +185,7 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .title2))
+                    .redactable(loading: reasons.contains(.loading))
                 
                 Spacer()
                 
@@ -180,11 +198,13 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .bottom) {
                 HStack {
                     leftDetail
+                        .redactable(loading: reasons.contains(.loading))
                     Spacer()
                 }
                 
                 HStack {
                     rightDetail
+                        .redactable(loading: reasons.contains(.loading))
                     Spacer()
                 }
             }
@@ -193,6 +213,7 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
 }
 
 public struct SmallCardFooter<DetailView: View>: View {
+    @Environment(\.redactionReasons) private var reasons
     
     /// The small header text, located on the top left of the footer
     let header: String
@@ -208,13 +229,15 @@ public struct SmallCardFooter<DetailView: View>: View {
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .body))
-                
+                    .redactable(loading: reasons.contains(.loading))
+
                 Spacer()
                 
                 accessoryImage
             }
             
             detail
+                .redactable(loading: reasons.contains(.loading))
         }
     }
 }
@@ -234,6 +257,7 @@ struct Preview: PreviewProvider {
             } rightDetail: {
                 CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Big")
             }.padding()
+            .redacted(reason: .loading)
         }
     }
     
@@ -250,6 +274,7 @@ struct Preview: PreviewProvider {
                 SafeLabel("89.00", icon: Image.eth)
             }.padding()
             .frame(width: 300)
+            .redacted(reason: .loading)
         }
     }
     
