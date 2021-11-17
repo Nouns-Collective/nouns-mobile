@@ -62,7 +62,7 @@ public struct OutlineButton<Label: View>: View {
     /// Using a custom label view.
     ///
     /// ```swift
-    /// OutlineButton {
+    /// OutlineButton(label: {
     ///     HStack {
     ///         Image(systemName: "arrow.clockwise")
     ///             .font(Font.body.weight(.medium))
@@ -72,7 +72,7 @@ public struct OutlineButton<Label: View>: View {
     ///     }.padding(.horizontal, 6)
     /// } action: {
     ///     print("Tapped")
-    /// }
+    /// })
     /// ```
     ///
     /// - Parameters:
@@ -96,7 +96,7 @@ public struct OutlineButton<Label: View>: View {
     /// ```swift
     /// OutlineButton(icon: {
     ///   Image(systemName: "hand.thumbsup.fill")
-    /// }, text: "Get Started", accessoryImage: {
+    /// }, text: "Get Started", smallAccessory: {
     ///     Image(systemName: "arrow.right")
     /// }, action: {}, fill: [.width])
     /// ```
@@ -104,18 +104,50 @@ public struct OutlineButton<Label: View>: View {
     /// - Parameters:
     ///   - icon: The image for the button's icon (optional)
     ///   - text: The text for the button (optional)
-    ///   - accessoryImage: The accessory image of the button
+    ///   - smallAccessory: The accessory image of the button
     ///   - action: The action function for when the button is tapped
     ///   - fill: A value to set the fill mode for the button's height and width
     public init(
-        @ViewBuilder icon: () -> Image? = { nil },
         text: String,
-        @ViewBuilder accessoryImage: () -> Image? = { nil },
+        @ViewBuilder icon: () -> Image? = { nil },
+        @ViewBuilder smallAccessory: () -> Image? = { nil },
         action: @escaping () -> Void,
         fill: Set<Fill> = []
-    ) where Label == StandardButtonLabel {
+    ) where Label == AccessoryButtonLabel {
         self.label = {
-            return StandardButtonLabel(icon: icon(), accessoryImage: accessoryImage(), text: text, fullWidth: fill.contains(.width))
+            return AccessoryButtonLabel(icon: icon(), accessoryImage: smallAccessory(), text: text, fullWidth: fill.contains(.width))
+        }()
+        
+        self.action = action
+        self.fill = fill
+    }
+    
+    /// Initializes an outline button with text, and an optional large accessory image to create a standard button, as well as a designated action
+    ///
+    /// Using a standard button label, with only text
+    ///
+    /// ```swift
+    /// OutlineButton(icon: {
+    ///   Image(systemName: "hand.thumbsup.fill")
+    /// }, text: "Get Started", smallAccessory: {
+    ///     Image(systemName: "arrow.right")
+    /// }, action: {}, fill: [.width])
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - icon: The image for the button's icon (optional)
+    ///   - text: The text for the button (optional)
+    ///   - largeAccessory: The accessory image of the button
+    ///   - action: The action function for when the button is tapped
+    ///   - fill: A value to set the fill mode for the button's height and width
+    public init(
+        text: String,
+        @ViewBuilder largeAccessory: () -> Image? = { nil },
+        action: @escaping () -> Void,
+        fill: Set<Fill> = []
+    ) where Label == LargeAccessoryButtonLabel {
+        self.label = {
+            return LargeAccessoryButtonLabel(accessoryImage: largeAccessory(), text: text, fullWidth: fill.contains(.width))
         }()
         
         self.action = action
@@ -140,12 +172,11 @@ public struct OutlineButton<Label: View>: View {
         action: @escaping () -> Void
     ) where Label == IconButtonLabel {
         self.label = {
-            return IconButtonLabel(icon: icon())
+            return IconButtonLabel(icon: icon(), padding: 12)
         }()
         
         self.action = action
     }
-    
     
     public var body: some View {
         Button {

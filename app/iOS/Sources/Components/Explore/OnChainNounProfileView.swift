@@ -78,7 +78,7 @@ struct OnChainNounProfileView: View {
     HStack {
       SoftButton(
         text: "Share",
-        accessoryImage: {
+        largeAccessory: {
           Image.share
         },
         action: { },
@@ -86,7 +86,7 @@ struct OnChainNounProfileView: View {
       
       SoftButton(
         text: "Remix",
-        accessoryImage: {
+        largeAccessory: {
           Image.splice
         },
         action: { },
