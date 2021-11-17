@@ -7,44 +7,6 @@
 
 import SwiftUI
 
-public struct CardDetailView: View {
-    
-    /// The string for the bold header of the detail view
-    let header: String
-    
-    /// An icon to display next to the header (optional)
-    let headerIcon: Image?
-    
-    /// The string for the light caption text underneath the header in the detail view (optional)
-    let subheader: String?
-    
-    public init(header: String, headerIcon: Image? = nil, subheader: String? = nil) {
-        self.header = header
-        self.headerIcon = headerIcon
-        self.subheader = subheader
-    }
-    
-    public var body: some View {
-        VStack(alignment: .leading) {
-            Label {
-                HStack {
-                    Spacer().frame(width: headerIcon == nil ? 0 : 2)
-                    Text(header)
-                        .font(Font.custom(.bold, relativeTo: .footnote))
-                }
-            } icon: {
-                headerIcon?
-                    .font(Font.body.bold())
-            }.labelStyle(.titleAndIcon(spacing: 0))
-            
-            if let subheader = subheader {
-                Text(subheader)
-                    .font(Font.custom(.regular, relativeTo: .footnote))
-            }
-        }
-    }
-}
-
 public struct StandardCard<Media: View, Label: View>: View {
     
     /// The large media content appearing at the top of the card
@@ -119,14 +81,14 @@ public struct StandardCard<Media: View, Label: View>: View {
     ///   - accessoryImage: A large image to display next to the header
     ///   - leftDetail: A card detail view for the bottom left of the card
     ///   - rightDetail: A card detail view for the bottom right of the card
-    public init(
+    public init<LeftDetailView, RightDetailView>(
         @ViewBuilder media: () -> Media,
         header: String,
         accessoryImage: Image,
-        @ViewBuilder leftDetail: () -> CardDetailView,
-        @ViewBuilder rightDetail: () -> CardDetailView,
+        @ViewBuilder leftDetail: () -> LeftDetailView,
+        @ViewBuilder rightDetail: () -> RightDetailView,
         roundedCorners: UIRectCorner = [.allCorners]
-    ) where Label == StandardCardFooter {
+    ) where LeftDetailView: View, RightDetailView: View, Label == StandardCardFooter<LeftDetailView, RightDetailView> {
         self.media = media()
         self.label = {
             return StandardCardFooter(header: header, accessoryImage: accessoryImage, leftDetail: leftDetail(), rightDetail: rightDetail())
@@ -151,13 +113,13 @@ public struct StandardCard<Media: View, Label: View>: View {
     ///   - smallHeader: The small header text, located on the top left of the footer
     ///   - accessoryImage: A small image to display next to the header
     ///   - detail: A card detail view for the bottom left of the card
-    public init(
+    public init<DetailView>(
         @ViewBuilder media: () -> Media,
         smallHeader: String,
         accessoryImage: Image,
-        @ViewBuilder detail: () -> CardDetailView,
+        @ViewBuilder detail: () -> DetailView,
         roundedCorners: UIRectCorner = [.allCorners]
-    ) where Label == SmallCardFooter {
+    ) where DetailView: View, Label == SmallCardFooter<DetailView> {
         self.media = media()
         self.label = {
             return SmallCardFooter(header: smallHeader, accessoryImage: accessoryImage, detail: detail())
@@ -187,7 +149,7 @@ public struct StandardCard<Media: View, Label: View>: View {
 }
 
 ///
-public struct StandardCardFooter: View {
+public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: View {
     
     /// The header text, located on the top left of the footer
     let header: String
@@ -196,14 +158,14 @@ public struct StandardCardFooter: View {
     let accessoryImage: Image
     
     /// A card detail view for the bottom left of the card
-    let leftDetail: CardDetailView
+    let leftDetail: LeftDetailView
     
     /// ThA card detail view for the bottom right of the card
-    let rightDetail: CardDetailView
+    let rightDetail: RightDetailView
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 25) {
-            HStack(alignment: .top) {
+            HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .title2))
                 
@@ -212,7 +174,7 @@ public struct StandardCardFooter: View {
                 accessoryImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 25, height: 25, alignment: .top)
+                    .frame(width: 35, height: 35, alignment: .center)
             }
             
             HStack(alignment: .bottom) {
@@ -230,7 +192,7 @@ public struct StandardCardFooter: View {
     }
 }
 
-public struct SmallCardFooter: View {
+public struct SmallCardFooter<DetailView: View>: View {
     
     /// The small header text, located on the top left of the footer
     let header: String
@@ -239,23 +201,60 @@ public struct SmallCardFooter: View {
     let accessoryImage: Image
     
     /// A small card detail view for the bottom of the card
-    let detail: CardDetailView
+    let detail: DetailView
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack(alignment: .top) {
+            HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .body))
                 
                 Spacer()
                 
                 accessoryImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16, alignment: .top)
             }
             
             detail
         }
+    }
+}
+
+struct Preview: PreviewProvider {
+    struct PreviewView: View {
+        init() {
+            UIComponents.configure()
+        }
+        
+        var body: some View {
+            StandardCard(media: {
+                Color.gray
+                    .frame(height: 400)
+            }, header: "Header", accessoryImage: Image.mdArrowCorner) {
+                CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Bid")
+            } rightDetail: {
+                CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Big")
+            }.padding()
+        }
+    }
+    
+    struct PreviewSmallCardView: View {
+        init() {
+            UIComponents.configure()
+        }
+        
+        var body: some View {
+            StandardCard(media: {
+                Color.gray
+                    .frame(height: 250)
+            }, smallHeader: "Header", accessoryImage: Image.mdArrowCorner) {
+                SafeLabel("89.00", icon: Image.eth)
+            }.padding()
+            .frame(width: 300)
+        }
+    }
+    
+    static var previews: some View {
+        PreviewView()
+        PreviewSmallCardView()
     }
 }

@@ -25,16 +25,10 @@ struct LiveAuctionCard: View {
       header: "Noun \(auction.noun.id)",
       accessoryImage: Image.mdArrowCorner,
       leftDetail: {
-          CardDetailView(
-            header: "9h 17m 23s",
-            headerIcon: nil,
-            subheader: "Remaining")
+        CompoundLabel(Text("9h 17m 23s"), icon: Image.timeleft, caption: "Remaining")
       },
       rightDetail: {
-        CardDetailView(
-          header: "2.0",
-          headerIcon: Image(systemName: "dollarsign.circle"),
-          subheader: "Current bid")
+        CompoundLabel(SafeLabel("89.00", icon: Image.eth), icon: Image.currentBid, caption: "Current big")
       })
   }
 }
