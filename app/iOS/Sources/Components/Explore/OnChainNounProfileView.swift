@@ -77,14 +77,18 @@ struct OnChainNounProfileView: View {
   private var actionsRow: some View {
     HStack {
       SoftButton(
-        image: Image.share,
         text: "Share",
+        largeAccessory: {
+          Image.share
+        },
         action: { },
         fill: [.width])
       
       SoftButton(
-        image: Image.splice,
         text: "Remix",
+        largeAccessory: {
+          Image.splice
+        },
         action: { },
         fill: [.width])
     }
@@ -107,9 +111,11 @@ struct OnChainNounProfileView: View {
             nounIDLabel
             Spacer()
             
-            SoftButton(image: Image.xmark, text: nil) {
+            SoftButton(icon: {
+              Image.xmark
+            }, action: {
               isPresented.toggle()
-            }
+            })
           }
           
           VStack(alignment: .leading, spacing: 20) {

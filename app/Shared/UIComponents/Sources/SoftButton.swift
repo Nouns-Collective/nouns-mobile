@@ -13,6 +13,9 @@ public struct SoftButtonStyle<Label: View>: ButtonStyle {
     /// The height of the button
     public let fill: Set<SoftButton<Label>.Fill>
     
+    /// Corner radius style of the button
+    public let continuous: Bool
+    
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label
@@ -27,47 +30,102 @@ public struct SoftButtonStyle<Label: View>: ButtonStyle {
                     .opacity(configuration.isPressed ? 1 : 0)
             }
             .background(Color.black.opacity(configuration.isPressed ? 0.1 : 0.05))
-            .cornerRadius(6)
+            .clipShape(RoundedRectangle(cornerRadius: continuous ? 10 : 6, style: continuous ? .continuous : .circular))
             .animation(.spring())
     }
 }
 
-///
-public struct StandardButtonLabel: View {
+/// A label for buttons with text and an optional icon on the left of the text as well as an optional accessory image
+public struct AccessoryButtonLabel: View {
     
-    /// The icon for the button
-    let image: Image?
+    /// The optional icon to show on the left of the text
+    let icon: Image?
+    
+    /// The icon for the button on the far right of the button (accessory image)
+    let accessoryImage: Image?
     
     /// The text for the button, appearing on the right side of the icon
-    let text: String?
+    let text: String
     
     /// Boolean value to determine whether the button should be full width
     let fullWidth: Bool
     
-    private var iconOnly: Bool {
-        return image != nil && text == nil
+    private var onlyText: Bool {
+        icon == nil
     }
     
     public var body: some View {
         HStack(spacing: 10) {
-            if let text = text {
+            Label {
                 Text(text)
                     .font(Font.custom(.medium, relativeTo: .callout))
-            }
+            } icon: {
+                icon?
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 25, height: 25, alignment: .center)
+            }.labelStyle(.titleAndIcon(spacing: onlyText ? 0 : 12))
             
             if fullWidth {
                 Spacer()
             }
             
-            if let image = image {
-                image
+            if let accessory = accessoryImage {
+                accessory
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 25, height: 25, alignment: .center)
-                    .font(Font.body.weight(.medium))
+                    .frame(width: 16, height: 16, alignment: .center)
             }
         }
         .padding(16)
+    }
+}
+
+/// A label for buttons with text as well as an optional large accessory image
+public struct LargeAccessoryButtonLabel: View {
+    
+    /// The icon for the button on the far right of the button (accessory image)
+    let accessoryImage: Image?
+    
+    /// The text for the button, appearing on the right side of the icon
+    let text: String
+    
+    /// Boolean value to determine whether the button should be full width
+    let fullWidth: Bool
+    
+    public var body: some View {
+        HStack(spacing: 10) {
+            Text(text)
+                .font(Font.custom(.medium, relativeTo: .callout))
+            
+            if fullWidth {
+                Spacer()
+            }
+            
+            if let accessory = accessoryImage {
+                accessory
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 28, alignment: .center)
+            }
+        }
+        .padding(16)
+    }
+}
+
+public struct IconButtonLabel: View {
+    
+    /// The optional icon to show on the left of the text
+    let icon: Image
+    
+    let padding: CGFloat
+
+    public var body: some View {
+        icon
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 16, height: 16, alignment: .center)
+            .padding(padding)
     }
 }
 
@@ -86,14 +144,22 @@ public struct SoftButton<Label: View>: View {
     private let action: () -> Void
     
     /// The fill mode for the buttons height and width
-    private let fill: Set<Fill>
+    private var fill = Set<Fill>()
+    
+    /// The corner radius style of the button
+    private var continuous: Bool = false
+    
+    /// A computer property to determine if the button's corner curve should be continuous or circular
+    private var isContinuous: Bool {
+        Label.self == IconButtonLabel.self || continuous
+    }
     
     /// Initializes a standard button with a custom view for the label and a designated action for when the button is tapped
     ///
     /// Using a custom label view.
     ///
     /// ```swift
-    /// SoftButton {
+    /// SoftButton(label: {
     ///     HStack {
     ///         Image(systemName: "arrow.clockwise")
     ///             .font(Font.body.weight(.medium))
@@ -103,100 +169,111 @@ public struct SoftButton<Label: View>: View {
     ///     }.padding(.horizontal, 6)
     /// } action: {
     ///     print("Tapped")
-    /// }
+    /// })
     /// ```
     ///
     /// - Parameters:
+    ///   - continuous: The corner radius style of the button. If true, the button will have a greater corner radius and a continuous corner curve
     ///   - label: A view for the label of the button
     ///   - action: The action function for when the button is tapped
     ///   - fill: A value to set the fill mode for the button's height and width
     public init(
+        continuous: Bool = false,
         @ViewBuilder label: () -> Label,
         action: @escaping () -> Void,
         fill: Set<Fill> = []
     ) {
+        self.continuous = continuous
         self.label = label()
         self.action = action
         self.fill = fill
     }
     
-    /// Initializes a standard button with an optional system icon and optional text to create a standard button, as well as a designated action
+    /// Initializes a soft button with an optional  icon, text, and optional accessory image to create a standard button, as well as a designated action
     ///
-    /// Using a standard button label.
-    ///
-    /// ```swift
-    /// SoftButton(systemImage: "xmark",
-    ///              text: "Cancel",
-    ///              action: {})
-    /// ```
-    ///
-    /// Using a standard button label, with only an icon.
+    /// Using a standard button label, with only text
     ///
     /// ```swift
-    /// SoftButton(systemImage: "xmark",
-    ///              action: {})
-    ///
+    /// SoftButton(icon: {
+    ///   Image(systemName: "hand.thumbsup.fill")
+    /// }, text: "Get Started", smallAccessory: {
+    ///     Image(systemName: "arrow.right")
+    /// }, action: {}, fill: [.width])
     /// ```
     ///
     /// - Parameters:
-    ///   - systemImage: The name of a system image for the button's icon (optional)
+    ///   - icon: The image for the button's icon (optional)
     ///   - text: The text for the button (optional)
+    ///   - smallAccessory: The accessory image of the button
     ///   - action: The action function for when the button is tapped
     ///   - fill: A value to set the fill mode for the button's height and width
     public init(
-        systemImage: String,
-        text: String? = nil,
+        text: String,
+        @ViewBuilder icon: () -> Image? = { nil },
+        @ViewBuilder smallAccessory: () -> Image? = { nil },
         action: @escaping () -> Void,
         fill: Set<Fill> = []
-    ) where Label == StandardButtonLabel {
+    ) where Label == AccessoryButtonLabel {
         self.label = {
-            return StandardButtonLabel(image: Image(systemName: systemImage), text: text, fullWidth: fill.contains(.width))
+            return AccessoryButtonLabel(icon: icon(), accessoryImage: smallAccessory(), text: text, fullWidth: fill.contains(.width))
         }()
         
         self.action = action
         self.fill = fill
     }
     
-    /// Initializes a standard button with an optional system icon and optional text to create a standard button, as well as a designated action
+    /// Initializes a soft button with text, and an optional large accessory image to create a standard button, as well as a designated action
     ///
     /// Using a standard button label, with only text
     ///
     /// ```swift
-    /// SoftButton(text: "Cancel",
-    ///              action: {})
-    ///
-    /// HStack {
-    ///     SoftButton(text: "Cancel",
-    ///                  action: {},
-    ///                  fill: [.width, .height])
-    ///         .frame(maxHeight: .infinity)
-    ///
-    ///     SoftButton(text: "Save",
-    ///                  action: {},
-    ///                 fill: [.width, .height])
-    ///         .frame(maxWidth: .infinity)
-    ///
-    ///  }.frame(height: 50)
+    /// SoftButton(text: "Get Started", largeAccessory: {
+    ///     Image(systemName: "arrow.right")
+    /// }, action: {}, fill: [.width])
     /// ```
     ///
-    ///
     /// - Parameters:
-    ///   - image: The image for the button's icon (optional)
+    ///   - icon: The image for the button's icon (optional)
     ///   - text: The text for the button (optional)
+    ///   - largeAccessory: The accessory image of the button
     ///   - action: The action function for when the button is tapped
     ///   - fill: A value to set the fill mode for the button's height and width
     public init(
-        image: Image? = nil,
-        text: String? = nil,
+        text: String,
+        @ViewBuilder largeAccessory: () -> Image? = { nil },
         action: @escaping () -> Void,
         fill: Set<Fill> = []
-    ) where Label == StandardButtonLabel {
+    ) where Label == LargeAccessoryButtonLabel {
         self.label = {
-            return StandardButtonLabel(image: image, text: text, fullWidth: fill.contains(.width))
+            return LargeAccessoryButtonLabel(accessoryImage: largeAccessory(), text: text, fullWidth: fill.contains(.width))
         }()
         
         self.action = action
         self.fill = fill
+    }
+    
+    /// Initializes a soft button with only an icon as it's label, as well as a designated action
+    ///
+    /// Using an icon button label, with only an icon
+    ///
+    /// ```swift
+    /// Soft Button(icon: {
+    ///     Image(systemName: "hand.thumbsup.fill")
+    /// }, action: {})
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - icon: The image for the button's icon
+    ///   - action: The action function for when the button is tapped
+    public init(
+        @ViewBuilder icon: () -> Image,
+        action: @escaping () -> Void
+    ) where Label == IconButtonLabel {
+        self.label = {
+            return IconButtonLabel(icon: icon(), padding: 8)
+        }()
+        
+        self.action = action
     }
     
     public var body: some View {
@@ -205,39 +282,6 @@ public struct SoftButton<Label: View>: View {
         } label: {
             label
         }
-        .buttonStyle(SoftButtonStyle(fill: fill))
-    }
-}
-
-// TODO: Remove the preview and put the example in the documentation.
-struct Previews: PreviewProvider {    
-    static var previews: some View {
-        VStack {
-            VStack {
-                SoftButton(systemImage: "arrow.right", text: "Get Started", action: {}, fill: [.width])
-                
-                HStack {
-                    SoftButton(systemImage: "hand.thumbsup.fill", text: "Get Started", action: {}, fill: [.width])
-                    SoftButton(systemImage: "hand.thumbsdown", text: "Get Started", action: {}, fill: [.width])
-                }
-            }.padding()
-            .background(Color.componentSeriousMango)
-            
-            VStack {
-                SoftButton(systemImage: "arrow.right", text: "Get Started", action: {}, fill: [.width])
-                
-                HStack {
-                    SoftButton(systemImage: "hand.thumbsup.fill", text: "Get Started", action: {}, fill: [.width])
-                    SoftButton(systemImage: "hand.thumbsdown", text: "Get Started", action: {}, fill: [.width])
-                }
-                
-                HStack {
-                    SoftButton(systemImage: "hand.thumbsup.fill", action: {})
-                    SoftButton(systemImage: "hand.thumbsdown", text: "Get Started", action: {}, fill: [.width])
-                }
-            }.padding()
-        }.onAppear {
-            UIComponents.configure()
-        }
+        .buttonStyle(SoftButtonStyle(fill: fill, continuous: continuous))
     }
 }
