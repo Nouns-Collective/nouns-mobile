@@ -29,10 +29,7 @@ struct OnChainNounCard: View {
       smallHeader: "Noun \(noun.id)",
       accessoryImage: Image.mdArrowCorner,
       detail: {
-        CardDetailView(
-          header: "89.00",
-          headerIcon: Image.eth,
-          subheader: nil)
+        SafeLabel("89.00", icon: Image.eth)
       })
   }
 }
