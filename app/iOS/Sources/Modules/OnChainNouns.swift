@@ -8,6 +8,7 @@
 import Foundation
 import Services
 import Combine
+import SwiftUI
 
 /// <#Description#>
 struct FetchOnChainNounsAction: Action {

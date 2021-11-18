@@ -13,17 +13,17 @@ private struct LoadingState: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-  var loading: Bool {
-    get { self[LoadingState.self] }
-    set { self[LoadingState.self] = newValue }
-  }
+    var loading: Bool {
+        get { self[LoadingState.self] }
+        set { self[LoadingState.self] = newValue }
+    }
 }
 
 /// A view extension that sets the loading environment key to true for the specified view and it's children view
-extension View {
-  func loading() -> some View {
-    environment(\.loading, true)
-  }
+public extension View {
+    func loading(when condition: Bool = true) -> some View {
+        environment(\.loading, condition)
+    }
 }
 
 /// The view modifier that applies a skeleton view if the environment loading property is set to true
@@ -37,6 +37,13 @@ struct Redactable: ViewModifier {
         case gray
     }
     
+    /// A thin dark rectangle to be used as an overlay on existing views during loading states
+    private var skeletonView: some View {
+        Rectangle()
+            .fill(Color.black)
+            .frame(height: 2)
+    }
+    
     func body(content: Content) -> some View {
         if isLoading {
             content
@@ -44,7 +51,7 @@ struct Redactable: ViewModifier {
                 .overlay {
                     switch style {
                     case .skeleton:
-                        SkeletonView()
+                        skeletonView
                     case .gray:
                         Rectangle()
                             .fill(Color.black.opacity(0.5))
@@ -56,17 +63,12 @@ struct Redactable: ViewModifier {
     }
 }
 
-/// A thin dark rectangle to be used as an overlay on existing views during loading states
-struct SkeletonView: View {
-    var body: some View {
-        Rectangle()
-            .fill(Color.black)
-            .frame(height: 2)
-    }
-}
-
 extension View {
-    func redactable(style: Redactable.Style = .skeleton) -> some View {
-        modifier(Redactable(style: style))
+    func skeletonWhenRedacted() -> some View {
+        modifier(Redactable(style: .skeleton))
+    }
+    
+    func grayWhenRedacted() -> some View {
+        modifier(Redactable(style: .gray))
     }
 }

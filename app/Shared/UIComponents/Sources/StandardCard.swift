@@ -131,18 +131,17 @@ public struct StandardCard<Media: View, Label: View>: View {
     public var body: some View {
         VStack(spacing: 0) {
             media
-                .background(Color(uiColor: UIColor.lightGray.withAlphaComponent(0.2)))
-                .overlay {
-                    Rectangle()
-                        .stroke(Color.black, lineWidth: 2)
-                }
+                .background(Color.componentSoftGrey)
                 .opacity(isLoading ? 0 : 1)
                 .overlay {
-                    if isLoading {
+                    ZStack {
                         Rectangle()
-                            .fill(Color.black.opacity(0.5))
-                    } else {
-                        Color.clear()
+                            .stroke(Color.black, lineWidth: 2)
+                        
+                        if isLoading {
+                            Rectangle()
+                                .fill(Color.black.opacity(0.5))
+                        }
                     }
                 }
             
@@ -155,7 +154,7 @@ public struct StandardCard<Media: View, Label: View>: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.black, lineWidth: 2)
         }
-        .opacity(isLoading ? 0.1 : 1.0)
+        .opacity(isLoading ? 0.05 : 1.0)
     }
 }
 
@@ -178,7 +177,7 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .title2))
-                    .redactable()
+                    .skeletonWhenRedacted()
                 
                 Spacer()
                 
@@ -191,13 +190,13 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .bottom) {
                 HStack {
                     leftDetail
-                        .redactable()
+                        .skeletonWhenRedacted()
                     Spacer()
                 }
                 
                 HStack {
                     rightDetail
-                        .redactable()
+                        .skeletonWhenRedacted()
                     Spacer()
                 }
             }
@@ -220,7 +219,7 @@ public struct SmallCardFooter<DetailView: View>: View {
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .body))
-                    .redactable()
+                    .skeletonWhenRedacted()
 
                 Spacer()
                 
@@ -228,7 +227,7 @@ public struct SmallCardFooter<DetailView: View>: View {
             }
             
             detail
-                .redactable()
+                .skeletonWhenRedacted()
         }
     }
 }

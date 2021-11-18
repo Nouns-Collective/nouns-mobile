@@ -22,19 +22,28 @@ struct OnChainNounsView: View {
   ]
   
   var body: some View {
-    LazyVGrid(columns: columns, spacing: 20) {
-      ForEach(store.state.onChainNouns.nouns, id: \.id) { noun in
-        
-        OnChainNounCard(
-          animation: animation,
-          noun: noun)
-          .id(noun.id)
-          .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
-          .onTapGesture {
-            withAnimation(.spring()) {
-              selected = noun
+    if store.state.onChainNouns.isLoading {
+      LazyVGrid(columns: columns, spacing: 20) {
+        ForEach(0..<4) { _ in
+          OnChainNounPlaceholderCard()
+        }
+      }
+      .loading()
+      .disabled(true)
+    } else {
+      LazyVGrid(columns: columns, spacing: 20) {
+        ForEach(store.state.onChainNouns.nouns, id: \.id) { noun in
+          OnChainNounCard(
+            animation: animation,
+            noun: noun)
+            .id(noun.id)
+            .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
+            .onTapGesture {
+              withAnimation(.spring()) {
+                selected = noun
+              }
             }
-          }
+        }
       }
     }
   }
