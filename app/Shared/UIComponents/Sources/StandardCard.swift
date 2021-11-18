@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct StandardCard<Media: View, Label: View>: View {
-    @Environment(\.redactionReasons) private var reasons
+    @Environment(\.loading) private var isLoading
     
     /// The large media content appearing at the top of the card
     private let media: Media
@@ -18,11 +18,6 @@ public struct StandardCard<Media: View, Label: View>: View {
     
     /// A set of corners to apply a rounded corner radius to
     private let roundedCorners: UIRectCorner
-    
-    /// Computed property to determine if the view should be redacted while it loads
-    private var isLoading: Bool {
-        reasons.contains(.loading)
-    }
     
     /// Initializes a card with any view for the media and the label (footer)
     ///
@@ -147,7 +142,7 @@ public struct StandardCard<Media: View, Label: View>: View {
                         Rectangle()
                             .fill(Color.black.opacity(0.5))
                     } else {
-                        EmptyView()
+                        Color.clear()
                     }
                 }
             
@@ -166,8 +161,6 @@ public struct StandardCard<Media: View, Label: View>: View {
 
 ///
 public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: View {
-    @Environment(\.redactionReasons) private var reasons
-
     /// The header text, located on the top left of the footer
     let header: String
     
@@ -185,7 +178,7 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .title2))
-                    .redactable(loading: reasons.contains(.loading))
+                    .redactable()
                 
                 Spacer()
                 
@@ -198,13 +191,13 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .bottom) {
                 HStack {
                     leftDetail
-                        .redactable(loading: reasons.contains(.loading))
+                        .redactable()
                     Spacer()
                 }
                 
                 HStack {
                     rightDetail
-                        .redactable(loading: reasons.contains(.loading))
+                        .redactable()
                     Spacer()
                 }
             }
@@ -213,8 +206,6 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
 }
 
 public struct SmallCardFooter<DetailView: View>: View {
-    @Environment(\.redactionReasons) private var reasons
-    
     /// The small header text, located on the top left of the footer
     let header: String
     
@@ -229,7 +220,7 @@ public struct SmallCardFooter<DetailView: View>: View {
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .body))
-                    .redactable(loading: reasons.contains(.loading))
+                    .redactable()
 
                 Spacer()
                 
@@ -237,7 +228,7 @@ public struct SmallCardFooter<DetailView: View>: View {
             }
             
             detail
-                .redactable(loading: reasons.contains(.loading))
+                .redactable()
         }
     }
 }
@@ -252,12 +243,12 @@ struct Preview: PreviewProvider {
             StandardCard(media: {
                 Color.gray
                     .frame(height: 400)
-            }, header: "Header", accessoryImage: Image.mdArrowCorner) {
+            }, header: "Header", accessoryImage: Image.mdArrowCorner, leftDetail: {
                 CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Bid")
-            } rightDetail: {
+            }, rightDetail: {
                 CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Big")
-            }.padding()
-            .redacted(reason: .loading)
+            }).padding()
+            .loading()
         }
     }
     
@@ -270,11 +261,11 @@ struct Preview: PreviewProvider {
             StandardCard(media: {
                 Color.gray
                     .frame(height: 250)
-            }, smallHeader: "Header", accessoryImage: Image.mdArrowCorner) {
+            }, smallHeader: "Header", accessoryImage: Image.mdArrowCorner, detail: {
                 SafeLabel("89.00", icon: Image.eth)
-            }.padding()
+            }).padding()
             .frame(width: 300)
-            .redacted(reason: .loading)
+            .loading()
         }
     }
     
