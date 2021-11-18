@@ -135,7 +135,9 @@ struct BidRowView: View {
         .foregroundColor(Color.componentNounsBlack)
         .font(.custom(.medium, relativeTo: .subheadline))
     } icon: {
-      // TODO: - Add ENS avatar
+      Image(R.image.placeholderEns.name)
+        .frame(width: 20, height: 20, alignment: .center)
+        .clipShape(Circle())
     }
   }
 
