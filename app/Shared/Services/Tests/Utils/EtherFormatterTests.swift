@@ -27,8 +27,8 @@ final class EtherFormatterTests: XCTestCase {
     /// Tests converting from WEI to ETH
     func testConvertingFromWeiToEth() throws {
         // given
-        let weiValue = "100000000000000000000"
-        let expectedEthValue = "100" // represented as a string
+        let weiValue = "2245320000000000000000"
+        let expectedEthValue = "2245.32" // represented as a string
         
         let formatter = EtherFormatter(from: .wei)
         formatter.unit = .eth
@@ -37,11 +37,11 @@ final class EtherFormatterTests: XCTestCase {
         XCTAssertEqual(result, expectedEthValue)
     }
     
-    /// Tests behaviour if string does not only contain digits but also has other characters such as a decimal.
+    /// Tests behaviour if string does containts any non-numeric characters
     /// The response should be nil in this case
-    func testConvertingWithDecimalResultsInNil() throws {
+    func testConvertingWithTextResultsInNil() throws {
         // given
-        let weiValue = "100000000000000000000.0"
+        let weiValue = "sometext"
         
         let formatter = EtherFormatter(from: .wei)
         formatter.unit = .eth
