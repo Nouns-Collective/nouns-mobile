@@ -130,4 +130,10 @@ public struct Bid: Equatable, Decodable {
     
     /// Bid amount
     public let amount: String
+    
+    /// Timestamp of the bid
+    public let blockTimestamp: String
+    
+    /// The account the bid was made by
+    public let account: Account
 }

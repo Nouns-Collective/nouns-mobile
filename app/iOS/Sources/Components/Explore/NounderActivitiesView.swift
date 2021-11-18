@@ -64,22 +64,26 @@ struct ActivityRowView: View {
         .contained(textColor: .white, backgroundColor: Color.gray.opacity(0.5))
         .labelStyle(.titleAndIcon(spacing: 3))
         .font(.custom(.medium, relativeTo: .footnote))
+        .foregroundColor(Color.componentNounsBlack)
     case .for:
       return Label("Voted for", systemImage: "checkmark")
         .contained(textColor: .white, backgroundColor: Color.blue)
         .labelStyle(.titleAndIcon(spacing: 3))
         .font(.custom(.medium, relativeTo: .footnote))
+        .foregroundColor(Color.componentNounsBlack)
     case .against:
       return Label("Vote Against", systemImage: "xmark")
         .contained(textColor: .white, backgroundColor: Color.red)
         .labelStyle(.titleAndIcon(spacing: 3))
         .font(.custom(.medium, relativeTo: .footnote))
+        .foregroundColor(Color.componentNounsBlack)
     }
   }
   
   private var proposalStatusLabel: some View {
     Text("Proposal \(vote.proposal.id) • \(vote.proposal.status.rawValue.capitalized)")
-      .font(Font.custom(.medium, relativeTo: .body))
+      .foregroundColor(Color.componentNounsBlack)
+      .font(Font.custom(.medium, relativeTo: .footnote))
       .opacity(0.5)
   }
   
@@ -98,6 +102,80 @@ struct ActivityRowView: View {
         }
         
         descriptionLabel
+      }
+    }
+  }
+}
+
+struct BidRowView: View {
+  let bid: Bid
+  
+  private var bidAmountLabel: some View {
+    Label {
+      Text(ethValue)
+        .foregroundColor(Color.componentNounsBlack)
+        .font(.custom(.bold, relativeTo: .title3))
+    } icon: {
+      Image.eth
+        .resizable()
+        .scaledToFit()
+        .frame(width: 20, height: 20, alignment: .center)
+    }.labelStyle(.titleAndIcon(spacing: 4))
+  }
+  
+  private var dateLabel: some View {
+    Text(formattedDate)
+      .font(Font.custom(.medium, relativeTo: .footnote))
+      .opacity(0.5)
+  }
+  
+  private var bidderLabel: some View {
+    Label {
+      Text(bid.account.id)
+        .foregroundColor(Color.componentNounsBlack)
+        .font(.custom(.medium, relativeTo: .subheadline))
+    } icon: {
+      // TODO: - Add ENS avatar
+    }
+  }
+
+  private var ethValue: String {
+    let formatter = EtherFormatter(from: .wei)
+    formatter.unit = .eth
+    return formatter.string(from: bid.amount) ?? "Unavailable"
+  }
+  
+  private var formattedDate: String {
+    guard let timeInterval = Double(bid.blockTimestamp) else { return "Unavailable" }
+    
+    let date = Date(timeIntervalSince1970: timeInterval)
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone.current
+    dateFormatter.locale = NSLocale.current
+    dateFormatter.dateFormat = "MMM dd"
+    let dateString = dateFormatter.string(from: date)
+    
+    let timeFormatter = DateFormatter()
+    timeFormatter.timeZone = TimeZone.current
+    timeFormatter.locale = NSLocale.current
+    timeFormatter.dateFormat = "hh:mm a"
+    let timeString = timeFormatter.string(from: date).lowercased()
+    
+    return "\(dateString) at \(timeString)"
+  }
+  
+  var body: some View {
+    PlainCell {
+      VStack(alignment: .leading, spacing: 8) {
+        HStack(alignment: .center) {
+          bidAmountLabel
+
+          Spacer()
+          dateLabel
+        }
+        
+        bidderLabel
       }
     }
   }

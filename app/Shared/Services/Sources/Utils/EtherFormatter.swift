@@ -23,7 +23,7 @@ public class EtherFormatter: Formatter {
     private let fromUnit: Unit
     
     /// The ether unit we are converting to (defaults to eth)
-    var unit: Unit = .eth
+    public var unit: Unit = .eth
     
     public init(from fromUnit: Unit) {
         self.fromUnit = fromUnit
@@ -55,7 +55,7 @@ public class EtherFormatter: Formatter {
     ///   - stringVal: The string literal of the integer value we are converting. All characters must be digits.
     ///
     /// - Returns: A string literal of the converted integer value.
-    func string(from stringVal: String) -> String? {
+    public func string(from stringVal: String) -> String? {
         guard let bigInt = BigInt(stringVal, radix: 10) else { return nil }
         let value = convert(bigInt)
         return String(value)
@@ -68,7 +68,7 @@ public class EtherFormatter: Formatter {
     ///   - bigInt: A BigInt representation of the value to convert
     ///
     /// - Returns: A string literal of the converted integer value.
-    func string(from bigInt: BigInt) -> String {
+    public func string(from bigInt: BigInt) -> String {
         let value = convert(bigInt)
         return String(value)
     }
