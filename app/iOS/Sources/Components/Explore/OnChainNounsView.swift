@@ -20,11 +20,9 @@ struct OnChainNounsView: View {
     GridItem(.flexible(), spacing: 20),
     GridItem(.flexible(), spacing: 20)
   ]
-  
   var body: some View {
     LazyVGrid(columns: columns, spacing: 20) {
-      ForEach(store.state.onChainNouns.nouns, id: \.id) { noun in
-        
+      PaginatingList(store.state.onChainNouns.nouns) { noun in
         OnChainNounCard(
           animation: animation,
           noun: noun)
@@ -35,6 +33,8 @@ struct OnChainNounsView: View {
               selected = noun
             }
           }
+      } loadMoreAction: {
+        store.dispatch(FetchOnChainNounsAction(after: $0))
       }
     }
   }

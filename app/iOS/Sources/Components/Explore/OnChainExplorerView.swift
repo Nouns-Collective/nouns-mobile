@@ -35,7 +35,7 @@ struct OnChainExplorerView: View {
       .padding(.top, 60)
       .padding(.bottom, 40)
     }
-    .activityIndicator(isPresented: store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading)
+//     .activityIndicator(isPresented: store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading)
     .background(Gradient.lemonDrop)
     .ignoresSafeArea()
     .onChange(of: selectedNoun) { newValue in
@@ -45,7 +45,7 @@ struct OnChainExplorerView: View {
       store.dispatch(FetchOnChainNounsAction())
       store.dispatch(ListenLiveAuctionAction())
     }
-    .sheet(
+    .fullScreenCover(
       isPresented: $isNounProfilePresented,
       onDismiss: {
         selectedNoun = nil
