@@ -28,7 +28,7 @@ struct LiveAuctionCard: View {
         CompoundLabel(Text("9h 17m 23s"), icon: Image.timeleft, caption: "Remaining")
       },
       rightDetail: {
-        CompoundLabel(SafeLabel("89.00", icon: Image.eth), icon: Image.currentBid, caption: "Current big")
+        CompoundLabel(SafeLabel("89.00", icon: Image.eth), icon: Image.currentBid, caption: "Current bid")
       })
   }
 }
