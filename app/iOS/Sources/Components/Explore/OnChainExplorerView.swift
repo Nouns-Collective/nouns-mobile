@@ -22,7 +22,10 @@ struct OnChainExplorerView: View {
     
     ScrollView(.vertical, showsIndicators: false) {
       VStack(spacing: 20) {
-        if let auction = store.state.liveAuction.auction {
+        if store.state.liveAuction.isLoading {
+          LiveAuctionPlaceholderCard()
+            .loading()
+        } else if let auction = store.state.liveAuction.auction {
           LiveAuctionCard(auction: auction)
         }
         
@@ -35,7 +38,7 @@ struct OnChainExplorerView: View {
       .padding(.top, 60)
       .padding(.bottom, 40)
     }
-//     .activityIndicator(isPresented: store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading)
+    .disabled(store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading)
     .background(Gradient.lemonDrop)
     .ignoresSafeArea()
     .onChange(of: selectedNoun) { newValue in

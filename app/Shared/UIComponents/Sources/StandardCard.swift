@@ -8,6 +8,7 @@
 import SwiftUI
 
 public struct StandardCard<Media: View, Label: View>: View {
+    @Environment(\.loading) private var isLoading
     
     /// The large media content appearing at the top of the card
     private let media: Media
@@ -130,10 +131,18 @@ public struct StandardCard<Media: View, Label: View>: View {
     public var body: some View {
         VStack(spacing: 0) {
             media
-                .background(Color(uiColor: UIColor.lightGray.withAlphaComponent(0.2)))
+                .background(Color.componentSoftGrey)
+                .opacity(isLoading ? 0 : 1)
                 .overlay {
-                    Rectangle()
-                        .stroke(Color.black, lineWidth: 2)
+                    ZStack {
+                        Rectangle()
+                            .stroke(Color.black, lineWidth: 2)
+                        
+                        if isLoading {
+                            Rectangle()
+                                .fill(Color.black.opacity(0.5))
+                        }
+                    }
                 }
             
             label
@@ -145,12 +154,12 @@ public struct StandardCard<Media: View, Label: View>: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.black, lineWidth: 2)
         }
+        .opacity(isLoading ? 0.05 : 1.0)
     }
 }
 
 ///
 public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: View {
-    
     /// The header text, located on the top left of the footer
     let header: String
     
@@ -168,6 +177,7 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .title2))
+                    .skeletonWhenRedacted()
                 
                 Spacer()
                 
@@ -180,11 +190,13 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
             HStack(alignment: .bottom) {
                 HStack {
                     leftDetail
+                        .skeletonWhenRedacted()
                     Spacer()
                 }
                 
                 HStack {
                     rightDetail
+                        .skeletonWhenRedacted()
                     Spacer()
                 }
             }
@@ -193,7 +205,6 @@ public struct StandardCardFooter<LeftDetailView: View, RightDetailView: View>: V
 }
 
 public struct SmallCardFooter<DetailView: View>: View {
-    
     /// The small header text, located on the top left of the footer
     let header: String
     
@@ -208,13 +219,15 @@ public struct SmallCardFooter<DetailView: View>: View {
             HStack(alignment: .center) {
                 Text(header)
                     .font(Font.custom(.bold, relativeTo: .body))
-                
+                    .skeletonWhenRedacted()
+
                 Spacer()
                 
                 accessoryImage
             }
             
             detail
+                .skeletonWhenRedacted()
         }
     }
 }
@@ -229,11 +242,12 @@ struct Preview: PreviewProvider {
             StandardCard(media: {
                 Color.gray
                     .frame(height: 400)
-            }, header: "Header", accessoryImage: Image.mdArrowCorner) {
+            }, header: "Header", accessoryImage: Image.mdArrowCorner, leftDetail: {
                 CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Bid")
-            } rightDetail: {
+            }, rightDetail: {
                 CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Big")
-            }.padding()
+            }).padding()
+            .loading()
         }
     }
     
@@ -246,10 +260,11 @@ struct Preview: PreviewProvider {
             StandardCard(media: {
                 Color.gray
                     .frame(height: 250)
-            }, smallHeader: "Header", accessoryImage: Image.mdArrowCorner) {
+            }, smallHeader: "Header", accessoryImage: Image.mdArrowCorner, detail: {
                 SafeLabel("89.00", icon: Image.eth)
-            }.padding()
+            }).padding()
             .frame(width: 300)
+            .loading()
         }
     }
     

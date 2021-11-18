@@ -21,29 +21,38 @@ struct OnChainNounsView: View {
     GridItem(.flexible(), spacing: 20)
   ]
   var body: some View {
-    LazyVGrid(columns: columns, spacing: 20) {
-      PaginatingList(store.state.onChainNouns.nouns) { noun in
-        OnChainNounCard(
-          animation: animation,
-          noun: noun)
-          .id(noun.id)
-          .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
-          .onTapGesture {
-            withAnimation(.spring()) {
-              selected = noun
+    if store.state.onChainNouns.isLoading {
+      LazyVGrid(columns: columns, spacing: 20) {
+        ForEach(0..<4) { _ in
+          OnChainNounPlaceholderCard()
+        }
+      }
+      .loading()
+      .disabled(true)
+    } else {
+      LazyVGrid(columns: columns, spacing: 20) {
+        PaginatingList(store.state.onChainNouns.nouns) { noun in
+          OnChainNounCard(
+            animation: animation,
+            noun: noun)
+            .id(noun.id)
+            .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
+            .onTapGesture {
+              withAnimation(.spring()) {
+                selected = noun
+              }
             }
-          }
-      } loadMoreAction: {
-        store.dispatch(FetchOnChainNounsAction(after: $0))
+        } loadMoreAction: {
+          store.dispatch(FetchOnChainNounsAction(after: $0))
+        }
       }
     }
   }
-}
-
-struct Previews: PreviewProvider {
-  @Namespace static var ns
   
-  static var previews: some View {
-    OnChainNounsView(animation: ns, selected: .constant(nil), isPresentingActivity: .constant(false))
+  struct Previews: PreviewProvider {
+    @Namespace static var ns
+    
+    static var previews: some View {
+      OnChainNounsView(animation: ns, selected: .constant(nil), isPresentingActivity: .constant(false))
+    }
   }
-}
