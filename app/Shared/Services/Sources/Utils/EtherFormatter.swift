@@ -21,7 +21,7 @@ public class EtherFormatter: Formatter {
     private let fromUnit: Unit
     
     /// The ether unit we are converting to (defaults to eth)
-    var unit: Unit = .eth
+    public var unit: Unit = .eth
     
     public init(from fromUnit: Unit) {
         self.fromUnit = fromUnit
