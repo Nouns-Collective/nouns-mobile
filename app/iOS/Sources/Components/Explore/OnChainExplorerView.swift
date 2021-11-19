@@ -61,7 +61,7 @@ struct OnChainExplorerView: View {
         if let selectedAuction = selectedAuction {
           OnChainNounProfileView(
             isPresented: $isNounProfilePresented,
-            noun: selectedAuction.noun)
+            auction: selectedAuction)
         }
       })
   }

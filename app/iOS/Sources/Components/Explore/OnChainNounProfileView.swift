@@ -14,7 +14,37 @@ struct OnChainNounProfileView: View {
   @Binding var isPresented: Bool
   @State var isActivityPresented: Bool = false
   
-  let noun: Noun
+  let auction: Auction
+  
+  private var noun: Noun {
+    auction.noun
+  }
+  
+  private var formattedDate: String {
+    guard let timeInterval = Double(auction.startTime) else { return "N/A" }
+    
+    let date = Date(timeIntervalSince1970: timeInterval)
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone.current
+    dateFormatter.locale = NSLocale.current
+    dateFormatter.dateFormat = "MMM dd YYYY"
+    return dateFormatter.string(from: date)
+  }
+  
+  private var ethPrice: String {
+    let formatter = EtherFormatter(from: .wei)
+    formatter.unit = .eth
+    return formatter.string(from: auction.amount) ?? "N/A"
+  }
+  
+  private var truncatedOwner: String {
+    let leader = "..."
+    let headCharactersCount = Int(ceil(Float(15 - leader.count) / 2.0))
+    let tailCharactersCount = Int(floor(Float(15 - leader.count) / 2.0))
+    
+    return "\(noun.owner.id.prefix(headCharactersCount))\(leader)\(noun.owner.id.suffix(tailCharactersCount))"
+  }
   
   private var nounIDLabel: some View {
     Text("Noun \(noun.id)")
@@ -22,55 +52,32 @@ struct OnChainNounProfileView: View {
   }
   
   private var birthdateRow: some View {
-    Label {
-      Text("Born Oct 11 1961")
-        .font(.custom(.regular, relativeTo: .subheadline))
-    } icon: {
+    InfoCell(text: "Born \(formattedDate)", icon: {
       Image.birthday
-    }
+    })
   }
   
   private var bidWinnerRow: some View {
-    Label {
-      Text("Won for ")
-        .font(.custom(.regular, relativeTo: .subheadline)) +
-      Text("135")
-        .bold()
-      
-    } icon: {
+    InfoCell(text: "Won for", calloutText: ethPrice, icon: {
       Image.wonPrice
-    }
+    }, calloutIcon: {
+      Image.eth
+    })
   }
   
   private var ownerRow: some View {
-    Label {
-      HStack {
-        Text("Held by ")
-          .font(.custom(.regular, relativeTo: .subheadline))
-        +
-        Text("bob.eth")
-          .font(.custom(.bold, relativeTo: .subheadline))
-          .bold()
-        
-        Spacer()
-        
-        Image.mdArrowRight
-      }
-    } icon: {
+    InfoCell(text: "Held by", calloutText: truncatedOwner, icon: {
       Image.holder
-    }
+    }, accessory: {
+      Image.mdArrowRight
+    })
   }
   
   private var activityRow: some View {
-    Label(title: {
-      HStack {
-        Text("Activity")
-          .font(Font.custom(.regular, relativeTo: .subheadline))
-        Spacer()
-        Image.mdArrowRight
-      }
-    }, icon: {
+    InfoCell(text: "Activity", icon: {
       Image.history
+    }, accessory: {
+      Image.mdArrowRight
     })
   }
   
