@@ -28,6 +28,9 @@ struct OnChainExplorerView: View {
       VStack(spacing: 20) {
         if let auction = store.state.liveAuction.auction {
           LiveAuctionCard(auction: auction)
+            .onTapGesture {
+              selectedAuction = auction
+            }
         } else {
           LiveAuctionPlaceholderCard()
             .loading()
@@ -61,7 +64,8 @@ struct OnChainExplorerView: View {
         if let selectedAuction = selectedAuction {
           OnChainNounProfileView(
             isPresented: $isNounProfilePresented,
-            auction: selectedAuction)
+            auction: selectedAuction
+          )
         }
       })
   }

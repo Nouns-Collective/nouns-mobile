@@ -27,6 +27,7 @@ struct LiveAuctionCard: View {
           glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].assetImage),
           accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].assetImage)
         )
+          .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[auction.noun.seed.background]))
       },
       header: "Noun \(auction.noun.id)",
       accessoryImage: Image.mdArrowCorner,
