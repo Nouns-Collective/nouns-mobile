@@ -131,7 +131,7 @@ struct BidRowView: View {
   
   private var bidderLabel: some View {
     Label {
-      Text(bid.account.id)
+      Text(bid.bidder.id)
         .foregroundColor(Color.componentNounsBlack)
         .font(.custom(.medium, relativeTo: .subheadline))
     } icon: {

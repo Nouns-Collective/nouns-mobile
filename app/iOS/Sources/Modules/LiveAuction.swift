@@ -58,6 +58,7 @@ func liveAuctionReducer(state: LiveAuction, action: Action) -> LiveAuction {
   case let failure as ListenLiveAuctionFailed:
     state.error = failure.error
     state.isLoading = false
+    print("Error: \(failure.error)")
     
   default:
     break

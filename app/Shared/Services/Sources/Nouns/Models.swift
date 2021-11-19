@@ -16,7 +16,7 @@ public struct Page<T> where T: Decodable {
 }
 
 /// The Noun
-public struct Noun: Equatable, Decodable {
+public struct Noun: Equatable, Decodable, Identifiable {
     
     /// The Noun's ERC721 token id
     public let id: String
@@ -135,5 +135,5 @@ public struct Bid: Equatable, Decodable {
     public let blockTimestamp: String
     
     /// The account the bid was made by
-    public let account: Account
+    public let bidder: Account
 }

@@ -39,6 +39,10 @@ extension NounsSubgraph {
               bids(orderDirection: desc, first: 10) {
                 id
                 amount
+                blockTimestamp
+                bidder {
+                    id
+                }
               }
             }
           }

@@ -18,15 +18,19 @@ struct OnChainExplorerView: View {
   @State var isNounProfilePresented: Bool = false
   @State var isPresentingNounActivity: Bool = false
   
+  private var isInitiallyLoading: Bool {
+    (store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading) && store.state.onChainNouns.nouns.isEmpty
+  }
+  
   var body: some View {
     
     ScrollView(.vertical, showsIndicators: false) {
       VStack(spacing: 20) {
-        if store.state.liveAuction.isLoading {
+        if let auction = store.state.liveAuction.auction {
+          LiveAuctionCard(auction: auction)
+        } else {
           LiveAuctionPlaceholderCard()
             .loading()
-        } else if let auction = store.state.liveAuction.auction {
-          LiveAuctionCard(auction: auction)
         }
         
         OnChainNounsView(
@@ -38,7 +42,7 @@ struct OnChainExplorerView: View {
       .padding(.top, 60)
       .padding(.bottom, 40)
     }
-    .disabled(store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading)
+    .disabled(isInitiallyLoading)
     .background(Gradient.lemonDrop)
     .ignoresSafeArea()
     .onChange(of: selectedNoun) { newValue in
@@ -48,7 +52,7 @@ struct OnChainExplorerView: View {
       store.dispatch(FetchOnChainNounsAction())
       store.dispatch(ListenLiveAuctionAction())
     }
-    .sheet(
+    .fullScreenCover(
       isPresented: $isNounProfilePresented,
       onDismiss: {
         selectedNoun = nil

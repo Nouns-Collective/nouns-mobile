@@ -11,8 +11,8 @@ import Combine
 
 /// <#Description#>
 struct FetchOnChainNounsAction: Action {
-  let limit = 100
-  let after = 0
+  var limit = 20
+  var after = 0
 }
 
 /// <#Description#>
@@ -55,7 +55,7 @@ func onChainNounsReducer(state: OnChainNouns, action: Action) -> OnChainNouns {
     state.isLoading = true
     
   case let succeeded as FetchOnChainNounsSucceeded:
-    state.nouns = succeeded.nouns
+    state.nouns.append(contentsOf: succeeded.nouns)
     state.isLoading = false
     
   case let failure as FetchOnChainNounsFailed:
