@@ -40,7 +40,7 @@ public enum QueryError: Error {
     case badQuery
     
     /// An indication that the data is corrupted or otherwise invalid.
-    case dataCorrupted
+    case dataCorrupted(error: Error)
 }
 
 /// A cache policy that specifies whether results should be fetched
@@ -103,7 +103,7 @@ public class GraphQLClient: GraphQL {
                 .mapError({ error in
                     switch error {
                     case is Swift.DecodingError:
-                        return QueryError.dataCorrupted
+                        return QueryError.dataCorrupted(error: error)
                     default:
                         return error
                     }

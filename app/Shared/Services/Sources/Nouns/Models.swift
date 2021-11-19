@@ -135,5 +135,5 @@ public struct Bid: Equatable, Decodable {
     public let blockTimestamp: String
     
     /// The account the bid was made by
-    public let account: Account
+    public let bidder: Account
 }

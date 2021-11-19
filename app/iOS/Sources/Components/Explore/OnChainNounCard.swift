@@ -25,6 +25,7 @@ struct OnChainNounCard: View {
           accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
         )
           .matchedGeometryEffect(id: "\(noun)-puzzle", in: animation)
+          .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[noun.seed.background]))
       },
       smallHeader: "Noun \(noun.id)",
       accessoryImage: Image.mdArrowCorner,

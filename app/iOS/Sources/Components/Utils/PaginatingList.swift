@@ -7,25 +7,35 @@
 
 import SwiftUI
 
-struct PaginatingList<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable {
+struct PaginatingList<Data: RandomAccessCollection, Content: View, Placeholder: View>: View where Data.Element: Identifiable {
   
   /// The data for the list content
-  private var data: Data
+  private let data: Data
   
   /// The content view for a single data element
-  private var content: (Data.Element) -> Content
+  private let content: (Data.Element) -> Content
   
   /// A method to call after reaching the bottom of the scroll view, to load more content
-  private var loadMoreAction: (_ after: Int) -> Void
+  private let loadMoreAction: (_ after: Int) -> Void
+  
+  /// A placeholder view to show at the bottom of the list while loading more nouns
+  private let placeholder: () -> Placeholder
+  
+  /// A boolean value to determine whether or not to show the placeholder views at the bottom of the list
+  private let isLoading: Bool
   
   init(
     _ data: Data,
+    isLoading: Bool,
     @ViewBuilder content: @escaping (_ item: Data.Element) -> Content,
-    loadMoreAction: @escaping (_ after: Int) -> Void
+    loadMoreAction: @escaping (_ after: Int) -> Void,
+    placeholderView: @escaping () -> Placeholder
   ) {
     self.data = data
+    self.isLoading = isLoading
     self.content = content
     self.loadMoreAction = loadMoreAction
+    self.placeholder = placeholderView
   }
   
   private func loadMoreIfNecessary(_ item: Data.Element) {
@@ -39,6 +49,10 @@ struct PaginatingList<Data: RandomAccessCollection, Content: View>: View where D
         .onAppear {
           self.loadMoreIfNecessary(element)
         }
+    }
+    
+    if isLoading {
+      placeholder()
     }
   }
 }
