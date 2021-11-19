@@ -14,7 +14,7 @@ struct NounsApp: App {
   let store = AppStore(
     initialState: AppState(),
     reducer: appReducer,
-    middlewares: [onChainNounsMiddleware(), onChainNounActivitiesMiddleware(), liveAuctionMiddleware()]
+    middlewares: [onChainAuctionsMiddleware(), onChainNounActivitiesMiddleware(), liveAuctionMiddleware()]
   )
   
   init() {

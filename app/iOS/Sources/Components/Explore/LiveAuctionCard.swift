@@ -12,6 +12,12 @@ import Services
 struct LiveAuctionCard: View {
   let auction: Auction
   
+  private var ethPrice: String {
+    let formatter = EtherFormatter(from: .wei)
+    formatter.unit = .eth
+    return formatter.string(from: auction.amount) ?? "N/A"
+  }
+  
   var body: some View {
     StandardCard(
       media: {
@@ -28,7 +34,7 @@ struct LiveAuctionCard: View {
         CompoundLabel(Text("9h 17m 23s"), icon: Image.timeleft, caption: "Remaining")
       },
       rightDetail: {
-        CompoundLabel(SafeLabel("89.00", icon: Image.eth), icon: Image.currentBid, caption: "Current bid")
+        CompoundLabel(SafeLabel(ethPrice, icon: Image.eth), icon: Image.currentBid, caption: "Current bid")
       })
   }
 }

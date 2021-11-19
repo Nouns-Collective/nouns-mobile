@@ -99,7 +99,7 @@ public struct Proposal: Equatable {
 }
 
 /// The Auction
-public struct Auction: Equatable, Decodable {
+public struct Auction: Equatable, Decodable, Identifiable {
     /// The Noun's ERC721 token id
     public let id: String
     
@@ -117,9 +117,6 @@ public struct Auction: Equatable, Decodable {
     
     /// Whether or not the auction has been settled
     public let settled: Bool
-    
-    /// The auction bids
-    public let bids: [Bid]
 }
 
 /// The auction's Bid

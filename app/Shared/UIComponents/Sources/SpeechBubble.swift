@@ -71,8 +71,8 @@ public struct ErrorStateView: View {
         VStack(spacing: 0) {
             SpeechBubble(message)
             Image("noun-error-persona", bundle: .module)
-            OutlineButton(image: .retry,
-                          text: "Try again",
+            OutlineButton(text: "Try again",
+                          icon: { Image.retry },
                           action: { },
                           fill: [.width])
         }
