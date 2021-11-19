@@ -13,24 +13,30 @@ import Services
 struct OnChainNounCard: View {
   var animation: Namespace.ID
   
-  let noun: Noun
+  let auction: Auction
+  
+  private var ethPrice: String {
+    let formatter = EtherFormatter(from: .wei)
+    formatter.unit = .eth
+    return formatter.string(from: auction.amount) ?? "N/A"
+  }
   
   var body: some View {
     StandardCard(
       media: {
         NounPuzzle(
-          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
-          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
-          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[noun.seed.glasses].assetImage),
-          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
+          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[auction.noun.seed.head].assetImage),
+          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[auction.noun.seed.body].assetImage),
+          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].assetImage),
+          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].assetImage)
         )
-          .matchedGeometryEffect(id: "\(noun)-puzzle", in: animation)
-          .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[noun.seed.background]))
+          .matchedGeometryEffect(id: "\(auction.noun)-puzzle", in: animation)
+          .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[auction.noun.seed.background]))
       },
-      smallHeader: "Noun \(noun.id)",
+      smallHeader: "Noun \(auction.noun.id)",
       accessoryImage: Image.mdArrowCorner,
       detail: {
-        SafeLabel("89.00", icon: Image.eth)
+        SafeLabel(ethPrice, icon: Image.eth)
       })
   }
 }

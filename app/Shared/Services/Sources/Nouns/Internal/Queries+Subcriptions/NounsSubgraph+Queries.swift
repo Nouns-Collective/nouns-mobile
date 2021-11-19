@@ -66,7 +66,7 @@ internal enum NounsSubgraph {
         var operationDefinition: String {
         """
           {
-            auctions(first: \(first), skip: \(skip), orderBy: startTime, where: { settled: \(settled) }) {
+            auctions(first: \(first), skip: \(skip), orderBy: startTime, orderDirection: desc, where: { settled: \(settled) }) {
               id
               amount
               startTime

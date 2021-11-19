@@ -191,7 +191,6 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         } icon: {
             icon
         }
-        .labelStyle(.titleAndIcon(spacing: 14))
         .contentShape(Rectangle())
         .onTapGesture {
             tapAction?()

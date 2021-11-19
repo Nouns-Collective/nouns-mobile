@@ -14,64 +14,19 @@ struct OnChainNounProfileView: View {
   @Binding var isPresented: Bool
   @State var isActivityPresented: Bool = false
   
-  let noun: Noun
+  let auction: Auction
   
-  private var nounIDLabel: some View {
-    Text("Noun \(noun.id)")
-      .font(.custom(.bold, relativeTo: .title2))
+  private var noun: Noun {
+    auction.noun
   }
   
-  private var birthdateRow: some View {
-    Label {
-      Text("Born Oct 11 1961")
-        .font(.custom(.regular, relativeTo: .subheadline))
-    } icon: {
-      Image.birthday
+  private var detailRows: some View {
+    switch auction.settled {
+    case true:
+      return AnyView(SettledAuctionDetailRows(auction: auction, isActivityPresented: $isActivityPresented))
+    case false:
+      return AnyView(LiveAuctionDetailRows(auction: auction, isActivityPresented: $isActivityPresented))
     }
-  }
-  
-  private var bidWinnerRow: some View {
-    Label {
-      Text("Won for ")
-        .font(.custom(.regular, relativeTo: .subheadline)) +
-      Text("135")
-        .bold()
-      
-    } icon: {
-      Image.wonPrice
-    }
-  }
-  
-  private var ownerRow: some View {
-    Label {
-      HStack {
-        Text("Held by ")
-          .font(.custom(.regular, relativeTo: .subheadline))
-        +
-        Text("bob.eth")
-          .font(.custom(.bold, relativeTo: .subheadline))
-          .bold()
-        
-        Spacer()
-        
-        Image.mdArrowRight
-      }
-    } icon: {
-      Image.holder
-    }
-  }
-  
-  private var activityRow: some View {
-    Label(title: {
-      HStack {
-        Text("Activity")
-          .font(Font.custom(.regular, relativeTo: .subheadline))
-        Spacer()
-        Image.mdArrowRight
-      }
-    }, icon: {
-      Image.history
-    })
   }
   
   private var actionsRow: some View {
@@ -92,6 +47,11 @@ struct OnChainNounProfileView: View {
         action: { },
         fill: [.width])
     }
+  }
+  
+  private var nounIDLabel: some View {
+    Text("Noun \(noun.id)")
+      .font(.custom(.bold, relativeTo: .title2))
   }
   
   var body: some View {
@@ -118,15 +78,7 @@ struct OnChainNounProfileView: View {
             })
           }
           
-          VStack(alignment: .leading, spacing: 20) {
-            birthdateRow
-            bidWinnerRow
-            ownerRow
-            
-            activityRow
-              .contentShape(Rectangle())
-              .onTapGesture { isActivityPresented.toggle() }
-          }
+          detailRows
           .labelStyle(.titleAndIcon(spacing: 14))
           .padding(.bottom, 40)
           
@@ -141,6 +93,161 @@ struct OnChainNounProfileView: View {
       NounderActivitiesView(
         isPresented: $isActivityPresented,
         noun: noun)
+    }
+  }
+}
+
+struct SettledAuctionDetailRows: View {
+  let auction: Auction
+  @Binding var isActivityPresented: Bool
+  
+  private var noun: Noun {
+    auction.noun
+  }
+  
+  private var ethPrice: String {
+    let formatter = EtherFormatter(from: .wei)
+    formatter.unit = .eth
+    return formatter.string(from: auction.amount) ?? "N/A"
+  }
+  
+  private var truncatedOwner: String {
+    let leader = "..."
+    let headCharactersCount = Int(ceil(Float(15 - leader.count) / 2.0))
+    let tailCharactersCount = Int(floor(Float(15 - leader.count) / 2.0))
+    
+    return "\(noun.owner.id.prefix(headCharactersCount))\(leader)\(noun.owner.id.suffix(tailCharactersCount))"
+  }
+  
+  private var formattedDate: String {
+    guard let timeInterval = Double(auction.startTime) else { return "N/A" }
+    
+    let date = Date(timeIntervalSince1970: timeInterval)
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone.current
+    dateFormatter.locale = NSLocale.current
+    dateFormatter.dateFormat = "MMM dd YYYY"
+    return dateFormatter.string(from: date)
+  }
+  
+  private var birthdateRow: some View {
+    InfoCell(text: "Born \(formattedDate)", icon: {
+      Image.birthday
+    })
+  }
+  
+  private var bidWinnerRow: some View {
+    InfoCell(text: "Won for", calloutText: ethPrice, icon: {
+      Image.wonPrice
+    }, calloutIcon: {
+      Image.eth
+    })
+  }
+  
+  private var ownerRow: some View {
+    InfoCell(text: "Held by", calloutText: truncatedOwner, icon: {
+      Image.holder
+    }, accessory: {
+      Image.mdArrowRight
+    })
+  }
+  
+  private var activityRow: some View {
+    InfoCell(text: "Activity", icon: {
+      Image.history
+    }, accessory: {
+      Image.mdArrowRight
+    }, tapAction: {
+      isActivityPresented.toggle()
+    })
+  }
+  
+  var body: some View {
+    VStack(alignment: .leading, spacing: 20) {
+      birthdateRow
+      bidWinnerRow
+      ownerRow
+      activityRow
+    }
+  }
+}
+
+struct LiveAuctionDetailRows: View {
+  let auction: Auction
+  @Binding var isActivityPresented: Bool
+  
+  private var noun: Noun {
+    auction.noun
+  }
+  
+  private func formattedDate(timeInterval: String) -> String {
+    guard let timeInterval = Double(timeInterval) else { return "N/A" }
+    
+    let date = Date(timeIntervalSince1970: timeInterval)
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone.current
+    dateFormatter.locale = NSLocale.current
+    dateFormatter.dateFormat = "MMM dd YYYY"
+    return dateFormatter.string(from: date)
+  }
+  
+  private var ethPrice: String {
+    let formatter = EtherFormatter(from: .wei)
+    formatter.unit = .eth
+    return formatter.string(from: auction.amount) ?? "N/A"
+  }
+  
+  private var truncatedOwner: String {
+    let leader = "..."
+    let headCharactersCount = Int(ceil(Float(15 - leader.count) / 2.0))
+    let tailCharactersCount = Int(floor(Float(15 - leader.count) / 2.0))
+    
+    return "\(noun.owner.id.prefix(headCharactersCount))\(leader)\(noun.owner.id.suffix(tailCharactersCount))"
+  }
+  
+  private var nounIDLabel: some View {
+    Text("Noun \(noun.id)")
+      .font(.custom(.bold, relativeTo: .title2))
+  }
+  
+  private var timeRemainingRow: some View {
+    InfoCell(text: "Ends on", calloutText: formattedDate(timeInterval: auction.endTime), icon: {
+      Image.timeleft
+    })
+  }
+  
+  private var birthdateRow: some View {
+    InfoCell(text: "Born \(formattedDate(timeInterval: auction.startTime))", icon: {
+      Image.birthday
+    })
+  }
+  
+  private var curretBidRow: some View {
+    InfoCell(text: "Current bid", calloutText: ethPrice, icon: {
+      Image.currentBid
+    }, calloutIcon: {
+      Image.eth
+    })
+  }
+  
+  private var activityRow: some View {
+    InfoCell(text: "Bid history & activity", icon: {
+      Image.history
+    }, accessory: {
+      Image.mdArrowRight
+    }, tapAction: {
+      isActivityPresented.toggle()
+    })
+  }
+  
+  var body: some View {
+    VStack(alignment: .leading, spacing: 20) {
+      timeRemainingRow
+      birthdateRow
+      curretBidRow
+      activityRow
     }
   }
 }

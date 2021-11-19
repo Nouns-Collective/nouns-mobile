@@ -13,11 +13,11 @@ struct OnChainNounsView: View {
   @EnvironmentObject var store: AppStore
   
   var animation: Namespace.ID
-  @Binding var selected: Noun?
+  @Binding var selected: Auction?
   @Binding var isPresentingActivity: Bool
   
   private var isInitiallyLoading: Bool {
-    store.state.onChainNouns.isLoading && store.state.onChainNouns.nouns.isEmpty
+    store.state.onChainAuctions.isLoading && store.state.onChainAuctions.auctions.isEmpty
   }
   
   let columns = [
@@ -35,19 +35,19 @@ struct OnChainNounsView: View {
       .loading()
       .disabled(true)
     } else {
-      PaginatingVGrid(store.state.onChainNouns.nouns, isLoading: store.state.onChainNouns.isLoading, content: { noun in
+      PaginatingVGrid(store.state.onChainAuctions.auctions, isLoading: store.state.onChainAuctions.isLoading, content: { auction in
         OnChainNounCard(
           animation: animation,
-          noun: noun)
-          .id(noun.id)
-          .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
+          auction: auction)
+          .id(auction.noun.id)
+          .matchedGeometryEffect(id: "noun-\(auction.noun.id)", in: animation)
           .onTapGesture {
             withAnimation(.spring()) {
-              selected = noun
+              selected = auction
             }
           }
       }, loadMoreAction: {
-        store.dispatch(FetchOnChainNounsAction(after: $0))
+        store.dispatch(FetchOnChainAuctionsAction(after: $0))
       }, placeholderView: {
         ForEach(0..<2) { _ in
           OnChainNounPlaceholderCard()

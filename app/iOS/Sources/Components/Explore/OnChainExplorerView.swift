@@ -14,12 +14,12 @@ struct OnChainExplorerView: View {
   @EnvironmentObject var store: AppStore
   
   @Namespace private var animation
-  @State var selectedNoun: Noun?
+  @State var selectedAuction: Auction?
   @State var isNounProfilePresented: Bool = false
   @State var isPresentingNounActivity: Bool = false
   
   private var isInitiallyLoading: Bool {
-    (store.state.onChainNouns.isLoading || store.state.liveAuction.isLoading) && store.state.onChainNouns.nouns.isEmpty
+    (store.state.onChainAuctions.isLoading || store.state.liveAuction.isLoading) && store.state.onChainAuctions.auctions.isEmpty
   }
   
   var body: some View {
@@ -28,6 +28,9 @@ struct OnChainExplorerView: View {
       VStack(spacing: 20) {
         if let auction = store.state.liveAuction.auction {
           LiveAuctionCard(auction: auction)
+            .onTapGesture {
+              selectedAuction = auction
+            }
         } else {
           LiveAuctionPlaceholderCard()
             .loading()
@@ -35,7 +38,7 @@ struct OnChainExplorerView: View {
         
         OnChainNounsView(
           animation: animation,
-          selected: $selectedNoun,
+          selected: $selectedAuction,
           isPresentingActivity: $isPresentingNounActivity)
       }
       .padding(.horizontal, 20)
@@ -45,23 +48,24 @@ struct OnChainExplorerView: View {
     .disabled(isInitiallyLoading)
     .background(Gradient.lemonDrop)
     .ignoresSafeArea()
-    .onChange(of: selectedNoun) { newValue in
+    .onChange(of: selectedAuction) { newValue in
       isNounProfilePresented = newValue != nil
     }
     .onAppear {
-      store.dispatch(FetchOnChainNounsAction())
+      store.dispatch(FetchOnChainAuctionsAction())
       store.dispatch(ListenLiveAuctionAction())
     }
     .fullScreenCover(
       isPresented: $isNounProfilePresented,
       onDismiss: {
-        selectedNoun = nil
+        selectedAuction = nil
       },
       content: {
-        if let selectedNoun = selectedNoun {
+        if let selectedAuction = selectedAuction {
           OnChainNounProfileView(
             isPresented: $isNounProfilePresented,
-            noun: selectedNoun)
+            auction: selectedAuction
+          )
         }
       })
   }

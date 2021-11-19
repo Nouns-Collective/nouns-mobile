@@ -53,15 +53,15 @@ public class EtherFormatter: Formatter {
     ///   - stringVal: The string literal of the integer value we are converting. All characters must be digits.
     ///
     /// - Returns: A string literal of the converted integer value.
-    func string(from stringVal: String) -> String? {
+    public func string(from stringVal: String) -> String? {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
-        
+        formatter.minimumFractionDigits = 2
         guard let number = formatter.number(from: stringVal) as? NSDecimalNumber else {
             return nil
         }
         
         let value = convert(number)
-        return value.stringValue
+        return formatter.string(from: value)
     }
 }

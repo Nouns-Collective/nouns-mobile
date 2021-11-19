@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-private let defaultLayout = [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)]
+public let defaultLayout = [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)]
 
 public struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Placeholder: View>: View where Data.Element: Identifiable {
   
