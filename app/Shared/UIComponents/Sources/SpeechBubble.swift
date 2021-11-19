@@ -27,7 +27,7 @@ public struct SpeechBubble: View {
         ZStack {
             
             label
-                .offset(y: -10)
+                .offset(y: -14)
                 .frame(width: .infinity)
                 .background(
                     Image("speech.bubble", bundle: .module)
@@ -40,14 +40,17 @@ public struct SpeechBubble: View {
     
     private var label: some View {
         Text(content)
+            // TODO: - Update font to Space Mono
             .font(Font.custom(.bold, relativeTo: .body))
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
+            .padding()
     }
 }
 
 /// State indicator for occurred errors.
 public struct ErrorStateView: View {
+    
     private let message: String
     
     /// Create a state view that display a message.
@@ -71,27 +74,65 @@ public struct ErrorStateView: View {
         VStack(spacing: 0) {
             SpeechBubble(message)
             Image("noun-error-persona", bundle: .module)
-            OutlineButton(image: .retry,
-                          text: "Try again",
+            OutlineButton(text: "Try again",
+                          icon: { Image.retry },
                           action: { },
                           fill: [.width])
         }
     }
 }
 
-struct SpeedBubble_preview: PreviewProvider {
+/// State indicator for occurred errors.
+public struct NounSpeechView: View {
     
-    static var previews: some View {
-        
-        ZStack {
-            Gradient.bubbleGum
-                .ignoresSafeArea()
-            
-            ErrorStateView("Dude, something’s wrong with the auction")
-                .padding()
+    private let message: String
+    
+    private let noun: String
+    
+    /// Create a noun view that display a message.
+    ///
+    /// ```swift
+    /// ZStack {
+    ///     Gradient.bubbleGum
+    ///         .ignoresSafeArea()
+    ///
+    ///     NounSpeechView("Dude, something’s wrong with the auction", noun: "talking-noun")
+    ///         .padding()
+    /// }
+    /// ```
+    ///
+    /// - Parameter title: The message to communicate.
+    public init(_ message: String, noun: String) {
+        self.message = message
+        self.noun = noun
+    }
+    
+    public var body: some View {
+        VStack(spacing: -25) {
+            SpeechBubble(message)
+            Image(noun, bundle: .module)
         }
-        .onAppear {
+    }
+}
+
+struct SpeechBubble_preview: PreviewProvider {
+    struct PreviewView: View {
+        init() {
             UIComponents.configure()
         }
+        
+        public var body: some View {
+            ZStack {
+                Gradient.lemonDrop
+                    .ignoresSafeArea()
+                
+                NounSpeechView("One noun, everyday, forever.", noun: "talking-noun")
+                    .padding()
+            }
+        }
+    }
+    
+    static var previews: some View {
+        PreviewView()
     }
 }
