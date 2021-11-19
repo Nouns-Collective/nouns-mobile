@@ -49,7 +49,7 @@ public struct SpeechBubble: View {
 }
 
 /// State indicator for occurred errors.
-public struct ErrorStateView: View {
+public struct ErrorStateBubble: View {
     
     private let message: String
     
@@ -74,6 +74,8 @@ public struct ErrorStateView: View {
         VStack(spacing: 0) {
             SpeechBubble(message)
             Image("noun-error-persona", bundle: .module)
+                .resizable()
+                .scaledToFit()
             OutlineButton(text: "Try again",
                           icon: { Image.retry },
                           action: { },
@@ -83,7 +85,7 @@ public struct ErrorStateView: View {
 }
 
 /// State indicator for occurred errors.
-public struct NounSpeechView: View {
+public struct NounSpeechBubble: View {
     
     private let message: String
     
@@ -111,6 +113,8 @@ public struct NounSpeechView: View {
         VStack(spacing: -25) {
             SpeechBubble(message)
             Image(noun, bundle: .module)
+                .resizable()
+                .scaledToFit()
         }
     }
 }
@@ -126,7 +130,7 @@ struct SpeechBubble_preview: PreviewProvider {
                 Gradient.lemonDrop
                     .ignoresSafeArea()
                 
-                NounSpeechView("One noun, everyday, forever.", noun: "talking-noun")
+                NounSpeechBubble("One noun, everyday, forever.", noun: "talking-noun")
                     .padding()
             }
         }

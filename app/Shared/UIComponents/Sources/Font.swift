@@ -28,6 +28,10 @@ extension Font {
         custom(font.rawValue, size: style.size, relativeTo: style)
     }
     
+    public static func custom(_ font: GTWalsheim, size: CGFloat) -> Font {
+        custom(font.rawValue, size: size)
+    }
+    
     internal static func registerFont(bundle: Bundle, name: String, type: FontType) {
         guard let fontURL = bundle.url(forResource: name, withExtension: type.rawValue),
               let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
