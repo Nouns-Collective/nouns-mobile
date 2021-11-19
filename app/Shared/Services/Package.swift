@@ -11,13 +11,10 @@ let package = Package(
             name: "Services",
             targets: ["Services"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/attaswift/BigInt.git", from: "5.3.0")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "Services",
-            dependencies: ["BigInt"],
             path: "Sources",
             resources: [.process("Resources")]
         ),

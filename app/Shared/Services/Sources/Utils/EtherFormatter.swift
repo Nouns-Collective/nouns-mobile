@@ -6,13 +6,11 @@
 //
 
 import Foundation
-import BigInt
 
 /// A formatter that converts between different Ether units, such as wei and eth.
-/// Since it deals with integers (through BigInt), all inputted and returned values must be integers as well.
 public class EtherFormatter: Formatter {
     
-    static let ethToWeiFactor = BigInt(stringLiteral: "1000000000000000000")
+    static let ethToWeiFactor: NSDecimalNumber = 1000000000000000000
     
     public enum Unit {
         case wei
@@ -35,16 +33,16 @@ public class EtherFormatter: Formatter {
     }
     
     /// Converts values between different units
-    private func convert(_ value: BigInt) -> BigInt {
+    private func convert(_ value: NSDecimalNumber) -> NSDecimalNumber {
         switch (fromUnit, unit) {
         /// Converting from WEI to ETH
         case (.wei, .eth):
-            return value / EtherFormatter.ethToWeiFactor
+            return value.dividing(by: EtherFormatter.ethToWeiFactor)
         /// Converting from ETH to WEI
         case (.eth, .wei):
-            return value * EtherFormatter.ethToWeiFactor
+            return value.multiplying(by: EtherFormatter.ethToWeiFactor)
         default:
-            return BigInt(1)
+            return 1
         }
     }
     
@@ -55,21 +53,15 @@ public class EtherFormatter: Formatter {
     ///   - stringVal: The string literal of the integer value we are converting. All characters must be digits.
     ///
     /// - Returns: A string literal of the converted integer value.
-    public func string(from stringVal: String) -> String? {
-        guard let bigInt = BigInt(stringVal, radix: 10) else { return nil }
-        let value = convert(bigInt)
-        return String(value)
-    }
-    
-    /// Converts and returns an ether unit to another unit
-    ///
-    ///
-    /// - Parameters:
-    ///   - bigInt: A BigInt representation of the value to convert
-    ///
-    /// - Returns: A string literal of the converted integer value.
-    public func string(from bigInt: BigInt) -> String {
-        let value = convert(bigInt)
-        return String(value)
+    func string(from stringVal: String) -> String? {
+        let formatter = NumberFormatter()
+        formatter.generatesDecimalNumbers = true
+        
+        guard let number = formatter.number(from: stringVal) as? NSDecimalNumber else {
+            return nil
+        }
+        
+        let value = convert(number)
+        return value.stringValue
     }
 }
