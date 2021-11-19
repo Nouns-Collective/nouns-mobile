@@ -35,31 +35,29 @@ struct OnChainNounsView: View {
       .loading()
       .disabled(true)
     } else {
-      LazyVGrid(columns: columns, spacing: 20) {
-        PaginatingList(store.state.onChainNouns.nouns, isLoading: store.state.onChainNouns.isLoading, content: { noun in
-          OnChainNounCard(
-            animation: animation,
-            noun: noun)
-            .id(noun.id)
-            .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
-            .onTapGesture {
-              withAnimation(.spring()) {
-                selected = noun
-              }
+      PaginatingVGrid(store.state.onChainNouns.nouns, isLoading: store.state.onChainNouns.isLoading, content: { noun in
+        OnChainNounCard(
+          animation: animation,
+          noun: noun)
+          .id(noun.id)
+          .matchedGeometryEffect(id: "noun-\(noun.id)", in: animation)
+          .onTapGesture {
+            withAnimation(.spring()) {
+              selected = noun
             }
-        }, loadMoreAction: {
-          store.dispatch(FetchOnChainNounsAction(after: $0))
-        }, placeholderView: {
-          ForEach(0..<2) { _ in
-            OnChainNounPlaceholderCard()
-              .loading()
           }
-        })
-      }
+      }, loadMoreAction: {
+        store.dispatch(FetchOnChainNounsAction(after: $0))
+      }, placeholderView: {
+        ForEach(0..<2) { _ in
+          OnChainNounPlaceholderCard()
+            .loading()
+        }
+      })
     }
   }
 }
-  
+
 struct Previews: PreviewProvider {
   @Namespace static var ns
   
