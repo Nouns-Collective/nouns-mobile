@@ -9,7 +9,7 @@ import SwiftUI
 
 private let defaultLayout = [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)]
 
-struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Placeholder: View>: View where Data.Element: Identifiable {
+public struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Placeholder: View>: View where Data.Element: Identifiable {
   
   /// The data for the list content
   private let data: Data
@@ -32,7 +32,7 @@ struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Placeholder:
   /// Spacing of the grid
   private let spacing: CGFloat
   
-  init(
+  public init(
     _ data: Data,
     isLoading: Bool,
     columns: [GridItem] = defaultLayout,
@@ -55,7 +55,7 @@ struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Placeholder:
     loadMoreAction(data.count)
   }
   
-  var body: some View {
+  public var body: some View {
     LazyVGrid(columns: columns, spacing: spacing) {
       ForEach(data) { element in
         content(element)
