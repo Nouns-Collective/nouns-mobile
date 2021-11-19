@@ -25,26 +25,73 @@ public struct SpeechBubble: View {
     
     public var body: some View {
         ZStack {
-            Image("speech.bubble", bundle: .module)
-                .resizable()
-                .scaledToFit()
-                .overlay(label)
+            
+            label
+                .offset(y: -10)
+                .frame(width: .infinity)
+                .background(
+                    Image("speech.bubble", bundle: .module)
+                        .resizable()
+                        .scaledToFill()
+                )
+                .frame(maxWidth: .infinity, minHeight: 112)
         }
     }
     
     private var label: some View {
-        GeometryReader { proxy in
-            VStack {
-                Spacer()
-                Text(content)
-                    .fontWeight(.medium)
-                    .minimumScaleFactor(0.5)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(3)
-                    .padding(.horizontal, proxy.size.width * 0.11)
-                    .padding(.bottom, proxy.size.height * 0.23)
-                Spacer()
-            }
+        Text(content)
+            .font(Font.custom(.bold, relativeTo: .body))
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+    }
+}
+
+/// State indicator for occurred errors.
+public struct ErrorStateView: View {
+    private let message: String
+    
+    /// Create a state view that display a message.
+    ///
+    /// ```swift
+    /// ZStack {
+    ///     Gradient.bubbleGum
+    ///         .ignoresSafeArea()
+    ///
+    ///     ErrorStateView("Dude, something’s wrong with the auction")
+    ///         .padding()
+    /// }
+    /// ```
+    ///
+    /// - Parameter title: The message to communicate.
+    public init(_ message: String) {
+        self.message = message
+    }
+    
+    public var body: some View {
+        VStack(spacing: 0) {
+            SpeechBubble(message)
+            Image("noun-error-persona", bundle: .module)
+            OutlineButton(image: .retry,
+                          text: "Try again",
+                          action: { },
+                          fill: [.width])
+        }
+    }
+}
+
+struct SpeedBubble_preview: PreviewProvider {
+    
+    static var previews: some View {
+        
+        ZStack {
+            Gradient.bubbleGum
+                .ignoresSafeArea()
+            
+            ErrorStateView("Dude, something’s wrong with the auction")
+                .padding()
+        }
+        .onAppear {
+            UIComponents.configure()
         }
     }
 }
