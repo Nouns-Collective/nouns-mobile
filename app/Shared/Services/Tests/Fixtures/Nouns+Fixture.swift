@@ -50,7 +50,9 @@ extension Bid {
     
     static var fixture: Self = {
         Bid(id: "0xaf1efeeaedf13ad7cbaa66661d9411f6118ac4e4884daae6a3b81ab12d15f082",
-            amount: "100000000000000000")
+            amount: "100000000000000000",
+            blockTimestamp: "1628443478",
+            account: .fixture)
     }()
 }
 

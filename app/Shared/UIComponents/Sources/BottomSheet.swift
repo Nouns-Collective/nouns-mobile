@@ -157,7 +157,8 @@ struct BindingContainer: View {
                      .font(Font.title.bold())
                  Text("Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.")
                      .font(.body)
-             }.padding(16)
+             }
+             .padding(16)
             .padding(.bottom, 4)
          }
      }
