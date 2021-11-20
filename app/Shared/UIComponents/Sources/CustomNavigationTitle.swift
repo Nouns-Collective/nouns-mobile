@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Set as internal in order to divert use to view modifiers
-internal struct CustomNavigationTitle<Accessory: View>: ViewModifier {
+fileprivate struct CustomNavigationTitle<Accessory: View>: ViewModifier {
     
     /// The title of the navigation bar
     private let title: String
@@ -18,7 +18,7 @@ internal struct CustomNavigationTitle<Accessory: View>: ViewModifier {
     
     /// Initializes a custom navigation title with an accessory view
     init(
-        title: String,
+        _ title: String,
         @ViewBuilder accessory: () -> Accessory
     ) {
         self.title = title
@@ -27,7 +27,7 @@ internal struct CustomNavigationTitle<Accessory: View>: ViewModifier {
     
     /// Initializes a custom navigation title with an empty accessory view
     init(
-        title: String
+        _ title: String
     ) where Accessory == EmptyView {
         self.title = title
         self.accessory = EmptyView()
@@ -55,11 +55,11 @@ public extension View {
     
     /// Initializes a custom navigation title with an accessory view
     func customNavigationTitle<Accessory: View>(_ title: String, @ViewBuilder accessory: () -> Accessory) -> some View {
-        modifier(CustomNavigationTitle(title: title, accessory: accessory))
+        modifier(CustomNavigationTitle(title, accessory: accessory))
     }
     
     /// Initializes a custom navigation title with an empty accessory view
     func customNavigationTitle(_ title: String) -> some View {
-        modifier(CustomNavigationTitle(title: title))
+        modifier(CustomNavigationTitle(title))
     }
 }
