@@ -12,10 +12,28 @@ import Services
 struct LiveAuctionCard: View {
   let auction: Auction
   
+  @State private var timeLeft: String = ""
+  private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+  
   private var ethPrice: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
     return formatter.string(from: auction.amount) ?? "N/A"
+  }
+  
+  private func updateTimeLeft() {
+    guard let endDateTimeInterval = Double(auction.endTime) else { return }
+    
+    let currentDate = Date()
+    let endDate = Date(timeIntervalSince1970: endDateTimeInterval)
+    
+    let diffComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: currentDate, to: endDate)
+    
+    guard let hours = diffComponents.hour,
+          let minutes = diffComponents.minute,
+          let seconds = diffComponents.second else { return }
+    
+    timeLeft = "\(hours)h \(minutes)m \(seconds)s"
   }
   
   var body: some View {
@@ -32,10 +50,14 @@ struct LiveAuctionCard: View {
       header: "Noun \(auction.noun.id)",
       accessoryImage: Image.mdArrowCorner,
       leftDetail: {
-        CompoundLabel(Text("9h 17m 23s"), icon: Image.timeleft, caption: "Remaining")
+        CompoundLabel(Text(timeLeft), icon: Image.timeleft, caption: "Remaining")
+          .onReceive(timer) { _ in
+            updateTimeLeft()
+          }
       },
       rightDetail: {
         CompoundLabel(SafeLabel(ethPrice, icon: Image.eth), icon: Image.currentBid, caption: "Current bid")
-      })
+      }
+    ).onAppear { self.updateTimeLeft() }
   }
 }

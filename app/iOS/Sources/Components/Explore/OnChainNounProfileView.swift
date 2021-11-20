@@ -181,6 +181,24 @@ struct LiveAuctionDetailRows: View {
     auction.noun
   }
   
+  @State private var timeLeft: String = ""
+  private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+  
+  private func updateTimeLeft() {
+    guard let endDateTimeInterval = Double(auction.endTime) else { return }
+    
+    let currentDate = Date()
+    let endDate = Date(timeIntervalSince1970: endDateTimeInterval)
+    
+    let diffComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: currentDate, to: endDate)
+    
+    guard let hours = diffComponents.hour,
+          let minutes = diffComponents.minute,
+          let seconds = diffComponents.second else { return }
+    
+    timeLeft = "\(hours)h \(minutes)m \(seconds)s"
+  }
+  
   private func formattedDate(timeInterval: String) -> String {
     guard let timeInterval = Double(timeInterval) else { return "N/A" }
     
@@ -213,7 +231,7 @@ struct LiveAuctionDetailRows: View {
   }
   
   private var timeRemainingRow: some View {
-    InfoCell(text: "Ends on", calloutText: formattedDate(timeInterval: auction.endTime), icon: {
+    InfoCell(text: "Ends in", calloutText: timeLeft, icon: {
       Image.timeleft
     })
   }
@@ -245,9 +263,15 @@ struct LiveAuctionDetailRows: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       timeRemainingRow
+        .onReceive(timer) { _ in
+          updateTimeLeft()
+        }
+      
       birthdateRow
       curretBidRow
       activityRow
+    }.onAppear {
+      self.updateTimeLeft()
     }
   }
 }
