@@ -25,7 +25,7 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
     private let accessory: Accessory?
     
     /// An tap action for when the information cell is tapped
-    private let tapAction: (() -> Void)?
+    private let action: (() -> Void)?
     
     /// Initializes an information cell with a left icon, some text, a callout string and icon, an accessory view, and optional tap action
     ///
@@ -56,14 +56,14 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder calloutIcon: () -> CalloutIcon,
         @ViewBuilder accessory: () -> Accessory,
-        tapAction: (() -> Void)? = nil
+        action: (() -> Void)? = nil
     ) {
         self.icon = icon()
         self.text = text
         self.calloutIcon = calloutIcon()
         self.calloutText = calloutText
         self.accessory = accessory()
-        self.tapAction = tapAction
+        self.action = action
     }
     
     /// Initializes an information cell with a left icon, some text, a callout string and icon, and optional tap action
@@ -90,14 +90,14 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         calloutText: String? = nil,
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder calloutIcon: () -> CalloutIcon,
-        tapAction: (() -> Void)? = nil
+        action: (() -> Void)? = nil
     ) where Accessory == EmptyView {
         self.icon = icon()
         self.text = text
         self.calloutIcon = calloutIcon()
         self.calloutText = calloutText
         self.accessory = nil
-        self.tapAction = tapAction
+        self.action = action
     }
     
     /// Initializes an information cell with a left icon, some text, a callout string, an accessory view, and optional tap action
@@ -127,14 +127,14 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         calloutText: String? = nil,
         @ViewBuilder icon: () -> Icon,
         @ViewBuilder accessory: () -> Accessory,
-        tapAction: (() -> Void)? = nil
+        action: (() -> Void)? = nil
     ) where CalloutIcon == EmptyView {
         self.icon = icon()
         self.text = text
         self.calloutIcon = nil
         self.calloutText = calloutText
         self.accessory = accessory()
-        self.tapAction = tapAction
+        self.action = action
     }
     
     /// Initializes an information cell with a left icon, some text, a callout string, and optional tap action
@@ -157,14 +157,14 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         text: String,
         calloutText: String? = nil,
         @ViewBuilder icon: () -> Icon,
-        tapAction: (() -> Void)? = nil
+        action: (() -> Void)? = nil
     ) where Accessory == EmptyView, CalloutIcon == EmptyView {
         self.icon = icon()
         self.text = text
         self.calloutIcon = nil
         self.calloutText = calloutText
         self.accessory = nil
-        self.tapAction = tapAction
+        self.action = action
     }
     
     public var body: some View {
@@ -193,7 +193,7 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            tapAction?()
+            action?()
         }
     }
 }

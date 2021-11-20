@@ -13,7 +13,6 @@ import Services
 struct OnChainNounProfileView: View {
   @Binding var isPresented: Bool
   @State var isActivityPresented: Bool = false
-  
   let auction: Auction
   
   private var noun: Noun {
@@ -24,8 +23,9 @@ struct OnChainNounProfileView: View {
     switch auction.settled {
     case true:
       return AnyView(SettledAuctionDetailRows(
-        auction: auction,
-        isActivityPresented: $isActivityPresented))
+        isActivityPresented: $isActivityPresented,
+        auction: auction
+        ))
       
     case false:
       return AnyView(LiveAuctionDetailRows(
@@ -99,8 +99,9 @@ struct OnChainNounProfileView: View {
 }
 
 struct SettledAuctionDetailRows: View {
-  let auction: Auction
   @Binding var isActivityPresented: Bool
+  @Environment(\.openURL) private var openURL
+  let auction: Auction
   
   private var noun: Noun {
     auction.noun
@@ -151,6 +152,10 @@ struct SettledAuctionDetailRows: View {
       Image.holder
     }, accessory: {
       Image.mdArrowRight
+    }, action: {
+      if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
+        openURL(url)
+      }
     })
   }
   
@@ -159,7 +164,7 @@ struct SettledAuctionDetailRows: View {
       Image.history
     }, accessory: {
       Image.mdArrowRight
-    }, tapAction: {
+    }, action: {
       isActivityPresented.toggle()
     })
   }
@@ -256,7 +261,7 @@ struct LiveAuctionDetailRows: View {
       Image.history
     }, accessory: {
       Image.mdArrowRight
-    }, tapAction: {
+    }, action: {
       isActivityPresented.toggle()
     })
   }
