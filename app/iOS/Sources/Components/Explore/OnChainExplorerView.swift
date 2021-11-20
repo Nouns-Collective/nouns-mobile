@@ -18,36 +18,47 @@ struct OnChainExplorerView: View {
   @State var isNounProfilePresented: Bool = false
   @State var isPresentingNounActivity: Bool = false
   
+  init() {
+    UINavigationBar.appearance().barTintColor = .clear
+    UITableView.appearance().backgroundColor = .clear
+  }
+  
   private var isInitiallyLoading: Bool {
     (store.state.onChainAuctions.isLoading || store.state.liveAuction.isLoading) && store.state.onChainAuctions.auctions.isEmpty
   }
   
   var body: some View {
-    
-    ScrollView(.vertical, showsIndicators: false) {
-      VStack(spacing: 20) {
-        if let auction = store.state.liveAuction.auction {
-          LiveAuctionCard(auction: auction)
-            .onTapGesture {
-              selectedAuction = auction
-            }
-        } else {
-          LiveAuctionPlaceholderCard()
-            .loading()
+    NavigationView {
+      ScrollView(.vertical, showsIndicators: false) {
+        VStack(spacing: 20) {
+          if let auction = store.state.liveAuction.auction {
+            LiveAuctionCard(auction: auction)
+              .onTapGesture {
+                selectedAuction = auction
+              }
+          } else {
+            LiveAuctionPlaceholderCard()
+              .loading()
+          }
+          
+          OnChainNounsView(
+            animation: animation,
+            selected: $selectedAuction,
+            isPresentingActivity: $isPresentingNounActivity)
         }
-        
-        OnChainNounsView(
-          animation: animation,
-          selected: $selectedAuction,
-          isPresentingActivity: $isPresentingNounActivity)
+        .customNavigationTitle("Explore", accessory: {
+          SoftButton(text: "About", largeAccessory: { Image.about }) {
+            //
+          }
+        })
+        .padding(.horizontal, 20)
+        .padding(.top, 60)
+        .padding(.bottom, 40)
       }
-      .padding(.horizontal, 20)
-      .padding(.top, 60)
-      .padding(.bottom, 40)
+      .disabled(isInitiallyLoading)
+      .background(Gradient.lemonDrop)
+      .ignoresSafeArea()
     }
-    .disabled(isInitiallyLoading)
-    .background(Gradient.lemonDrop)
-    .ignoresSafeArea()
     .onChange(of: selectedAuction) { newValue in
       isNounProfilePresented = newValue != nil
     }
