@@ -99,15 +99,17 @@ public struct PickerTabView<Content>: View where Content: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .top) {
-            content
-                .ignoresSafeArea()
-            
+        VStack {
             OutlinePicker(selection: $selection) {
                 ForEach(items) { item in
                     Text(item.title)
                         .pickerItemTag(item.tag, namespace: slideActiveTabSpace)
                 }
+            }
+            
+            ZStack {
+                content
+                    .ignoresSafeArea()
             }
         }
         .environment(\.pickerTabItemSelection, selection)

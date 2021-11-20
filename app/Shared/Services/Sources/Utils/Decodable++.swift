@@ -12,14 +12,24 @@ extension Decoder {
     /// Decode a nested value for array of keys, specified as a `CodingKey`.
     /// Throws an error if keys array is empty
     func decode<T: Decodable>(_ keys: [CodingKey], as type: T.Type = T.self) throws -> T {
-        
         let keys = keys.map { AnyCodingKey($0.stringValue) }
         
         var container = try self.container(keyedBy: AnyCodingKey.self)
         for key in keys.dropLast() {
-            container = try container.nestedContainer(keyedBy: AnyCodingKey.self, forKey: key)
+            container = try container.nestedContainer(
+                keyedBy: AnyCodingKey.self,
+                forKey: key)
         }
-        return try container.decode(type, forKey: keys.last!)
+        
+        guard let lastKey = keys.last else {
+            let context = DecodingError.Context(
+                codingPath: keys,
+                debugDescription: "Empty nested CodingKeys.")
+            
+            throw DecodingError.dataCorrupted(context)
+        }
+        
+        return try container.decode(type, forKey: lastKey)
     }
     
     /// Decode a nested value for array of keys, specified as a string.

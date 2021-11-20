@@ -9,7 +9,7 @@ import Foundation
 
 extension NounsSubgraph {
     
-    internal struct LiveAuctionSubscription: GraphQLQuery {//} GraphQLSubscription {
+    internal struct LiveAuctionSubscription: GraphQLQuery {
         internal let url: URL = CloudConfiguration.Nouns.query.url
         
         internal var operationDefinition: String {

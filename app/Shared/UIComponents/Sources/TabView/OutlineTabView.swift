@@ -201,7 +201,6 @@ struct OutlineTabView_preview: PreviewProvider {
                     .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
             }
         }
-        
     }
     
     static var previews: some View {

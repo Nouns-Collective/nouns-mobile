@@ -173,7 +173,8 @@ public struct SoftButton<Label: View>: View {
     /// ```
     ///
     /// - Parameters:
-    ///   - continuous: The corner radius style of the button. If true, the button will have a greater corner radius and a continuous corner curve
+    ///   - continuous: The corner radius style of the button. If true, the button will have a greater
+    ///   corner radius and a continuous corner curve
     ///   - label: A view for the label of the button
     ///   - action: The action function for when the button is tapped
     ///   - fill: A value to set the fill mode for the button's height and width
@@ -257,7 +258,7 @@ public struct SoftButton<Label: View>: View {
     /// Using an icon button label, with only an icon
     ///
     /// ```swift
-    /// Soft Button(icon: {
+    /// SoftButton(icon: {
     ///     Image(systemName: "hand.thumbsup.fill")
     /// }, action: {})
     /// ```

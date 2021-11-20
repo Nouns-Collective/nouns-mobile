@@ -11,10 +11,14 @@ import UIComponents
 
 @main
 struct NounsApp: App {
-  let store = AppStore(
+  private let store = AppStore(
     initialState: AppState(),
     reducer: appReducer,
-    middlewares: [onChainAuctionsMiddleware(), onChainNounActivitiesMiddleware(), liveAuctionMiddleware()]
+    middlewares: [
+      onChainAuctionsMiddleware(),
+      onChainNounActivitiesMiddleware(),
+      liveAuctionMiddleware(),
+    ]
   )
   
   init() {

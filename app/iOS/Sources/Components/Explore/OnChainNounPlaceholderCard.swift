@@ -10,6 +10,7 @@ import UIComponents
 
 /// A placeholder noun card view when nouns are loading
 struct OnChainNounPlaceholderCard: View {
+  
   var body: some View {
     StandardCard(
       media: {

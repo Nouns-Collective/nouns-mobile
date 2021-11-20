@@ -28,6 +28,7 @@ struct ActivityIndicator: ViewModifier {
       VStack {
         GIFImage("noun-activity")
           .frame(height: 250)
-      })
+      }.frame(maxHeight: .infinity)
+    )
   }
 }

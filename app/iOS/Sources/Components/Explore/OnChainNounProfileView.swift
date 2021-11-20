@@ -23,25 +23,26 @@ struct OnChainNounProfileView: View {
   private var detailRows: some View {
     switch auction.settled {
     case true:
-      return AnyView(SettledAuctionDetailRows(auction: auction, isActivityPresented: $isActivityPresented))
+      return AnyView(SettledAuctionDetailRows(
+        auction: auction,
+        isActivityPresented: $isActivityPresented))
+      
     case false:
-      return AnyView(LiveAuctionDetailRows(auction: auction, isActivityPresented: $isActivityPresented))
+      return AnyView(LiveAuctionDetailRows(
+        auction: auction,
+        isActivityPresented: $isActivityPresented))
     }
   }
   
   private var actionsRow: some View {
     HStack {
-      SoftButton(
-        text: "Share",
-        largeAccessory: {
+      SoftButton(text: "Share", largeAccessory: {
           Image.share
         },
         action: { },
         fill: [.width])
       
-      SoftButton(
-        text: "Remix",
-        largeAccessory: {
+      SoftButton(text: "Remix", largeAccessory: {
           Image.splice
         },
         action: { },
@@ -88,12 +89,12 @@ struct OnChainNounProfileView: View {
       .padding([.bottom, .horizontal])
     }
     .background(Gradient.warmGreydient)
-    .sheet(isPresented: $isActivityPresented, onDismiss: nil) {
+    .fullScreenCover(isPresented: $isActivityPresented, content: {
       
-      NounderActivitiesView(
+      NounderView(
         isPresented: $isActivityPresented,
         noun: noun)
-    }
+    })
   }
 }
 

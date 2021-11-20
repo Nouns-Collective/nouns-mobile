@@ -22,7 +22,7 @@ extension Page: Decodable {
         } else if T.self == [Auction].self {
             data = try decoder.decode("data", "auctions")
             
-        }  else if T.self == [Proposal].self {
+        } else if T.self == [Proposal].self {
             data = try decoder.decode("data", "proposals")
             
         } else {

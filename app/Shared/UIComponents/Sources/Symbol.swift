@@ -12,6 +12,10 @@ extension Image {
     
     public static let about = Image("about", bundle: .module)
     
+    public static let back = Image("back", bundle: .module)
+    
+    public static let help = Image("help", bundle: .module)
+    
     public static let birthday = Image("birthday", bundle: .module)
     
     public static let checkmark = Image("checkmark", bundle: .module)

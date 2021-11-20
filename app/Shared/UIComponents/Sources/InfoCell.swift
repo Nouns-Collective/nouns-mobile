@@ -197,4 +197,3 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         }
     }
 }
-
