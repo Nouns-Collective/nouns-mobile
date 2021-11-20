@@ -128,8 +128,8 @@ extension View {
 
 /// A view that switches between multiple child views using interactive user interface elements.
 ///
-/// To create a user interface with tabs, place views in a `TabView` and apply
-/// the `OutlineTabView(_:)` modifier to the contents of each tab. The following
+/// To create a user interface with tabs, place views in a `OutlineTabView` and apply
+/// the `OutlineTabViewItem(_:)` modifier to the contents of each tab. The following
 /// creates a tab view with three tabs:
 ///
 /// ```

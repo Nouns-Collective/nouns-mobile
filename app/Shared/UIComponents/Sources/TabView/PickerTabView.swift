@@ -56,8 +56,9 @@ extension View {
     
     /// Sets the tab bar item associated with this view.
     /// - Parameters:
+    ///   - title: Sets the title for the picker item.
     ///   - tag: Sets the unique tag value of this view.
-    public func pickerTabContent(_ title: String, tag: Int) -> some View {
+    public func pickerTabItem(_ title: String, tag: Int) -> some View {
         modifier(PickerTabContent(tag: tag))
             .preference(
                 key: PickerTabItems.self,
@@ -65,6 +66,24 @@ extension View {
     }
 }
 
+/// A view that switches between multiple child views using interactive user interface elements.
+///
+/// To create a user interface with tabs, place views in a `PickerTabView` and apply
+/// the `PickerTabItem(_:)` modifier to the contents of each tab. The following
+/// creates a tab view with three tabs:
+///
+/// ```
+/// PickerTabView(selection: $selection) {
+///     Gradient.cherrySunset
+///         .pickerTabItem("Activities", tag: 0)
+///
+///     Gradient.lemonDrop
+///         .pickerTabItem("Big history", tag: 1)
+/// }
+/// ```
+///
+/// Picker Tab views only support tab items of type ``Text``. Passing any other type of view results in a visible but
+/// empty tab item.
 public struct PickerTabView<Content>: View where Content: View {
     @Namespace private var slideActiveTabSpace
     @Binding private var selection: Int
@@ -106,10 +125,10 @@ struct PickerTabView_Preview: PreviewProvider {
         var body: some View {
             PickerTabView(selection: $selection) {
                 Gradient.cherrySunset
-                    .pickerTabContent("Activities", tag: 0)
+                    .pickerTabItem("Activities", tag: 0)
                 
                 Gradient.lemonDrop
-                    .pickerTabContent("Big history", tag: 1)
+                    .pickerTabItem("Big history", tag: 1)
             }
         }
     }
