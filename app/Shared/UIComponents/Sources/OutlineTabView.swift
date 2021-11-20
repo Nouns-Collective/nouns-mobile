@@ -38,6 +38,7 @@ struct OutlineTabItemSelectionDidChange: PreferenceKey {
 // TODO: Set `Tag` to conform to `Hashable`
 struct OutlineTabItem: Hashable, Identifiable {
     let id = UUID()
+    // TODO: Icons should be type safe and conform to `View`.
     let normalStateIcon: String
     let selectedStateIcon: String
     let tag: Int
@@ -105,6 +106,11 @@ struct OutlineTabContent: ViewModifier {
 
 extension View {
     
+    /// Sets the tab bar item associated with this view.
+    /// - Parameters:
+    ///   - normal: Sets the icon for normal state.
+    ///   - selected: Sets the icon for selected state.
+    ///   - tag: Sets the unique tag value of this view.
     public func outlineTabItem(normal: String, selected: String, tag: Int) -> some View {
         modifier(OutlineTabContent(tag))
             .preference(
@@ -115,6 +121,30 @@ extension View {
     }
 }
 
+/// A view that switches between multiple child views using interactive user interface elements.
+///
+/// To create a user interface with tabs, place views in a `TabView` and apply
+/// the `OutlineTabView(_:)` modifier to the contents of each tab. The following
+/// creates a tab view with three tabs:
+///
+/// ```
+/// OutlineTabView(selection: $selection) {
+///     Gradient.cherrySunset
+///         .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
+///
+///    Gradient.bubbleGum
+///         .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
+///
+///     Gradient.lemonDrop
+///        .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
+///
+///     Gradient.orangesicle
+///         .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
+/// }
+/// ```
+///
+/// Tab views only support tab items of type ``Image``. Passing any other type of view results in a visible but
+/// empty tab item.
 public struct OutlineTabView<Content>: View where Content: View {
     @Binding private var selection: Int
     @State private var items: [OutlineTabItem] = []
@@ -142,6 +172,7 @@ public struct OutlineTabView<Content>: View where Content: View {
     }
 }
 
+// TODO: Should be removed after all the Todos been addressed.
 struct OutlineTabView_preview: PreviewProvider {
     
     struct Example: View {
@@ -162,6 +193,7 @@ struct OutlineTabView_preview: PreviewProvider {
                     .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
             }
         }
+        
     }
     
     static var previews: some View {
