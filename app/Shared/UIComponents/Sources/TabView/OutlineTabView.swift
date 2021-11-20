@@ -8,19 +8,19 @@
 import SwiftUI
 
 /// Accessing the current selected tab in the environment.
-struct OutlineTabItemSelection: EnvironmentKey {
+private struct OutlineTabItemSelection: EnvironmentKey {
     static var defaultValue: Int = 0
 }
 
 extension EnvironmentValues {
-    var outlineTabItemSelection: Int {
+    fileprivate var outlineTabItemSelection: Int {
         get { self[OutlineTabItemSelection.self] }
         set { self[OutlineTabItemSelection.self] = newValue }
     }
 }
 
 /// Access all the items set by the client through the view modifier.
-struct OutlineTabItems: PreferenceKey {
+private struct OutlineTabItems: PreferenceKey {
     static var defaultValue: [OutlineTabItem] = []
     static func reduce(value: inout [OutlineTabItem], nextValue: () -> [OutlineTabItem]) {
         value += nextValue()
@@ -28,7 +28,7 @@ struct OutlineTabItems: PreferenceKey {
 }
 
 /// Accessing the newly selected tab triggered by child views.
-struct OutlineTabItemSelectionDidChange: PreferenceKey {
+private struct OutlineTabItemSelectionDidChange: PreferenceKey {
     static var defaultValue: Int = 0
     static func reduce(value: inout Int, nextValue: () -> Int) {
         value += nextValue()
@@ -36,7 +36,7 @@ struct OutlineTabItemSelectionDidChange: PreferenceKey {
 }
 
 // TODO: Set `Tag` to conform to `Hashable`
-struct OutlineTabItem: Hashable, Identifiable {
+private struct OutlineTabItem: Hashable, Identifiable {
     let id = UUID()
     // TODO: Icons should be type safe and conform to `View`.
     let normalStateIcon: String
@@ -44,16 +44,18 @@ struct OutlineTabItem: Hashable, Identifiable {
     let tag: Int
 }
 
-internal struct OutlineTabBar: View {
+private struct OutlineTabBar: View {
     @Environment(\.outlineTabItemSelection) private var selection
     @State private var selectedItemTag = 0
     private let items: [OutlineTabItem]
     
-    internal init(_ items: [OutlineTabItem]) {
+    init(
+        _ items: [OutlineTabItem]
+    ) {
         self.items = items
     }
     
-    internal var body: some View {
+    var body: some View {
         HStack {
             ForEach(items) { item in
                 tabItem(item)
@@ -90,11 +92,14 @@ internal struct OutlineTabBar: View {
     }
 }
 
-struct OutlineTabContent: ViewModifier {
+/// Management to display the content of the active tab.
+private struct OutlineTabContent: ViewModifier {
     @Environment(\.outlineTabItemSelection) private var selection
     private let tag: Int
     
-    init(_ tag: Int) {
+    init(
+        _ tag: Int
+    ) {
         self.tag = tag
     }
     
@@ -123,8 +128,8 @@ extension View {
 
 /// A view that switches between multiple child views using interactive user interface elements.
 ///
-/// To create a user interface with tabs, place views in a `TabView` and apply
-/// the `OutlineTabView(_:)` modifier to the contents of each tab. The following
+/// To create a user interface with tabs, place views in a `OutlineTabView` and apply
+/// the `OutlineTabViewItem(_:)` modifier to the contents of each tab. The following
 /// creates a tab view with three tabs:
 ///
 /// ```
@@ -150,7 +155,10 @@ public struct OutlineTabView<Content>: View where Content: View {
     @State private var items: [OutlineTabItem] = []
     private let content: Content
     
-    public init(selection: Binding<Int>, @ViewBuilder content: @escaping () -> Content) {
+    public init(
+        selection: Binding<Int>,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
         self.content = content()
         self._selection = selection
     }

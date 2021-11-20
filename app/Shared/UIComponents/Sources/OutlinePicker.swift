@@ -23,7 +23,6 @@ extension EnvironmentValues {
 /// Accessing the newly selected tab triggered by child views
 struct OutlinePickerSelectionChange: PreferenceKey {
     static var defaultValue: Int = 0
-    
     static func reduce(value: inout Int, nextValue: () -> Int) {
         value = nextValue()
     }
@@ -45,8 +44,8 @@ internal struct OutlinePickerItem: ViewModifier {
         content
             .font(font)
             .foregroundColor(foregroundColor)
-            .padding(.vertical, 12)
-            .padding(.horizontal, 25)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 15)
             .background(
                 Group {
                     // TODO: Fix the glitch hapening on the animation by moving the code to the parent view.
@@ -73,7 +72,7 @@ internal struct OutlinePickerItem: ViewModifier {
     }
     
     private var font: Font {
-        .custom(isSelected ? .bold : .medium, relativeTo: .callout)
+        .custom(isSelected ? .bold : .medium, size: 15)
     }
     
     private var foregroundColor: Color {
@@ -126,7 +125,10 @@ public struct OutlinePicker<Content>: View where Content: View {
     ///     - selection: A binding to a property that determines the
     ///       currently-selected option.
     ///     - content: A view that contains the set of options.
-    public init(selection: Binding<Int>, @ViewBuilder content: @escaping () -> Content) {
+    public init(
+        selection: Binding<Int>,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
         self.content = content()
         self._selection = selection
     }
