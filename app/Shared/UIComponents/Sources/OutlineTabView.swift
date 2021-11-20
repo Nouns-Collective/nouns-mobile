@@ -62,8 +62,8 @@ internal struct OutlineTabBar: View {
         }
         .padding(.vertical, 20)
         .padding(0)
-        .border(.black, width: 2)
         .background(Color.white)
+        .border(width: 2, edges: [.top, .bottom], color: .black)
         .clipShape(Rectangle())
     }
     
