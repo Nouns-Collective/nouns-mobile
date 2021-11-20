@@ -1,6 +1,6 @@
 //
 //  OutlineTabView.swift
-//  
+//
 //
 //  Created by Ziad Tamim on 19.11.21.
 //
@@ -28,24 +28,24 @@ struct OutlineTabItems: PreferenceKey {
 }
 
 /// Accessing the newly selected tab triggered by child views.
-struct OutlineTabItemSelectionChange: PreferenceKey {
+struct OutlineTabItemSelectionDidChange: PreferenceKey {
     static var defaultValue: Int = 0
-
     static func reduce(value: inout Int, nextValue: () -> Int) {
-        value = nextValue()
+        value += nextValue()
     }
 }
 
 // TODO: Set `Tag` to conform to `Hashable`
 struct OutlineTabItem: Hashable, Identifiable {
     let id = UUID()
-    let icon: String
+    let normalStateIcon: String
+    let selectedStateIcon: String
     let tag: Int
 }
 
 internal struct OutlineTabBar: View {
     @Environment(\.outlineTabItemSelection) private var selection
-    @State private var isSelected = false
+    @State private var selectedItemTag = 0
     private let items: [OutlineTabItem]
     
     internal init(_ items: [OutlineTabItem]) {
@@ -63,36 +63,55 @@ internal struct OutlineTabBar: View {
         .padding(0)
         .border(.black, width: 2)
         .background(Color.white)
+        .clipShape(Rectangle())
     }
     
     private func tabItem(_ item: OutlineTabItem) -> some View {
-        Image(item.icon, bundle: .module)
-            .preference(
-                key: OutlineTabItemSelectionChange.self,
-                value: (isSelected ? item.tag : selection)
-            )
+        var isSelected: Bool {
+            selectedItemTag == item.tag
+        }
+        return Image(isSelected ? item.selectedStateIcon : item.normalStateIcon,
+              bundle: .module)
+            .background(Group {
+                if isSelected {
+                    Color.clear
+                        .preference(
+                            key: OutlineTabItemSelectionDidChange.self,
+                            value: item.tag)
+                }
+            })
             .onTapGesture {
-                withAnimation(.spring(blendDuration: 0.05)) {
-                    isSelected = true
-                }
-            }
-            .onChange(of: selection) { newValue in
-                if newValue != item.tag {
-                    isSelected = false
-                }
+                selectedItemTag = item.tag
             }
             .onAppear {
-                isSelected = (selection == item.tag)
+                selectedItemTag = selection
             }
+    }
+}
+
+struct OutlineTabContent: ViewModifier {
+    @Environment(\.outlineTabItemSelection) private var selection
+    private let tag: Int
+    
+    init(_ tag: Int) {
+        self.tag = tag
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .opacity(selection == tag ? 1 : 0)
     }
 }
 
 extension View {
     
-    public func outlineTabItem(_ icon: String, tag: Int) -> some View {
-        preference(
-            key: OutlineTabItems.self,
-            value: [OutlineTabItem(icon: icon, tag: tag)])
+    public func outlineTabItem(normal: String, selected: String, tag: Int) -> some View {
+        modifier(OutlineTabContent(tag))
+            .preference(
+                key: OutlineTabItems.self,
+                value: [OutlineTabItem(normalStateIcon: normal,
+                                       selectedStateIcon: selected,
+                                       tag: tag)])
     }
 }
 
@@ -117,7 +136,7 @@ public struct OutlineTabView<Content>: View where Content: View {
         .onPreferenceChange(OutlineTabItems.self) { items in
             self.items = items
         }
-        .onPreferenceChange(OutlineTabItemSelectionChange.self) { newSelectedTabItem in
+        .onPreferenceChange(OutlineTabItemSelectionDidChange.self) { newSelectedTabItem in
             selection = newSelectedTabItem
         }
     }
@@ -125,19 +144,27 @@ public struct OutlineTabView<Content>: View where Content: View {
 
 struct OutlineTabView_preview: PreviewProvider {
     
-    static var previews: some View {
-        OutlineTabView(selection: .constant(0)) {
-            Gradient.cherrySunset
-                .outlineTabItem("explore-outline", tag: 0)
-            
-            Gradient.bubbleGum
-                .outlineTabItem("create-outline", tag: 1)
-            
-            Gradient.lemonDrop
-                .outlineTabItem("play-outline", tag: 2)
-            
-            Gradient.orangesicle
-                .outlineTabItem("settings-outline", tag: 3)
+    struct Example: View {
+        @State var selection: Int = 0
+        
+        var body: some View {
+            OutlineTabView(selection: $selection) {
+                Gradient.cherrySunset
+                    .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
+                
+                Gradient.bubbleGum
+                    .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
+                
+                Gradient.lemonDrop
+                    .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
+                
+                Gradient.orangesicle
+                    .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
+            }
         }
+    }
+    
+    static var previews: some View {
+        Example()
     }
 }
