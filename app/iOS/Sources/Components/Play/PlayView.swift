@@ -21,6 +21,20 @@ struct PlayView: View {
       VStack(spacing: 0) {
         Text("Give your noun something to say")
           .font(.custom(.regular, size: 17))
+        
+        NounPuzzle(
+          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[26].assetImage),
+          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[20].assetImage),
+          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[8].assetImage),
+          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[0].assetImage))
+          .padding(.top, 40)
+        
+        OutlineButton(
+          text: "Get going",
+          largeAccessory: { Image.fingergunsRight },
+          action: { },
+          fill: [.width])
+        
         Spacer()
       }
       .padding(.horizontal, 20)

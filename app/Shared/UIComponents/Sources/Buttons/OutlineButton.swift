@@ -41,7 +41,7 @@ public struct OutlineButtonStyle<Label: View>: ButtonStyle {
     }
 }
 
-public struct OutlineButton<Label: View>: View {
+public struct OutlineButton<Label>: View where Label: View {
     
     /// Enumeration declaration for the fill mode of the button
     public enum Fill {
@@ -113,9 +113,34 @@ public struct OutlineButton<Label: View>: View {
         @ViewBuilder smallAccessory: () -> Image? = { nil },
         action: @escaping () -> Void,
         fill: Set<Fill> = []
-    ) where Label == AccessoryButtonLabel {
+    ) where Label == AccessoryButtonLabel<EmptyView> {
         self.label = {
-            return AccessoryButtonLabel(icon: icon(), accessoryImage: smallAccessory(), text: text, fullWidth: fill.contains(.width))
+            return AccessoryButtonLabel(
+                text,
+                icon: icon(),
+                accessoryImage: smallAccessory(),
+                fullWidth: fill.contains(.width))
+        }()
+        
+        self.action = action
+        self.fill = fill
+    }
+    
+    public init<V>(
+        text: String,
+        @ViewBuilder icon: () -> Image? = { nil },
+        @ViewBuilder accessory: () -> V,
+        @ViewBuilder smallAccessory: () -> Image? = { nil },
+        action: @escaping () -> Void,
+        fill: Set<Fill> = []
+    ) where Label == AccessoryButtonLabel<V>, V: View {
+        self.label = {
+            return AccessoryButtonLabel(
+                text,
+                icon: icon(),
+                accessory: accessory(),
+                accessoryImage: smallAccessory(),
+                fullWidth: fill.contains(.width))
         }()
         
         self.action = action
@@ -147,7 +172,10 @@ public struct OutlineButton<Label: View>: View {
         fill: Set<Fill> = []
     ) where Label == LargeAccessoryButtonLabel {
         self.label = {
-            return LargeAccessoryButtonLabel(accessoryImage: largeAccessory(), text: text, fullWidth: fill.contains(.width))
+            return LargeAccessoryButtonLabel(
+                accessoryImage: largeAccessory(),
+                text: text,
+                fullWidth: fill.contains(.width))
         }()
         
         self.action = action

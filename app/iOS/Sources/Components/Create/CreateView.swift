@@ -18,12 +18,26 @@ struct CreateView: View {
   
   var body: some View {
     NavigationView {
-      VStack(spacing: 0) {
+      VStack(alignment: .leading, spacing: 0) {
         Text("Build a completely custom noun")
           .font(.custom(.regular, size: 17))
-          
+        
+        NounPuzzle(
+          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[3].assetImage),
+          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[6].assetImage),
+          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[0].assetImage),
+          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[0].assetImage))
+          .padding(.top, 40)
+        
+        OutlineButton(
+          text: "Get going",
+          largeAccessory: { Image.fingergunsRight },
+          action: { },
+          fill: [.width])
+        
         Spacer()
       }
+      .frame(maxWidth: .infinity)
       .padding(.horizontal, 20)
       .softNavigationTitle("Create")
       .background(Gradient.freshMint)

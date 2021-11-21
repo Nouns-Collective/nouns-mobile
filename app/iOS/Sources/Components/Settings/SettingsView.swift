@@ -23,7 +23,6 @@ struct SettingsView: View {
           OutlineButton(
             text: "Noun O’Clock Notification",
             icon: { Image.speaker },
-            smallAccessory: { Image.squareArrowDown },
             action: { },
             fill: [.width])
           
@@ -35,6 +34,11 @@ struct SettingsView: View {
           OutlineButton(
             text: "Theme",
             icon: { Image.theme },
+            accessory: {
+              Text("System")
+                .font(.custom(.regular, size: 17))
+                .foregroundColor(Color.componentNounsBlack.opacity(0.5))
+            },
             smallAccessory: { Image.squareArrowDown },
             action: { },
             fill: [.width])
@@ -42,9 +46,12 @@ struct SettingsView: View {
           OutlineButton(
             text: "App Icon",
             icon: { Image.nounLogo.renderingMode(.template) },
-            smallAccessory: {
-              Image.squareArrowDown
+            accessory: {
+              Text("Default")
+                .font(.custom(.regular, size: 17))
+                .foregroundColor(Color.componentNounsBlack.opacity(0.5))
             },
+            smallAccessory: { Image.squareArrowDown },
             action: { },
             fill: [.width])
           

@@ -9,23 +9,18 @@ import Foundation
 import Combine
 import Services
 
-/// <#Description#>
 struct FetchOnChainNounActivitiesAction: Action {
   let noun: Noun
 }
 
-/// <#Description#>
 struct FetchOnChainNounActivitiesSucceeded: Action {
   let votes: [Vote]
 }
 
-/// <#Description#>
 struct FetchOnChainNounActivitiesFailed: Action {
   let error: Error
 }
 
-/// <#Description#>
-/// - Returns: <#description#>
 func onChainNounActivitiesMiddleware() -> Middleware<AppState> {
  return { _, action in
    switch action {
@@ -41,11 +36,6 @@ func onChainNounActivitiesMiddleware() -> Middleware<AppState> {
  }
 }
 
-/// <#Description#>
-/// - Parameters:
-///   - state: <#state description#>
-///   - action: <#action description#>
-/// - Returns: <#description#>
 func onChainNounActivitiesReducer(state: OnChainNounActivities, action: Action) -> OnChainNounActivities {
   var state = state
   switch action {
@@ -66,7 +56,6 @@ func onChainNounActivitiesReducer(state: OnChainNounActivities, action: Action) 
   return state
 }
 
-/// <#Description#>
 struct OnChainNounActivities {
   var votes: [Vote] = []
   var isLoading = false

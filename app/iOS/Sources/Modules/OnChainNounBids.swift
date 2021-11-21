@@ -9,23 +9,18 @@ import Foundation
 import Combine
 import Services
 
-/// <#Description#>
 struct FetchOnChainNounBidsAction: Action {
   let noun: Noun
 }
 
-/// <#Description#>
 struct FetchOnChainNounBidsSucceeded: Action {
   let bids: [Bid]
 }
 
-/// <#Description#>
 struct FetchOnChainNounBidsFailed: Action {
   let error: Error
 }
 
-/// <#Description#>
-/// - Returns: <#description#>
 func onChainNounBidsMiddleware() -> Middleware<AppState> {
  return { _, action in
    switch action {
@@ -41,11 +36,6 @@ func onChainNounBidsMiddleware() -> Middleware<AppState> {
  }
 }
 
-/// <#Description#>
-/// - Parameters:
-///   - state: <#state description#>
-///   - action: <#action description#>
-/// - Returns: <#description#>
 func onChainNounBidsReducer(state: OnChainNounBids, action: Action) -> OnChainNounBids {
   var state = state
   switch action {
@@ -66,7 +56,6 @@ func onChainNounBidsReducer(state: OnChainNounBids, action: Action) -> OnChainNo
   return state
 }
 
-/// <#Description#>
 struct OnChainNounBids {
   var bids: [Bid] = []
   var isLoading = false

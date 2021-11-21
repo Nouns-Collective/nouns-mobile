@@ -14,6 +14,8 @@ extension Image {
     
     public static let speaker = Image("speaker", bundle: .module)
     
+    public static let fingergunsRight = Image("fingerguns-right", bundle: .module)
+    
     public static let theme = Image("theme", bundle: .module)
     
     public static let back = Image("back", bundle: .module)

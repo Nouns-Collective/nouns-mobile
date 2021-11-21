@@ -9,24 +9,19 @@ import Foundation
 import Services
 import Combine
 
-/// <#Description#>
 struct FetchOnChainAuctionsAction: Action {
   var limit = 20
   var after = 0
 }
 
-/// <#Description#>
 struct FetchOnChainAuctionsSucceeded: Action {
   let auctions: [Auction]
 }
 
-/// <#Description#>
 struct FetchOnChainAuctionsFailed: Action {
   let error: Error
 }
 
-/// <#Description#>
-/// - Returns: <#description#>
 func onChainAuctionsMiddleware() -> Middleware<AppState> {
  return { _, action in
    switch action {
@@ -43,11 +38,6 @@ func onChainAuctionsMiddleware() -> Middleware<AppState> {
  }
 }
 
-/// <#Description#>
-/// - Parameters:
-///   - state: <#state description#>
-///   - action: <#action description#>
-/// - Returns: <#description#>
 func onChainAuctionsReducer(state: OnChainAuctions, action: Action) -> OnChainAuctions {
   var state = state
   switch action {
@@ -69,7 +59,6 @@ func onChainAuctionsReducer(state: OnChainAuctions, action: Action) -> OnChainAu
   return state
 }
 
-/// <#Description#>
 struct OnChainAuctions {
   var auctions: [Auction] = []
   var isLoading = false
