@@ -10,8 +10,10 @@ import UIComponents
 import Services
 
 struct NounderBidsHistoryView: View {
+  
   var body: some View {
-    Text("Bids History List")
+    Text("Bids History List.")
+      .font(.custom(.medium, relativeTo: .headline))
   }
 }
 

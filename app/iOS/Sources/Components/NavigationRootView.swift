@@ -16,13 +16,13 @@ struct NavigationRootView: View {
       OnChainExplorerView()
         .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
       
-      Gradient.bubbleGum
+      CreateView()
         .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
       
-      Gradient.lemonDrop
+      PlayView()
         .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
       
-      Gradient.orangesicle
+      SettingsView()
         .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
     }
   }
