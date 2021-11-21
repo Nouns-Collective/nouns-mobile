@@ -99,6 +99,7 @@ private struct SoftNavigationTitle<LeftAccessory, RightAccessory>: ViewModifier 
                     rightAccessory
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 20)
             }
             
             content

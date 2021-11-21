@@ -15,7 +15,8 @@ func appReducer(state: AppState, action: Action) -> AppState {
   AppState(
     onChainAuctions: onChainAuctionsReducer(state: state.onChainAuctions, action: action),
     liveAuction: liveAuctionReducer(state: state.liveAuction, action: action),
-    activities: onChainNounActivitiesReducer(state: state.activities, action: action)
+    activities: onChainNounActivitiesReducer(state: state.activities, action: action),
+    bids: onChainNounBidsReducer(state: state.bids, action: action)
   )
 }
 
@@ -23,4 +24,5 @@ struct AppState {
   var onChainAuctions = OnChainAuctions()
   var liveAuction = LiveAuction()
   var activities = OnChainNounActivities()
+  var bids = OnChainNounBids()
 }

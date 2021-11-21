@@ -25,6 +25,9 @@ extension Page: Decodable {
         } else if T.self == [Proposal].self {
             data = try decoder.decode("data", "proposals")
             
+        } else if T.self == [Bid].self {
+            data = try decoder.decode("data", "bids")
+            
         } else {
             let context = DecodingError.Context(
                 codingPath: decoder.codingPath,

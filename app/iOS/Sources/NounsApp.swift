@@ -18,6 +18,7 @@ struct NounsApp: App {
       onChainAuctionsMiddleware(),
       onChainNounActivitiesMiddleware(),
       liveAuctionMiddleware(),
+      onChainNounBidsMiddleware()
     ]
   )
   

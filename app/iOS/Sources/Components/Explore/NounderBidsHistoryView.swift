@@ -10,8 +10,34 @@ import UIComponents
 import Services
 
 struct NounderBidsHistoryView: View {
+  @EnvironmentObject var store: AppStore
+  let noun: Noun
+  
   var body: some View {
-    Text("Bids History List")
+    ScrollView(.vertical, showsIndicators: false) {
+      if !store.state.bids.isLoading && store.state.bids.bids.isEmpty {
+        Text("No activities registered.")
+          .font(.custom(.medium, relativeTo: .headline))
+          .padding()
+      } else {
+        VStack(alignment: .leading, spacing: 10) {
+          Text("Noun \(noun.id)")
+            .font(.custom(.bold, size: 36))
+          
+          ForEach(store.state.bids.bids, id: \.id) { bid in
+            BidRowCell(bid: bid)
+          }
+        }
+        .padding()
+        .ignoresSafeArea()
+      }
+    }
+    .frame(maxWidth: .infinity)
+    .ignoresSafeArea()
+    .activityIndicator(isPresented: store.state.activities.isLoading)
+    .onAppear {
+      store.dispatch(FetchOnChainNounBidsAction(noun: noun))
+    }
   }
 }
 
@@ -19,6 +45,14 @@ struct NounderBidsHistoryView: View {
 
 struct BidRowCell: View {
   let bid: Bid
+  
+  private var truncatedBidder: String {
+    let leader = "..."
+    let headCharactersCount = Int(ceil(Float(15 - leader.count) / 2.0))
+    let tailCharactersCount = Int(floor(Float(15 - leader.count) / 2.0))
+    
+    return "\(bid.bidder.id.prefix(headCharactersCount))\(leader)\(bid.bidder.id.suffix(tailCharactersCount))"
+  }
   
   private var bidAmountLabel: some View {
     Label {
@@ -42,7 +76,7 @@ struct BidRowCell: View {
   
   private var bidderLabel: some View {
     Label {
-      Text(bid.bidder.id)
+      Text(truncatedBidder)
         .foregroundColor(Color.componentNounsBlack)
         .font(.custom(.medium, relativeTo: .subheadline))
     } icon: {

@@ -31,7 +31,7 @@ struct NounderActivitiesView: View {
       if !store.state.activities.isLoading && store.state.activities.votes.isEmpty {
         Text("No activities registered.")
           .font(.custom(.medium, relativeTo: .headline))
-        
+          .padding()
       } else {
         VStack(alignment: .leading, spacing: 10) {
           titleLabel
@@ -41,7 +41,6 @@ struct NounderActivitiesView: View {
           }
         }
         .padding()
-        .padding(.top, 0)
       }
     }
     .frame(maxWidth: .infinity)

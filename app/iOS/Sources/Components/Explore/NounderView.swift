@@ -24,11 +24,12 @@ struct NounderView: View {
       NounderActivitiesView(noun: noun)
         .pickerTabItem("Activties", tag: 0)
       
-      NounderBidsHistoryView()
+      NounderBidsHistoryView(noun: noun)
         .pickerTabItem("Bid history", tag: 1)
     }
     // TODO: NavigationBar should support the translucent mode.
-    .offset(y: -40)
+    .offset(y: -44)
+    .padding(.bottom, -40)
     .softNavigationItems(leftAccessory: {
       // Dismisses Nounder Activities & Bids History
       SoftButton(
@@ -40,6 +41,7 @@ struct NounderView: View {
         icon: { Image.help },
         action: { isInfoPresented.toggle() })
     })
+    .ignoresSafeArea(.all, edges: .bottom)
     .background(Gradient.warmGreydient)
     .bottomSheet(isPresented: $isInfoPresented) {
       VStack(alignment: .leading, spacing: 20) {
