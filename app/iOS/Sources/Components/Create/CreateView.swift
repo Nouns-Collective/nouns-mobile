@@ -19,7 +19,7 @@ struct CreateView: View {
   var body: some View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
-        Text("Build a completely custom noun")
+        Text(R.string.create.subhealine())
           .font(.custom(.regular, size: 17))
         
         NounPuzzle(
@@ -30,7 +30,7 @@ struct CreateView: View {
           .padding(.top, 40)
         
         OutlineButton(
-          text: "Get going",
+          text: R.string.create.proceedTitle(),
           largeAccessory: { Image.fingergunsRight },
           action: { },
           fill: [.width])
@@ -39,7 +39,7 @@ struct CreateView: View {
       }
       .frame(maxWidth: .infinity)
       .padding(.horizontal, 20)
-      .softNavigationTitle("Create")
+      .softNavigationTitle(R.string.create.title())
       .background(Gradient.freshMint)
       .ignoresSafeArea()
     }

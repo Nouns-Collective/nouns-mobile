@@ -38,7 +38,7 @@ struct OnChainNounProfileView: View {
   private var actionsRow: some View {
     HStack {
       SoftButton(
-        text: "Share",
+        text: R.string.shared.share(),
         largeAccessory: {
           Image.share
         },
@@ -47,16 +47,18 @@ struct OnChainNounProfileView: View {
         },
         fill: [.width])
       
-      SoftButton(text: "Remix", largeAccessory: {
-        Image.splice
-      },
-                 action: { },
-                 fill: [.width])
+      SoftButton(
+        text: R.string.shared.remix(),
+        largeAccessory: {
+          Image.splice
+        },
+        action: { },
+        fill: [.width])
     }
   }
   
   private var nounIDLabel: some View {
-    Text("Noun \(noun.id)")
+    Text(R.string.explore.noun(noun.id))
       .font(.custom(.bold, relativeTo: .title2))
   }
   
@@ -72,7 +74,7 @@ struct OnChainNounProfileView: View {
         } label: {
           EmptyView()
         }
-
+        
         NounPuzzle(
           head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
           body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
@@ -104,12 +106,6 @@ struct OnChainNounProfileView: View {
       }
       .background(Gradient.warmGreydient)
     }
-//    .fullScreenCover(isPresented: $isActivityPresented, content: {
-//
-//      NounderView(
-//        isPresented: $isActivityPresented,
-//        noun: noun)
-//    })
     .sheet(isPresented: $showShareSheet) {
       if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
         ShareSheet(activityItems: [url])
@@ -130,7 +126,10 @@ struct SettledAuctionDetailRows: View {
   private var ethPrice: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
-    return formatter.string(from: auction.amount) ?? "N/A"
+    guard let price = formatter.string(from: auction.amount) else {
+      return R.string.shared.notApplicable()
+    }
+    return price
   }
   
   private var truncatedOwner: String {
@@ -142,7 +141,9 @@ struct SettledAuctionDetailRows: View {
   }
   
   private var formattedDate: String {
-    guard let timeInterval = Double(auction.startTime) else { return "N/A" }
+    guard let timeInterval = Double(auction.startTime) else {
+      return R.string.shared.notApplicable()
+    }
     
     let date = Date(timeIntervalSince1970: timeInterval)
     
@@ -154,39 +155,48 @@ struct SettledAuctionDetailRows: View {
   }
   
   private var birthdateRow: some View {
-    InfoCell(text: "Born \(formattedDate)", icon: {
-      Image.birthday
-    })
+    InfoCell(
+      text: R.string.nounProfile.birthday(formattedDate),
+      icon: {
+        Image.birthday
+      })
   }
   
   private var bidWinnerRow: some View {
-    InfoCell(text: "Won for", calloutText: ethPrice, icon: {
-      Image.wonPrice
-    }, calloutIcon: {
-      Image.eth
-    })
+    InfoCell(
+      text: R.string.nounProfile.bidWinner(),
+      calloutText: ethPrice, icon: {
+        Image.wonPrice
+        
+      }, calloutIcon: {
+        Image.eth
+      })
   }
   
   private var ownerRow: some View {
-    InfoCell(text: "Held by", calloutText: truncatedOwner, icon: {
-      Image.holder
-    }, accessory: {
-      Image.mdArrowRight
-    }, action: {
-      if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
-        openURL(url)
-      }
-    })
+    InfoCell(
+      text: R.string.nounProfile.heldBy(),
+      calloutText: truncatedOwner, icon: {
+        Image.holder
+      }, accessory: {
+        Image.mdArrowRight
+      }, action: {
+        if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
+          openURL(url)
+        }
+      })
   }
   
   private var activityRow: some View {
-    InfoCell(text: "Activity", icon: {
-      Image.history
-    }, accessory: {
-      Image.mdArrowRight
-    }, action: {
-      isActivityPresented.toggle()
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionSettledGovernance(),
+      icon: {
+        Image.history
+      }, accessory: {
+        Image.mdArrowRight
+      }, action: {
+        isActivityPresented.toggle()
+      })
   }
   
   var body: some View {
@@ -222,7 +232,8 @@ struct LiveAuctionDetailRows: View {
           let minutes = diffComponents.minute,
           let seconds = diffComponents.second else { return }
     
-    timeLeft = "\(hours)h \(minutes)m \(seconds)s"
+    timeLeft =
+    R.string.nounProfile.auctionUnsettledTimeLeft(hours, minutes, seconds)
   }
   
   private func formattedDate(timeInterval: String) -> String {
@@ -240,7 +251,12 @@ struct LiveAuctionDetailRows: View {
   private var ethPrice: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
-    return formatter.string(from: auction.amount) ?? "N/A"
+    
+    guard let price = formatter.string(from: auction.amount)
+    else {
+      return R.string.shared.notApplicable()
+    }
+    return price
   }
   
   private var truncatedOwner: String {
@@ -252,38 +268,47 @@ struct LiveAuctionDetailRows: View {
   }
   
   private var nounIDLabel: some View {
-    Text("Noun \(noun.id)")
+    Text(R.string.explore.noun(noun.id))
       .font(.custom(.bold, relativeTo: .title2))
   }
   
   private var timeRemainingRow: some View {
-    InfoCell(text: "Ends in", calloutText: timeLeft, icon: {
-      Image.timeleft
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionUnsettledTimeLeftLabel(),
+      calloutText: timeLeft,
+      icon: {
+        Image.timeleft
+      })
   }
   
   private var birthdateRow: some View {
-    InfoCell(text: "Born \(formattedDate(timeInterval: auction.startTime))", icon: {
-      Image.birthday
-    })
+    InfoCell(
+      text: R.string.nounProfile.birthday(formattedDate(timeInterval: auction.startTime)),
+      icon: {
+        Image.birthday
+      })
   }
   
   private var curretBidRow: some View {
-    InfoCell(text: "Current bid", calloutText: ethPrice, icon: {
-      Image.currentBid
-    }, calloutIcon: {
-      Image.eth
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionUnsettledLastBid(),
+      calloutText: ethPrice, icon: {
+        Image.currentBid
+      }, calloutIcon: {
+        Image.eth
+      })
   }
   
   private var activityRow: some View {
-    InfoCell(text: "Bid history & activity", icon: {
-      Image.history
-    }, accessory: {
-      Image.mdArrowRight
-    }, action: {
-      isActivityPresented.toggle()
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionUnsettledGovernance(),
+      icon: {
+        Image.history
+      }, accessory: {
+        Image.mdArrowRight
+      }, action: {
+        isActivityPresented.toggle()
+      })
   }
   
   var body: some View {

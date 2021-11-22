@@ -23,7 +23,7 @@ struct SettingsView: View {
         VStack {
           
           OutlineButton(
-            text: "Noun O’Clock Notification",
+            text: R.string.settings.notificationTitle(),
             icon: { Image.speaker },
             accessory: {
               OutlineToggle(isOn: $isNotificationOn)
@@ -31,16 +31,16 @@ struct SettingsView: View {
             action: { },
             fill: [.width])
           
-          Text("Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.")
+          Text(R.string.settings.notificationNote())
             .font(.custom(.regular, size: 13))
             .foregroundColor(Color.componentNounsBlack.opacity(0.6))
             .padding(.bottom, 10)
           
           OutlineButton(
-            text: "Theme",
+            text: R.string.settings.themeTitle(),
             icon: { Image.theme },
             accessory: {
-              Text("System")
+              Text(R.string.settings.themeSystem())
                 .font(.custom(.regular, size: 17))
                 .foregroundColor(Color.componentNounsBlack.opacity(0.5))
             },
@@ -49,10 +49,10 @@ struct SettingsView: View {
             fill: [.width])
           
           OutlineButton(
-            text: "App Icon",
+            text: R.string.settings.appIconTitle(),
             icon: { Image.nounLogo.renderingMode(.template) },
             accessory: {
-              Text("Default")
+              Text(R.string.settings.appIconDefault())
                 .font(.custom(.regular, size: 17))
                 .foregroundColor(Color.componentNounsBlack.opacity(0.5))
             },
@@ -61,14 +61,14 @@ struct SettingsView: View {
             fill: [.width])
           
           OutlineButton(
-            text: "Share with friends",
+            text: R.string.settings.shareFriends(),
             icon: { Image.share },
             smallAccessory: { Image.squareArrowDown },
             action: { },
             fill: [.width])
         }
         .padding(.horizontal, 20)
-        .softNavigationTitle("Settings")
+        .softNavigationTitle(R.string.settings.title())
       }
       .background(Gradient.bubbleGum)
       .ignoresSafeArea()

@@ -1,0 +1,21 @@
+/* 
+  Activity.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+"menu.title" = "Activity";
+
+"for" = "Voted for";
+
+"against" = "Vote Against";
+
+"absent" = "Absent for";
+
+"empty-state" = "No activities registered.";
+
+"proposal.untitled" = "Untitled";
+
+"proposal.status" = "Proposal %s • %s";

@@ -50,9 +50,9 @@ struct OnChainExplorerView: View {
             isPresentingActivity: $isPresentingNounActivity)
         }
         .padding(.horizontal, 20)
-        .softNavigationTitle("Explore", rightAccessory: {
+        .softNavigationTitle(R.string.explore.title(), rightAccessory: {
           SoftButton(
-            text: "About",
+            text: R.string.explore.about(),
             largeAccessory: { Image.about },
             action: {
               isPresentingAbout.toggle()

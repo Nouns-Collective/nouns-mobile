@@ -20,7 +20,7 @@ struct PlayView: View {
   var body: some View {
     NavigationView {
       VStack(spacing: 0) {
-        Text("Give your noun something to say")
+        Text(R.string.play.subhealine())
           .font(.custom(.regular, size: 17))
         
         NounPuzzle(
@@ -31,7 +31,7 @@ struct PlayView: View {
           .padding(.top, 40)
         
         OutlineButton(
-          text: "Get going",
+          text: R.string.play.proceedTitle(),
           largeAccessory: { Image.fingergunsRight },
           action: { isPlayPresented.toggle() },
           fill: [.width])
@@ -39,7 +39,7 @@ struct PlayView: View {
         Spacer()
       }
       .padding(.horizontal, 20)
-      .softNavigationTitle("Play")
+      .softNavigationTitle(R.string.play.title())
       .background(Gradient.blueberryJam)
       .ignoresSafeArea()
       .fullScreenCover(isPresented: $isPlayPresented) {

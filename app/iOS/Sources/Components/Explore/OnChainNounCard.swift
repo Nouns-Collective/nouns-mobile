@@ -18,7 +18,7 @@ struct OnChainNounCard: View {
   private var ethPrice: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
-    return formatter.string(from: auction.amount) ?? "N/A"
+    return formatter.string(from: auction.amount) ?? R.string.shared.notApplicable()
   }
   
   var body: some View {
@@ -33,10 +33,28 @@ struct OnChainNounCard: View {
           .matchedGeometryEffect(id: "\(auction.noun)-puzzle", in: animation)
           .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[auction.noun.seed.background]))
       },
-      smallHeader: "Noun \(auction.noun.id)",
+      smallHeader: R.string.explore.noun(auction.noun.id),
       accessoryImage: Image.mdArrowCorner,
       detail: {
         SafeLabel(ethPrice, icon: Image.eth)
+      })
+  }
+}
+
+/// A placeholder noun card view when nouns are loading
+struct OnChainNounPlaceholderCard: View {
+  
+  var body: some View {
+    StandardCard(
+      media: {
+        Image(R.image.placeholder.name)
+          .resizable()
+          .scaledToFit()
+      },
+      smallHeader: "Noun 100",
+      accessoryImage: Image.mdArrowCorner,
+      detail: {
+        SafeLabel("100.00", icon: Image.eth)
       })
   }
 }

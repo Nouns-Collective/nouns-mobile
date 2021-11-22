@@ -25,14 +25,16 @@ struct AboutNounsWTF: View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 0) {
-          NounSpeechBubble("One noun, every day, forever.", noun: "talking-noun")
+          NounSpeechBubble(
+            R.string.aboutNouns.message(),
+            noun: "talking-noun")
             .padding(.horizontal)
           
           Divider()
             .background(Color.componentNounsBlack)
             .frame(height: 2)
           
-          Text("Nouns are an experimental attempt to improve the formation of on-chain avatar communities. \n\nWhile some projects have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.")
+          Text(R.string.aboutNouns.nounsWtfDescription())
             .font(.custom(.regular, size: 17))
             .lineSpacing(6)
             .padding(.horizontal)
@@ -41,7 +43,7 @@ struct AboutNounsWTF: View {
           // TODO: Shouldn't leave the app to open the website.
           // Opens `nouns.wtf`
           OutlineButton(
-            text: "Learn more at nouns.wtf",
+            text: R.string.aboutNouns.learnMore(),
             icon: { Image.web },
             smallAccessory: { Image.squareArrowDown },
             action: {
@@ -53,7 +55,7 @@ struct AboutNounsWTF: View {
             .padding(.horizontal)
             .padding(.top, 25)
         }
-        .softNavigationTitle("About Nouns", leftAccessory: {
+        .softNavigationTitle(R.string.aboutNouns.title(), leftAccessory: {
           // Dismiss About Nouns.wtf
           SoftButton(
             icon: { Image.back },

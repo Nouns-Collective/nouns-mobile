@@ -18,7 +18,10 @@ struct LiveAuctionCard: View {
   private var ethPrice: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
-    return formatter.string(from: auction.amount) ?? "N/A"
+    guard let price = formatter.string(from: auction.amount) else {
+      return R.string.shared.notApplicable()
+    }
+    return price
   }
   
   private func updateTimeLeft() {
@@ -33,7 +36,7 @@ struct LiveAuctionCard: View {
           let minutes = diffComponents.minute,
           let seconds = diffComponents.second else { return }
     
-    timeLeft = "\(hours)h \(minutes)m \(seconds)s"
+    timeLeft = R.string.liveAuction.timeLeft(hours, minutes, seconds)
   }
   
   var body: some View {
@@ -47,17 +50,25 @@ struct LiveAuctionCard: View {
         )
           .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[auction.noun.seed.background]))
       },
-      header: "Noun \(auction.noun.id)",
+      header: R.string.explore.noun(auction.noun.id),
       accessoryImage: Image.mdArrowCorner,
       leftDetail: {
-        CompoundLabel(Text(timeLeft), icon: Image.timeleft, caption: "Remaining")
+        CompoundLabel(
+          Text(timeLeft),
+          icon: Image.timeleft,
+          caption: R.string.liveAuction.timeLeftLabel())
           .onReceive(timer) { _ in
             updateTimeLeft()
           }
       },
       rightDetail: {
-        CompoundLabel(SafeLabel(ethPrice, icon: Image.eth), icon: Image.currentBid, caption: "Current bid")
+        CompoundLabel(
+          SafeLabel(ethPrice, icon: Image.eth),
+          icon: Image.currentBid,
+          caption: R.string.liveAuction.currentBid())
+      })
+      .onAppear {
+        self.updateTimeLeft()
       }
-    ).onAppear { self.updateTimeLeft() }
   }
 }

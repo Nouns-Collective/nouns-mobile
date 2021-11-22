@@ -29,7 +29,7 @@ struct NounderActivitiesView: View {
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       if !store.state.activities.isLoading && store.state.activities.votes.isEmpty {
-        Text("No activities registered.")
+        Text(R.string.activity.emptyState())
           .font(.custom(.medium, relativeTo: .headline))
           .padding()
       } else {
@@ -57,25 +57,25 @@ struct ActivityRowCell: View {
   private var voteLabel: some View {
     switch vote.supportDetailed {
     case .abstain:
-      return ChipLabel("Absent for", state: .neutral)
+      return ChipLabel(R.string.activity.absent(), state: .neutral)
       
     case .for:
-      return ChipLabel("Voted for", state: .positive)
+      return ChipLabel(R.string.activity.for(), state: .positive)
       
     case .against:
-      return ChipLabel("Vote Against", state: .negative)
+      return ChipLabel(R.string.activity.against(), state: .negative)
     }
   }
   
   private var proposalStatusLabel: some View {
-    Text("Proposal \(vote.proposal.id) • \(vote.proposal.status.rawValue.capitalized)")
+    Text(R.string.activity.proposalStatus(vote.proposal.id, vote.proposal.status.rawValue.capitalized))
       .foregroundColor(Color.componentNounsBlack)
       .font(Font.custom(.medium, relativeTo: .footnote))
       .opacity(0.5)
   }
   
   private var descriptionLabel: some View {
-    Text(vote.proposal.title ?? "Untitled")
+    Text(vote.proposal.title ?? R.string.activity.proposalUntitled())
       .fontWeight(.semibold)
   }
   

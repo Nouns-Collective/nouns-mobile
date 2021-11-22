@@ -16,12 +16,12 @@ struct NounderBidsHistoryView: View {
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       if !store.state.bids.isLoading && store.state.bids.bids.isEmpty {
-        Text("No activities registered.")
+        Text(R.string.bidHistory.emptyState())
           .font(.custom(.medium, relativeTo: .headline))
           .padding()
       } else {
         VStack(alignment: .leading, spacing: 10) {
-          Text("Noun \(noun.id)")
+          Text(R.string.explore.noun(noun.id))
             .font(.custom(.bold, size: 36))
           
           ForEach(store.state.bids.bids, id: \.id) { bid in
@@ -89,11 +89,13 @@ struct BidRowCell: View {
   private var ethValue: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
-    return formatter.string(from: bid.amount) ?? "Unavailable"
+    return formatter.string(from: bid.amount) ?? R.string.shared.unavailable()
   }
   
   private var formattedDate: String {
-    guard let timeInterval = Double(bid.blockTimestamp) else { return "Unavailable" }
+    guard let timeInterval = Double(bid.blockTimestamp) else {
+      return R.string.bidHistory.blockUnavailable()
+    }
     
     let date = Date(timeIntervalSince1970: timeInterval)
     
@@ -109,7 +111,7 @@ struct BidRowCell: View {
     timeFormatter.dateFormat = "hh:mm a"
     let timeString = timeFormatter.string(from: date).lowercased()
     
-    return "\(dateString) at \(timeString)"
+    return R.string.bidHistory.blockDate(dateString, timeString)
   }
   
   var body: some View {

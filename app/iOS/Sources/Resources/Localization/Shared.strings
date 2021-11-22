@@ -1,0 +1,19 @@
+/* 
+  Shared.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+"share" = "Share";
+
+"remix" = "Remix";
+
+"learn.more" = "Learn more";
+
+// MARK: - States
+
+"unavailable" = "Unavailable";
+
+"not.applicable" = "N/A";
