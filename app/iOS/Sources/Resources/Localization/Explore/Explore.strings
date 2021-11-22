@@ -1,0 +1,17 @@
+/* 
+  Explore.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+// MARK: - Explore
+
+"title" = "Explore";
+
+"about" = "About";
+
+// MARK: - Common
+
+"noun" = "Noun %s";

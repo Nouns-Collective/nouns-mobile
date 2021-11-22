@@ -1,0 +1,13 @@
+/* 
+  LiveAuction.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+"time.left.label" = "Remaining";
+
+"current.bid" = "Current bid";
+
+"time.left" = "%dh %dm %ds";

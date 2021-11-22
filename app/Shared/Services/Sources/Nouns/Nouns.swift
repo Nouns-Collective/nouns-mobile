@@ -44,6 +44,16 @@ public protocol Nouns {
     /// - Returns: A publisher emitting a list of `Activity` type  instance or an error was encountered.
     func fetchActivity(for nounID: String) -> AnyPublisher<[Vote], Error>
     
+    /// Fetches the list of Bids of a given Noun from the chain.
+    ///
+    /// The publisher will emit events on the **main** thread.
+    ///
+    /// - Parameters:
+    ///   - nounID: A settled `Noun` identifier.
+    ///
+    /// - Returns: A publisher emitting a list of `Bid` type  instance or an error was encountered.
+    func fetchBids(for nounID: String) -> AnyPublisher<[Bid], Error>
+    
     /// Registers a publisher that publishes the last auction and bid created on
     /// the network  state changes.
     ///
@@ -115,6 +125,16 @@ public class TheGraphNounsProvider: Nouns {
         let query = NounsSubgraph.ProposalsQuery(first: limit, skip: cursor)
         return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
             .compactMap { (page: Page<[Proposal]>) in
+                return page.data
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    public func fetchBids(for nounID: String) -> AnyPublisher<[Bid], Error> {
+        let query = NounsSubgraph.BidsQuery(nounID: nounID)
+        return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+            .compactMap { (page: Page<[Bid]>) in
                 return page.data
             }
             .receive(on: DispatchQueue.main)

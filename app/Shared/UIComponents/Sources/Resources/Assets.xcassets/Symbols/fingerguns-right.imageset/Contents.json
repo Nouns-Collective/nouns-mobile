@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fingerguns-right.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

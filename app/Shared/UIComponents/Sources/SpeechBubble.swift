@@ -25,10 +25,8 @@ public struct SpeechBubble: View {
     
     public var body: some View {
         ZStack {
-            
             label
                 .offset(y: -14)
-                .frame(width: .infinity)
                 .background(
                     Image("speech.bubble", bundle: .module)
                         .resizable()
@@ -41,7 +39,7 @@ public struct SpeechBubble: View {
     private var label: some View {
         Text(content)
             // TODO: - Update font to Space Mono
-            .font(Font.custom(.bold, relativeTo: .body))
+            .font(Font.custom(.medium, size: 17))
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
             .padding()

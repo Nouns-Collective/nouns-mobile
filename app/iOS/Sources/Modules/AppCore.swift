@@ -9,7 +9,6 @@ import Combine
 import Services
 import UIKit
 
-/// <#Description#>
 class AppCore {
   static let shared = AppCore()
   

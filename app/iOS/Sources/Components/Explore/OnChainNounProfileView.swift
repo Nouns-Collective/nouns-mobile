@@ -13,7 +13,7 @@ import Services
 struct OnChainNounProfileView: View {
   @Binding var isPresented: Bool
   @State var isActivityPresented: Bool = false
-  
+  @State private var showShareSheet = false
   let auction: Auction
   
   private var noun: Noun {
@@ -23,24 +23,32 @@ struct OnChainNounProfileView: View {
   private var detailRows: some View {
     switch auction.settled {
     case true:
-      return AnyView(SettledAuctionDetailRows(auction: auction, isActivityPresented: $isActivityPresented))
+      return AnyView(SettledAuctionDetailRows(
+        isActivityPresented: $isActivityPresented,
+        auction: auction
+      ))
+      
     case false:
-      return AnyView(LiveAuctionDetailRows(auction: auction, isActivityPresented: $isActivityPresented))
+      return AnyView(LiveAuctionDetailRows(
+        auction: auction,
+        isActivityPresented: $isActivityPresented))
     }
   }
   
   private var actionsRow: some View {
     HStack {
       SoftButton(
-        text: "Share",
+        text: R.string.shared.share(),
         largeAccessory: {
           Image.share
         },
-        action: { },
+        action: {
+          showShareSheet.toggle()
+        },
         fill: [.width])
       
       SoftButton(
-        text: "Remix",
+        text: R.string.shared.remix(),
         largeAccessory: {
           Image.splice
         },
@@ -50,56 +58,66 @@ struct OnChainNounProfileView: View {
   }
   
   private var nounIDLabel: some View {
-    Text("Noun \(noun.id)")
+    Text(R.string.explore.noun(noun.id))
       .font(.custom(.bold, relativeTo: .title2))
   }
   
   var body: some View {
-    VStack(spacing: 0) {
-      Spacer()
-      
-      NounPuzzle(
-        head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
-        body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
-        glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[noun.seed.glasses].assetImage),
-        accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
-      )
-      
-      PlainCell {
-        VStack {
-          HStack {
-            nounIDLabel
-            Spacer()
-            
-            SoftButton(icon: {
-              Image.xmark
-            }, action: {
-              isPresented.toggle()
-            })
-          }
-          
-          detailRows
-          .labelStyle(.titleAndIcon(spacing: 14))
-          .padding(.bottom, 40)
-          
-          actionsRow
+    NavigationView {
+      VStack(spacing: 0) {
+        Spacer()
+        
+        NavigationLink(isActive: $isActivityPresented) {
+          NounderView(
+            isPresented: $isActivityPresented,
+            noun: noun)
+        } label: {
+          EmptyView()
         }
+        
+        NounPuzzle(
+          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
+          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
+          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[noun.seed.glasses].assetImage),
+          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
+        )
+        
+        PlainCell {
+          VStack {
+            HStack {
+              nounIDLabel
+              Spacer()
+              
+              SoftButton(icon: {
+                Image.xmark
+              }, action: {
+                isPresented.toggle()
+              })
+            }
+            
+            detailRows
+              .labelStyle(.titleAndIcon(spacing: 14))
+              .padding(.bottom, 40)
+            
+            actionsRow
+          }
+        }
+        .padding([.bottom, .horizontal])
       }
-      .padding([.bottom, .horizontal])
+      .background(Gradient.warmGreydient)
     }
-    .background(Gradient.warmGreydient)
-    .sheet(isPresented: $isActivityPresented, onDismiss: nil) {
-      
-      NounderActivitiesView(
-        isPresented: $isActivityPresented,
-        noun: noun)
+    .sheet(isPresented: $showShareSheet) {
+      if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
+        ShareSheet(activityItems: [url])
+      }
     }
   }
 }
 
 struct SettledAuctionDetailRows: View {
-  let auction: Auction
   @Binding var isActivityPresented: Bool
+  @Environment(\.openURL) private var openURL
+  let auction: Auction
   
   private var noun: Noun {
     auction.noun
@@ -108,7 +126,10 @@ struct SettledAuctionDetailRows: View {
   private var ethPrice: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
-    return formatter.string(from: auction.amount) ?? "N/A"
+    guard let price = formatter.string(from: auction.amount) else {
+      return R.string.shared.notApplicable()
+    }
+    return price
   }
   
   private var truncatedOwner: String {
@@ -120,7 +141,9 @@ struct SettledAuctionDetailRows: View {
   }
   
   private var formattedDate: String {
-    guard let timeInterval = Double(auction.startTime) else { return "N/A" }
+    guard let timeInterval = Double(auction.startTime) else {
+      return R.string.shared.notApplicable()
+    }
     
     let date = Date(timeIntervalSince1970: timeInterval)
     
@@ -132,35 +155,48 @@ struct SettledAuctionDetailRows: View {
   }
   
   private var birthdateRow: some View {
-    InfoCell(text: "Born \(formattedDate)", icon: {
-      Image.birthday
-    })
+    InfoCell(
+      text: R.string.nounProfile.birthday(formattedDate),
+      icon: {
+        Image.birthday
+      })
   }
   
   private var bidWinnerRow: some View {
-    InfoCell(text: "Won for", calloutText: ethPrice, icon: {
-      Image.wonPrice
-    }, calloutIcon: {
-      Image.eth
-    })
+    InfoCell(
+      text: R.string.nounProfile.bidWinner(),
+      calloutText: ethPrice, icon: {
+        Image.wonPrice
+        
+      }, calloutIcon: {
+        Image.eth
+      })
   }
   
   private var ownerRow: some View {
-    InfoCell(text: "Held by", calloutText: truncatedOwner, icon: {
-      Image.holder
-    }, accessory: {
-      Image.mdArrowRight
-    })
+    InfoCell(
+      text: R.string.nounProfile.heldBy(),
+      calloutText: truncatedOwner, icon: {
+        Image.holder
+      }, accessory: {
+        Image.mdArrowRight
+      }, action: {
+        if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
+          openURL(url)
+        }
+      })
   }
   
   private var activityRow: some View {
-    InfoCell(text: "Activity", icon: {
-      Image.history
-    }, accessory: {
-      Image.mdArrowRight
-    }, tapAction: {
-      isActivityPresented.toggle()
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionSettledGovernance(),
+      icon: {
+        Image.history
+      }, accessory: {
+        Image.mdArrowRight
+      }, action: {
+        isActivityPresented.toggle()
+      })
   }
   
   var body: some View {
@@ -196,7 +232,8 @@ struct LiveAuctionDetailRows: View {
           let minutes = diffComponents.minute,
           let seconds = diffComponents.second else { return }
     
-    timeLeft = "\(hours)h \(minutes)m \(seconds)s"
+    timeLeft =
+    R.string.nounProfile.auctionUnsettledTimeLeft(hours, minutes, seconds)
   }
   
   private func formattedDate(timeInterval: String) -> String {
@@ -214,7 +251,12 @@ struct LiveAuctionDetailRows: View {
   private var ethPrice: String {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
-    return formatter.string(from: auction.amount) ?? "N/A"
+    
+    guard let price = formatter.string(from: auction.amount)
+    else {
+      return R.string.shared.notApplicable()
+    }
+    return price
   }
   
   private var truncatedOwner: String {
@@ -226,38 +268,47 @@ struct LiveAuctionDetailRows: View {
   }
   
   private var nounIDLabel: some View {
-    Text("Noun \(noun.id)")
+    Text(R.string.explore.noun(noun.id))
       .font(.custom(.bold, relativeTo: .title2))
   }
   
   private var timeRemainingRow: some View {
-    InfoCell(text: "Ends in", calloutText: timeLeft, icon: {
-      Image.timeleft
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionUnsettledTimeLeftLabel(),
+      calloutText: timeLeft,
+      icon: {
+        Image.timeleft
+      })
   }
   
   private var birthdateRow: some View {
-    InfoCell(text: "Born \(formattedDate(timeInterval: auction.startTime))", icon: {
-      Image.birthday
-    })
+    InfoCell(
+      text: R.string.nounProfile.birthday(formattedDate(timeInterval: auction.startTime)),
+      icon: {
+        Image.birthday
+      })
   }
   
   private var curretBidRow: some View {
-    InfoCell(text: "Current bid", calloutText: ethPrice, icon: {
-      Image.currentBid
-    }, calloutIcon: {
-      Image.eth
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionUnsettledLastBid(),
+      calloutText: ethPrice, icon: {
+        Image.currentBid
+      }, calloutIcon: {
+        Image.eth
+      })
   }
   
   private var activityRow: some View {
-    InfoCell(text: "Bid history & activity", icon: {
-      Image.history
-    }, accessory: {
-      Image.mdArrowRight
-    }, tapAction: {
-      isActivityPresented.toggle()
-    })
+    InfoCell(
+      text: R.string.nounProfile.auctionUnsettledGovernance(),
+      icon: {
+        Image.history
+      }, accessory: {
+        Image.mdArrowRight
+      }, action: {
+        isActivityPresented.toggle()
+      })
   }
   
   var body: some View {
@@ -273,5 +324,27 @@ struct LiveAuctionDetailRows: View {
     }.onAppear {
       self.updateTimeLeft()
     }
+  }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+  typealias Callback = (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ error: Error?) -> Void
+  
+  let activityItems: [Any]
+  let applicationActivities: [UIActivity]? = nil
+  let excludedActivityTypes: [UIActivity.ActivityType]? = nil
+  let callback: Callback? = nil
+  
+  func makeUIViewController(context: Context) -> UIActivityViewController {
+    let controller = UIActivityViewController(
+      activityItems: activityItems,
+      applicationActivities: applicationActivities)
+    controller.excludedActivityTypes = excludedActivityTypes
+    controller.completionWithItemsHandler = callback
+    return controller
+  }
+  
+  func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+    // nothing to do here
   }
 }

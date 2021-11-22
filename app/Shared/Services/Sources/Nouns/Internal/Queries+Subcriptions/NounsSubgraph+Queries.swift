@@ -111,18 +111,16 @@ internal enum NounsSubgraph {
     
     internal struct BidsQuery: GraphQLQuery {
         internal var url = CloudConfiguration.Nouns.query.url
-        internal let first: Int
-        internal let skip: Int
-        internal let auctionID: String
+        internal let nounID: String
         
         internal var operationDefinition: String {
           """
             {
-              bids(first: 10, orderBy: blockTimestamp, orderDirection: desc, where: { auction: "\(auctionID)" }) {
+              bids(orderBy: blockTimestamp, orderDirection: desc, where: { noun: "\(nounID)" }) {
                 id
                 amount
                 blockTimestamp
-                account {
+                bidder {
                   id
                 }
               }

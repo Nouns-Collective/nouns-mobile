@@ -1,0 +1,15 @@
+/* 
+  AboutNouns.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+"title" = "About Nouns";
+
+"message" = "One noun, every day, forever.";
+
+"nouns.wtf.description" = "Nouns are an experimental attempt to improve the formation of on-chain avatar communities. \n\nWhile some projects have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.";
+
+"learn.more" = "Learn more at nouns.wtf";

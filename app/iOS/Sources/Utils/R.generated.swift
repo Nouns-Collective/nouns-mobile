@@ -132,14 +132,149 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 3 images.
+  /// This `R.image` struct is generated, and contains static references to 18 images.
   struct image {
+    /// Image `eyes-blink-1`.
+    static let eyesBlink1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-1")
+    /// Image `eyes-blink-2`.
+    static let eyesBlink2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-2")
+    /// Image `eyes-blink-3`.
+    static let eyesBlink3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-3")
+    /// Image `eyes-blink-4`.
+    static let eyesBlink4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-4")
+    /// Image `eyes-shift-1`.
+    static let eyesShift1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-1")
+    /// Image `eyes-shift-2`.
+    static let eyesShift2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-2")
+    /// Image `eyes-shift-3`.
+    static let eyesShift3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-3")
+    /// Image `eyes-shift-4`.
+    static let eyesShift4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-4")
+    /// Image `eyes-shift-5`.
+    static let eyesShift5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-5")
+    /// Image `eyes-shift-6`.
+    static let eyesShift6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-6")
+    /// Image `head-ape-mouth-1`.
+    static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
+    /// Image `head-ape-mouth-2`.
+    static let headApeMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-2")
+    /// Image `head-ape-mouth-3`.
+    static let headApeMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-3")
+    /// Image `head-ape-mouth-4`.
+    static let headApeMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-4")
+    /// Image `launch.screen`.
+    static let launchScreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "launch.screen")
     /// Image `noun-logo`.
     static let nounLogo = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun-logo")
     /// Image `placeholder-ens`.
     static let placeholderEns = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder-ens")
     /// Image `placeholder`.
     static let placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-1", bundle: ..., traitCollection: ...)`
+    static func eyesBlink1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-2", bundle: ..., traitCollection: ...)`
+    static func eyesBlink2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-3", bundle: ..., traitCollection: ...)`
+    static func eyesBlink3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-4", bundle: ..., traitCollection: ...)`
+    static func eyesBlink4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-1", bundle: ..., traitCollection: ...)`
+    static func eyesShift1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-2", bundle: ..., traitCollection: ...)`
+    static func eyesShift2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-3", bundle: ..., traitCollection: ...)`
+    static func eyesShift3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-4", bundle: ..., traitCollection: ...)`
+    static func eyesShift4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-5", bundle: ..., traitCollection: ...)`
+    static func eyesShift5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-6", bundle: ..., traitCollection: ...)`
+    static func eyesShift6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-1", bundle: ..., traitCollection: ...)`
+    static func headApeMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-2", bundle: ..., traitCollection: ...)`
+    static func headApeMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-3", bundle: ..., traitCollection: ...)`
+    static func headApeMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-4", bundle: ..., traitCollection: ...)`
+    static func headApeMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "launch.screen", bundle: ..., traitCollection: ...)`
+    static func launchScreen(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.launchScreen, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "noun-logo", bundle: ..., traitCollection: ...)`
@@ -170,6 +305,844 @@ struct R: Rswift.Validatable {
     struct uiApplicationSceneManifest {
       static let _key = "UIApplicationSceneManifest"
       static let uiApplicationSupportsMultipleScenes = true
+
+      fileprivate init() {}
+    }
+
+    fileprivate init() {}
+  }
+
+  /// This `R.string` struct is generated, and contains static references to 12 localization tables.
+  struct string {
+    /// This `R.string.aboutNouns` struct is generated, and contains static references to 4 localization keys.
+    struct aboutNouns {
+      /// Value: About Nouns
+      static let title = Rswift.StringResource(key: "title", tableName: "AboutNouns", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Learn more at nouns.wtf
+      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "AboutNouns", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities.   While some projects have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.
+      static let nounsWtfDescription = Rswift.StringResource(key: "nouns.wtf.description", tableName: "AboutNouns", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: One noun, every day, forever.
+      static let message = Rswift.StringResource(key: "message", tableName: "AboutNouns", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: About Nouns
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "AboutNouns", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AboutNouns", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "AboutNouns", bundle: bundle, comment: "")
+      }
+
+      /// Value: Learn more at nouns.wtf
+      static func learnMore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("learn.more", tableName: "AboutNouns", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AboutNouns", preferredLanguages: preferredLanguages) else {
+          return "learn.more"
+        }
+
+        return NSLocalizedString("learn.more", tableName: "AboutNouns", bundle: bundle, comment: "")
+      }
+
+      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities.   While some projects have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.
+      static func nounsWtfDescription(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("nouns.wtf.description", tableName: "AboutNouns", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AboutNouns", preferredLanguages: preferredLanguages) else {
+          return "nouns.wtf.description"
+        }
+
+        return NSLocalizedString("nouns.wtf.description", tableName: "AboutNouns", bundle: bundle, comment: "")
+      }
+
+      /// Value: One noun, every day, forever.
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "AboutNouns", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AboutNouns", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "AboutNouns", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.activity` struct is generated, and contains static references to 7 localization keys.
+    struct activity {
+      /// Value: Absent for
+      static let absent = Rswift.StringResource(key: "absent", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Activity
+      static let menuTitle = Rswift.StringResource(key: "menu.title", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: No activities registered.
+      static let emptyState = Rswift.StringResource(key: "empty-state", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Proposal %s • %s
+      static let proposalStatus = Rswift.StringResource(key: "proposal.status", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Untitled
+      static let proposalUntitled = Rswift.StringResource(key: "proposal.untitled", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Vote Against
+      static let against = Rswift.StringResource(key: "against", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Voted for
+      static let `for` = Rswift.StringResource(key: "for", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Absent for
+      static func absent(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("absent", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "absent"
+        }
+
+        return NSLocalizedString("absent", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      /// Value: Activity
+      static func menuTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("menu.title", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "menu.title"
+        }
+
+        return NSLocalizedString("menu.title", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      /// Value: No activities registered.
+      static func emptyState(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("empty-state", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "empty-state"
+        }
+
+        return NSLocalizedString("empty-state", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      /// Value: Proposal %s • %s
+      static func proposalStatus(_ value1: UnsafePointer<CChar>, _ value2: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("proposal.status", tableName: "Activity", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1, value2)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "proposal.status"
+        }
+
+        let format = NSLocalizedString("proposal.status", tableName: "Activity", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1, value2)
+      }
+
+      /// Value: Untitled
+      static func proposalUntitled(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("proposal.untitled", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "proposal.untitled"
+        }
+
+        return NSLocalizedString("proposal.untitled", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      /// Value: Vote Against
+      static func against(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("against", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "against"
+        }
+
+        return NSLocalizedString("against", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      /// Value: Voted for
+      static func `for`(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("for", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "for"
+        }
+
+        return NSLocalizedString("for", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.bidHistory` struct is generated, and contains static references to 4 localization keys.
+    struct bidHistory {
+      /// Value: %s at %s
+      static let blockDate = Rswift.StringResource(key: "block.date", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Bid history
+      static let menuTitle = Rswift.StringResource(key: "menu.title", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: No bid history registered.
+      static let emptyState = Rswift.StringResource(key: "empty-state", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Unavailable
+      static let blockUnavailable = Rswift.StringResource(key: "block.unavailable", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: %s at %s
+      static func blockDate(_ value1: UnsafePointer<CChar>, _ value2: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("block.date", tableName: "BidHistory", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1, value2)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
+          return "block.date"
+        }
+
+        let format = NSLocalizedString("block.date", tableName: "BidHistory", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1, value2)
+      }
+
+      /// Value: Bid history
+      static func menuTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("menu.title", tableName: "BidHistory", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
+          return "menu.title"
+        }
+
+        return NSLocalizedString("menu.title", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      /// Value: No bid history registered.
+      static func emptyState(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("empty-state", tableName: "BidHistory", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
+          return "empty-state"
+        }
+
+        return NSLocalizedString("empty-state", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      /// Value: Unavailable
+      static func blockUnavailable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("block.unavailable", tableName: "BidHistory", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
+          return "block.unavailable"
+        }
+
+        return NSLocalizedString("block.unavailable", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.create` struct is generated, and contains static references to 3 localization keys.
+    struct create {
+      /// Value: Build a completely custom noun
+      static let subhealine = Rswift.StringResource(key: "subhealine", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Create
+      static let title = Rswift.StringResource(key: "title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Get going
+      static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Build a completely custom noun
+      static func subhealine(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("subhealine", tableName: "Create", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
+          return "subhealine"
+        }
+
+        return NSLocalizedString("subhealine", tableName: "Create", bundle: bundle, comment: "")
+      }
+
+      /// Value: Create
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Create", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Create", bundle: bundle, comment: "")
+      }
+
+      /// Value: Get going
+      static func proceedTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("proceed.title", tableName: "Create", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
+          return "proceed.title"
+        }
+
+        return NSLocalizedString("proceed.title", tableName: "Create", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.explore` struct is generated, and contains static references to 3 localization keys.
+    struct explore {
+      /// Value: About
+      static let about = Rswift.StringResource(key: "about", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Explore
+      static let title = Rswift.StringResource(key: "title", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Noun %s
+      static let noun = Rswift.StringResource(key: "noun", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: About
+      static func about(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("about", tableName: "Explore", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
+          return "about"
+        }
+
+        return NSLocalizedString("about", tableName: "Explore", bundle: bundle, comment: "")
+      }
+
+      /// Value: Explore
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Explore", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Explore", bundle: bundle, comment: "")
+      }
+
+      /// Value: Noun %s
+      static func noun(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("noun", tableName: "Explore", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
+          return "noun"
+        }
+
+        let format = NSLocalizedString("noun", tableName: "Explore", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.liveAuction` struct is generated, and contains static references to 3 localization keys.
+    struct liveAuction {
+      /// Value: %dh %dm %ds
+      static let timeLeft = Rswift.StringResource(key: "time.left", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Current bid
+      static let currentBid = Rswift.StringResource(key: "current.bid", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Remaining
+      static let timeLeftLabel = Rswift.StringResource(key: "time.left.label", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: %dh %dm %ds
+      static func timeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("time.left", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1, value2, value3)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
+          return "time.left"
+        }
+
+        let format = NSLocalizedString("time.left", tableName: "LiveAuction", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1, value2, value3)
+      }
+
+      /// Value: Current bid
+      static func currentBid(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("current.bid", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
+          return "current.bid"
+        }
+
+        return NSLocalizedString("current.bid", tableName: "LiveAuction", bundle: bundle, comment: "")
+      }
+
+      /// Value: Remaining
+      static func timeLeftLabel(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("time.left.label", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
+          return "time.left.label"
+        }
+
+        return NSLocalizedString("time.left.label", tableName: "LiveAuction", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.localizable` struct is generated, and contains static references to 0 localization keys.
+    struct localizable {
+      fileprivate init() {}
+    }
+
+    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 2 localization keys.
+    struct nounDAOInfo {
+      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.
+      static let description = Rswift.StringResource(key: "description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: What is this?
+      static let title = Rswift.StringResource(key: "title", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.
+      static func description(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
+          return "description"
+        }
+
+        return NSLocalizedString("description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+      }
+
+      /// Value: What is this?
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.nounProfile` struct is generated, and contains static references to 8 localization keys.
+    struct nounProfile {
+      /// Value: %dh %dm %ds
+      static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Bid history
+      static let auctionUnsettledGovernance = Rswift.StringResource(key: "auction.unsettled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Bid history & activity
+      static let auctionSettledGovernance = Rswift.StringResource(key: "auction.settled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Born %s
+      static let birthday = Rswift.StringResource(key: "birthday", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Current bid
+      static let auctionUnsettledLastBid = Rswift.StringResource(key: "auction.unsettled.last-bid", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Ends in
+      static let auctionUnsettledTimeLeftLabel = Rswift.StringResource(key: "auction.unsettled.time-left.label", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Held by
+      static let heldBy = Rswift.StringResource(key: "held-by", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Won for
+      static let bidWinner = Rswift.StringResource(key: "bid-winner", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: %dh %dm %ds
+      static func auctionUnsettledTimeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("auction.unsettled.time-left", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1, value2, value3)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.unsettled.time-left"
+        }
+
+        let format = NSLocalizedString("auction.unsettled.time-left", tableName: "NounProfile", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1, value2, value3)
+      }
+
+      /// Value: Bid history
+      static func auctionUnsettledGovernance(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.unsettled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.unsettled.governance"
+        }
+
+        return NSLocalizedString("auction.unsettled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      /// Value: Bid history & activity
+      static func auctionSettledGovernance(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.settled.governance"
+        }
+
+        return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      /// Value: Born %s
+      static func birthday(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("birthday", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "birthday"
+        }
+
+        let format = NSLocalizedString("birthday", tableName: "NounProfile", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      /// Value: Current bid
+      static func auctionUnsettledLastBid(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.unsettled.last-bid", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.unsettled.last-bid"
+        }
+
+        return NSLocalizedString("auction.unsettled.last-bid", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      /// Value: Ends in
+      static func auctionUnsettledTimeLeftLabel(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.unsettled.time-left.label", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.unsettled.time-left.label"
+        }
+
+        return NSLocalizedString("auction.unsettled.time-left.label", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      /// Value: Held by
+      static func heldBy(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("held-by", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "held-by"
+        }
+
+        return NSLocalizedString("held-by", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      /// Value: Won for
+      static func bidWinner(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("bid-winner", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "bid-winner"
+        }
+
+        return NSLocalizedString("bid-winner", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.play` struct is generated, and contains static references to 3 localization keys.
+    struct play {
+      /// Value: Get going
+      static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Give your noun something to say
+      static let subhealine = Rswift.StringResource(key: "subhealine", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Play
+      static let title = Rswift.StringResource(key: "title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Get going
+      static func proceedTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("proceed.title", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "proceed.title"
+        }
+
+        return NSLocalizedString("proceed.title", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Give your noun something to say
+      static func subhealine(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("subhealine", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "subhealine"
+        }
+
+        return NSLocalizedString("subhealine", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Play
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.settings` struct is generated, and contains static references to 8 localization keys.
+    struct settings {
+      /// Value: App Icon
+      static let appIconTitle = Rswift.StringResource(key: "app.icon.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Default
+      static let appIconDefault = Rswift.StringResource(key: "app.icon.default", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
+      static let notificationNote = Rswift.StringResource(key: "notification.note", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Noun O’Clock Notification
+      static let notificationTitle = Rswift.StringResource(key: "notification.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Settings
+      static let title = Rswift.StringResource(key: "title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Share with friends
+      static let shareFriends = Rswift.StringResource(key: "share.friends", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: System
+      static let themeSystem = Rswift.StringResource(key: "theme.system", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Theme
+      static let themeTitle = Rswift.StringResource(key: "theme.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: App Icon
+      static func appIconTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("app.icon.title", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "app.icon.title"
+        }
+
+        return NSLocalizedString("app.icon.title", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: Default
+      static func appIconDefault(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("app.icon.default", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "app.icon.default"
+        }
+
+        return NSLocalizedString("app.icon.default", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
+      static func notificationNote(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("notification.note", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "notification.note"
+        }
+
+        return NSLocalizedString("notification.note", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: Noun O’Clock Notification
+      static func notificationTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("notification.title", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "notification.title"
+        }
+
+        return NSLocalizedString("notification.title", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: Settings
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: Share with friends
+      static func shareFriends(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("share.friends", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "share.friends"
+        }
+
+        return NSLocalizedString("share.friends", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: System
+      static func themeSystem(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("theme.system", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "theme.system"
+        }
+
+        return NSLocalizedString("theme.system", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: Theme
+      static func themeTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("theme.title", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "theme.title"
+        }
+
+        return NSLocalizedString("theme.title", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.shared` struct is generated, and contains static references to 5 localization keys.
+    struct shared {
+      /// Value: Learn more
+      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: N/A
+      static let notApplicable = Rswift.StringResource(key: "not.applicable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Remix
+      static let remix = Rswift.StringResource(key: "remix", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Share
+      static let share = Rswift.StringResource(key: "share", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Unavailable
+      static let unavailable = Rswift.StringResource(key: "unavailable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Learn more
+      static func learnMore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("learn.more", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "learn.more"
+        }
+
+        return NSLocalizedString("learn.more", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: N/A
+      static func notApplicable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("not.applicable", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "not.applicable"
+        }
+
+        return NSLocalizedString("not.applicable", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: Remix
+      static func remix(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("remix", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "remix"
+        }
+
+        return NSLocalizedString("remix", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: Share
+      static func share(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("share", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "share"
+        }
+
+        return NSLocalizedString("share", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: Unavailable
+      static func unavailable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("unavailable", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "unavailable"
+        }
+
+        return NSLocalizedString("unavailable", tableName: "Shared", bundle: bundle, comment: "")
+      }
 
       fileprivate init() {}
     }

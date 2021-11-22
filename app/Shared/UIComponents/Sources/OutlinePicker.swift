@@ -44,7 +44,7 @@ internal struct OutlinePickerItem: ViewModifier {
         content
             .font(font)
             .foregroundColor(foregroundColor)
-            .padding(.vertical, 10)
+            .padding(.vertical, 7)
             .padding(.horizontal, 15)
             .background(
                 Group {
@@ -172,7 +172,6 @@ struct OutlinePicker_preview: PreviewProvider {
         }
     }
 
-    
     static var previews: some View {
         OutlinePickerView()
             .onAppear {

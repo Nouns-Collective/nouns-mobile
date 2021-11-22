@@ -35,7 +35,6 @@ public struct ChipLabel: View {
     
     public var body: some View {
         HStack {
-            Label("", systemImage: "")
             state.image
             Text(title)
                 .font(.custom(.medium, relativeTo: .footnote))

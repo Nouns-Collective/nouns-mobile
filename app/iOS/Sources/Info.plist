@@ -20,6 +20,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need to use your microphone to record your voice with Nouns</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -29,8 +31,8 @@
 	<true/>
 	<key>UILaunchScreen</key>
 	<dict>
-		<key>UIColorName</key>
-		<string>launch.screen.background</string>
+		<key>UIImageName</key>
+		<string>launch.screen</string>
 	</dict>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleDefault</string>

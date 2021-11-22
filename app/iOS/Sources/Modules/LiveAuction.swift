@@ -9,21 +9,16 @@ import Foundation
 import Combine
 import Services
 
-/// <#Description#>
 struct ListenLiveAuctionAction: Action { }
 
-/// <#Description#>
 struct SinkLiveAuctionAction: Action {
   let auction: Auction
 }
 
-/// <#Description#>
 struct ListenLiveAuctionFailed: Action {
   let error: Error
 }
 
-/// <#Description#>
-/// - Returns: <#description#>
 func liveAuctionMiddleware() -> Middleware<AppState> {
   return { _, action in
     switch action {
@@ -40,11 +35,6 @@ func liveAuctionMiddleware() -> Middleware<AppState> {
   }
 }
 
-/// <#Description#>
-/// - Parameters:
-///   - state: <#state description#>
-///   - action: <#action description#>
-/// - Returns: <#description#>
 func liveAuctionReducer(state: LiveAuction, action: Action) -> LiveAuction {
   var state = state
   switch action {
@@ -66,7 +56,6 @@ func liveAuctionReducer(state: LiveAuction, action: Action) -> LiveAuction {
   return state
 }
 
-/// <#Description#>
 struct LiveAuction {
   var auction: Auction?
   var isLoading = false
