@@ -9,6 +9,7 @@ import SwiftUI
 import UIComponents
 
 struct PlayView: View {
+  @State private var isPlayPresented = false
   
   init() {
     // TODO: Theming Should be extracted as it is related to the theme.
@@ -32,7 +33,7 @@ struct PlayView: View {
         OutlineButton(
           text: "Get going",
           largeAccessory: { Image.fingergunsRight },
-          action: { },
+          action: { isPlayPresented.toggle() },
           fill: [.width])
         
         Spacer()
@@ -41,12 +42,9 @@ struct PlayView: View {
       .softNavigationTitle("Play")
       .background(Gradient.blueberryJam)
       .ignoresSafeArea()
+      .fullScreenCover(isPresented: $isPlayPresented) {
+        PlayTab(isPresented: $isPlayPresented)
+      }
     }
-  }
-}
-
-struct Play_Previews: PreviewProvider {
-  static var previews: some View {
-    PlayView()
   }
 }

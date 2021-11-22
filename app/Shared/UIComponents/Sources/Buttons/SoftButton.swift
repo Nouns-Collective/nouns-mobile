@@ -87,7 +87,7 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
         HStack(spacing: 10) {
             Label {
                 Text(text)
-                    .font(Font.custom(.medium, size: 17))
+                    .font(Font.custom(.medium, size: 16))
             } icon: {
                 icon?
                     .resizable()

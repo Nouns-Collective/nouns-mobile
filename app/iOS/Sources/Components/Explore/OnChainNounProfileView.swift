@@ -26,7 +26,7 @@ struct OnChainNounProfileView: View {
       return AnyView(SettledAuctionDetailRows(
         isActivityPresented: $isActivityPresented,
         auction: auction
-        ))
+      ))
       
     case false:
       return AnyView(LiveAuctionDetailRows(
@@ -48,10 +48,10 @@ struct OnChainNounProfileView: View {
         fill: [.width])
       
       SoftButton(text: "Remix", largeAccessory: {
-          Image.splice
-        },
-        action: { },
-        fill: [.width])
+        Image.splice
+      },
+                 action: { },
+                 fill: [.width])
     }
   }
   
@@ -61,45 +61,55 @@ struct OnChainNounProfileView: View {
   }
   
   var body: some View {
-    VStack(spacing: 0) {
-      Spacer()
-      
-      NounPuzzle(
-        head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
-        body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
-        glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[noun.seed.glasses].assetImage),
-        accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
-      )
-      
-      PlainCell {
-        VStack {
-          HStack {
-            nounIDLabel
-            Spacer()
-            
-            SoftButton(icon: {
-              Image.xmark
-            }, action: {
-              isPresented.toggle()
-            })
-          }
-          
-          detailRows
-          .labelStyle(.titleAndIcon(spacing: 14))
-          .padding(.bottom, 40)
-          
-          actionsRow
+    NavigationView {
+      VStack(spacing: 0) {
+        Spacer()
+        
+        NavigationLink(isActive: $isActivityPresented) {
+          NounderView(
+            isPresented: $isActivityPresented,
+            noun: noun)
+        } label: {
+          EmptyView()
         }
+
+        NounPuzzle(
+          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
+          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
+          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[noun.seed.glasses].assetImage),
+          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
+        )
+        
+        PlainCell {
+          VStack {
+            HStack {
+              nounIDLabel
+              Spacer()
+              
+              SoftButton(icon: {
+                Image.xmark
+              }, action: {
+                isPresented.toggle()
+              })
+            }
+            
+            detailRows
+              .labelStyle(.titleAndIcon(spacing: 14))
+              .padding(.bottom, 40)
+            
+            actionsRow
+          }
+        }
+        .padding([.bottom, .horizontal])
       }
-      .padding([.bottom, .horizontal])
+      .background(Gradient.warmGreydient)
     }
-    .background(Gradient.warmGreydient)
-    .fullScreenCover(isPresented: $isActivityPresented, content: {
-      
-      NounderView(
-        isPresented: $isActivityPresented,
-        noun: noun)
-    })
+//    .fullScreenCover(isPresented: $isActivityPresented, content: {
+//
+//      NounderView(
+//        isPresented: $isActivityPresented,
+//        noun: noun)
+//    })
     .sheet(isPresented: $showShareSheet) {
       if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
         ShareSheet(activityItems: [url])
@@ -293,23 +303,23 @@ struct LiveAuctionDetailRows: View {
 }
 
 struct ShareSheet: UIViewControllerRepresentable {
-    typealias Callback = (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ error: Error?) -> Void
-    
-    let activityItems: [Any]
-    let applicationActivities: [UIActivity]? = nil
-    let excludedActivityTypes: [UIActivity.ActivityType]? = nil
-    let callback: Callback? = nil
-    
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        let controller = UIActivityViewController(
-            activityItems: activityItems,
-            applicationActivities: applicationActivities)
-        controller.excludedActivityTypes = excludedActivityTypes
-        controller.completionWithItemsHandler = callback
-        return controller
-    }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-        // nothing to do here
-    }
+  typealias Callback = (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ error: Error?) -> Void
+  
+  let activityItems: [Any]
+  let applicationActivities: [UIActivity]? = nil
+  let excludedActivityTypes: [UIActivity.ActivityType]? = nil
+  let callback: Callback? = nil
+  
+  func makeUIViewController(context: Context) -> UIActivityViewController {
+    let controller = UIActivityViewController(
+      activityItems: activityItems,
+      applicationActivities: applicationActivities)
+    controller.excludedActivityTypes = excludedActivityTypes
+    controller.completionWithItemsHandler = callback
+    return controller
+  }
+  
+  func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+    // nothing to do here
+  }
 }

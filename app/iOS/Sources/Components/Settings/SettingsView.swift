@@ -9,6 +9,7 @@ import SwiftUI
 import UIComponents
 
 struct SettingsView: View {
+  @State private var isNotificationOn = true
   
   init() {
     // TODO: Theming Should be extracted as it is related to the theme.
@@ -20,9 +21,13 @@ struct SettingsView: View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack {
+          
           OutlineButton(
             text: "Noun O’Clock Notification",
             icon: { Image.speaker },
+            accessory: {
+              OutlineToggle(isOn: $isNotificationOn)
+            },
             action: { },
             fill: [.width])
           

@@ -13,6 +13,7 @@ private struct OutlineTabItemSelection: EnvironmentKey {
 }
 
 extension EnvironmentValues {
+    
     fileprivate var outlineTabItemSelection: Int {
         get { self[OutlineTabItemSelection.self] }
         set { self[OutlineTabItemSelection.self] = newValue }
@@ -22,6 +23,7 @@ extension EnvironmentValues {
 /// Access all the items set by the client through the view modifier.
 private struct OutlineTabItems: PreferenceKey {
     static var defaultValue: [OutlineTabItem] = []
+    
     static func reduce(value: inout [OutlineTabItem], nextValue: () -> [OutlineTabItem]) {
         value += nextValue()
     }
@@ -30,8 +32,22 @@ private struct OutlineTabItems: PreferenceKey {
 /// Accessing the newly selected tab triggered by child views.
 private struct OutlineTabItemSelectionDidChange: PreferenceKey {
     static var defaultValue: Int = 0
+    
     static func reduce(value: inout Int, nextValue: () -> Int) {
         value += nextValue()
+    }
+}
+
+/// Accessing `TabBar` visibility state.
+private struct HideOutlineTabBar: EnvironmentKey {
+    static var defaultValue = false
+}
+
+extension EnvironmentValues {
+    
+    fileprivate var hideOutlineTabBar: Bool {
+        get { self[HideOutlineTabBar.self] }
+        set { self[HideOutlineTabBar.self] = newValue }
     }
 }
 
@@ -70,11 +86,10 @@ private struct OutlineTabBar: View {
     }
     
     private func tabItem(_ item: OutlineTabItem) -> some View {
-        var isSelected: Bool {
-            selectedItemTag == item.tag
-        }
-        return Image(isSelected ? item.selectedStateIcon : item.normalStateIcon,
-              bundle: .module)
+        let isSelected = selectedItemTag == item.tag
+        let icon = isSelected ? item.selectedStateIcon : item.normalStateIcon
+        
+        return Image(icon, bundle: .module)
             .background(Group {
                 if isSelected {
                     Color.clear
@@ -124,6 +139,10 @@ extension View {
                                        selectedStateIcon: selected,
                                        tag: tag)])
     }
+    
+    public func hideOutlineTabBar(_ state: Bool) -> some View {
+        environment(\.hideOutlineTabBar, state)
+    }
 }
 
 /// A view that switches between multiple child views using interactive user interface elements.
@@ -151,6 +170,7 @@ extension View {
 /// Tab views only support tab items of type ``Image``. Passing any other type of view results in a visible but
 /// empty tab item.
 public struct OutlineTabView<Content>: View where Content: View {
+    @Environment(\.hideOutlineTabBar) private var hideOutlineTabBar
     @Binding private var selection: Int
     @State private var items: [OutlineTabItem] = []
     private let content: Content
@@ -169,6 +189,7 @@ public struct OutlineTabView<Content>: View where Content: View {
                 .ignoresSafeArea()
             
             OutlineTabBar(items)
+                .opacity(hideOutlineTabBar ? 0 : 1)
         }
         .environment(\.outlineTabItemSelection, selection)
         .onPreferenceChange(OutlineTabItems.self) { items in
@@ -177,6 +198,10 @@ public struct OutlineTabView<Content>: View where Content: View {
         .onPreferenceChange(OutlineTabItemSelectionDidChange.self) { newSelectedTabItem in
             selection = newSelectedTabItem
         }
+//        .onPreferenceChange(HideOutlineTabBar.self) { visibility in
+//            hideOutlineTabBar = visibility
+//            print("=====", visibility)
+//        }
     }
 }
 
