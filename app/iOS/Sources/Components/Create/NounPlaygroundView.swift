@@ -17,7 +17,7 @@ struct NounPlaygroundView: View {
     AppCore.shared.nounComposer.accessories,
   ]
   
-  @State var selectedTraitIndex = 1
+  @State var selectedTraitIndex = 0
   
   var body: some View {
     ZStack(alignment: .top) {
@@ -39,12 +39,16 @@ public struct SlotMachine: View {
   @GestureState private var offset: CGFloat = 0
   @State private var index = 0
   
+  var numberOfVisiableItems: Int {
+    isActive ? items.endIndex : 1
+  }
+  
   public var body: some View {
     GeometryReader { proxy in
       let width = proxy.size.width
       
       LazyHStack(spacing: 0) {
-        ForEach(items.indices) { index in
+        ForEach(0..<numberOfVisiableItems) { index in
           
           Image(nounTraitName: items[index].assetImage)
             .interpolation(.none)
@@ -60,7 +64,6 @@ public struct SlotMachine: View {
             state = value.translation.width
           })
           .onEnded({ value in
-            
             let offsetX = value.translation.width
             let progress = -offsetX / (width * 0.7)
             let roundIndex = progress.rounded()
