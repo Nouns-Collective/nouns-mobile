@@ -132,7 +132,7 @@ public struct LargeAccessoryButtonLabel: View {
     public var body: some View {
         HStack(spacing: 10) {
             Text(text)
-                .font(Font.custom(.medium, relativeTo: .callout))
+                .font(Font.custom(.medium, size: 17))
                 .foregroundColor(color)
             
             if fullWidth {
