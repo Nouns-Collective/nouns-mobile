@@ -9,7 +9,7 @@ import SwiftUI
 
 import UIComponents
 
-struct ActionSheet: View {
+struct NounOptionsActionSheet: View {
   @Binding var isPresented: Bool
   
   private var titleItems: some View {
@@ -66,7 +66,7 @@ struct ActionSheet_Previews: PreviewProvider {
   static var previews: some View {
     Text("OffChain Noun Actions")
       .bottomSheet(isPresented: .constant(true)) {
-        ActionSheet(
+        NounOptionsActionSheet(
           isPresented: .constant(true))
       }
   }
