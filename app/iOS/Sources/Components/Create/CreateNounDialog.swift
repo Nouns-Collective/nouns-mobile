@@ -9,20 +9,43 @@ import SwiftUI
 import UIComponents
 
 struct CreateNounDialog: View {
-  @Binding var isPresented: Bool
   @Binding var nounName: String
+  @Binding var isEditing: Bool
+  @Binding var isPresented: Bool
+  
+  private var input: some View {
+    VStack {
+      TextField(
+        R.string.createNounDialog.inputPlaceholder(),
+        text: $nounName)
+        .font(.custom(.bold, size: 36))
+      
+      Divider()
+        .frame(height: 2)
+        .background(.black)
+    }
+  }
+  
+  private var titleItems: some View {
+    HStack(alignment: .top) {
+      Text("Beets Battlestar Galactica")
+        .font(.custom(.bold, size: 36))
+      
+      Spacer()
+      
+      SoftButton(
+        icon: { Image.xmark },
+        action: { isPresented.toggle() })
+        .padding(.top, 5)
+    }
+  }
   
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
-      VStack {
-        TextField(
-          R.string.createNounDialog.inputPlaceholder(),
-          text: $nounName)
-          .font(.custom(.bold, size: 36))
-        
-        Divider()
-          .frame(height: 2)
-          .background(.black)
+      if isEditing {
+        input
+      } else {
+        titleItems
       }
       
       VStack(spacing: 20) {
@@ -59,11 +82,22 @@ struct CreateNounDialog: View {
   }
 }
 
-struct DialogInput_Previews: PreviewProvider {
+struct CreateNounDialog_Previews: PreviewProvider {
   static var previews: some View {
     Text("")
       .bottomSheet(isPresented: .constant(true)) {
-        CreateNounDialog(isPresented: .constant(true), nounName: .constant(""))
+        CreateNounDialog(
+          nounName: .constant(""),
+          isEditing: .constant(true),
+          isPresented: .constant(true))
+      }
+    
+    Text("")
+      .bottomSheet(isPresented: .constant(true)) {
+        CreateNounDialog(
+          nounName: .constant(""),
+          isEditing: .constant(false),
+          isPresented: .constant(true))
       }
   }
 }
