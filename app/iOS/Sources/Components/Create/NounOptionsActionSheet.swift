@@ -62,7 +62,7 @@ struct NounOptionsActionSheet: View {
   }
 }
 
-struct ActionSheet_Previews: PreviewProvider {
+struct NounOptionsActionSheet_Previews: PreviewProvider {
   static var previews: some View {
     Text("OffChain Noun Actions")
       .bottomSheet(isPresented: .constant(true)) {
