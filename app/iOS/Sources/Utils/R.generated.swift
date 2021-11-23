@@ -321,7 +321,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 13 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 14 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 4 localization keys.
     struct aboutNouns {
@@ -976,6 +976,87 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("bid-winner", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.offchainNounActions` struct is generated, and contains static references to 5 localization keys.
+    struct offchainNounActions {
+      /// Value: Delete your noun
+      static let delete = Rswift.StringResource(key: "delete", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Edit your noun
+      static let edit = Rswift.StringResource(key: "edit", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: More Actions
+      static let title = Rswift.StringResource(key: "title", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Play with you noun
+      static let play = Rswift.StringResource(key: "play", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Rename your noun
+      static let rename = Rswift.StringResource(key: "rename", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Delete your noun
+      static func delete(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "delete"
+        }
+
+        return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: Edit your noun
+      static func edit(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("edit", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "edit"
+        }
+
+        return NSLocalizedString("edit", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: More Actions
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: Play with you noun
+      static func play(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "play"
+        }
+
+        return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: Rename your noun
+      static func rename(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("rename", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "rename"
+        }
+
+        return NSLocalizedString("rename", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

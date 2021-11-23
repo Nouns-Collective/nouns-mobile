@@ -13,6 +13,9 @@ extension Color {
     /// A context-dependent aqua color suitable for use in UI elements.
     public static let componentAqua = Color("aqua", bundle: .module)
     
+    /// A context-dependent Noun Raspberry color suitable for use in UI elements.
+    public static let componentNounRaspberry = Color("noun.raspberry", bundle: .module)
+    
     /// A context-dependent brambleberry color suitable for use in UI elements.
     public static let componentBrambleberry = Color("brambleberry", bundle: .module)
     
