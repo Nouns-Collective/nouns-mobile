@@ -58,7 +58,7 @@ struct AboutNounsWTF: View {
         .softNavigationTitle(R.string.aboutNouns.title(), leftAccessory: {
           // Dismiss About Nouns.wtf
           SoftButton(
-            icon: { Image.back },
+            icon: { Image.xmark },
             action: { isPresented.toggle() })
         })
       }

@@ -81,7 +81,7 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
                 }
                 .zIndex(3)
                 .transition(.move(edge: .bottom))
-                .animation(.spring())
+                .animation(.spring(), value: isPresented)
             }
         }
     }
