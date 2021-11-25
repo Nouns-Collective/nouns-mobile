@@ -10,6 +10,8 @@ import UIComponents
 import Services
 
 struct NounderView: View {
+  @Namespace var ns
+  
   @EnvironmentObject private var store: AppStore
   @State private var selectedTab = 0
   @State private var isInfoPresented = false
@@ -18,7 +20,7 @@ struct NounderView: View {
   let noun: Noun
   
   var body: some View {
-    PickerTabView(selection: $selectedTab) {
+    PickerTabView(animation: ns, selection: $selectedTab) {
       
       NounderActivitiesView(noun: noun)
         .pickerTabItem(R.string.activity.menuTitle(), tag: 0)

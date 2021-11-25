@@ -55,7 +55,9 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
                     .opacity(showDimmingView ? 0.2 : 0)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        isPresented.toggle()
+                        withAnimation {
+                            isPresented.toggle()
+                        }
                     }
                     .ignoresSafeArea()
                 
