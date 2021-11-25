@@ -22,6 +22,8 @@ struct NounsApp: App {
     ]
   )
   
+  private let persistence = PersistenceStore()
+  
   init() {
     UIComponents.configure()
   }
@@ -30,6 +32,7 @@ struct NounsApp: App {
     WindowGroup {
       NavigationRootView()
         .environmentObject(store)
+        .environment(\.managedObjectContext, persistence.persistentContainer.viewContext)
         .preferredColorScheme(.light)
     }
   }

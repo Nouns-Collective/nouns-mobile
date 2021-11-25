@@ -9,6 +9,7 @@ import SwiftUI
 import UIComponents
 
 struct CreateView: View {
+  @Environment(\.managedObjectContext) var context
   
   init() {
     // TODO: Theming Should be extracted as it is related to the theme.
