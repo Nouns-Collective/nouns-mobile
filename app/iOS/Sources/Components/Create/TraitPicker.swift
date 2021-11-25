@@ -117,6 +117,7 @@ struct TraitCollection: View {
                     model.selectedGlasses = item
                   }
                 }
+                .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
           }
                     
@@ -130,6 +131,7 @@ struct TraitCollection: View {
                     model.selectedHead = item
                   }
                 }
+                .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
           }
           
@@ -143,6 +145,7 @@ struct TraitCollection: View {
                     model.selectedBody = item
                   }
                 }
+                .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
           }
                     
@@ -156,6 +159,7 @@ struct TraitCollection: View {
                     model.selectedAccessory = item
                   }
                 }
+                .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
           }
                     
@@ -169,6 +173,7 @@ struct TraitCollection: View {
                     model.selectedBackground = gradient
                   }
                 }
+                .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
           }
         }
