@@ -9,26 +9,23 @@ import SwiftUI
 import UIComponents
 import Services
 
+// swiftlint:disable all
 struct TraitPicker: View {
   @Namespace var slideActiveTabSpace
   var animation: Namespace.ID
   
   @State var anchor: Int = 0
-  
+    
   private let rowSpec = [
     GridItem(.flexible()),
     GridItem(.flexible()),
     GridItem(.flexible()),
   ]
   
-  var sections: [TraitCollectionSection] {
-    let glasses = TraitCollectionSection(tag: 0, items: AppCore.shared.nounComposer.glasses)
-    let heads = TraitCollectionSection(tag: 1, items: AppCore.shared.nounComposer.heads)
-    let bodies = TraitCollectionSection(tag: 2, items: AppCore.shared.nounComposer.bodies)
-    let accessories = TraitCollectionSection(tag: 3, items: AppCore.shared.nounComposer.accessories)
-    let backgrounds = TraitCollectionSection(tag: 4, items: AppCore.shared.nounComposer.accessories)
-    
-    return [glasses, heads, bodies, accessories, backgrounds]
+  @StateObject var model = TraitCollectionModel()
+  
+  init(animation: Namespace.ID) {
+    self.animation = animation
   }
   
   var body: some View {
@@ -60,29 +57,39 @@ struct TraitPicker: View {
         .padding(.horizontal)
       }
       
-      TraitCollection(model: TraitCollectionModel(sections: sections), anchor: $anchor)
+      TraitCollection(model: model, anchor: $anchor)
     }
   }
 }
 
-struct TraitCollectionSection {
+struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View where Data.Element: Hashable {
   let tag: Int
-  let items: [Trait]
+  let items: Data
+  private let content: (Data.Element, Data.Index) -> Content
   
-  var selected: Trait?
-  
-  init(tag: Int, items: [Trait]) {
+  var selected: Data.Element?
+    
+  init(tag: Int, items: Data, @ViewBuilder cell: @escaping (_ item: Data.Element, _ index: Data.Index) -> Content) {
     self.tag = tag
     self.items = items
+    self.content = cell
+  }
+  
+  var body: some View {
+    ForEach(0..<items.count, id: \.self) { index in
+      content(items[index as! Data.Index], index as! Data.Index)
+    }
   }
 }
 
 class TraitCollectionModel: NSObject, ObservableObject {
-  @Published var sections: [TraitCollectionSection]
   
-  init(sections: [TraitCollectionSection]) {
-    self.sections = sections
-  }
+  @Published var selectedGlasses: Trait?
+  @Published var selectedHead: Trait?
+  @Published var selectedBody: Trait?
+  @Published var selectedAccessory: Trait?
+  @Published var selectedBackground: [Color]?
+  
 }
 
 struct TraitCollection: View {
@@ -99,15 +106,67 @@ struct TraitCollection: View {
   var body: some View {
     ScrollViewReader { proxy in
       ScrollView(.horizontal, showsIndicators: false) {
-        LazyHGrid(rows: rowSpec) {
-          ForEach(0..<model.sections.endIndex, id: \.self) { sectionIndex in
-            ForEach(0..<model.sections[sectionIndex].items.endIndex, id: \.self) { itemIndex in
-              TraitPickerItem(image: model.sections[sectionIndex].items[itemIndex].assetImage)
-                .selected(model.sections[sectionIndex].selected == model.sections[sectionIndex].items[itemIndex])
-                .id("\(model.sections[sectionIndex].tag)-\(itemIndex)")
+        LazyHGrid(rows: rowSpec, spacing: 4) {
+          Section {
+            TraitCollectionSection(tag: 0, items: AppCore.shared.nounComposer.glasses) { item, index in
+              TraitPickerItem(image: item.assetImage)
+                .selected(model.selectedGlasses == item)
+                .id("0-\(index)")
                 .onTapGesture {
                   withAnimation {
-                    model.sections[sectionIndex].selected = model.sections[sectionIndex].items[itemIndex]
+                    model.selectedGlasses = item
+                  }
+                }
+            }
+          }
+                    
+          Section {
+            TraitCollectionSection(tag: 1, items: AppCore.shared.nounComposer.heads) { item, index in
+              TraitPickerItem(image: item.assetImage, offset: CGSize(width: 0, height: 5))
+                .selected(model.selectedHead == item)
+                .id("1-\(index)")
+                .onTapGesture {
+                  withAnimation {
+                    model.selectedHead = item
+                  }
+                }
+            }
+          }
+          
+          Section {
+            TraitCollectionSection(tag: 2, items: AppCore.shared.nounComposer.bodies) { item, index in
+              TraitPickerItem(image: item.assetImage, offset: CGSize(width: 0, height: -20))
+                .selected(model.selectedBody == item)
+                .id("2-\(index)")
+                .onTapGesture {
+                  withAnimation {
+                    model.selectedBody = item
+                  }
+                }
+            }
+          }
+                    
+          Section {
+            TraitCollectionSection(tag: 3, items: AppCore.shared.nounComposer.accessories) { item, index in
+              TraitPickerItem(image: item.assetImage, offset: CGSize(width: 0, height: -20))
+                .selected(model.selectedAccessory == item)
+                .id("3-\(index)")
+                .onTapGesture {
+                  withAnimation {
+                    model.selectedAccessory = item
+                  }
+                }
+            }
+          }
+                    
+          Section {
+            TraitCollectionSection(tag: 4, items: Gradient.allGradients()) { gradient, index in
+              GradientPickerItem(colors: gradient)
+                .selected(model.selectedBackground == gradient)
+                .id("4-\(index)")
+                .onTapGesture {
+                  withAnimation {
+                    model.selectedBackground = gradient
                   }
                 }
             }
@@ -129,15 +188,62 @@ struct TraitCollection: View {
   }
 }
 
+struct GradientPickerItem: View {
+  
+  let colors: [Color]
+  
+  var body: some View {
+    LinearGradient(
+        colors: colors,
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing)
+      .frame(width: 72, height: 72, alignment: .top)
+      .clipShape(RoundedRectangle(cornerRadius: 8))
+  }
+}
+
+extension GradientPickerItem {
+  
+  func selected(_ condition: Bool) -> some View {
+    if condition {
+      return AnyView(modifier(GradientSelectedModifier()))
+    } else {
+      return AnyView(self)
+    }
+  }
+}
+
+struct GradientSelectedModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .background(Color.black.opacity(0.05))
+      .overlay {
+        ZStack {
+          RoundedRectangle(cornerRadius: 6)
+            .stroke(Color.componentNounsBlack, lineWidth: 2)
+          Image.checkmark
+        }
+      }
+  }
+}
+
 struct TraitPickerItem: View {
   
   let image: String
+  
+  let offset: CGSize
+  
+  init(image: String, offset: CGSize = .zero) {
+    self.image = image
+    self.offset = offset
+  }
   
   var body: some View {
     Image(nounTraitName: image)
       .interpolation(.none)
       .resizable()
       .frame(width: 72, height: 72, alignment: .top)
+      .offset(offset)
   }
 }
 
