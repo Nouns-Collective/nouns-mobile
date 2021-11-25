@@ -10,45 +10,85 @@ import UIComponents
 import Services
 
 struct TraitPicker: View {
+  @Namespace var slideActiveTabSpace
   var animation: Namespace.ID
   
-  @State var selection: Int = 0
+  @State var anchor: Int = 0
   
   private let rowSpec = [
     GridItem(.flexible()),
     GridItem(.flexible()),
     GridItem(.flexible()),
   ]
+  
+  var sections: [TraitCollectionSection] {
+    let glasses = TraitCollectionSection(tag: 0, items: AppCore.shared.nounComposer.glasses)
+    let heads = TraitCollectionSection(tag: 1, items: AppCore.shared.nounComposer.heads)
+    let bodies = TraitCollectionSection(tag: 2, items: AppCore.shared.nounComposer.bodies)
+    let accessories = TraitCollectionSection(tag: 3, items: AppCore.shared.nounComposer.accessories)
+    let backgrounds = TraitCollectionSection(tag: 4, items: AppCore.shared.nounComposer.accessories)
+    
+    return [glasses, heads, bodies, accessories, backgrounds]
+  }
   
   var body: some View {
     VStack(spacing: 3) {
       Image.chevronDown
       
-      PickerTabView(animation: animation, scrollable: true, selection: $selection) {
-        
-        TraitCollection(items: AppCore.shared.nounComposer.glasses)
-          .pickerTabItem("Glasses", tag: 0)
-        
-        TraitCollection(items: AppCore.shared.nounComposer.heads)
-          .pickerTabItem("Head", tag: 1)
-        
-        TraitCollection(items: AppCore.shared.nounComposer.bodies)
-          .pickerTabItem("Body", tag: 2)
-        
-        TraitCollection(items: AppCore.shared.nounComposer.accessories)
-          .pickerTabItem("Accessory", tag: 3)
-        
-        TraitCollection(items: AppCore.shared.nounComposer.accessories)
-          .pickerTabItem("Background", tag: 4)
+      ScrollView(.horizontal, showsIndicators: false) {
+        OutlinePicker(selection: $anchor) {
+          Text("Glasses")
+            .id(0)
+            .pickerItemTag(0, namespace: slideActiveTabSpace)
+          
+          Text("Head")
+            .id(1)
+            .pickerItemTag(1, namespace: slideActiveTabSpace)
+          
+          Text("Body")
+            .id(2)
+            .pickerItemTag(2, namespace: slideActiveTabSpace)
+          
+          Text("Accessory")
+            .id(3)
+            .pickerItemTag(3, namespace: slideActiveTabSpace)
+          
+          Text("Background")
+            .id(4)
+            .pickerItemTag(4, namespace: slideActiveTabSpace)
+        }
+        .padding(.horizontal)
       }
+      
+      TraitCollection(model: TraitCollectionModel(sections: sections), anchor: $anchor)
     }
   }
 }
 
-struct TraitCollection: View {
+struct TraitCollectionSection {
+  let tag: Int
   let items: [Trait]
   
-  @State private var selectedItem: String?
+  var selected: Trait?
+  
+  init(tag: Int, items: [Trait]) {
+    self.tag = tag
+    self.items = items
+  }
+}
+
+class TraitCollectionModel: NSObject, ObservableObject {
+  @Published var sections: [TraitCollectionSection]
+  
+  init(sections: [TraitCollectionSection]) {
+    self.sections = sections
+  }
+}
+
+struct TraitCollection: View {
+  @ObservedObject var model: TraitCollectionModel
+  
+  @Binding var anchor: Int
   
   private let rowSpec = [
     GridItem(.flexible()),
@@ -57,23 +97,35 @@ struct TraitCollection: View {
   ]
   
   var body: some View {
-    ScrollView(.horizontal, showsIndicators: false) {
-      LazyHGrid(rows: rowSpec) {
-        ForEach(0..<items.endIndex, id: \.self) { index in
-          TraitPickerItem(image: items[index].assetImage)
-            .selected(selectedItem == items[index].assetImage)
-            .onTapGesture {
-              withAnimation {
-                selectedItem = items[index].assetImage
-              }
+    ScrollViewReader { proxy in
+      ScrollView(.horizontal, showsIndicators: false) {
+        LazyHGrid(rows: rowSpec) {
+          ForEach(0..<model.sections.endIndex, id: \.self) { sectionIndex in
+            ForEach(0..<model.sections[sectionIndex].items.endIndex, id: \.self) { itemIndex in
+              TraitPickerItem(image: model.sections[sectionIndex].items[itemIndex].assetImage)
+                .selected(model.sections[sectionIndex].selected == model.sections[sectionIndex].items[itemIndex])
+                .id("\(model.sections[sectionIndex].tag)-\(itemIndex)")
+                .onTapGesture {
+                  withAnimation {
+                    model.sections[sectionIndex].selected = model.sections[sectionIndex].items[itemIndex]
+                  }
+                }
             }
+          }
         }
+        .onChange(of: anchor, perform: { [anchor] newAnchor in
+          if anchor != newAnchor {
+            withAnimation {
+              proxy.scrollTo("\(newAnchor)-0", anchor: .leading)
+            }
+          }
+        })
+        .padding(.horizontal)
+        .padding(.bottom)
+        .padding(.top)
       }
-      .padding(.horizontal)
-      .padding(.bottom)
-      .padding(.top)
+      .frame(maxHeight: 250)
     }
-    .frame(maxHeight: 250)
   }
 }
 
@@ -86,7 +138,6 @@ struct TraitPickerItem: View {
       .interpolation(.none)
       .resizable()
       .frame(width: 72, height: 72, alignment: .top)
-      .tag(image)
   }
 }
 
@@ -117,12 +168,11 @@ struct TraitPicker_Previews: PreviewProvider {
     @State var isPresented = true
     
     @State var selection: Int = 0
-    
+        
     @Namespace var ns
     
     var body: some View {
       VStack {
-        Text("Slot Machine")
         Button("Show") {
           withAnimation {
             isPresented.toggle()
