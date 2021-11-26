@@ -16,14 +16,29 @@ extension OfflineNoun {
     return NSFetchRequest<OfflineNoun>(entityName: "OfflineNoun")
   }
   
-  @NSManaged public var accessory: String?
-  @NSManaged public var background: [String]?
-  @NSManaged public var body: String?
-  @NSManaged public var createdDate: Date?
-  @NSManaged public var glasses: String?
-  @NSManaged public var head: String?
+  /// The unique ID of the Noun
   @NSManaged public var id: UUID?
+    
+  /// The user-defined name of the noun
   @NSManaged public var name: String?
+  
+  /// The date the offline noun was created
+  @NSManaged public var createdDate: Date?
+  
+  /// The accessory asset image name
+  @NSManaged public var accessory: String?
+  
+  /// The body asset image name
+  @NSManaged public var body: String?
+  
+  /// The glasses asset image name
+  @NSManaged public var glasses: String?
+  
+  /// The head asset image name
+  @NSManaged public var head: String?
+
+  /// The background of the noun, as an array of hex colors to represent a linear gradient
+  @NSManaged public var background: [String]?
   
 }
 
