@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="OfflineNoun" representedClassName="OfflineNoun" syncable="YES">
-        <attribute name="accessory" attributeType="String"/>
-        <attribute name="background" attributeType="String"/>
-        <attribute name="body" attributeType="String"/>
-        <attribute name="createdDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="glasses" attributeType="String"/>
-        <attribute name="head" attributeType="String"/>
+        <attribute name="accessory" attributeType="String" defaultValueString=""/>
+        <attribute name="background" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="body" attributeType="String" defaultValueString=""/>
+        <attribute name="createdDate" attributeType="Date" defaultDateTimeInterval="659650440" usesScalarValueType="NO"/>
+        <attribute name="glasses" attributeType="String" defaultValueString=""/>
+        <attribute name="head" attributeType="String" defaultValueString=""/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="name" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="OfflineNoun" positionX="-63" positionY="-18" width="128" height="14"/>
+        <element name="OfflineNoun" positionX="-63" positionY="-18" width="128" height="149"/>
     </elements>
 </model>
