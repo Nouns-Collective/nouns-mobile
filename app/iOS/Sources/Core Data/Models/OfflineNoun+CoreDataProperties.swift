@@ -26,7 +26,7 @@ extension OfflineNoun {
   @NSManaged public var name: String?
   
   /// The background asset image name
-  @NSManaged public var background: String?
+  @NSManaged public var background: [String]?
   
   /// The glasses asset image name
   @NSManaged public var glasses: String?

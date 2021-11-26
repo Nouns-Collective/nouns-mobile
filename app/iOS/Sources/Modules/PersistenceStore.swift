@@ -8,6 +8,7 @@
 import UIKit
 import CoreData
 import Combine
+import SwiftUI
 
 class PersistenceStore {
   
@@ -36,8 +37,34 @@ class PersistenceStore {
             })
   }
   
+  /// Creates and saves an NSManagedObject for a user-created Noun
+  func saveCreatedNoun(
+    name: String,
+    glasses: String,
+    head: String,
+    body: String,
+    accessory: String,
+    background: [Color]
+  ) {
+    
+    let createdNoun = OfflineNoun(context: persistentContainer.viewContext)
+    createdNoun.createdDate = Date()
+    createdNoun.name = name
+    createdNoun.body = body
+    createdNoun.glasses = glasses
+    createdNoun.head = head
+    createdNoun.body = body
+    createdNoun.accessory = accessory
+    createdNoun.background = background.compactMap { $0.toHex }
+    
+    // Save changes
+    save()
+  }
+  
   /// Saves changes to Core Data
   func save() {
+    guard persistentContainer.viewContext.hasChanges else { return }
+
     try? persistentContainer.viewContext.save()
   }
 }
