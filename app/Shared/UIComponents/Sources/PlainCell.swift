@@ -46,7 +46,7 @@ public struct PlainCell<Content: View>: View {
     public var body: some View {
         VStack {
             content
-                .padding()
+//                .padding()
         }
         .frame(maxWidth: .infinity)
         .background(Color.white)

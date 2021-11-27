@@ -137,9 +137,10 @@ extension View {
     ///   - content: Any view to be the content of the bottom sheet
     public func bottomSheet<Content: View>(
         isPresented: Binding<Bool>,
+        showDimmingView: Bool = true,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
-        return modifier(BottomSheet(isPresented: isPresented, content: content))
+        modifier(BottomSheet(isPresented: isPresented, content: content, showDimmingView: showDimmingView))
     }
 }
 

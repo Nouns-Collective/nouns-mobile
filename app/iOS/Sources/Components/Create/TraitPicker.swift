@@ -174,8 +174,7 @@ struct TraitGrid: View {
             }
           }
         })
-        .padding(.bottom)
-        .padding(.top)
+        .padding(.vertical)
       }
       .frame(maxHeight: 250)
     }

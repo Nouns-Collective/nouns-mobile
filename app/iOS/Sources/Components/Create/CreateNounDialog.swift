@@ -23,15 +23,13 @@ struct DeleteOfflineNounDialog: View {
         text: R.string.nounDeleteDialog.nounDeleteAction(),
         largeAccessory: { Image.trash },
         color: Color.componentNounRaspberry,
-        action: {
-        },
+        action: { },
         fill: [.width])
       
       SoftButton(
         text: R.string.nounDeleteDialog.nounCancelAction(),
         largeAccessory: { Image.smAbsent },
-        action: {
-        },
+        action: { },
         fill: [.width])
     }
     .padding(16)
@@ -124,23 +122,20 @@ struct NounOptionsActionSheet: View {
         SoftButton(
           text: R.string.offchainNounActions.edit(),
           largeAccessory: { Image.createOutline },
-          action: {
-          },
+          action: { },
           fill: [.width])
         
         SoftButton(
           text: R.string.offchainNounActions.rename(),
           largeAccessory: { Image.rename },
-          action: {
-          },
+          action: { },
           fill: [.width])
         
         SoftButton(
           text: R.string.offchainNounActions.delete(),
           largeAccessory: { Image.trash },
           color: Color.componentNounRaspberry,
-          action: {
-          },
+          action: { },
           fill: [.width])
       })
   }

@@ -12,6 +12,7 @@ import Services
 struct NounPlayground: View {
   @Environment(\.presentationMode) private var presentationMode
   @State private var currentTraitTypeTag = 0
+  @State private var isTraitPickerPresented = true
   @Namespace private var namespace
   
   private let traits = [
@@ -25,6 +26,8 @@ struct NounPlayground: View {
   
   var body: some View {
     VStack {
+      Spacer()
+      
       ZStack(alignment: .top) {
         ForEach(traits.indices) { index in
           SlotMachine(
@@ -40,25 +43,10 @@ struct NounPlayground: View {
       
       Spacer()
       
-//      ScrollView(.horizontal, showsIndicators: false) {
-//        OutlinePicker(selection: $currentTraitTypeTag) {
-//          Text("Glasses")
-//            .pickerItemTag(0, namespace: namespace)
-//
-//          Text("Head")
-//            .pickerItemTag(1, namespace: namespace)
-//
-//          Text("Body")
-//            .pickerItemTag(2, namespace: namespace)
-//
-//          Text("Accessory")
-//            .pickerItemTag(3, namespace: namespace)
-//
-//          Text("Background")
-//            .pickerItemTag(4, namespace: namespace)
-//        }
-//        .padding(.horizontal)
-//      }
+      PlainCell {
+        TraitPicker(animation: namespace)
+      }
+      .padding(.horizontal, 20)
     }
     .softNavigationItems(leftAccessory: {
       SoftButton(
@@ -72,7 +60,6 @@ struct NounPlayground: View {
         action: { })
     })
     .background(Gradient.orangesicle)
-    .ignoresSafeArea()
   }
 }
 
