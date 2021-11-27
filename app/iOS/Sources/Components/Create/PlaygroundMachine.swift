@@ -9,7 +9,9 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct NounPlaygroundView: View {
+struct PlaygroundMachine: View {
+  @Binding var isPresented: Bool
+  
   private let traits = [
     AppCore.shared.nounComposer.heads,
     AppCore.shared.nounComposer.glasses,
@@ -20,22 +22,41 @@ struct NounPlaygroundView: View {
   @State var selectedTraitIndex = 0
   
   var body: some View {
-    ZStack(alignment: .top) {
-      ForEach(traits.indices) { index in
-        SlotMachine(
-          items: traits[index],
-          isActive: selectedTraitIndex == index)
+    VStack {
+      ZStack(alignment: .top) {
+        ForEach(traits.indices) { index in
+          SlotMachine(
+            items: traits[index],
+            isActive: selectedTraitIndex == index)
+        }
       }
+      
+      Image(R.image.shadow.name)
     }
-    .softNavigationTitle(R.string.create.title())
-    .background(Gradient.freshMint)
-    .ignoresSafeArea()
+    .softNavigationItems(leftAccessory: {
+      SoftButton(
+        icon: { Image.xmark },
+        action: { isPresented.toggle() })
+
+    }, rightAccessory: {
+      EmptyView()
+    })
+  .background(Gradient.orangesicle)
+  }
+}
+
+struct SlotMachineBoundsKey: PreferenceKey {
+  static var defaultValue: Anchor<CGRect>?
+  
+  static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+    value = value ?? nextValue()
   }
 }
 
 public struct SlotMachine: View {
   public let items: [Trait]
   public var isActive: Bool
+  
   @GestureState private var offset: CGFloat = 0
   @State private var index = 0
   
@@ -45,19 +66,18 @@ public struct SlotMachine: View {
   
   public var body: some View {
     GeometryReader { proxy in
-      let width = proxy.size.width
+      let traitWidth = proxy.size.width * 0.6
       
       LazyHStack(spacing: 0) {
         ForEach(0..<numberOfVisiableItems) { index in
-          
           Image(nounTraitName: items[index].assetImage)
             .interpolation(.none)
             .resizable()
-            .frame(width: width * 0.7, height: width * 0.7)
+            .frame(width: traitWidth, height: traitWidth)
         }
       }
-      .padding(.horizontal, 20)
-      .offset(x: (CGFloat(index) * (-width * 0.7)) + offset)
+      .padding(.horizontal, proxy.size.width * 0.18)
+      .offset(x: (CGFloat(index) * -traitWidth) + offset)
       .gesture(
         DragGesture()
           .updating($offset, body: { value, state, _ in
@@ -65,9 +85,9 @@ public struct SlotMachine: View {
           })
           .onEnded({ value in
             let offsetX = value.translation.width
-            let progress = -offsetX / (width * 0.7)
+            let progress = -offsetX / traitWidth
             let roundIndex = progress.rounded()
-            index = max(min(index + Int(roundIndex), items.count - 1), 0)
+            index = max(min(index + Int(roundIndex), items.endIndex - 1), 0)
           })
       )
       .allowsHitTesting(isActive)
@@ -78,6 +98,6 @@ public struct SlotMachine: View {
 
 struct NounPlaygroundView_Previews: PreviewProvider {
   static var previews: some View {
-    NounPlaygroundView()
+    PlaygroundMachine(isPresented: .constant(true))
   }
 }

@@ -1,0 +1,17 @@
+/* 
+  CreateNounDialog.strings
+  Nouns
+
+  Created by Ziad Tamim on 23.11.21.
+  
+*/
+
+"input.placeholder" = "Name your noun!";
+
+"noun.birthday.label" = "Born %s";
+
+"owner.label" = "Created by you";
+
+"action.share" = "Share your noun";
+
+"action.save" = "Save & finish";

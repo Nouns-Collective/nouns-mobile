@@ -37,7 +37,7 @@ public struct OutlineButtonStyle<Label: View>: ButtonStyle {
                 RoundedRectangle(cornerRadius: 6)
                     .stroke(Color.black, lineWidth: 2)
             }
-            .animation(.spring())
+            .animation(.spring(), value: configuration.isPressed)
     }
 }
 
@@ -168,6 +168,7 @@ public struct OutlineButton<Label>: View where Label: View {
     public init(
         text: String,
         @ViewBuilder largeAccessory: () -> Image? = { nil },
+        color: Color = .black,
         action: @escaping () -> Void,
         fill: Set<Fill> = []
     ) where Label == LargeAccessoryButtonLabel {
@@ -175,6 +176,7 @@ public struct OutlineButton<Label>: View where Label: View {
             return LargeAccessoryButtonLabel(
                 accessoryImage: largeAccessory(),
                 text: text,
+                color: color,
                 fullWidth: fill.contains(.width))
         }()
         

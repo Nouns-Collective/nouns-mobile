@@ -1,0 +1,15 @@
+/* 
+  NounDeleteDialog.strings
+  Nouns
+
+  Created by Ziad Tamim on 23.11.21.
+  
+*/
+
+"title" = "For reals?";
+
+"message" = "Are you sure you want to leave and lose the precious Nouniness you’ve created?";
+
+"noun.delete.action" = "Yeah, get rid of it";
+
+"noun.cancel.action" = "No, I want to keep creating";

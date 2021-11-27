@@ -31,7 +31,7 @@ public struct SoftButtonStyle<Label: View>: ButtonStyle {
             }
             .background(Color.black.opacity(configuration.isPressed ? 0.1 : 0.05))
             .clipShape(RoundedRectangle(cornerRadius: continuous ? 10 : 6, style: continuous ? .continuous : .circular))
-            .animation(.spring())
+            .animation(.spring(), value: configuration.isPressed)
     }
 }
 
@@ -44,6 +44,7 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
     /// The icon for the button on the far right of the button (accessory image)
     let accessoryImage: Image?
     
+    ///
     let accessory: Accessory
     
     /// The text for the button, appearing on the right side of the icon
@@ -122,13 +123,17 @@ public struct LargeAccessoryButtonLabel: View {
     /// The text for the button, appearing on the right side of the icon
     let text: String
     
+    /// Specify the tinting color for the content.
+    let color: Color
+    
     /// Boolean value to determine whether the button should be full width
     let fullWidth: Bool
     
     public var body: some View {
         HStack(spacing: 10) {
             Text(text)
-                .font(Font.custom(.medium, relativeTo: .callout))
+                .font(Font.custom(.medium, size: 17))
+                .foregroundColor(color)
             
             if fullWidth {
                 Spacer()
@@ -139,6 +144,7 @@ public struct LargeAccessoryButtonLabel: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 28, alignment: .center)
+                    .foregroundColor(color)
             }
         }
         .padding(16)
@@ -278,6 +284,7 @@ public struct SoftButton<Label: View>: View {
     public init(
         text: String,
         @ViewBuilder largeAccessory: () -> Image? = { nil },
+        color: Color = .black,
         action: @escaping () -> Void,
         fill: Set<Fill> = []
     ) where Label == LargeAccessoryButtonLabel {
@@ -285,6 +292,7 @@ public struct SoftButton<Label: View>: View {
             return LargeAccessoryButtonLabel(
                 accessoryImage: largeAccessory(),
                 text: text,
+                color: color,
                 fullWidth: fill.contains(.width))
         }()
         

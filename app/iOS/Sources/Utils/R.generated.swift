@@ -132,7 +132,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 18 images.
+  /// This `R.image` struct is generated, and contains static references to 19 images.
   struct image {
     /// Image `eyes-blink-1`.
     static let eyesBlink1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-1")
@@ -170,6 +170,8 @@ struct R: Rswift.Validatable {
     static let placeholderEns = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder-ens")
     /// Image `placeholder`.
     static let placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder")
+    /// Image `shadow`.
+    static let shadow = Rswift.ImageResource(bundle: R.hostingBundle, name: "shadow")
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "eyes-blink-1", bundle: ..., traitCollection: ...)`
@@ -297,6 +299,13 @@ struct R: Rswift.Validatable {
     }
     #endif
 
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "shadow", bundle: ..., traitCollection: ...)`
+    static func shadow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.shadow, compatibleWith: traitCollection)
+    }
+    #endif
+
     fileprivate init() {}
   }
 
@@ -312,7 +321,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 12 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 15 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 4 localization keys.
     struct aboutNouns {
@@ -561,6 +570,89 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
+    /// This `R.string.createNounDialog` struct is generated, and contains static references to 5 localization keys.
+    struct createNounDialog {
+      /// Value: Born %s
+      static let nounBirthdayLabel = Rswift.StringResource(key: "noun.birthday.label", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Created by you
+      static let ownerLabel = Rswift.StringResource(key: "owner.label", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Name your noun!
+      static let inputPlaceholder = Rswift.StringResource(key: "input.placeholder", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Save & finish
+      static let actionSave = Rswift.StringResource(key: "action.save", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Share your noun
+      static let actionShare = Rswift.StringResource(key: "action.share", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Born %s
+      static func nounBirthdayLabel(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("noun.birthday.label", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
+          return "noun.birthday.label"
+        }
+
+        let format = NSLocalizedString("noun.birthday.label", tableName: "CreateNounDialog", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      /// Value: Created by you
+      static func ownerLabel(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("owner.label", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
+          return "owner.label"
+        }
+
+        return NSLocalizedString("owner.label", tableName: "CreateNounDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Name your noun!
+      static func inputPlaceholder(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("input.placeholder", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
+          return "input.placeholder"
+        }
+
+        return NSLocalizedString("input.placeholder", tableName: "CreateNounDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Save & finish
+      static func actionSave(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("action.save", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
+          return "action.save"
+        }
+
+        return NSLocalizedString("action.save", tableName: "CreateNounDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Share your noun
+      static func actionShare(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("action.share", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
+          return "action.share"
+        }
+
+        return NSLocalizedString("action.share", tableName: "CreateNounDialog", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
     /// This `R.string.create` struct is generated, and contains static references to 3 localization keys.
     struct create {
       /// Value: Build a completely custom noun
@@ -759,6 +851,72 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
+    /// This `R.string.nounDeleteDialog` struct is generated, and contains static references to 4 localization keys.
+    struct nounDeleteDialog {
+      /// Value: Are you sure you want to leave and lose the precious Nouniness you’ve created?
+      static let message = Rswift.StringResource(key: "message", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: For reals?
+      static let title = Rswift.StringResource(key: "title", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: No, I want to keep creating
+      static let nounCancelAction = Rswift.StringResource(key: "noun.cancel.action", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Yeah, get rid of it
+      static let nounDeleteAction = Rswift.StringResource(key: "noun.delete.action", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Are you sure you want to leave and lose the precious Nouniness you’ve created?
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: For reals?
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: No, I want to keep creating
+      static func nounCancelAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("noun.cancel.action", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
+          return "noun.cancel.action"
+        }
+
+        return NSLocalizedString("noun.cancel.action", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Yeah, get rid of it
+      static func nounDeleteAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("noun.delete.action", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
+          return "noun.delete.action"
+        }
+
+        return NSLocalizedString("noun.delete.action", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
     /// This `R.string.nounProfile` struct is generated, and contains static references to 8 localization keys.
     struct nounProfile {
       /// Value: %dh %dm %ds
@@ -884,6 +1042,87 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("bid-winner", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.offchainNounActions` struct is generated, and contains static references to 5 localization keys.
+    struct offchainNounActions {
+      /// Value: Delete your noun
+      static let delete = Rswift.StringResource(key: "delete", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Edit your noun
+      static let edit = Rswift.StringResource(key: "edit", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: More Actions
+      static let title = Rswift.StringResource(key: "title", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Play with you noun
+      static let play = Rswift.StringResource(key: "play", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Rename your noun
+      static let rename = Rswift.StringResource(key: "rename", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Delete your noun
+      static func delete(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "delete"
+        }
+
+        return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: Edit your noun
+      static func edit(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("edit", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "edit"
+        }
+
+        return NSLocalizedString("edit", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: More Actions
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: Play with you noun
+      static func play(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "play"
+        }
+
+        return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: Rename your noun
+      static func rename(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("rename", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "rename"
+        }
+
+        return NSLocalizedString("rename", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
