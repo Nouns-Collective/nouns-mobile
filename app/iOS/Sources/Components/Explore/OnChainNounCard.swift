@@ -30,7 +30,7 @@ struct OnChainNounCard: View {
           glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].assetImage),
           accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].assetImage)
         )
-          .matchedGeometryEffect(id: "\(auction.noun)-puzzle", in: animation)
+          .matchedGeometryEffect(id: "\(auction.noun.id)-puzzle", in: animation)
           .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[auction.noun.seed.background]))
       },
       smallHeader: R.string.explore.noun(auction.noun.id),
