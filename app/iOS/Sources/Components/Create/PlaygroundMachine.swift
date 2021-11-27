@@ -13,13 +13,13 @@ struct PlaygroundMachine: View {
   @Binding var isPresented: Bool
   
   private let traits = [
+    AppCore.shared.nounComposer.bodies,
     AppCore.shared.nounComposer.heads,
     AppCore.shared.nounComposer.glasses,
-    AppCore.shared.nounComposer.bodies,
     AppCore.shared.nounComposer.accessories,
   ]
   
-  @State var selectedTraitIndex = 0
+  @State var selectedTraitIndex = 1
   
   var body: some View {
     VStack {
@@ -37,11 +37,15 @@ struct PlaygroundMachine: View {
       SoftButton(
         icon: { Image.xmark },
         action: { isPresented.toggle() })
-
+      
     }, rightAccessory: {
-      EmptyView()
+      SoftButton(
+        text: "Done",
+        smallAccessory: { Image.checkmark },
+        action: {
+        })
     })
-  .background(Gradient.orangesicle)
+    .background(Gradient.orangesicle)
   }
 }
 

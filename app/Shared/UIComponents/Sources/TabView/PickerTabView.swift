@@ -85,26 +85,44 @@ extension View {
 /// Picker Tab views only support tab items of type ``Text``. Passing any other type of view results in a visible but
 /// empty tab item.
 public struct PickerTabView<Content>: View where Content: View {
+    var animation: Namespace.ID
+    
+    private let scrollable: Bool
+
     @Namespace private var slideActiveTabSpace
     @Binding private var selection: Int
     @State private var items: [PickerTabItem] = []
     private let content: Content
     
     public init(
+        animation: Namespace.ID,
+        scrollable: Bool = false,
         selection: Binding<Int>,
         @ViewBuilder content: @escaping () -> Content
     ) {
+        self.animation = animation
+        self.scrollable = scrollable
         self._selection = selection
         self.content = content()
     }
     
     public var body: some View {
         VStack {
-            OutlinePicker(selection: $selection) {
-                ForEach(items) { item in
-                    Text(item.title)
-                        .pickerItemTag(item.tag, namespace: slideActiveTabSpace)
+            if scrollable {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    ScrollViewReader { proxy in
+                    outlinePicker
+                        .padding(.horizontal)
+                        .matchedGeometryEffect(id: "picker", in: animation)
+                        .onChange(of: selection) { newValue in
+                            proxy.scrollTo(newValue, anchor: .center)
+                        }
+                    }
                 }
+            } else {
+                outlinePicker
+                    .padding(.horizontal)
+                    .matchedGeometryEffect(id: "picker", in: animation)
             }
             
             ZStack {
@@ -117,15 +135,27 @@ public struct PickerTabView<Content>: View where Content: View {
             self.items = items
         }
     }
+    
+    private var outlinePicker: some View {
+        OutlinePicker(selection: $selection) {
+            ForEach(items) { item in
+                Text(item.title)
+                    .pickerItemTag(item.tag, namespace: slideActiveTabSpace)
+                    .id(item.tag)
+            }
+        }
+    }
 }
 
 struct PickerTabView_Preview: PreviewProvider {
     
     struct Example: View {
+        @Namespace var ns
+        
         @State var selection: Int = 0
         
         var body: some View {
-            PickerTabView(selection: $selection) {
+            PickerTabView(animation: ns, selection: $selection) {
                 Gradient.cherrySunset
                     .pickerTabItem("Activities", tag: 0)
                 

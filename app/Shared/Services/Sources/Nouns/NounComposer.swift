@@ -8,7 +8,7 @@
 import Foundation
 
 /// The Noun's trait.
-public struct Trait: Equatable {
+public struct Trait: Equatable, Hashable {
     
     /// `RLE` data compression of the Noun's trait.
     public let rleData: String
