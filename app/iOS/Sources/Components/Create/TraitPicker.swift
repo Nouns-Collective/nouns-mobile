@@ -10,13 +10,11 @@ import UIComponents
 import Services
 
 class TraitCollectionModel: NSObject, ObservableObject {
-  
   @Published var selectedGlasses: Trait?
   @Published var selectedHead: Trait?
   @Published var selectedBody: Trait?
   @Published var selectedAccessory: Trait?
   @Published var selectedBackground: [Color]?
-  
 }
 
 // swiftlint:disable all

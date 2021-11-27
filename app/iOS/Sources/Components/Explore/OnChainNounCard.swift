@@ -28,8 +28,7 @@ struct OnChainNounCard: View {
           head: Image(nounTraitName: AppCore.shared.nounComposer.heads[auction.noun.seed.head].assetImage),
           body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[auction.noun.seed.body].assetImage),
           glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].assetImage),
-          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].assetImage)
-        )
+          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].assetImage))
           .matchedGeometryEffect(id: "\(auction.noun.id)-puzzle", in: animation)
           .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[auction.noun.seed.background]))
       },

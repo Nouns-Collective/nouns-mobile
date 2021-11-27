@@ -10,6 +10,8 @@ import UIComponents
 import Services
 
 struct LiveAuctionCard: View {
+  @Environment(\.nounComposer) var nounComposer
+  
   let auction: Auction
   
   @State private var timeLeft: String = ""
@@ -43,12 +45,11 @@ struct LiveAuctionCard: View {
     StandardCard(
       media: {
         NounPuzzle(
-          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[auction.noun.seed.head].assetImage),
-          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[auction.noun.seed.body].assetImage),
-          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[auction.noun.seed.glasses].assetImage),
-          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[auction.noun.seed.accessory].assetImage)
-        )
-          .background(Color(hex: AppCore.shared.nounComposer.backgroundColors[auction.noun.seed.background]))
+          head: Image(nounTraitName: nounComposer.heads[auction.noun.seed.head].assetImage),
+          body: Image(nounTraitName: nounComposer.bodies[auction.noun.seed.body].assetImage),
+          glass: Image(nounTraitName: nounComposer.glasses[auction.noun.seed.glasses].assetImage),
+          accessory: Image(nounTraitName: nounComposer.accessories[auction.noun.seed.accessory].assetImage))
+          .background(Color(hex: nounComposer.backgroundColors[auction.noun.seed.background]))
       },
       header: R.string.explore.noun(auction.noun.id),
       accessoryImage: Image.mdArrowCorner,

@@ -19,12 +19,6 @@ struct OnChainExplorerView: View {
   @State private var isPresentingNounActivity = false
   @State private var isPresentingAbout = false
   
-  init() {
-    // TODO: Theming Should be extracted as it is related to the theme.
-    UINavigationBar.appearance().barTintColor = .clear
-    UITableView.appearance().backgroundColor = .clear
-  }
-  
   private var isInitiallyLoading: Bool {
     (store.state.onChainAuctions.isLoading || store.state.liveAuction.isLoading) &&
     store.state.onChainAuctions.auctions.isEmpty

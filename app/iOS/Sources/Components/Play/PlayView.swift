@@ -23,12 +23,12 @@ struct PlayView: View {
         Text(R.string.play.subhealine())
           .font(.custom(.regular, size: 17))
         
-        NounPuzzle(
-          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[26].assetImage),
-          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[20].assetImage),
-          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[8].assetImage),
-          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[0].assetImage))
-          .padding(.top, 40)
+//        NounPuzzle(
+//          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[26].assetImage),
+//          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[20].assetImage),
+//          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[8].assetImage),
+//          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[0].assetImage))
+//          .padding(.top, 40)
         
         OutlineButton(
           text: R.string.play.proceedTitle(),

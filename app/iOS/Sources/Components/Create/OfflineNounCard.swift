@@ -18,24 +18,25 @@ struct OfflineNounCard: View {
     dateFormatter.timeZone = TimeZone.current
     dateFormatter.locale = NSLocale.current
     dateFormatter.dateFormat = "MMM d, YYYY"
-    return dateFormatter.string(from: noun.createdDate ?? Date())
+    return dateFormatter.string(from: noun.createdDate)
   }
   
   var body: some View {
     StandardCard(
       media: {
         NounPuzzle(
-          head: Image(nounTraitName: noun.head ?? ""),
-          body: Image(nounTraitName: noun.body ?? ""),
-          glass: Image(nounTraitName: noun.glasses ?? ""),
-          accessory: Image(nounTraitName: noun.accessory ?? "")
+          head: Image(nounTraitName: noun.head),
+          body: Image(nounTraitName: noun.body),
+          glass: Image(nounTraitName: noun.glasses),
+          accessory: Image(nounTraitName: noun.accessory)
         )
         .matchedGeometryEffect(id: "\(noun.id)-puzzle", in: animation)
-        .background(LinearGradient(colors: (noun.background ?? []).map { Color(hex: $0) }, startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(gradient)
+        
       }, label: {
         VStack(alignment: .leading, spacing: 40) {
           HStack(alignment: .center) {
-            Text(noun.name ?? "")
+            Text(noun.name)
               .font(Font.custom(.bold, relativeTo: .title2))
             
             Spacer()
@@ -50,6 +51,13 @@ struct OfflineNounCard: View {
             .font(.custom(.regular, size: 15))
         }
       })
+  }
+  
+  private var gradient: some View {
+    LinearGradient(
+      colors: noun.background.map { Color(hex: $0) },
+      startPoint: .topLeading,
+      endPoint: .bottomTrailing)
   }
 }
 

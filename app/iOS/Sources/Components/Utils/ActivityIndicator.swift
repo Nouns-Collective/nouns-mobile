@@ -20,15 +20,14 @@ struct ActivityIndicator: ViewModifier {
   let isPresented: Bool
   
   func body(content: Content) -> some View {
-    guard isPresented else {
-      return AnyView(content)
+    isPresented ? AnyView(placeholder) : AnyView(content)
+  }
+  
+  private var placeholder: some View {
+    VStack {
+      GIFImage("noun-activity")
+        .frame(height: 250)
     }
-    
-    return AnyView(
-      VStack {
-        GIFImage("noun-activity")
-          .frame(height: 250)
-      }.frame(maxHeight: .infinity)
-    )
+    .frame(maxHeight: .infinity)
   }
 }

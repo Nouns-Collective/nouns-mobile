@@ -9,6 +9,7 @@ import SwiftUI
 import UIComponents
 
 struct LiveAuctionPlaceholderCard: View {
+  
     var body: some View {
       StandardCard(
         media: {

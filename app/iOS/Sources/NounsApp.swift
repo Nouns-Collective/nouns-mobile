@@ -8,10 +8,23 @@
 import SwiftUI
 import Combine
 import UIComponents
+import Services
+
+struct NounComposerKey: EnvironmentKey {
+  static var defaultValue: NounComposer = AppCore.shared.nounComposer
+}
+
+extension EnvironmentValues {
+    
+    var nounComposer: NounComposer {
+        get { self[NounComposerKey.self] }
+        set { self[NounComposerKey.self] = newValue }
+    }
+}
 
 @main
 struct NounsApp: App {
-  private let store = AppStore(
+  @StateObject private var store = AppStore(
     initialState: AppState(),
     reducer: appReducer,
     middlewares: [
@@ -21,6 +34,8 @@ struct NounsApp: App {
       onChainNounBidsMiddleware()
     ]
   )
+  
+  @State private var nounComposer = AppCore.shared.nounComposer
   
   private let persistence = PersistenceStore()
   
@@ -32,6 +47,7 @@ struct NounsApp: App {
     WindowGroup {
       NavigationRootView()
         .environmentObject(store)
+        .environment(\.nounComposer, nounComposer)
         .environment(\.managedObjectContext, persistence.persistentContainer.viewContext)
         .preferredColorScheme(.light)
     }

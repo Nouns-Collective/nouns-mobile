@@ -15,10 +15,6 @@ struct AboutNounsWTF: View {
   
   init(isPresented: Binding<Bool>) {
     self._isPresented = isPresented
-    
-    // TODO: Theming Should be extracted as it is related to the theme.
-    UINavigationBar.appearance().barTintColor = .clear
-    UITableView.appearance().backgroundColor = .clear
   }
   
   var body: some View {

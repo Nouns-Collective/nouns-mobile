@@ -9,8 +9,10 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct PlaygroundMachine: View {
-  @Binding var isPresented: Bool
+struct NounPlayground: View {
+  @Environment(\.presentationMode) private var presentationMode
+  @State private var currentTraitTypeTag = 0
+  @Namespace private var namespace
   
   private let traits = [
     AppCore.shared.nounComposer.bodies,
@@ -30,22 +32,47 @@ struct PlaygroundMachine: View {
             isActive: selectedTraitIndex == index)
         }
       }
+      .frame(maxWidth: .infinity, maxHeight: 320)
       
       Image(R.image.shadow.name)
+        .offset(y: -30)
+        .padding(.horizontal, 20)
+      
+      Spacer()
+      
+//      ScrollView(.horizontal, showsIndicators: false) {
+//        OutlinePicker(selection: $currentTraitTypeTag) {
+//          Text("Glasses")
+//            .pickerItemTag(0, namespace: namespace)
+//
+//          Text("Head")
+//            .pickerItemTag(1, namespace: namespace)
+//
+//          Text("Body")
+//            .pickerItemTag(2, namespace: namespace)
+//
+//          Text("Accessory")
+//            .pickerItemTag(3, namespace: namespace)
+//
+//          Text("Background")
+//            .pickerItemTag(4, namespace: namespace)
+//        }
+//        .padding(.horizontal)
+//      }
     }
     .softNavigationItems(leftAccessory: {
       SoftButton(
         icon: { Image.xmark },
-        action: { isPresented.toggle() })
+        action: { presentationMode.wrappedValue.dismiss() })
       
     }, rightAccessory: {
       SoftButton(
         text: "Done",
         smallAccessory: { Image.checkmark },
-        action: {
-        })
+        action: { })
     })
     .background(Gradient.orangesicle)
+    .ignoresSafeArea()
   }
 }
 
@@ -70,7 +97,7 @@ public struct SlotMachine: View {
   
   public var body: some View {
     GeometryReader { proxy in
-      let traitWidth = proxy.size.width * 0.6
+      let traitWidth: CGFloat = 320
       
       LazyHStack(spacing: 0) {
         ForEach(0..<numberOfVisiableItems) { index in
@@ -80,7 +107,7 @@ public struct SlotMachine: View {
             .frame(width: traitWidth, height: traitWidth)
         }
       }
-      .padding(.horizontal, proxy.size.width * 0.18)
+      .padding(.horizontal, proxy.size.width * 0.10)
       .offset(x: (CGFloat(index) * -traitWidth) + offset)
       .gesture(
         DragGesture()
@@ -102,6 +129,6 @@ public struct SlotMachine: View {
 
 struct NounPlaygroundView_Previews: PreviewProvider {
   static var previews: some View {
-    PlaygroundMachine(isPresented: .constant(true))
+    NounPlayground()
   }
 }

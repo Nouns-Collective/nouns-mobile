@@ -11,12 +11,18 @@ import UIComponents
 struct NavigationRootView: View {
   @State private var selectedTab = 0
   
+  init() {
+    // TODO: Theming Should be extracted as it is related to the theme.
+    UINavigationBar.appearance().barTintColor = .clear
+    UITableView.appearance().backgroundColor = .clear
+  }
+  
   var body: some View {
     OutlineTabView(selection: $selectedTab) {
       OnChainExplorerView()
         .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
       
-      CreateView()
+      CreateExperience()
         .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
       
       PlayView()
