@@ -49,9 +49,9 @@ public struct PlainCell<Content: View>: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 6))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay {
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.black, lineWidth: 2.0)
         }
     }
