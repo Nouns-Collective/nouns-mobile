@@ -89,7 +89,7 @@ struct ActivityRowCell: View {
         }
         
         descriptionLabel
-      }
+      }.padding()
     }
   }
 }

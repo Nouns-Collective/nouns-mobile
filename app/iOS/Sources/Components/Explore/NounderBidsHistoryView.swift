@@ -125,7 +125,7 @@ struct BidRowCell: View {
         }
         
         bidderLabel
-      }
+      }.padding()
     }
   }
 }

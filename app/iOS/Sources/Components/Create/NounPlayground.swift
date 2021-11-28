@@ -79,7 +79,7 @@ struct SlotMachineBoundsKey: PreferenceKey {
 
 public struct SlotMachine: View {
   public let items: [Trait]
-  public var isActive: Bool
+  public let isActive: Bool
   
   @GestureState private var offset: CGFloat = 0
   @State private var index = 0
@@ -93,7 +93,7 @@ public struct SlotMachine: View {
       let traitWidth: CGFloat = 320
       
       LazyHStack(spacing: 0) {
-        ForEach(0..<numberOfVisibleItems) { index in
+        ForEach(0..<numberOfVisibleItems, id: \.self) { index in
           Image(nounTraitName: items[index].assetImage)
             .interpolation(.none)
             .resizable()
@@ -101,7 +101,7 @@ public struct SlotMachine: View {
         }
       }
       .padding(.horizontal, proxy.size.width * 0.10)
-      .offset(x: (CGFloat(index) * -traitWidth) + offset)
+      .offset(x: isActive ? ((CGFloat(index) * -traitWidth) + offset) : 0)
       .gesture(
         DragGesture()
           .updating($offset, body: { value, state, _ in

@@ -100,7 +100,7 @@ struct OnChainNounProfileView: View {
               .padding(.bottom, 40)
             
             actionsRow
-          }
+          }.padding()
         }
         .padding([.bottom, .horizontal])
       }
