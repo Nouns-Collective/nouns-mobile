@@ -21,8 +21,8 @@ class TraitCollectionModel: NSObject, ObservableObject {
 struct TraitPicker: View {
   @Namespace var slideActiveTabSpace
   var animation: Namespace.ID
-  
-  @State var anchor: Int = 0
+    
+  @Binding var selectedTraitIndex: Int
   
   private let rowSpec = [
     GridItem(.flexible()),
@@ -32,8 +32,9 @@ struct TraitPicker: View {
   
   @StateObject var model = TraitCollectionModel()
   
-  init(animation: Namespace.ID) {
+  init(animation: Namespace.ID, selectedTraitIndex: Binding<Int>) {
     self.animation = animation
+    self._selectedTraitIndex = selectedTraitIndex
   }
   
   var body: some View {
@@ -41,7 +42,7 @@ struct TraitPicker: View {
       Image.chevronDown
       
       ScrollView(.horizontal, showsIndicators: false) {
-        OutlinePicker(selection: $anchor) {
+        OutlinePicker(selection: $selectedTraitIndex) {
           Text("Glasses")
             .id(0)
             .pickerItemTag(0, namespace: slideActiveTabSpace)
@@ -65,7 +66,7 @@ struct TraitPicker: View {
         .padding(.horizontal)
       }
       
-      TraitGrid(model: model, anchor: $anchor)
+      TraitGrid(model: model, selectedTraitIndex: $selectedTraitIndex)
     }
   }
 }
@@ -95,7 +96,7 @@ struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View
 struct TraitGrid: View {
   @ObservedObject var model: TraitCollectionModel
   
-  @Binding var anchor: Int
+  @Binding var selectedTraitIndex: Int
   
   private let rowSpec = [
     GridItem(.flexible()),
@@ -167,10 +168,10 @@ struct TraitGrid: View {
               .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
           }
         }
-        .onChange(of: anchor, perform: { [anchor] newAnchor in
-          if anchor != newAnchor {
+        .onChange(of: selectedTraitIndex, perform: { [selectedTraitIndex] newSelectedTrait in
+          if selectedTraitIndex != newSelectedTrait {
             withAnimation {
-              proxy.scrollTo("\(newAnchor)-0", anchor: .leading)
+              proxy.scrollTo("\(newSelectedTrait)-0", anchor: .leading)
             }
           }
         })
@@ -277,7 +278,7 @@ struct TraitPicker_Previews: PreviewProvider {
         }
       }
       .bottomSheet(isPresented: $isPresented) {
-        TraitPicker(animation: ns)
+        TraitPicker(animation: ns, selectedTraitIndex: .constant(1))
       }
     }
   }

@@ -15,36 +15,42 @@ struct NounPlayground: View {
   @State private var isTraitPickerPresented = true
   @Namespace private var namespace
   
+  /// Traits displayed in the same order as the trait picker
   private let traits = [
-    AppCore.shared.nounComposer.bodies,
-    AppCore.shared.nounComposer.heads,
     AppCore.shared.nounComposer.glasses,
+    AppCore.shared.nounComposer.heads,
+    AppCore.shared.nounComposer.bodies,
     AppCore.shared.nounComposer.accessories,
   ]
   
-  @State var selectedTraitIndex = 1
+  private let zIndex: [Double] = [4, 3, 1, 2]
+  
+  @State var selectedTraitIndex = 0
   
   var body: some View {
     VStack {
       Spacer()
       
-      ZStack(alignment: .top) {
-        ForEach(traits.indices) { index in
-          SlotMachine(
-            items: traits[index],
-            isActive: selectedTraitIndex == index)
+      ZStack(alignment: .bottom) {
+        Image(R.image.shadow.name)
+          .offset(y: 40)
+          .padding(.horizontal, 20)
+        
+        ZStack(alignment: .top) {
+          ForEach(traits.indices) { index in
+            SlotMachine(
+              items: traits[index],
+              isActive: selectedTraitIndex == index
+            ).zIndex(zIndex[index])
+          }
         }
+        .frame(maxWidth: .infinity, maxHeight: 320)
       }
-      .frame(maxWidth: .infinity, maxHeight: 320)
-      
-      Image(R.image.shadow.name)
-        .offset(y: -30)
-        .padding(.horizontal, 20)
       
       Spacer()
       
       PlainCell {
-        TraitPicker(animation: namespace)
+        TraitPicker(animation: namespace, selectedTraitIndex: $selectedTraitIndex)
       }
       .padding(.horizontal, 20)
     }
@@ -78,7 +84,7 @@ public struct SlotMachine: View {
   @GestureState private var offset: CGFloat = 0
   @State private var index = 0
   
-  var numberOfVisiableItems: Int {
+  var numberOfVisibleItems: Int {
     isActive ? items.endIndex : 1
   }
   
@@ -87,7 +93,7 @@ public struct SlotMachine: View {
       let traitWidth: CGFloat = 320
       
       LazyHStack(spacing: 0) {
-        ForEach(0..<numberOfVisiableItems) { index in
+        ForEach(0..<numberOfVisibleItems) { index in
           Image(nounTraitName: items[index].assetImage)
             .interpolation(.none)
             .resizable()

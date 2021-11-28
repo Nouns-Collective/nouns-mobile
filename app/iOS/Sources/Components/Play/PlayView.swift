@@ -19,7 +19,7 @@ struct PlayView: View {
   
   var body: some View {
     NavigationView {
-      VStack(spacing: 0) {
+      VStack(alignment: .leading, spacing: 0) {
         Text(R.string.play.subhealine())
           .font(.custom(.regular, size: 17))
         
