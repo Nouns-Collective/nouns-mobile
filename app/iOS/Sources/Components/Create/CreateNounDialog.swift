@@ -179,12 +179,6 @@ struct NounDialogActions: View {
   
   var body: some View {
     SoftButton(
-      text: R.string.createNounDialog.actionShare(),
-      largeAccessory: { Image.share },
-      action: { },
-      fill: [.width])
-    
-    SoftButton(
       text: R.string.createNounDialog.actionSave(),
       largeAccessory: { Image.save },
       action: {
@@ -195,7 +189,7 @@ struct NounDialogActions: View {
             head: AppCore.shared.nounComposer.heads[viewModel.seed[1]].assetImage,
             body: AppCore.shared.nounComposer.bodies[viewModel.seed[2]].assetImage,
             accessory: AppCore.shared.nounComposer.accessories[viewModel.seed[3]].assetImage,
-            background: Gradient.allGradients()[viewModel.seed[4]])
+            background: Int32(viewModel.seed[4]))
           
           presentationMode.wrappedValue.dismiss()
         }
@@ -236,7 +230,8 @@ struct NounOptionsActionSheet: View {
         SoftButton(
           text: R.string.offchainNounActions.rename(),
           largeAccessory: { Image.rename },
-          action: { },
+          action: {
+          },
           // TODO: Should be Removed. Low Priority
           fill: [.width])
         

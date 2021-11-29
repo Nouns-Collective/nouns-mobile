@@ -38,7 +38,7 @@ extension OfflineNoun {
   @NSManaged public var head: String?
 
   /// The background of the noun, as an array of hex colors to represent a linear gradient
-  @NSManaged public var background: [String]?
+  @NSManaged public var background: Int32
   
 }
 

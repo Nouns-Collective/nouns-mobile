@@ -103,13 +103,17 @@ struct OffChainNounProfile: View {
             SoftButton(
               text: R.string.offchainNounActions.edit(),
               largeAccessory: { Image.createOutline },
-              action: { },
+              action: {
+                isMoreActionPresented.toggle()
+              },
               fill: [.width])
             
             SoftButton(
               text: R.string.offchainNounActions.rename(),
               largeAccessory: { Image.rename },
-              action: { },
+              action: {
+                isMoreActionPresented.toggle()
+              },
               fill: [.width])
             
             SoftButton(
@@ -134,14 +138,13 @@ struct OffChainNounProfile: View {
     .bottomSheet(isPresented: $isDeleteActionPresented, content: {
       DeleteOfflineNounDialog2(isDisplayed: $isDeleteActionPresented, noun: noun)
     })
-//    .background(gradient)
-    .background(Gradient.freshMint)
+    .background(gradient)
     .ignoresSafeArea()
   }
   
   private var gradient: some View {
     LinearGradient(
-      colors: (noun.background ?? []).map { Color(hex: $0) },
+      colors: Gradient.allGradients()[Int(noun.background)],
       startPoint: .topLeading,
       endPoint: .bottomTrailing)
   }

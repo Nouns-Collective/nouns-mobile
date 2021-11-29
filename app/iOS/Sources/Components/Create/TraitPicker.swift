@@ -195,6 +195,9 @@ struct TraitGrid: View {
 //            proxy.scrollTo("\(viewModel.selectedTraitType)-\(seed[viewModel.selectedTraitType])", anchor: .center)
 //          }
         })
+        .onAppear(perform: {
+          proxy.scrollTo("\(viewModel.selectedTraitType)-\(viewModel.seed[viewModel.selectedTraitType])", anchor: .leading)
+        })
         .padding(.vertical)
       }
       .frame(maxHeight: 250)

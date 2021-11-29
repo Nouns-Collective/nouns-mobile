@@ -132,8 +132,28 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 19 images.
+  /// This `R.image` struct is generated, and contains static references to 29 images.
   struct image {
+    /// Image `confetti-10`.
+    static let confetti10 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-10")
+    /// Image `confetti-1`.
+    static let confetti1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-1")
+    /// Image `confetti-2`.
+    static let confetti2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-2")
+    /// Image `confetti-3`.
+    static let confetti3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-3")
+    /// Image `confetti-4`.
+    static let confetti4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-4")
+    /// Image `confetti-5`.
+    static let confetti5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-5")
+    /// Image `confetti-6`.
+    static let confetti6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-6")
+    /// Image `confetti-7`.
+    static let confetti7 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-7")
+    /// Image `confetti-8`.
+    static let confetti8 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-8")
+    /// Image `confetti-9`.
+    static let confetti9 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-9")
     /// Image `eyes-blink-1`.
     static let eyesBlink1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-1")
     /// Image `eyes-blink-2`.
@@ -172,6 +192,76 @@ struct R: Rswift.Validatable {
     static let placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder")
     /// Image `shadow`.
     static let shadow = Rswift.ImageResource(bundle: R.hostingBundle, name: "shadow")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-1", bundle: ..., traitCollection: ...)`
+    static func confetti1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-10", bundle: ..., traitCollection: ...)`
+    static func confetti10(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti10, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-2", bundle: ..., traitCollection: ...)`
+    static func confetti2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-3", bundle: ..., traitCollection: ...)`
+    static func confetti3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-4", bundle: ..., traitCollection: ...)`
+    static func confetti4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-5", bundle: ..., traitCollection: ...)`
+    static func confetti5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-6", bundle: ..., traitCollection: ...)`
+    static func confetti6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-7", bundle: ..., traitCollection: ...)`
+    static func confetti7(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti7, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-8", bundle: ..., traitCollection: ...)`
+    static func confetti8(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti8, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "confetti-9", bundle: ..., traitCollection: ...)`
+    static func confetti9(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.confetti9, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "eyes-blink-1", bundle: ..., traitCollection: ...)`

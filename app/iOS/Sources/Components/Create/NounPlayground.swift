@@ -31,6 +31,8 @@ struct NounPlayground: View {
   
   @StateObject private var viewModel = PlaygroundViewModel()
   
+  @State private var confetti = false
+  @State private var finished = false
   /// Traits displayed in the same order as the trait picker
   private let traits = [
     AppCore.shared.nounComposer.glasses,
@@ -42,50 +44,62 @@ struct NounPlayground: View {
   private let zIndex: [Double] = [4, 3, 1, 2]
   
   var body: some View {
-    VStack(spacing: 0) {
-      Spacer()
-      
-      ZStack(alignment: .bottom) {
-        Image(R.image.shadow.name)
-          .offset(y: 40)
-          .padding(.horizontal, 20)
+    ZStack {
+      VStack(spacing: 0) {
+        Spacer()
         
-        ZStack(alignment: .top) {
-          ForEach(traits.indices) { tag in
-            SlotMachine(
-              items: traits[tag],
-              typeTag: tag,
-              viewModel: viewModel)
-              .zIndex(zIndex[tag])
+        ZStack(alignment: .bottom) {
+          Image(R.image.shadow.name)
+            .offset(y: 40)
+            .padding(.horizontal, 20)
+          
+          ZStack(alignment: .top) {
+            ForEach(traits.indices) { tag in
+              SlotMachine(
+                items: traits[tag],
+                typeTag: tag,
+                viewModel: viewModel)
+                .zIndex(zIndex[tag])
+            }
           }
+          .frame(maxWidth: .infinity, maxHeight: 320)
         }
-        .frame(maxWidth: .infinity, maxHeight: 320)
-      }
-      
-      Spacer()
-      
-      if isTraitPickerPresented {
-        PlainCell {
+        
+        Spacer()
+        
+        if isCreationPresented {
+          PlainCell {
+          NounMetadataDialog(
+            viewModel: viewModel,
+            isEditing: .constant(true),
+            isPresented: $isCreationPresented)
+          }
+          .padding(.horizontal, 20)
+          .transition(.move(edge: .bottom))
+        } else if isTraitPickerPresented {
+          PlainCell {
+            TraitPicker(
+              isPresented: $isTraitPickerPresented,
+              animation: namespace,
+              viewModel: viewModel)
+          }
+          .padding(.horizontal, 20)
+          .transition(.move(edge: .bottom))
+          
+        } else {
           TraitPicker(
             isPresented: $isTraitPickerPresented,
             animation: namespace,
             viewModel: viewModel)
+            .padding(.bottom, 20)
+            .transition(
+              AnyTransition.asymmetric(
+                insertion: AnyTransition.opacity.animation(Animation.default.delay(0.2)),
+                removal: AnyTransition.move(edge: .bottom))
+            )
         }
-        .padding(.horizontal, 20)
-        .transition(.move(edge: .bottom))
-        
-      } else {
-        TraitPicker(
-          isPresented: $isTraitPickerPresented,
-          animation: namespace,
-          viewModel: viewModel)
-          .padding(.bottom, 20)
-          .transition(
-            AnyTransition.asymmetric(
-              insertion: AnyTransition.opacity.animation(Animation.default.delay(0.2)),
-              removal: AnyTransition.move(edge: .bottom))
-          )
       }
+      
     }
     // Resuable component to close & back buttons...
     .softNavigationItems(leftAccessory: {
@@ -105,6 +119,18 @@ struct NounPlayground: View {
           withAnimation {
             isCreationPresented.toggle()
             isTraitPickerPresented = false
+            confetti.toggle()
+          }
+          
+          DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            withAnimation(.easeIn(duration: 1.5)) {
+              finished = true
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+              finished = false
+              confetti = false
+            }
           }
         })
     })
@@ -112,15 +138,23 @@ struct NounPlayground: View {
       colors: Gradient.allGradients()[viewModel.seed[4]],
       startPoint: .topLeading,
       endPoint: .bottomTrailing))
+    
     .bottomSheet(isPresented: $isWillingToClose) {
       DeleteOfflineNounDialog(isDisplayed: $isWillingToClose)
     }
-    .bottomSheet(isPresented: $isCreationPresented) {
-      NounMetadataDialog(
-        viewModel: viewModel,
-        isEditing: .constant(true),
-        isPresented: $isCreationPresented)
-    }
+//    .bottomSheet(isPresented: $isCreationPresented, showDimmingView: false) {
+//      NounMetadataDialog(
+//        viewModel: viewModel,
+//        isEditing: .constant(true),
+//        isPresented: $isCreationPresented)
+//    }
+    .overlay(
+      EmitterView()
+        .zIndex(100)
+        .scaleEffect(confetti ? 1 : 0, anchor: .top)
+        .opacity(confetti && !finished ? 1 : 0)
+        .ignoresSafeArea()
+    )
   }
 }
 

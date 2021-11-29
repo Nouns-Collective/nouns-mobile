@@ -17,6 +17,7 @@ class PersistenceStore {
   
   let persistentContainer: NSPersistentContainer = {
     let container = NSPersistentContainer(name: "Nouns")
+    container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     container.loadPersistentStores(completionHandler: { _, error in
       if let error = error as NSError? {
         fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -45,7 +46,7 @@ class PersistenceStore {
     head: String,
     body: String,
     accessory: String,
-    background: [Color]
+    background: Int32
   ) {
     
     let createdNoun = OfflineNoun(context: persistentContainer.viewContext)
@@ -57,7 +58,7 @@ class PersistenceStore {
     createdNoun.head = head
     createdNoun.body = body
     createdNoun.accessory = accessory
-    createdNoun.background = background.compactMap { $0.toHex }
+    createdNoun.background = background
     
     // Save changes
     save()

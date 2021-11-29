@@ -19,23 +19,23 @@ struct CreateExperience: View {
   
   var body: some View {
     NavigationView {
-      OfflineFeed(nouns)
+      ScrollView(.vertical, showsIndicators: false) {
+        VStack(spacing: 20) {
+          OfflineFeed(nouns)
+        }
         .offlineFeedPlaceholder(isDisplayed: nouns.isEmpty) {
           isPlaygroundPresented.toggle()
         }
         .fullScreenCover(isPresented: $isPlaygroundPresented) {
           NounPlayground()
         }
-        .frame(maxWidth: .infinity)
         .padding(.horizontal, 20)
-         // TODO: Title available as a separate ViewModifier
-        .softNavigationTitle(
-          R.string.create.title(),
-          // TODO: Leading & Trailing navigation items should be separated into a ViewModifier
-          rightAccessory: { newBarItem }
-        )
-        .background(Gradient.freshMint)
-        .ignoresSafeArea()
+        .softNavigationTitle(R.string.explore.title(), rightAccessory: {
+          newBarItem
+        })
+      }
+      .background(Gradient.freshMint)
+      .ignoresSafeArea()
     }
   }
   
@@ -62,22 +62,18 @@ struct OfflineFeed<Result: RandomAccessCollection>: View where Result.Element ==
   init(_ nouns: Result) {
     self.nouns = nouns
   }
-
+  
   var body: some View {
     // TODO: Build a reusable List to display cards and other components rather having multiple nested views.
-    ScrollView(.vertical, showsIndicators: false) {
-      VStack(spacing: 16) {
-        ForEach(nouns, id: \.self) { noun in
-          OfflineNounCard(animation: namespace, noun: noun)
-            // TODO: Explore if the animation could be build using  `AnimatableModifier`: Low Priority.
-            .id(noun.id)
-            .matchedGeometryEffect(id: "noun-\(noun.id)", in: namespace)
-            .onTapGesture {
-              selectedNoun = noun
-              isProfilePresented.toggle()
-            }
+    ForEach(nouns, id: \.self) { noun in
+      OfflineNounCard(animation: namespace, noun: noun)
+      // TODO: Explore if the animation could be build using  `AnimatableModifier`: Low Priority.
+        .id(noun.id)
+        .matchedGeometryEffect(id: "noun-\(noun.id)", in: namespace)
+        .onTapGesture {
+          selectedNoun = noun
+          isProfilePresented.toggle()
         }
-      }
     }
     // TODO: Replace fullScreenCover with a `HeroAnimation`
     .fullScreenCover(item: $selectedNoun) { noun in

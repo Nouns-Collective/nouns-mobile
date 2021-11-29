@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="OfflineNoun" representedClassName="OfflineNoun" syncable="YES">
         <attribute name="accessory" attributeType="String" defaultValueString=""/>
-        <attribute name="background" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="background" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" customClassName="[String]"/>
         <attribute name="body" attributeType="String" defaultValueString=""/>
         <attribute name="createdDate" attributeType="Date" defaultDateTimeInterval="659650440" usesScalarValueType="NO"/>
         <attribute name="glasses" attributeType="String" defaultValueString=""/>

@@ -58,40 +58,40 @@ struct OfflineNounCard: View {
   // TODO: Gradients should conform to transformable to be encoded in CoreData
   private var gradient: some View {
     LinearGradient(
-      colors: (noun.background ?? []).map { Color(hex: $0) },
+      colors: Gradient.allGradients()[Int(noun.background)],
       startPoint: .topLeading,
       endPoint: .bottomTrailing)
   }
 }
 
-struct OfflineNounCard_Previews: PreviewProvider {
-  struct Preview: View {
-    @Namespace var ns
-    let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-
-    var noun: OfflineNoun {
-      let noun = OfflineNoun(context: moc)
-      noun.background = ["#F8E38E", "#F6D1A8"]
-      noun.name = "Benji"
-      noun.createdDate = Date()
-      noun.accessory = "accessory-axe"
-      noun.body = "body-bege-bsod"
-      noun.head = "head-ape"
-      noun.glasses = "glasses-hip-rose"
-      return noun
-    }
-
-    var body: some View {
-      ScrollView {
-        OfflineNounCard(animation: ns, noun: noun)
-          .padding()
-          .padding(.top, 40)
-      }
-      .ignoresSafeArea()
-    }
-  }
-
-  static var previews: some View {
-    Preview()
-  }
-}
+//struct OfflineNounCard_Previews: PreviewProvider {
+//  struct Preview: View {
+//    @Namespace var ns
+//    let moc = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+//
+//    var noun: OfflineNoun {
+//      let noun = OfflineNoun(context: moc)
+//      noun.background = ["#F8E38E", "#F6D1A8"]
+//      noun.name = "Benji"
+//      noun.createdDate = Date()
+//      noun.accessory = "accessory-axe"
+//      noun.body = "body-bege-bsod"
+//      noun.head = "head-ape"
+//      noun.glasses = "glasses-hip-rose"
+//      return noun
+//    }
+//
+//    var body: some View {
+//      ScrollView {
+//        OfflineNounCard(animation: ns, noun: noun)
+//          .padding()
+//          .padding(.top, 40)
+//      }
+//      .ignoresSafeArea()
+//    }
+//  }
+//
+//  static var previews: some View {
+//    Preview()
+//  }
+//}
