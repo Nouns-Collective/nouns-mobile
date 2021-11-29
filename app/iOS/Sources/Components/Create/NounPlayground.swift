@@ -9,11 +9,27 @@ import SwiftUI
 import UIComponents
 import Services
 
+// TODO: Rebuild the Playground & Use the view state in redux to keep the current noun's traits selections.
+class PlaygroundViewModel: ObservableObject {
+  @Published var selectedTraitType = 0
+  @Published var seed: [Int] = [
+    0, // glasses
+    0, // head
+    0, // body
+    0, // accessory
+    0  // background
+  ]
+  
+  @Published var name: String = ""
+}
+
 struct NounPlayground: View {
-  @Environment(\.presentationMode) private var presentationMode
-  @State private var currentTraitTypeTag = 0
-  @State private var isTraitPickerPresented = true
+  @State private var isCreationPresented = false
+  @State private var isTraitPickerPresented = false
+  @State private var isWillingToClose = false
   @Namespace private var namespace
+  
+  @StateObject private var viewModel = PlaygroundViewModel()
   
   /// Traits displayed in the same order as the trait picker
   private let traits = [
@@ -25,10 +41,8 @@ struct NounPlayground: View {
   
   private let zIndex: [Double] = [4, 3, 1, 2]
   
-  @State var selectedTraitIndex = 0
-  
   var body: some View {
-    VStack {
+    VStack(spacing: 0) {
       Spacer()
       
       ZStack(alignment: .bottom) {
@@ -37,11 +51,12 @@ struct NounPlayground: View {
           .padding(.horizontal, 20)
         
         ZStack(alignment: .top) {
-          ForEach(traits.indices) { index in
+          ForEach(traits.indices) { tag in
             SlotMachine(
-              items: traits[index],
-              isActive: selectedTraitIndex == index
-            ).zIndex(zIndex[index])
+              items: traits[tag],
+              typeTag: tag,
+              viewModel: viewModel)
+              .zIndex(zIndex[tag])
           }
         }
         .frame(maxWidth: .infinity, maxHeight: 320)
@@ -49,43 +64,78 @@ struct NounPlayground: View {
       
       Spacer()
       
-      PlainCell {
-        TraitPicker(animation: namespace, selectedTraitIndex: $selectedTraitIndex)
+      if isTraitPickerPresented {
+        PlainCell {
+          TraitPicker(
+            isPresented: $isTraitPickerPresented,
+            animation: namespace,
+            viewModel: viewModel)
+        }
+        .padding(.horizontal, 20)
+        .transition(.move(edge: .bottom))
+        
+      } else {
+        TraitPicker(
+          isPresented: $isTraitPickerPresented,
+          animation: namespace,
+          viewModel: viewModel)
+          .padding(.bottom, 20)
+          .transition(
+            AnyTransition.asymmetric(
+              insertion: AnyTransition.opacity.animation(Animation.default.delay(0.2)),
+              removal: AnyTransition.move(edge: .bottom))
+          )
       }
-      .padding(.horizontal, 20)
     }
+    // Resuable component to close & back buttons...
     .softNavigationItems(leftAccessory: {
       SoftButton(
         icon: { Image.xmark },
-        action: { presentationMode.wrappedValue.dismiss() })
+        action: {
+          withAnimation {
+            isWillingToClose.toggle()
+          }
+        })
       
     }, rightAccessory: {
       SoftButton(
         text: "Done",
         smallAccessory: { Image.checkmark },
-        action: { })
+        action: {
+          withAnimation {
+            isCreationPresented.toggle()
+            isTraitPickerPresented = false
+          }
+        })
     })
-    .background(Gradient.orangesicle)
-  }
-}
-
-struct SlotMachineBoundsKey: PreferenceKey {
-  static var defaultValue: Anchor<CGRect>?
-  
-  static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
-    value = value ?? nextValue()
+    .background(LinearGradient(
+      colors: Gradient.allGradients()[viewModel.seed[4]],
+      startPoint: .topLeading,
+      endPoint: .bottomTrailing))
+    .bottomSheet(isPresented: $isWillingToClose) {
+      DeleteOfflineNounDialog(isDisplayed: $isWillingToClose)
+    }
+    .bottomSheet(isPresented: $isCreationPresented) {
+      NounMetadataDialog(
+        viewModel: viewModel,
+        isEditing: .constant(true),
+        isPresented: $isCreationPresented)
+    }
   }
 }
 
 public struct SlotMachine: View {
   public let items: [Trait]
-  public let isActive: Bool
-  
+  let typeTag: Int
+  @ObservedObject var viewModel: PlaygroundViewModel
   @GestureState private var offset: CGFloat = 0
-  @State private var index = 0
+  
+  private var isActive: Bool {
+    viewModel.selectedTraitType == typeTag
+  }
   
   var numberOfVisibleItems: Int {
-    isActive ? items.endIndex : 1
+    items.endIndex
   }
   
   public var body: some View {
@@ -101,7 +151,7 @@ public struct SlotMachine: View {
         }
       }
       .padding(.horizontal, proxy.size.width * 0.10)
-      .offset(x: isActive ? ((CGFloat(index) * -traitWidth) + offset) : 0)
+      .offset(x: isActive ? ((CGFloat(viewModel.seed[typeTag]) * -traitWidth) + offset) : (CGFloat(viewModel.seed[typeTag]) * -traitWidth))
       .gesture(
         DragGesture()
           .updating($offset, body: { value, state, _ in
@@ -111,7 +161,7 @@ public struct SlotMachine: View {
             let offsetX = value.translation.width
             let progress = -offsetX / traitWidth
             let roundIndex = progress.rounded()
-            index = max(min(index + Int(roundIndex), items.endIndex - 1), 0)
+            viewModel.seed[typeTag] = max(min(viewModel.seed[typeTag] + Int(roundIndex), items.endIndex - 1), 0)
           })
       )
       .allowsHitTesting(isActive)

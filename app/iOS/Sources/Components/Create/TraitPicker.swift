@@ -9,6 +9,7 @@ import SwiftUI
 import UIComponents
 import Services
 
+// TODO: Rebuild the TraitPicker & Use the view state in redux to keep the current noun's traits selections.
 class TraitCollectionModel: NSObject, ObservableObject {
   @Published var selectedGlasses: Trait?
   @Published var selectedHead: Trait?
@@ -21,8 +22,9 @@ class TraitCollectionModel: NSObject, ObservableObject {
 struct TraitPicker: View {
   @Namespace var slideActiveTabSpace
   var animation: Namespace.ID
-    
-  @Binding var selectedTraitIndex: Int
+  @Binding var isPresented: Bool
+  //  @Binding var selectedTraitType: Int
+  @ObservedObject var viewModel: PlaygroundViewModel
   
   private let rowSpec = [
     GridItem(.flexible()),
@@ -32,17 +34,24 @@ struct TraitPicker: View {
   
   @StateObject var model = TraitCollectionModel()
   
-  init(animation: Namespace.ID, selectedTraitIndex: Binding<Int>) {
+  init(isPresented: Binding<Bool>, animation: Namespace.ID, viewModel: PlaygroundViewModel) {
     self.animation = animation
-    self._selectedTraitIndex = selectedTraitIndex
+    self.viewModel = viewModel
+    self._isPresented = isPresented
   }
   
   var body: some View {
     VStack(spacing: 3) {
       Image.chevronDown
+        .rotationEffect(.degrees(isPresented ? 180 : 0))
+        .onTapGesture {
+          withAnimation {
+            isPresented.toggle()
+          }
+        }
       
       ScrollView(.horizontal, showsIndicators: false) {
-        OutlinePicker(selection: $selectedTraitIndex) {
+        OutlinePicker(selection: $viewModel.selectedTraitType) {
           Text("Glasses")
             .id(0)
             .pickerItemTag(0, namespace: slideActiveTabSpace)
@@ -66,7 +75,11 @@ struct TraitPicker: View {
         .padding(.horizontal)
       }
       
-      TraitGrid(model: model, selectedTraitIndex: $selectedTraitIndex)
+      if isPresented {
+        TraitGrid(
+          model: model,
+          viewModel: viewModel)
+      }
     }
   }
 }
@@ -95,8 +108,7 @@ struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View
 
 struct TraitGrid: View {
   @ObservedObject var model: TraitCollectionModel
-  
-  @Binding var selectedTraitIndex: Int
+  @ObservedObject var viewModel: PlaygroundViewModel
   
   private let rowSpec = [
     GridItem(.flexible()),
@@ -110,11 +122,12 @@ struct TraitGrid: View {
         LazyHGrid(rows: rowSpec, spacing: 4) {
           TraitCollectionSection(tag: 0, items: AppCore.shared.nounComposer.glasses) { item, index in
             TraitPickerItem(image: item.assetImage)
-              .selected(model.selectedGlasses == item)
+              .selected(viewModel.seed[0] == index)
               .id("0-\(index)")
               .onTapGesture {
                 withAnimation {
                   model.selectedGlasses = item
+                  viewModel.seed[0] = index
                 }
               }
               .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
@@ -122,11 +135,12 @@ struct TraitGrid: View {
           
           TraitCollectionSection(tag: 1, items: AppCore.shared.nounComposer.heads) { item, index in
             TraitPickerItem(image: item.assetImage)
-              .selected(model.selectedHead == item)
+              .selected(viewModel.seed[1] == index)
               .id("1-\(index)")
               .onTapGesture {
                 withAnimation {
                   model.selectedHead = item
+                  viewModel.seed[1] = index
                 }
               }
               .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
@@ -134,11 +148,12 @@ struct TraitGrid: View {
           
           TraitCollectionSection(tag: 2, items: AppCore.shared.nounComposer.bodies) { item, index in
             TraitPickerItem(image: item.assetImage)
-              .selected(model.selectedBody == item)
+              .selected(viewModel.seed[2] == index)
               .id("2-\(index)")
               .onTapGesture {
                 withAnimation {
                   model.selectedBody = item
+                  viewModel.seed[2] = index
                 }
               }
               .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
@@ -146,11 +161,12 @@ struct TraitGrid: View {
           
           TraitCollectionSection(tag: 3, items: AppCore.shared.nounComposer.accessories) { item, index in
             TraitPickerItem(image: item.assetImage)
-              .selected(model.selectedAccessory == item)
+              .selected(viewModel.seed[3] == index)
               .id("3-\(index)")
               .onTapGesture {
                 withAnimation {
                   model.selectedAccessory = item
+                  viewModel.seed[3] = index
                 }
               }
               .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
@@ -158,22 +174,26 @@ struct TraitGrid: View {
           
           TraitCollectionSection(tag: 4, items: Gradient.allGradients()) { gradient, index in
             GradientPickerItem(colors: gradient)
-              .selected(model.selectedBackground == gradient)
+              .selected(viewModel.seed[4] == index)
               .id("4-\(index)")
               .onTapGesture {
                 withAnimation {
                   model.selectedBackground = gradient
+                  viewModel.seed[4] = index
                 }
               }
               .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
           }
         }
-        .onChange(of: selectedTraitIndex, perform: { [selectedTraitIndex] newSelectedTrait in
-          if selectedTraitIndex != newSelectedTrait {
-            withAnimation {
-              proxy.scrollTo("\(newSelectedTrait)-0", anchor: .leading)
-            }
+        .onChange(of: viewModel.selectedTraitType, perform: { newSelectedTrait in
+          withAnimation {
+            proxy.scrollTo("\(newSelectedTrait)-\(viewModel.seed[newSelectedTrait])", anchor: .leading)
           }
+        })
+        .onChange(of: viewModel.seed, perform: { seed in
+//          withAnimation {
+//            proxy.scrollTo("\(viewModel.selectedTraitType)-\(seed[viewModel.selectedTraitType])", anchor: .center)
+//          }
         })
         .padding(.vertical)
       }
@@ -224,7 +244,7 @@ struct GradientSelectedModifier: ViewModifier {
 struct TraitPickerItem: View {
   
   let image: String
-    
+  
   init(image: String) {
     self.image = image
   }
@@ -260,30 +280,30 @@ struct TraitSelectedModifier: ViewModifier {
   }
 }
 
-struct TraitPicker_Previews: PreviewProvider {
-  
-  struct Preview: View {
-    @State var isPresented = true
-    
-    @State var selection: Int = 0
-    
-    @Namespace var ns
-    
-    var body: some View {
-      VStack {
-        Button("Show") {
-          withAnimation {
-            isPresented.toggle()
-          }
-        }
-      }
-      .bottomSheet(isPresented: $isPresented) {
-        TraitPicker(animation: ns, selectedTraitIndex: .constant(1))
-      }
-    }
-  }
-  
-  static var previews: some View {
-    Preview()
-  }
-}
+//struct TraitPicker_Previews: PreviewProvider {
+//
+//  struct Preview: View {
+//    @State var isPresented = true
+//
+//    @State var selection: Int = 0
+//
+//    @Namespace var ns
+//
+//    var body: some View {
+//      VStack {
+//        Button("Show") {
+//          withAnimation {
+//            isPresented.toggle()
+//          }
+//        }
+//      }
+//      .bottomSheet(isPresented: $isPresented) {
+//        TraitPicker(animation: ns, selectedTraitType: .constant(1))
+//      }
+//    }
+//  }
+//
+//  static var previews: some View {
+//    Preview()
+//  }
+//}

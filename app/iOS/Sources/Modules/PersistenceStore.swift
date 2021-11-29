@@ -11,6 +11,7 @@ import Combine
 import SwiftUI
 
 class PersistenceStore {
+  static let shared = PersistenceStore()
   
   private var cancellable: Cancellable?
   
@@ -48,6 +49,7 @@ class PersistenceStore {
   ) {
     
     let createdNoun = OfflineNoun(context: persistentContainer.viewContext)
+    createdNoun.id = UUID()
     createdNoun.createdDate = Date()
     createdNoun.name = name
     createdNoun.body = body
@@ -58,6 +60,11 @@ class PersistenceStore {
     createdNoun.background = background.compactMap { $0.toHex }
     
     // Save changes
+    save()
+  }
+  
+  func delete(_ noun: OfflineNoun) {
+    persistentContainer.viewContext.delete(noun)
     save()
   }
   

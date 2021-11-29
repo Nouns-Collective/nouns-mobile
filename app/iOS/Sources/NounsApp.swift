@@ -37,7 +37,7 @@ struct NounsApp: App {
   
   @State private var nounComposer = AppCore.shared.nounComposer
   
-  private let persistence = PersistenceStore()
+//  private let persistence = PersistenceStore
   
   init() {
     UIComponents.configure()
@@ -48,7 +48,7 @@ struct NounsApp: App {
       NavigationRootView()
         .environmentObject(store)
         .environment(\.nounComposer, nounComposer)
-        .environment(\.managedObjectContext, persistence.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, PersistenceStore.shared.persistentContainer.viewContext)
         .preferredColorScheme(.light)
     }
   }

@@ -53,20 +53,22 @@ extension Gradient {
     public static let bubbleGum = BubbleGum()
     
     public static func allGradients() -> [[Color]] {
-        [Gradient.coolGreydient.colors,
-         Gradient.warmGreydient.colors,
-         Gradient.cherrySunset.colors,
-         Gradient.orangesicle.colors,
-         Gradient.mangoChunks.colors,
-         Gradient.lemonDrop.colors,
-         Gradient.keyLimePie.colors,
-         Gradient.kiwiDream.colors,
-         Gradient.freshMint.colors,
-         Gradient.oceanBreeze.colors,
-         Gradient.blueberryJam.colors,
-         Gradient.grapeAttack.colors,
-         Gradient.magnoliaGarden.colors,
-         Gradient.bubbleGum.colors]
+        [
+            Gradient.coolGreydient.colors,
+            Gradient.warmGreydient.colors,
+            Gradient.cherrySunset.colors,
+            Gradient.orangesicle.colors,
+            Gradient.mangoChunks.colors,
+            Gradient.lemonDrop.colors,
+            Gradient.keyLimePie.colors,
+            Gradient.kiwiDream.colors,
+            Gradient.freshMint.colors,
+            Gradient.oceanBreeze.colors,
+            Gradient.blueberryJam.colors,
+            Gradient.grapeAttack.colors,
+            Gradient.magnoliaGarden.colors,
+            Gradient.bubbleGum.colors
+        ]
     }
 }
 

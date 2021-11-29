@@ -17,18 +17,19 @@ struct OfflineNounCard: View {
     let dateFormatter = DateFormatter()
     dateFormatter.timeZone = TimeZone.current
     dateFormatter.locale = NSLocale.current
-    dateFormatter.dateFormat = "MMM d, YYYY"
-    return dateFormatter.string(from: noun.createdDate)
+    dateFormatter.dateFormat = "MMMM d, YYYY"
+    return dateFormatter.string(from: noun.createdDate ?? Date())
   }
   
   var body: some View {
+    // TODO: Reduce the number of initializers to make it clear and rely Matrial.io to define the components.
     StandardCard(
       media: {
         NounPuzzle(
-          head: Image(nounTraitName: noun.head),
-          body: Image(nounTraitName: noun.body),
-          glass: Image(nounTraitName: noun.glasses),
-          accessory: Image(nounTraitName: noun.accessory)
+          head: Image(nounTraitName: noun.head ?? ""),
+          body: Image(nounTraitName: noun.body ?? ""),
+          glass: Image(nounTraitName: noun.glasses ?? ""),
+          accessory: Image(nounTraitName: noun.accessory ?? "")
         )
         .matchedGeometryEffect(id: "\(noun.id)-puzzle", in: animation)
         .background(gradient)
@@ -36,7 +37,7 @@ struct OfflineNounCard: View {
       }, label: {
         VStack(alignment: .leading, spacing: 40) {
           HStack(alignment: .center) {
-            Text(noun.name)
+            Text(noun.name ?? "")
               .font(Font.custom(.bold, relativeTo: .title2))
             
             Spacer()
@@ -53,9 +54,11 @@ struct OfflineNounCard: View {
       })
   }
   
+  // TODO: Gradient should conform to CaseIterable to iterate through all gradients
+  // TODO: Gradients should conform to transformable to be encoded in CoreData
   private var gradient: some View {
     LinearGradient(
-      colors: noun.background.map { Color(hex: $0) },
+      colors: (noun.background ?? []).map { Color(hex: $0) },
       startPoint: .topLeading,
       endPoint: .bottomTrailing)
   }

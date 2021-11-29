@@ -13,6 +13,10 @@ public struct DialogNavigation<Content, L, T>: View where Content: View, L: View
     private let trailing: T
     private let content: () -> Content
     
+    @Binding private var isEditing: Bool
+    @Binding private var text: String
+    private let placeholder: String
+    
     public init(
         title: String,
         leading: @escaping () -> L,
@@ -23,6 +27,9 @@ public struct DialogNavigation<Content, L, T>: View where Content: View, L: View
         self.leading = leading()
         self.trailing = trailing()
         self.content = content
+        self.placeholder = ""
+        self._text = .constant("")
+        self._isEditing = .constant(false)
     }
     
     public init(
@@ -34,6 +41,9 @@ public struct DialogNavigation<Content, L, T>: View where Content: View, L: View
         self.leading = leading()
         self.trailing = EmptyView()
         self.content = content
+        self.placeholder = ""
+        self._text = .constant("")
+        self._isEditing = .constant(false)
     }
     
     public init(
@@ -45,6 +55,26 @@ public struct DialogNavigation<Content, L, T>: View where Content: View, L: View
         self.leading = EmptyView()
         self.trailing = trailing()
         self.content = content
+        self.placeholder = ""
+        self._text = .constant("")
+        self._isEditing = .constant(false)
+    }
+    
+    public init(
+        title: String,
+        isEditing: Binding<Bool>,
+        text: Binding<String>,
+        placeholder: String,
+        trailing: @escaping () -> T,
+        @ViewBuilder content: @escaping () -> Content
+    ) where L == EmptyView {
+        self.title = title
+        self.leading = EmptyView()
+        self.trailing = trailing()
+        self.content = content
+        self._isEditing = isEditing
+        self._text = text
+        self.placeholder = placeholder
     }
     
     public init(
@@ -55,6 +85,9 @@ public struct DialogNavigation<Content, L, T>: View where Content: View, L: View
         self.leading = EmptyView()
         self.trailing = EmptyView()
         self.content = content
+        self.placeholder = ""
+        self._text = .constant("")
+        self._isEditing = .constant(false)
     }
     
     public var body: some View {
@@ -64,9 +97,14 @@ public struct DialogNavigation<Content, L, T>: View where Content: View, L: View
             HStack(alignment: .top) {
                 Text(title)
                     .font(.custom(.bold, size: 36))
-                Spacer()
-                trailing
-                    .padding(.top, 5)
+                    .lineLimit(2)
+                    .edit(isActive: isEditing, text: $text, placeholder: placeholder)
+                
+                if !isEditing {
+                    Spacer()
+                    trailing
+                        .padding(.top, 5)
+                }
             }
             
             content()
@@ -100,7 +138,7 @@ public struct Edit: ViewModifier {
     }
     
     private var input: some View {
-        TextField("", text: $text)
+        TextField(placeholder, text: $text)
             .font(.custom(.bold, size: 36))
     }
 }

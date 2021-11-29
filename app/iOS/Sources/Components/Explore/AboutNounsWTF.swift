@@ -8,7 +8,7 @@
 import SwiftUI
 import UIComponents
 
-// TODO: All the static text should be placed in `R.generated.swift` file.
+// TODO: Rebuild to match the new UI.
 struct AboutNounsWTF: View {
   @Environment(\.openURL) private var openURL
   @Binding var isPresented: Bool
