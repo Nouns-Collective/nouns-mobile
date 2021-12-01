@@ -35,6 +35,10 @@ class Store<State>: ObservableObject {
     }
   }
   
+  func dispatch(_ actions: Action...) {
+    actions.forEach(dispatch(_:))
+  }
+  
   private func dispatch(_ state: State, _ action: Action) {
     self.state = reducer(state, action)
 

@@ -46,7 +46,7 @@ struct NounderActivitiesView: View {
     .frame(maxWidth: .infinity)
     .activityIndicator(isPresented: store.state.activities.isLoading)
     .onAppear {
-      store.dispatch(FetchOnChainNounActivitiesAction(noun: noun))
+      store.dispatch(FetchNounActivityAction(noun: noun))
     }
   }
 }

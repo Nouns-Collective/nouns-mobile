@@ -32,7 +32,7 @@ targets:
       - path: iOS/Sources
     settings:
       base:
-        INFOPLIST_FILE: iOS/Sources/Info.plist
+        INFOPLIST_FILE: iOS/Sources/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
     dependencies:
       - package: Rswift
@@ -44,12 +44,12 @@ targets:
         - Nouns iOS UITests
     preBuildScripts:
       - script: |
-                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Sources/Utils/R.generated.swift"
+                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Sources/Resources/R.generated.swift"
         name: R.swift
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/iOS/Sources/Utils/R.generated.swift
+          - $SRCROOT/iOS/Sources/Resources/R.generated.swift
     postBuildScripts:
       - script: |
                 /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"

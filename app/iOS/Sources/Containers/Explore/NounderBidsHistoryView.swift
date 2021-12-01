@@ -36,7 +36,7 @@ struct NounderBidsHistoryView: View {
     .ignoresSafeArea()
     .activityIndicator(isPresented: store.state.activities.isLoading)
     .onAppear {
-      store.dispatch(FetchOnChainNounBidsAction(noun: noun))
+      store.dispatch(FetchBidHistoryAction(noun: noun))
     }
   }
 }

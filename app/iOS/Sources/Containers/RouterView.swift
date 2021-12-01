@@ -8,7 +8,7 @@
 import SwiftUI
 import UIComponents
 
-struct NavigationRootView: View {
+struct RouterView: View {
   @State private var selectedTab = 0
   
   init() {
@@ -20,7 +20,7 @@ struct NavigationRootView: View {
   var body: some View {
     // TODO: Enhancing OutlineTabView API by prodviding a view modifier to construct the tab items
     OutlineTabView(selection: $selectedTab) {
-      OnChainExplorerView()
+      ExploreExperience()
         .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
       
       CreateExperience()
@@ -37,6 +37,6 @@ struct NavigationRootView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationRootView()
+    RouterView()
   }
 }

@@ -10,7 +10,7 @@ import UIComponents
 import Services
 
 /// Housing view for exploring on chain nouns, including the current on-goign auction and previously auctioned nouns
-struct OnChainExplorerView: View {
+struct ExploreExperience: View {
   @EnvironmentObject var store: AppStore
   
   @Namespace private var animation
@@ -61,8 +61,10 @@ struct OnChainExplorerView: View {
       isNounProfilePresented = newValue != nil
     }
     .onAppear {
-      store.dispatch(FetchOnChainAuctionsAction())
-      store.dispatch(ListenLiveAuctionAction())
+      store.dispatch(
+        FetchAuctionsAction(),
+        ListenLiveAuctionAction()
+      )
     }
     /// Presents selected Noun's profile.
     .fullScreenCover(
@@ -86,6 +88,6 @@ struct OnChainExplorerView: View {
 
 struct OnChainExplorerView_Previews: PreviewProvider {
   static var previews: some View {
-    OnChainExplorerView()
+    ExploreExperience()
   }
 }

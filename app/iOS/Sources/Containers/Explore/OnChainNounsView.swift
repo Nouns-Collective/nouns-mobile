@@ -47,7 +47,7 @@ struct OnChainNounsView: View {
             }
           }
       }, loadMoreAction: {
-        store.dispatch(FetchOnChainAuctionsAction(after: $0))
+        store.dispatch(FetchAuctionsAction(after: $0))
         
       }, placeholderView: {
         ForEach(0..<2) { _ in

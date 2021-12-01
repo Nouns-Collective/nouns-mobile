@@ -28,10 +28,10 @@ struct NounsApp: App {
     initialState: AppState(),
     reducer: appReducer,
     middlewares: [
-      onChainAuctionsMiddleware(),
-      onChainNounActivitiesMiddleware(),
+      auctionsMiddleware(),
+      activityMiddleware(),
       liveAuctionMiddleware(),
-      onChainNounBidsMiddleware()
+      bidMiddleware()
     ]
   )
   
@@ -45,7 +45,7 @@ struct NounsApp: App {
   
   var body: some Scene {
     WindowGroup {
-      NavigationRootView()
+      RouterView()
         .environmentObject(store)
         .environment(\.nounComposer, nounComposer)
         .environment(\.managedObjectContext, PersistenceStore.shared.persistentContainer.viewContext)
