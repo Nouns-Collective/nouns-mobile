@@ -11,37 +11,23 @@ import Services
 
 /// Housing view for exploring on chain nouns, including the current on-goign auction and previously auctioned nouns
 struct ExploreExperience: View {
-  @EnvironmentObject var store: AppStore
-  
-  @Namespace private var animation
-  @State private var selectedAuction: Auction?
-  @State private var isNounProfilePresented = false
-  @State private var isPresentingNounActivity = false
-  @State private var isPresentingAbout = false
+  @EnvironmentObject private var store: AppStore
+  @State private var isAboutPresented = false
   
   private var isInitiallyLoading: Bool {
-    (store.state.onChainAuctions.isLoading || store.state.liveAuction.isLoading) &&
-    store.state.onChainAuctions.auctions.isEmpty
+    store.state.auction.isLoading &&
+    store.state.auction.auctions.isEmpty
   }
   
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 20) {
-          if let auction = store.state.liveAuction.auction {
+          if let auction = store.state.auction.liveAuction {
             LiveAuctionCard(auction: auction)
-              .onTapGesture {
-                selectedAuction = auction
-              }
-          } else {
-            LiveAuctionPlaceholderCard()
-              .loading()
           }
           
-          OnChainNounsView(
-            animation: animation,
-            selected: $selectedAuction,
-            isPresentingActivity: $isPresentingNounActivity)
+          SettledAuctionFeed()
         }
         .padding(.horizontal, 20)
         .softNavigationTitle(R.string.explore.title(), rightAccessory: {
@@ -49,7 +35,7 @@ struct ExploreExperience: View {
             text: R.string.explore.about(),
             largeAccessory: { Image.about },
             action: {
-              isPresentingAbout.toggle()
+              isAboutPresented.toggle()
             })
         })
       }
@@ -57,37 +43,55 @@ struct ExploreExperience: View {
       .background(Gradient.lemonDrop)
       .ignoresSafeArea()
     }
-    .onChange(of: selectedAuction) { newValue in
-      isNounProfilePresented = newValue != nil
-    }
     .onAppear {
-      store.dispatch(
-        FetchAuctionsAction(),
-        ListenLiveAuctionAction()
-      )
+      store.dispatch(ListenLiveAuctionAction())
     }
-    /// Presents selected Noun's profile.
-    .fullScreenCover(
-      isPresented: $isNounProfilePresented,
-      onDismiss: {
-        selectedAuction = nil
-      },
-      content: {
-        if let selectedAuction = selectedAuction {
-          OnChainNounProfileView(
-            isPresented: $isNounProfilePresented,
-            auction: selectedAuction)
-        }
-      })
     /// Presents about Nouns.wtf
-    .fullScreenCover(isPresented: $isPresentingAbout) {
-      AboutNounsWTF(isPresented: $isPresentingAbout)
+    .fullScreenCover(isPresented: $isAboutPresented) {
+      AboutView(isPresented: $isAboutPresented)
     }
   }
 }
 
-struct OnChainExplorerView_Previews: PreviewProvider {
-  static var previews: some View {
-    ExploreExperience()
+/// Displays Settled Auction Feed.
+struct SettledAuctionFeed: View {
+  @EnvironmentObject private var store: AppStore
+  @State private var selection: Auction?
+  
+  private var isLoading: Bool {
+    auctionState.isLoading && auctionState.auctions.isEmpty
+  }
+  
+  private var auctionState: AuctionState {
+    store.state.auction
+  }
+  
+  var body: some View {
+    VPageGrid(
+      auctionState.auctions,
+      isLoading: auctionState.isLoading,
+      loadMoreAction: loadMore(after:),
+      placeholder: {
+        CardPlaceholder(count: 2)
+        
+      }, content: { auction in
+        SettledAuctionCard(auction: auction)
+          .onTapGesture {
+            withAnimation(.spring()) {
+              selection = auction
+            }
+          }
+      })
+    /// Presents more details about the settled auction.
+      .fullScreenCover(item: $selection, onDismiss: {
+        selection = nil
+        
+      }, content: { auction in
+        AuctionInfoView(auction: auction)
+      })
+  }
+  
+  private func loadMore(after index: Int) {
+    store.dispatch(FetchAuctionsAction(after: index))
   }
 }

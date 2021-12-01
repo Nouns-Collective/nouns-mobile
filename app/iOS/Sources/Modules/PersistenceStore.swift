@@ -26,6 +26,10 @@ class PersistenceStore {
     return container
   }()
   
+  var viewContext: NSManagedObjectContext {
+    persistentContainer.viewContext
+  }
+  
   init() {
     // A notification that posts when the app is no longer active and loses focus.
     // In this case, it saves all changes made to the view context

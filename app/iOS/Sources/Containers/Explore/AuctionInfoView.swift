@@ -10,11 +10,12 @@ import UIComponents
 import Services
 
 /// Profile view for showing noun details when selected from the explorer view
-struct OnChainNounProfileView: View {
-  @Binding var isPresented: Bool
-  @State var isActivityPresented: Bool = false
-  @State private var showShareSheet = false
+struct AuctionInfoView: View {
   let auction: Auction
+  
+  @State private var isActivityPresented = false
+  @State private var showShareSheet = false
+  @Environment(\.presentationMode) private var presentationMode
   
   private var noun: Noun {
     auction.noun
@@ -91,7 +92,7 @@ struct OnChainNounProfileView: View {
               SoftButton(icon: {
                 Image.xmark
               }, action: {
-                isPresented.toggle()
+                presentationMode.wrappedValue.dismiss()
               })
             }
             

@@ -10,6 +10,7 @@ import Services
 
 struct AuctionState {
   var auctions: [Auction] = []
+  var liveAuction: Auction?
   var isLoading = false
   var error: Error?
 }

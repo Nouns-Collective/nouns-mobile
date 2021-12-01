@@ -18,16 +18,7 @@ func auctionsMiddleware() -> Middleware<AppState> {
         .map { FetchAuctionsSucceeded(auctions: $0) }
         .catch { Just(FetchOnChainAuctionsFailed(error: $0)) }
         .eraseToAnyPublisher()
-      
-    default:
-      return Empty().eraseToAnyPublisher()
-    }
-  }
-}
-
-func liveAuctionMiddleware() -> Middleware<AppState> {
-  return { _, action in
-    switch action {
+     
     case is ListenLiveAuctionAction:
       return AppCore.shared.nounsService.liveAuctionStateDidChange()
         .retry(2)

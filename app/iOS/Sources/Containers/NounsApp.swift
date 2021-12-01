@@ -30,14 +30,12 @@ struct NounsApp: App {
     middlewares: [
       auctionsMiddleware(),
       activityMiddleware(),
-      liveAuctionMiddleware(),
       bidMiddleware()
     ]
   )
   
-  @State private var nounComposer = AppCore.shared.nounComposer
-  
-//  private let persistence = PersistenceStore
+  private var nounComposer = AppCore.shared.nounComposer
+  private var persistenceStore = PersistenceStore.shared
   
   init() {
     UIComponents.configure()
@@ -48,7 +46,7 @@ struct NounsApp: App {
       RouterView()
         .environmentObject(store)
         .environment(\.nounComposer, nounComposer)
-        .environment(\.managedObjectContext, PersistenceStore.shared.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, persistenceStore.viewContext)
         .preferredColorScheme(.light)
     }
   }

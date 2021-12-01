@@ -7,9 +7,12 @@
 
 import SwiftUI
 
-public let defaultLayout = [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)]
+public let defaultLayout = [
+  GridItem(.flexible(), spacing: 20),
+  GridItem(.flexible(), spacing: 20)
+]
 
-public struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Placeholder: View>: View where Data.Element: Identifiable {
+public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAccessCollection, Data.Element: Identifiable, Content: View, Placeholder: View {
   
   /// The data for the list content
   private let data: Data
@@ -37,9 +40,9 @@ public struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Place
     isLoading: Bool,
     columns: [GridItem] = defaultLayout,
     spacing: CGFloat = 20,
-    @ViewBuilder content: @escaping (_ item: Data.Element) -> Content,
     loadMoreAction: @escaping (_ after: Int) -> Void,
-    placeholderView: @escaping () -> Placeholder
+    placeholder: @escaping () -> Placeholder,
+    @ViewBuilder content: @escaping (_ item: Data.Element) -> Content
   ) {
     self.data = data
     self.isLoading = isLoading
@@ -47,26 +50,25 @@ public struct PaginatingVGrid<Data: RandomAccessCollection, Content: View, Place
     self.spacing = spacing
     self.content = content
     self.loadMoreAction = loadMoreAction
-    self.placeholder = placeholderView
+    self.placeholder = placeholder
   }
   
-  private func loadMoreIfNecessary(_ item: Data.Element) {
-    guard data.last?.id == item.id else { return }
+  private func loadMore() {
     loadMoreAction(data.count)
   }
   
   public var body: some View {
     LazyVGrid(columns: columns, spacing: spacing) {
-      ForEach(data) { element in
-        content(element)
-          .onAppear {
-            self.loadMoreIfNecessary(element)
-          }
-      }
-      
-      if isLoading {
+      Section(content: {
+        ForEach(data) { element in
+          content(element)
+        }
+        
+      }, footer: {
+        // Load next batch when footer appears.
         placeholder()
-      }
+          .onAppear(perform: loadMore)
+      })
     }
   }
 }

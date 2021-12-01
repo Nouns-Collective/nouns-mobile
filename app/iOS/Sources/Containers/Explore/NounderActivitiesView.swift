@@ -28,7 +28,7 @@ struct NounderActivitiesView: View {
   
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
-      if !store.state.activities.isLoading && store.state.activities.votes.isEmpty {
+      if !store.state.activity.isLoading && store.state.activity.votes.isEmpty {
         Text(R.string.activity.emptyState())
           .font(.custom(.medium, relativeTo: .headline))
           .padding()
@@ -36,7 +36,7 @@ struct NounderActivitiesView: View {
         VStack(alignment: .leading, spacing: 10) {
           titleLabel
           
-          ForEach(store.state.activities.votes, id: \.proposal.id) { vote in
+          ForEach(store.state.activity.votes, id: \.proposal.id) { vote in
             ActivityRowCell(vote: vote)
           }
         }
@@ -44,7 +44,7 @@ struct NounderActivitiesView: View {
       }
     }
     .frame(maxWidth: .infinity)
-    .activityIndicator(isPresented: store.state.activities.isLoading)
+    .activityIndicator(isPresented: store.state.activity.isLoading)
     .onAppear {
       store.dispatch(FetchNounActivityAction(noun: noun))
     }

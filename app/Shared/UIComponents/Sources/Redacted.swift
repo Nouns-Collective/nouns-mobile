@@ -21,7 +21,7 @@ extension EnvironmentValues {
 
 /// A view extension that sets the loading environment key to true for the specified view and it's children view
 public extension View {
-    func loading(when condition: Bool = true) -> some View {
+    func skeleton(when condition: Bool = true) -> some View {
         environment(\.loading, condition)
     }
 }

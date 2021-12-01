@@ -15,7 +15,7 @@ struct NounderBidsHistoryView: View {
   
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
-      if !store.state.bids.isLoading && store.state.bids.bids.isEmpty {
+      if !store.state.bid.isLoading && store.state.bid.bids.isEmpty {
         Text(R.string.bidHistory.emptyState())
           .font(.custom(.medium, relativeTo: .headline))
           .padding()
@@ -24,7 +24,7 @@ struct NounderBidsHistoryView: View {
           Text(R.string.explore.noun(noun.id))
             .font(.custom(.bold, size: 36))
           
-          ForEach(store.state.bids.bids, id: \.id) { bid in
+          ForEach(store.state.bid.bids, id: \.id) { bid in
             BidRowCell(bid: bid)
           }
         }
@@ -34,7 +34,7 @@ struct NounderBidsHistoryView: View {
     }
     .frame(maxWidth: .infinity)
     .ignoresSafeArea()
-    .activityIndicator(isPresented: store.state.activities.isLoading)
+    .activityIndicator(isPresented: store.state.activity.isLoading)
     .onAppear {
       store.dispatch(FetchBidHistoryAction(noun: noun))
     }

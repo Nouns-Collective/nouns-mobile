@@ -16,6 +16,18 @@ extension View {
   }
 }
 
+struct GridIndicator<C>: ViewModifier where C: View {
+  private let placeholder: C
+  
+  init(_ placeholder: () -> C) {
+    self.placeholder = placeholder()
+  }
+  
+  func body(content: Content) -> some View {
+    content
+  }
+}
+
 struct ActivityIndicator: ViewModifier {
   let isPresented: Bool
   

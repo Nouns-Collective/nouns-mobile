@@ -9,9 +9,10 @@ import SwiftUI
 import UIComponents
 
 // TODO: Rebuild to match the new UI.
-struct AboutNounsWTF: View {
-  @Environment(\.openURL) private var openURL
+struct AboutView: View {
   @Binding var isPresented: Bool
+  
+  @Environment(\.openURL) private var openURL
   
   init(isPresented: Binding<Bool>) {
     self._isPresented = isPresented
@@ -65,7 +66,7 @@ struct AboutNounsWTF: View {
 
 struct AboutView_Previews: PreviewProvider {
   static var previews: some View {
-    AboutNounsWTF(isPresented: .constant(false))
+    AboutView(isPresented: .constant(false))
       .onAppear {
         UIComponents.configure()
       }

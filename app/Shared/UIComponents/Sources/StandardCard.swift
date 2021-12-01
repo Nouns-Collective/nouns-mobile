@@ -247,7 +247,7 @@ struct Preview: PreviewProvider {
             }, rightDetail: {
                 CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Big")
             }).padding()
-            .loading()
+            .skeleton()
         }
     }
     
@@ -264,7 +264,7 @@ struct Preview: PreviewProvider {
                 SafeLabel("89.00", icon: Image.eth)
             }).padding()
             .frame(width: 300)
-            .loading()
+            .skeleton()
         }
     }
     

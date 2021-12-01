@@ -9,9 +9,8 @@ import Foundation
 
 func appReducer(state: AppState, action: Action) -> AppState {
   AppState(
-    onChainAuctions: auctionReducer(state: state.onChainAuctions, action: action),
-    liveAuction: liveAuctionReducer(state: state.liveAuction, action: action),
-    activities: nounActivityReducer(state: state.activities, action: action),
-    bids: bidReducer(state: state.bids, action: action)
+    auction: auctionReducer(state: state.auction, action: action),
+    activity: nounActivityReducer(state: state.activity, action: action),
+    bid: bidReducer(state: state.bid, action: action)
   )
 }

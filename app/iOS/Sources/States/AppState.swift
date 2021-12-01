@@ -8,8 +8,7 @@
 import Foundation
 
 struct AppState {
-  var onChainAuctions = AuctionState()
-  var liveAuction = LiveAuction()
-  var activities = ActivityState()
-  var bids = BidState()
+  var auction = AuctionState()
+  var activity = ActivityState()
+  var bid = BidState()
 }
