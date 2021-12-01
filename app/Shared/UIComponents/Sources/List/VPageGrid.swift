@@ -16,7 +16,7 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
   private let content: (Data.Element) -> Content
   
   /// A method to call after reaching the bottom of the scroll view, to load more content
-  private let loadMoreAction: (_ after: Int) -> Void
+  private let loadMoreAction: () -> Void
   
   /// A placeholder view to show at the bottom of the list while loading more nouns
   private let placeholder: () -> Placeholder
@@ -31,7 +31,7 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
     _ data: Data,
     columns: [GridItem],
     spacing: CGFloat = 20,
-    loadMoreAction: @escaping (_ after: Int) -> Void,
+    loadMoreAction: @escaping () -> Void,
     placeholder: @escaping () -> Placeholder,
     @ViewBuilder content: @escaping (_ item: Data.Element) -> Content
   ) {
@@ -44,7 +44,7 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
   }
   
   private func loadMore() {
-    loadMoreAction(data.count)
+    loadMoreAction()
   }
   
   public var body: some View {

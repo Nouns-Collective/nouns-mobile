@@ -75,7 +75,7 @@ struct SettledAuctionFeed: View {
     VPageGrid(
       auctionState.auctions,
       columns: gridLayout,
-      loadMoreAction: loadMore(after:),
+      loadMoreAction: loadMore,
       placeholder: {
         CardPlaceholder(count: 2)
         
@@ -96,7 +96,7 @@ struct SettledAuctionFeed: View {
       })
   }
   
-  private func loadMore(after index: Int) {
-    store.dispatch(FetchAuctionsAction(after: index))
+  private func loadMore() {
+    store.dispatch(FetchAuctionsAction(after: auctionState.auctions.count))
   }
 }
