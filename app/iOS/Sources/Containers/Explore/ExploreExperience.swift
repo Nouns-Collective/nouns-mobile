@@ -66,10 +66,15 @@ struct SettledAuctionFeed: View {
     store.state.auction
   }
   
+  private let gridLayout = [
+    GridItem(.flexible(), spacing: 20),
+    GridItem(.flexible(), spacing: 20),
+  ]
+  
   var body: some View {
     VPageGrid(
       auctionState.auctions,
-      isLoading: auctionState.isLoading,
+      columns: gridLayout,
       loadMoreAction: loadMore(after:),
       placeholder: {
         CardPlaceholder(count: 2)

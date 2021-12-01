@@ -1,16 +1,11 @@
 //
-//  PaginatingVGrid.swift
+//  VPageGrid.swift
 //  Nouns
 //
 //  Created by Mohammed Ibrahim on 2021-11-17.
 //
 
 import SwiftUI
-
-public let defaultLayout = [
-  GridItem(.flexible(), spacing: 20),
-  GridItem(.flexible(), spacing: 20)
-]
 
 public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAccessCollection, Data.Element: Identifiable, Content: View, Placeholder: View {
   
@@ -26,9 +21,6 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
   /// A placeholder view to show at the bottom of the list while loading more nouns
   private let placeholder: () -> Placeholder
   
-  /// A boolean value to determine whether or not to show the placeholder views at the bottom of the list
-  private let isLoading: Bool
-  
   /// Column layout for the grid
   private let columns: [GridItem]
   
@@ -37,15 +29,13 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
   
   public init(
     _ data: Data,
-    isLoading: Bool,
-    columns: [GridItem] = defaultLayout,
+    columns: [GridItem],
     spacing: CGFloat = 20,
     loadMoreAction: @escaping (_ after: Int) -> Void,
     placeholder: @escaping () -> Placeholder,
     @ViewBuilder content: @escaping (_ item: Data.Element) -> Content
   ) {
     self.data = data
-    self.isLoading = isLoading
     self.columns = columns
     self.spacing = spacing
     self.content = content

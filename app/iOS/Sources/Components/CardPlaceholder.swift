@@ -12,8 +12,13 @@ import UIComponents
 struct CardPlaceholder: View {
   let count: Int
   
+  private let gridLayout = [
+    GridItem(.flexible(), spacing: 20),
+    GridItem(.flexible(), spacing: 20),
+  ]
+  
   var body: some View {
-    LazyVGrid(columns: defaultLayout) {
+    LazyVGrid(columns: gridLayout) {
       ForEach(1...count, id: \.self) { _ in
         StandardCard(
           media: {
