@@ -177,6 +177,7 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
                     Label(title: {
                         Text(calloutText)
                             .font(.custom(.medium, relativeTo: .subheadline))
+                            .truncationMode(.middle)
                     }, icon: {
                         calloutIcon
                     })

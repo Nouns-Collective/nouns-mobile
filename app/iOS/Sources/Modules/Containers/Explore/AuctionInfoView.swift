@@ -13,9 +13,10 @@ import Services
 struct AuctionInfoView: View {
   let auction: Auction
   
+  @EnvironmentObject private var store: AppStore
+  @Environment(\.presentationMode) private var presentationMode
   @State private var isActivityPresented = false
   @State private var showShareSheet = false
-  @Environment(\.presentationMode) private var presentationMode
   
   private var noun: Noun {
     auction.noun
@@ -30,27 +31,9 @@ struct AuctionInfoView: View {
       ))
       
     case false:
-      return AnyView(LiveAuctionDetailRows(
+      return AnyView(LiveAuctionDetailDialog(
         auction: auction,
         isActivityPresented: $isActivityPresented))
-    }
-  }
-  
-  private var actionsRow: some View {
-    HStack {
-      SoftButton(
-        text: R.string.shared.share(),
-        largeAccessory: { Image.share },
-        action: {
-          showShareSheet.toggle()
-        },
-        fill: [.width])
-      
-      SoftButton(
-        text: R.string.shared.remix(),
-        largeAccessory: { Image.splice },
-        action: { },
-        fill: [.width])
     }
   }
   
@@ -89,7 +72,20 @@ struct AuctionInfoView: View {
               .labelStyle(.titleAndIcon(spacing: 14))
               .padding(.bottom, 40)
             
-            actionsRow
+            HStack {
+              SoftButton(
+                text: R.string.shared.share(),
+                largeAccessory: { Image.share },
+                action: {showShareSheet.toggle() },
+                fill: [.width])
+              
+              SoftButton(
+                text: R.string.shared.remix(),
+                largeAccessory: { Image.splice },
+                action: { },
+                fill: [.width])
+            }
+            
           }.padding()
         }
         .padding([.bottom, .horizontal])
@@ -101,240 +97,5 @@ struct AuctionInfoView: View {
         ShareSheet(activityItems: [url])
       }
     }
-  }
-}
-
-struct SettledAuctionDetailRows: View {
-  @Binding var isActivityPresented: Bool
-  @Environment(\.openURL) private var openURL
-  let auction: Auction
-  
-  private var noun: Noun {
-    auction.noun
-  }
-  
-  private var ethPrice: String {
-    let formatter = EtherFormatter(from: .wei)
-    formatter.unit = .eth
-    guard let price = formatter.string(from: auction.amount) else {
-      return R.string.shared.notApplicable()
-    }
-    return price
-  }
-  
-  private var truncatedOwner: String {
-    let leader = "..."
-    let headCharactersCount = Int(ceil(Float(15 - leader.count) / 2.0))
-    let tailCharactersCount = Int(floor(Float(15 - leader.count) / 2.0))
-    
-    return "\(noun.owner.id.prefix(headCharactersCount))\(leader)\(noun.owner.id.suffix(tailCharactersCount))"
-  }
-  
-  private var formattedDate: String {
-    guard let timeInterval = Double(auction.startTime) else {
-      return R.string.shared.notApplicable()
-    }
-    
-    let date = Date(timeIntervalSince1970: timeInterval)
-    
-    let dateFormatter = DateFormatter()
-    dateFormatter.timeZone = TimeZone.current
-    dateFormatter.locale = NSLocale.current
-    dateFormatter.dateFormat = "MMM dd YYYY"
-    return dateFormatter.string(from: date)
-  }
-  
-  private var birthdateRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.birthday(formattedDate),
-      icon: {
-        Image.birthday
-      })
-  }
-  
-  private var bidWinnerRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.bidWinner(),
-      calloutText: ethPrice, icon: {
-        Image.wonPrice
-        
-      }, calloutIcon: {
-        Image.eth
-      })
-  }
-  
-  private var ownerRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.heldBy(),
-      calloutText: truncatedOwner, icon: {
-        Image.holder
-      }, accessory: {
-        Image.mdArrowRight
-      }, action: {
-        if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
-          openURL(url)
-        }
-      })
-  }
-  
-  private var activityRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.auctionSettledGovernance(),
-      icon: {
-        Image.history
-      }, accessory: {
-        Image.mdArrowRight
-      }, action: {
-        isActivityPresented.toggle()
-      })
-  }
-  
-  var body: some View {
-    VStack(alignment: .leading, spacing: 20) {
-      birthdateRow
-      bidWinnerRow
-      ownerRow
-      activityRow
-    }
-  }
-}
-
-struct LiveAuctionDetailRows: View {
-  let auction: Auction
-  @Binding var isActivityPresented: Bool
-  
-  private var noun: Noun {
-    auction.noun
-  }
-  
-  @State private var timeLeft: String = ""
-  private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-  
-  private func updateTimeLeft() {
-    guard let endDateTimeInterval = Double(auction.endTime) else { return }
-    
-    let currentDate = Date()
-    let endDate = Date(timeIntervalSince1970: endDateTimeInterval)
-    
-    let diffComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: currentDate, to: endDate)
-    
-    guard let hours = diffComponents.hour,
-          let minutes = diffComponents.minute,
-          let seconds = diffComponents.second else { return }
-    
-    timeLeft =
-    R.string.nounProfile.auctionUnsettledTimeLeft(hours, minutes, seconds)
-  }
-  
-  private func formattedDate(timeInterval: String) -> String {
-    guard let timeInterval = Double(timeInterval) else { return "N/A" }
-    
-    let date = Date(timeIntervalSince1970: timeInterval)
-    
-    let dateFormatter = DateFormatter()
-    dateFormatter.timeZone = TimeZone.current
-    dateFormatter.locale = NSLocale.current
-    dateFormatter.dateFormat = "MMM dd YYYY"
-    return dateFormatter.string(from: date)
-  }
-  
-  private var ethPrice: String {
-    let formatter = EtherFormatter(from: .wei)
-    formatter.unit = .eth
-    
-    guard let price = formatter.string(from: auction.amount)
-    else {
-      return R.string.shared.notApplicable()
-    }
-    return price
-  }
-  
-  private var truncatedOwner: String {
-    let leader = "..."
-    let headCharactersCount = Int(ceil(Float(15 - leader.count) / 2.0))
-    let tailCharactersCount = Int(floor(Float(15 - leader.count) / 2.0))
-    
-    return "\(noun.owner.id.prefix(headCharactersCount))\(leader)\(noun.owner.id.suffix(tailCharactersCount))"
-  }
-  
-  private var nounIDLabel: some View {
-    Text(R.string.explore.noun(noun.id))
-      .font(.custom(.bold, relativeTo: .title2))
-  }
-  
-  private var timeRemainingRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.auctionUnsettledTimeLeftLabel(),
-      calloutText: timeLeft,
-      icon: {
-        Image.timeleft
-      })
-  }
-  
-  private var birthdateRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.birthday(formattedDate(timeInterval: auction.startTime)),
-      icon: {
-        Image.birthday
-      })
-  }
-  
-  private var curretBidRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.auctionUnsettledLastBid(),
-      calloutText: ethPrice, icon: {
-        Image.currentBid
-      }, calloutIcon: {
-        Image.eth
-      })
-  }
-  
-  private var activityRow: some View {
-    InfoCell(
-      text: R.string.nounProfile.auctionUnsettledGovernance(),
-      icon: {
-        Image.history
-      }, accessory: {
-        Image.mdArrowRight
-      }, action: {
-        isActivityPresented.toggle()
-      })
-  }
-  
-  var body: some View {
-    VStack(alignment: .leading, spacing: 20) {
-      timeRemainingRow
-        .onReceive(timer) { _ in
-          updateTimeLeft()
-        }
-      
-      birthdateRow
-      curretBidRow
-      activityRow
-    }.onAppear {
-      self.updateTimeLeft()
-    }
-  }
-}
-
-struct ShareSheet: UIViewControllerRepresentable {
-  typealias Callback = (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ error: Error?) -> Void
-  
-  let activityItems: [Any]
-  let applicationActivities: [UIActivity]? = nil
-  let excludedActivityTypes: [UIActivity.ActivityType]? = nil
-  let callback: Callback? = nil
-  
-  func makeUIViewController(context: Context) -> UIActivityViewController {
-    let controller = UIActivityViewController(
-      activityItems: activityItems,
-      applicationActivities: applicationActivities)
-    controller.excludedActivityTypes = excludedActivityTypes
-    controller.completionWithItemsHandler = callback
-    return controller
-  }
-  
-  func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-    // nothing to do here
   }
 }

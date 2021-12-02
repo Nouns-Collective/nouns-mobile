@@ -12,7 +12,6 @@ import Services
 /// Housing view for exploring on chain nouns, including the current on-goign auction and previously auctioned nouns
 struct ExploreExperience: View {
   @EnvironmentObject private var store: AppStore
-  @State private var isAboutPresented = false
   
   private var isInitiallyLoading: Bool {
     (liveAuctionState.isLoading || settledAuctionsState.isLoading) &&
@@ -38,14 +37,7 @@ struct ExploreExperience: View {
           SettledAuctionFeed()
         }
         .padding(.horizontal, 20)
-        .softNavigationTitle(R.string.explore.title(), rightAccessory: {
-          SoftButton(
-            text: R.string.explore.about(),
-            largeAccessory: { Image.about },
-            action: {
-              isAboutPresented.toggle()
-            })
-        })
+        .softNavigationTitle(R.string.explore.title())
       }
       // Disable scrolling when data is initially loading.
       .disabled(isInitiallyLoading)
@@ -54,10 +46,6 @@ struct ExploreExperience: View {
     }
     .onAppear {
       store.dispatch(ListenLiveAuctionAction())
-    }
-    /// Presents about Nouns.wtf
-    .fullScreenCover(isPresented: $isAboutPresented) {
-      AboutView(isPresented: $isAboutPresented)
     }
   }
 }

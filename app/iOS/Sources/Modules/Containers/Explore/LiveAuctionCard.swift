@@ -9,7 +9,7 @@ import SwiftUI
 import Services
 import UIComponents
 
-/// Diplay the auction of the day in real time.
+/// Diplays the auction of the day in real time.
 struct LiveAuctionCard: View {
   let auction: Auction
   

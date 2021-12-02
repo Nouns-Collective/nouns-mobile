@@ -8,10 +8,9 @@
 import SwiftUI
 import UIComponents
 
-// TODO: Rebuild to match the new UI.
 struct AboutView: View {
   @Binding var isPresented: Bool
-  
+
   @Environment(\.openURL) private var openURL
   
   init(isPresented: Binding<Bool>) {
@@ -26,17 +25,17 @@ struct AboutView: View {
             R.string.aboutNouns.message(),
             noun: "talking-noun")
             .padding(.horizontal)
-          
+
           Divider()
             .background(Color.componentNounsBlack)
             .frame(height: 2)
-          
+
           Text(R.string.aboutNouns.nounsWtfDescription())
             .font(.custom(.regular, size: 17))
             .lineSpacing(6)
             .padding(.horizontal)
             .padding(.top, 22)
-          
+
           // TODO: Shouldn't leave the app to open the website.
           // Opens `nouns.wtf`
           OutlineButton(
@@ -64,7 +63,7 @@ struct AboutView: View {
   }
 }
 
-struct AboutView_Previews: PreviewProvider {
+struct AboutViews_Previews: PreviewProvider {
   static var previews: some View {
     AboutView(isPresented: .constant(false))
       .onAppear {
