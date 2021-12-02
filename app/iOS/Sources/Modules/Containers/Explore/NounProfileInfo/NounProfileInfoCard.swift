@@ -19,24 +19,28 @@ struct NounProfileInfoCard: View {
       VStack(spacing: 0) {
         Spacer()
         NounPuzzle(seed: auction.noun.seed)
-        NounProfileInfoCardNavigation(auction: auction)
         
-        if auction.settled {
-          SettledAuctionInfoCard(
-            auction: auction,
-            isActivityPresented: $isActivityPresented
-          )
+        PlainCell {
+          NounProfileInfoCardNavigation(auction: auction)
           
-        } else {
-          LiveAuctionInfoCard(
-            auction: auction,
-            isActivityPresented: $isActivityPresented
+          if auction.settled {
+            SettledAuctionInfoCard(
+              auction: auction,
+              isActivityPresented: $isActivityPresented
+            )
+            
+          } else {
+            LiveAuctionInfoCard(
+              auction: auction,
+              isActivityPresented: $isActivityPresented
+            )
+          }
+          
+          NounProfileInfoCardItems(
+            isShareSheetPresented: $isShareSheetPresented
           )
         }
-        
-        NounProfileInfoCardItems(
-          isShareSheetPresented: $isShareSheetPresented
-        )
+        .padding([.bottom, .horizontal])
       }
       .background(Gradient.warmGreydient)
     }
@@ -49,7 +53,8 @@ struct NounProfileInfoCard: View {
 }
 
 private struct NounProfileInfoCardNavigation: View {
-  internal let auction: Auction
+  let auction: Auction
+  
   @Environment(\.presentationMode) private var presentationMode
   
   var body: some View {
@@ -59,9 +64,11 @@ private struct NounProfileInfoCardNavigation: View {
       
       Spacer()
       
-      SoftButton(icon: { Image.xmark }, action: {
-        presentationMode.wrappedValue.dismiss()
-      })
+      SoftButton(
+        icon: { Image.xmark },
+        action: {
+          presentationMode.wrappedValue.dismiss()
+        })
     }
   }
 }

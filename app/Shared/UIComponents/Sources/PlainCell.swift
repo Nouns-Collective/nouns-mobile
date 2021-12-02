@@ -47,6 +47,7 @@ public struct PlainCell<Content: View>: View {
         VStack {
             content
         }
+        .padding()
         .frame(maxWidth: .infinity)
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 12))
