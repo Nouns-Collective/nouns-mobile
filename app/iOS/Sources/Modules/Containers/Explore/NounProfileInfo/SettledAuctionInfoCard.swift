@@ -11,6 +11,9 @@ import UIComponents
 
 struct SettledAuctionInfoCard: View {
   let auction: Auction
+  @Binding var isActivityPresented: Bool
+  
+  @Environment(\.openURL) private var openURL
   
   private var startTimeDate: String {
     guard let timeInterval = Double(auction.startTime) else {
@@ -41,10 +44,10 @@ struct SettledAuctionInfoCard: View {
         calloutText: auction.noun.owner.id,
         icon: { Image.holder },
         accessory: { Image.mdArrowRight },
-        action: {
-//          if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
-//            openURL(url)
-//          }
+        action: { 
+          if let url = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)") {
+            openURL(url)
+          }
         })
       
       // Action to display the governance details of the auction.

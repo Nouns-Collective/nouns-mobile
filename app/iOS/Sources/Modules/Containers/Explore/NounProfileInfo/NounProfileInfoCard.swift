@@ -11,9 +11,8 @@ import Services
 
 struct NounProfileInfoCard: View {
   let auction: Auction
-  @State var isActivityPresented = false
-  
-  @Environment(\.openURL) private var openURL
+  @State private var isActivityPresented = false
+  @State private var isShareSheetPresented = false
   
   var body: some View {
     NavigationView {
@@ -23,24 +22,33 @@ struct NounProfileInfoCard: View {
         NounProfileInfoCardNavigation(auction: auction)
         
         if auction.settled {
-          SettledAuctionInfoCard(auction: auction)
+          SettledAuctionInfoCard(
+            auction: auction,
+            isActivityPresented: $isActivityPresented
+          )
+          
         } else {
-          LiveAuctionInfoCard(auction: auction)
+          LiveAuctionInfoCard(
+            auction: auction,
+            isActivityPresented: $isActivityPresented
+          )
         }
         
-        NounProfileInfoCardItems()
+        NounProfileInfoCardItems(
+          isShareSheetPresented: $isShareSheetPresented
+        )
       }
       .background(Gradient.warmGreydient)
     }
-//    .sheet(isPresented: $showShareSheet) {
-//      if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
-//        ShareSheet(activityItems: [url])
-//      }
-//    }
+    .sheet(isPresented: $isShareSheetPresented) {
+      if let url = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)") {
+        ShareSheet(activityItems: [url])
+      }
+    }
   }
 }
 
-struct NounProfileInfoCardNavigation: View {
+private struct NounProfileInfoCardNavigation: View {
   internal let auction: Auction
   @Environment(\.presentationMode) private var presentationMode
   
@@ -58,7 +66,8 @@ struct NounProfileInfoCardNavigation: View {
   }
 }
 
-struct NounProfileInfoCardItems: View {
+private struct NounProfileInfoCardItems: View {
+  @Binding var isShareSheetPresented: Bool
   
   var body: some View {
     // Various available actions.
@@ -67,7 +76,7 @@ struct NounProfileInfoCardItems: View {
       SoftButton(
         text: R.string.shared.share(),
         largeAccessory: { Image.share },
-        action: { /* showShareSheet.toggle() */ },
+        action: { isShareSheetPresented.toggle() },
         fill: [.width])
       
       // Switch context to the playground exprience using the current Noun's seed.
