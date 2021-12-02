@@ -9,15 +9,8 @@ import SwiftUI
 import Services
 import UIComponents
 
-struct SettledAuctionDetailRows: View {
+struct SettledAuctionInfoCard: View {
   let auction: Auction
-  @Binding var isActivityPresented: Bool
-  
-  @Environment(\.openURL) private var openURL
-  
-  private var noun: Noun {
-    auction.noun
-  }
   
   private var startTimeDate: String {
     guard let timeInterval = Double(auction.startTime) else {
@@ -42,15 +35,16 @@ struct SettledAuctionDetailRows: View {
         icon: { Image.wonPrice },
         calloutIcon: { Image.eth })
       
+      // Displays the winner of the auction using `ENS` or `Token`.
       InfoCell(
         text: R.string.nounProfile.heldBy(),
-        calloutText: noun.owner.id,
+        calloutText: auction.noun.owner.id,
         icon: { Image.holder },
         accessory: { Image.mdArrowRight },
         action: {
-          if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
-            openURL(url)
-          }
+//          if let url = URL(string: "https://nouns.wtf/noun/\(noun.id)") {
+//            openURL(url)
+//          }
         })
       
       // Action to display the governance details of the auction.
@@ -58,7 +52,9 @@ struct SettledAuctionDetailRows: View {
         text: R.string.nounProfile.auctionSettledGovernance(),
         icon: { Image.history },
         accessory: { Image.mdArrowRight },
-        action: { isActivityPresented.toggle() })
+        action: { /*isActivityPresented.toggle()*/ })
     }
+    .labelStyle(.titleAndIcon(spacing: 14))
+    .padding(.bottom, 40)
   }
 }

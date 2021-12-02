@@ -50,7 +50,7 @@ struct SettledAuctionFeed: View {
         selection = nil
         
       }, content: { auction in
-        AuctionInfoView(auction: auction)
+        SettledAuctionInfoCard(auction: auction)
       })
   }
   
