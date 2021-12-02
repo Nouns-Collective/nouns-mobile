@@ -25,7 +25,7 @@ struct FetchOnChainAuctionsFailed: Action {
 /// Live Auction Actions
 struct ListenLiveAuctionAction: Action { }
 
-struct SinkLiveAuctionAction: Action {
+struct LiveAuctionDidChange: Action {
   let auction: Auction
 }
 
@@ -33,3 +33,10 @@ struct ListenLiveAuctionFailed: Action {
   let error: Error
 }
 
+struct ListenLiveAuctionRemainingTimeChangesAction: Action {
+  let auction: Auction
+}
+
+struct LiveAuctionRemainingTimeDidChange: Action {
+  let remainingTime: DateComponents
+}

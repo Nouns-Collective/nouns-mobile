@@ -40,9 +40,7 @@ struct AuctionInfoView: View {
     HStack {
       SoftButton(
         text: R.string.shared.share(),
-        largeAccessory: {
-          Image.share
-        },
+        largeAccessory: { Image.share },
         action: {
           showShareSheet.toggle()
         },
@@ -50,9 +48,7 @@ struct AuctionInfoView: View {
       
       SoftButton(
         text: R.string.shared.remix(),
-        largeAccessory: {
-          Image.splice
-        },
+        largeAccessory: { Image.splice },
         action: { },
         fill: [.width])
     }
@@ -76,12 +72,7 @@ struct AuctionInfoView: View {
           EmptyView()
         }
         
-        NounPuzzle(
-          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[noun.seed.head].assetImage),
-          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[noun.seed.body].assetImage),
-          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[noun.seed.glasses].assetImage),
-          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[noun.seed.accessory].assetImage)
-        )
+        NounPuzzle(seed: noun.seed)
         
         PlainCell {
           VStack {
@@ -89,9 +80,7 @@ struct AuctionInfoView: View {
               nounIDLabel
               Spacer()
               
-              SoftButton(icon: {
-                Image.xmark
-              }, action: {
+              SoftButton(icon: { Image.xmark }, action: {
                 presentationMode.wrappedValue.dismiss()
               })
             }

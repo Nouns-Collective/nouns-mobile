@@ -9,13 +9,14 @@ import Foundation
 import Services
 
 func auctionReducer(state: AuctionState, action: Action) -> AuctionState {
-  var state = settledAuctionsReducer(state: state, action: action)
-  state = liveAuctionReducer(state: state, action: action)
-  return state
+  AuctionState(
+    settledAuctions: settledAuctionsReducer(state: state.settledAuctions, action: action),
+    liveAuction: liveAuctionReducer(state: state.liveAuction, action: action)
+  )
 }
   
 /// Handles all `Settled Auctions` actions.
-func settledAuctionsReducer(state: AuctionState, action: Action) -> AuctionState {
+func settledAuctionsReducer(state: SettledAuctionsState, action: Action) -> SettledAuctionsState {
   var state = state
   switch action {
   case is FetchAuctionsAction:
@@ -37,23 +38,26 @@ func settledAuctionsReducer(state: AuctionState, action: Action) -> AuctionState
 }
 
 /// Handles all `Live Auction` actions
-func liveAuctionReducer(state: AuctionState, action: Action) -> AuctionState {
+func liveAuctionReducer(state: LiveAuctionState, action: Action) -> LiveAuctionState {
   var state = state
   switch action {
   case is ListenLiveAuctionAction:
     state.isLoading = true
     
-  case let sink as SinkLiveAuctionAction:
-    state.liveAuction = sink.auction
+  case let output as LiveAuctionDidChange:
+    state.auction = output.auction
     state.isLoading = false
     
   case let failure as ListenLiveAuctionFailed:
     state.error = failure.error
     state.isLoading = false
-    print("Error: \(failure.error)")
+  
+  case let output as LiveAuctionRemainingTimeDidChange:
+    state.remainingTime = output.remainingTime
     
   default:
     break
   }
+  
   return state
 }

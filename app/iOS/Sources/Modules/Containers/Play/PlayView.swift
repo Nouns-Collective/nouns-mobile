@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UIComponents
+import Services
 
 struct PlayView: View {
   @State private var isPlayPresented = false
@@ -23,11 +24,12 @@ struct PlayView: View {
         Text(R.string.play.subhealine())
           .font(.custom(.regular, size: 17))
         
-        NounPuzzle(
-          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[26].assetImage),
-          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[20].assetImage),
-          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[8].assetImage),
-          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[0].assetImage))
+        Color.clear
+//        NounPuzzle(
+//          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[26].assetImage),
+//          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[20].assetImage),
+//          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[8].assetImage),
+//          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[0].assetImage))
           .padding(.top, 40)
         
         OutlineButton(

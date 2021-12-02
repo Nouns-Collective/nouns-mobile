@@ -24,12 +24,13 @@ struct OffChainNounProfile: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      NounPuzzle(
-        head: Image(nounTraitName: noun.head ?? ""),
-        body: Image(nounTraitName: noun.body ?? ""),
-        glass: Image(nounTraitName: noun.glasses ?? ""),
-        accessory: Image(nounTraitName: noun.accessory ?? "")
-      )
+      Color.red
+//      NounPuzzle(
+//        head: Image(nounTraitName: noun.head ?? ""),
+//        body: Image(nounTraitName: noun.body ?? ""),
+//        glass: Image(nounTraitName: noun.glasses ?? ""),
+//        accessory: Image(nounTraitName: noun.accessory ?? "")
+//      )
       
       // TODO: Use action sheet instead once built
       PlainCell {

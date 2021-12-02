@@ -113,11 +113,12 @@ struct OfflineFeedPlaceholder: ViewModifier {
       // TODO: OffChainNoun && OnchainNoun conform to Noun
       // NounPuzzle(noun: noun)
       // TODO: Integrate the NounPlayground to randomly generate Traits each time the view appear.
-      NounPuzzle(
-        head: Image(nounTraitName: nounComposer.heads[3].assetImage),
-        body: Image(nounTraitName: nounComposer.bodies[6].assetImage),
-        glass: Image(nounTraitName: nounComposer.glasses[0].assetImage),
-        accessory: Image(nounTraitName: nounComposer.accessories[0].assetImage))
+//      NounPuzzle(
+//        head: Image(nounTraitName: nounComposer.heads[3].assetImage),
+//        body: Image(nounTraitName: nounComposer.bodies[6].assetImage),
+//        glass: Image(nounTraitName: nounComposer.glasses[0].assetImage),
+//        accessory: Image(nounTraitName: nounComposer.accessories[0].assetImage))
+      Color.red
         .padding(.top, 40)
       
       OutlineButton(

@@ -25,14 +25,15 @@ struct OfflineNounCard: View {
     // TODO: Reduce the number of initializers to make it clear and rely Matrial.io to define the components.
     StandardCard(
       media: {
-        NounPuzzle(
-          head: Image(nounTraitName: noun.head ?? ""),
-          body: Image(nounTraitName: noun.body ?? ""),
-          glass: Image(nounTraitName: noun.glasses ?? ""),
-          accessory: Image(nounTraitName: noun.accessory ?? "")
-        )
-        .matchedGeometryEffect(id: "\(noun.id)-puzzle", in: animation)
-        .background(gradient)
+        Color.red
+//        NounPuzzle(
+//          head: Image(nounTraitName: noun.head ?? ""),
+//          body: Image(nounTraitName: noun.body ?? ""),
+//          glass: Image(nounTraitName: noun.glasses ?? ""),
+//          accessory: Image(nounTraitName: noun.accessory ?? "")
+//        )
+//        .matchedGeometryEffect(id: "\(noun.id)-puzzle", in: animation)
+//        .background(gradient)
         
       }, label: {
         VStack(alignment: .leading, spacing: 40) {
