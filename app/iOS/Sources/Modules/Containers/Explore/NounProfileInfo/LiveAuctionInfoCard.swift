@@ -55,7 +55,7 @@ struct LiveAuctionInfoCard: View {
       // Displays the current bid amount.
       InfoCell(
         text: R.string.nounProfile.auctionUnsettledLastBid(),
-        calloutText: auction.ethAmount ?? R.string.shared.notApplicable(),
+        calloutText: EtherFormatter.eth(from: auction.amount) ?? R.string.shared.notApplicable(),
         icon: { Image.currentBid },
         calloutIcon: { Image.eth })
       

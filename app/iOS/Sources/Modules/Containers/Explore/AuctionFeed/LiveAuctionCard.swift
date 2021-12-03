@@ -50,7 +50,7 @@ struct LiveAuctionCard: View {
         // Displays Current Bid.
         CompoundLabel(
           SafeLabel(
-            auction.ethAmount ?? R.string.shared.notApplicable(),
+            EtherFormatter.eth(from: auction.amount) ?? R.string.shared.notApplicable(),
             icon: Image.eth
           ),
           icon: Image.currentBid,

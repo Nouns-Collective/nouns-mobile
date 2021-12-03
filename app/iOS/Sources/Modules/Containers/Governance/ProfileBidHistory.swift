@@ -64,9 +64,9 @@ struct BidRow: View {
     PlainCell {
       VStack(alignment: .leading, spacing: 8) {
         HStack(alignment: .center) {
-          
+          // Bid amount
           Label {
-            Text(bid.ethAmount ?? R.string.shared.unavailable())
+            Text(EtherFormatter.eth(from: bid.amount) ?? R.string.shared.unavailable())
               .foregroundColor(Color.componentNounsBlack)
               .font(.custom(.bold, relativeTo: .title3))
           } icon: {
@@ -77,11 +77,13 @@ struct BidRow: View {
           
           Spacer()
           
+          // Timestamp of the bid
           Text(blockDate)
             .font(Font.custom(.medium, relativeTo: .footnote))
             .opacity(0.5)
         }
         
+        // An Account is any address that holds any amount of Nouns
         Label {
           Text(bid.bidder.id)
             .foregroundColor(Color.componentNounsBlack)
@@ -89,6 +91,7 @@ struct BidRow: View {
             .truncationMode(.middle)
           
         } icon: {
+          // Token avatar
           Image(R.image.placeholderEns.name)
             .asThumbnail()
             .clipShape(Circle())

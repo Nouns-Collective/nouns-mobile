@@ -34,7 +34,7 @@ struct SettledAuctionFeed: View {
       columns: gridLayout,
       loadMoreAction: loadMore,
       placeholder: {
-        // An activity indicator while loading auctions from the network. 
+        // An activity indicator while loading auctions from the network.
         CardPlaceholder(count: 2)
         
       }, content: { auction in
@@ -75,8 +75,8 @@ struct SettledAuctionCard: View {
       accessoryImage: Image.mdArrowCorner,
       detail: {
         SafeLabel(
-        auction.ethAmount ?? R.string.shared.notApplicable(),
-        icon: Image.eth)
+          EtherFormatter.eth(from: auction.amount) ?? R.string.shared.notApplicable(),
+          icon: Image.eth)
       })
   }
 }

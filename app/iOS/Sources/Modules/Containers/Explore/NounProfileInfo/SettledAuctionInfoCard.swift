@@ -34,7 +34,7 @@ struct SettledAuctionInfoCard: View {
       // Displays the wining bid amount.
       InfoCell(
         text: R.string.nounProfile.bidWinner(),
-        calloutText: auction.ethAmount ?? R.string.shared.notApplicable(),
+        calloutText: EtherFormatter.eth(from: auction.amount) ?? R.string.shared.notApplicable(),
         icon: { Image.wonPrice },
         calloutIcon: { Image.eth })
       
