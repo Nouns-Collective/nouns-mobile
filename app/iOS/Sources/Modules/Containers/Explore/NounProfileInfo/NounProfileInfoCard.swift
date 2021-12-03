@@ -55,8 +55,6 @@ struct NounProfileInfoCard: View {
 private struct NounProfileInfoCardNavigation: View {
   let auction: Auction
   
-  @Environment(\.presentationMode) private var presentationMode
-  
   var body: some View {
     HStack {
       Text(R.string.explore.noun(auction.noun.id))
@@ -66,9 +64,7 @@ private struct NounProfileInfoCardNavigation: View {
       
       SoftButton(
         icon: { Image.xmark },
-        action: {
-          presentationMode.wrappedValue.dismiss()
-        })
+        action: { })
     }
   }
 }

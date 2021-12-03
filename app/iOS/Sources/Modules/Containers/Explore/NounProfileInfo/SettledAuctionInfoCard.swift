@@ -26,7 +26,7 @@ struct SettledAuctionInfoCard: View {
   
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
-      // Displays the date when the auction was created.
+      // The date when the auction was created.
       InfoCell(
         text: R.string.nounProfile.birthday(startTimeDate),
         icon: { Image.birthday })

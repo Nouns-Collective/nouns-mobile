@@ -13,6 +13,7 @@ import UIComponents
 struct SettledAuctionFeed: View {
   @EnvironmentObject private var store: AppStore
   @State private var selection: Auction?
+  @State private var isNounProfileInfoPresented = false
   
   private var isLoading: Bool {
     settledAuctionsState.isLoading &&
@@ -45,7 +46,7 @@ struct SettledAuctionFeed: View {
             }
           }
       })
-    /// Presents more details about the settled auction.
+      // Presents more details about the settled auction.
       .fullScreenCover(item: $selection, onDismiss: {
         selection = nil
         

@@ -31,7 +31,7 @@ struct AuctionActivityView: View {
     .offset(y: -44)
     .padding(.bottom, -40)
     .softNavigationItems(leftAccessory: {
-      // Dismisses Nounder Activities & Bids History
+      // Dismisses Noun's Activity & Bids History
       SoftButton(
         icon: { Image.back },
         action: { isPresented.toggle() })
