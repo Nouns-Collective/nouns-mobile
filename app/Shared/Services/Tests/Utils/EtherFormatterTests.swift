@@ -15,7 +15,8 @@ final class EtherFormatterTests: XCTestCase {
     func testConvertingFromEthToWei() throws {
         // given
         let ethValue = "100"
-        let expectedWeiValue = "100000000000000000000" // represented as a string
+        // represented as a string
+        let expectedWeiValue = "100000000000000000000"
         
         let formatter = EtherFormatter(from: .eth)
         formatter.unit = .wei
@@ -28,7 +29,8 @@ final class EtherFormatterTests: XCTestCase {
     func testConvertingFromWeiToEth() throws {
         // given
         let weiValue = "2245320000000000000000"
-        let expectedEthValue = "2245.32" // represented as a string
+        // represented as a string
+        let expectedEthValue = "2245.32"
         
         let formatter = EtherFormatter(from: .wei)
         formatter.unit = .eth

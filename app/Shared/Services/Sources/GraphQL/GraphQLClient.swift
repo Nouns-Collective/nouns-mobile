@@ -92,8 +92,13 @@ public class GraphQLClient: GraphQL {
     
     public func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, Error> where T: Decodable, Query: GraphQLQuery {
         do {
+            
+            guard let url = query.url else {
+                return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            }
+            
             let request = NetworkDataRequest(
-                url: query.url,
+                url: url,
                 httpMethod: .post(contentType: .json),
                 httpBody: try query.encode()
             )

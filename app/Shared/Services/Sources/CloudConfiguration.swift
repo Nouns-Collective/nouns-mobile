@@ -8,29 +8,48 @@
 import Foundation
 
 internal enum CloudConfiguration {
-  
-  internal enum Nouns {
-    case query
-    case subscription
     
-    var url: URL {
-      switch self {
-      case .query:
-        return URL(string: "https://api.thegraph.com/subgraphs/name/nounsdao/nouns-subgraph")!
-      case .subscription:
-        return URL(string: "wss://api.thegraph.com/subgraphs/name/nounsdao/nouns-subgraph")!
-      }
+    internal enum Nouns {
+        case query
+        case subscription
     }
-  }
-  
-  internal enum ENS {
-    case query
     
-    var url: URL {
-      switch self {
-      case .query:
-        return URL(string: "https://api.thegraph.com/subgraphs/name/ensdomains/ens")!
-      }
+    internal enum ENS {
+        case query
     }
-  }
+}
+
+extension CloudConfiguration.Nouns {
+  
+    var url: URL? {
+        switch self {
+        case .query:
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = "api.thegraph.com"
+            components.path = "/subgraphs/name/nounsdao/nouns-subgraph"
+            return components.url
+            
+        case .subscription:
+            var components = URLComponents()
+            components.scheme = "wss"
+            components.host = "api.thegraph.com"
+            components.path = "/subgraphs/name/nounsdao/nouns-subgraph"
+            return components.url
+        }
+    }
+}
+
+extension CloudConfiguration.ENS {
+    
+    var url: URL? {
+        switch self {
+        case .query:
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = "api.thegraph.com"
+            components.path = "/subgraphs/name/ensdomains/ens"
+            return components.url
+        }
+    }
 }

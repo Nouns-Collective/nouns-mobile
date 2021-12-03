@@ -25,7 +25,7 @@ public protocol GraphQLOperation: Encodable {
   var operationDefinition: String { get }
   
   ///
-  var url: URL { get }
+  var url: URL? { get }
 }
 
 public protocol GraphQLQuery: GraphQLOperation {}

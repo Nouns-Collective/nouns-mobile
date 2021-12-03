@@ -10,7 +10,7 @@ import Foundation
 internal enum ENSSubgraph {
 
     internal struct DomainLookupQuery: GraphQLQuery {
-        internal let url: URL = CloudConfiguration.ENS.query.url
+        internal let url = CloudConfiguration.ENS.query.url
         internal let token: String
         
         var operationDefinition: String {

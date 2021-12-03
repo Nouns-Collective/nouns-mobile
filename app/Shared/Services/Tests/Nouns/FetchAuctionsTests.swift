@@ -50,7 +50,6 @@ final class FetchAuctionsTests: XCTestCase {
                 XCTAssertEqual(fetchedAuction?.startTime, expectedAuction.startTime)
                 XCTAssertEqual(fetchedAuction?.endTime, expectedAuction.endTime)
                 XCTAssertEqual(fetchedAuction?.settled, expectedAuction.settled)
-                XCTAssertEqual(fetchedAuction?.bids, expectedAuction.bids)
                 
                 fetchExpectation.fulfill()
             }

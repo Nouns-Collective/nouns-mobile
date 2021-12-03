@@ -12,13 +12,14 @@ import Foundation
 extension Auction {
     
     static var fixture: Self = {
-        Auction(id: "106",
-                noun: .fixture,
-                amount: "2000000000000000000",
-                startTime: "1636758555",
-                endTime: "1636844955",
-                settled: false,
-                bids: [.fixture])
+        Auction(
+            id: "106",
+            noun: .fixture,
+            amount: "2000000000000000000",
+            startTime: "1636758555",
+            endTime: "1636844955",
+            settled: false
+        )
     }()
 }
 
@@ -26,9 +27,10 @@ extension Auction {
 extension Noun {
     
     static var fixture: Self = {
-        Noun(id: "0",
-             owner: .fixture,
-             seed: .fixture
+        Noun(
+            id: "0",
+            owner: .fixture,
+            seed: .fixture
         )
     }()
 }
@@ -37,11 +39,13 @@ extension Noun {
 extension Seed {
     
     static var fixture: Self = {
-        Seed(background: 0,
-             glasses: 18,
-             head: 94,
-             body: 14,
-             accessory: 132)
+        Seed(
+            background: 0,
+            glasses: 18,
+            head: 94,
+            body: 14,
+            accessory: 132
+        )
     }()
 }
 
@@ -49,10 +53,11 @@ extension Seed {
 extension Bid {
     
     static var fixture: Self = {
-        Bid(id: "0xaf1efeeaedf13ad7cbaa66661d9411f6118ac4e4884daae6a3b81ab12d15f082",
+        Bid(
+            id: "0xaf1efeeaedf13ad7cbaa66661d9411f6118ac4e4884daae6a3b81ab12d15f082",
             amount: "100000000000000000",
             blockTimestamp: "1628443478",
-            account: .fixture)
+            bidder: .fixture)
     }()
 }
 
@@ -68,10 +73,12 @@ extension Account {
 extension Proposal {
     
     static var fixture: Self = {
-        Proposal(id: "14",
-                 title: "setProposalThresholdBPS(50)",
-                 description: "# setProposalThresholdBPS(50)\n\n===thank you for your consideration ",
-                 status: .queued)
+        Proposal(
+            id: "14",
+            title: "setProposalThresholdBPS(50)",
+            description: "# setProposalThresholdBPS(50)\n\n===thank you for your consideration ",
+            status: .queued
+        )
     }()
 }
 
@@ -79,7 +86,8 @@ extension Proposal {
 extension Vote {
     
     static var fixture: Self = {
-        Vote(supportDetailed: .for,
-             proposal: .fixture)
+        Vote(
+            supportDetailed: .for,
+            proposal: .fixture)
     }()
 }
