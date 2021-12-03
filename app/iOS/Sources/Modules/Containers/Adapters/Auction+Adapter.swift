@@ -16,3 +16,12 @@ extension Auction {
     return formatter.string(from: amount)
   }
 }
+
+extension Bid {
+  
+  var ethAmount: String? {
+    let formatter = EtherFormatter(from: .wei)
+    formatter.unit = .eth
+    return formatter.string(from: amount)
+  }
+}

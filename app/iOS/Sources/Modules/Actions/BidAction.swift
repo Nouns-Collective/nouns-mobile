@@ -9,7 +9,7 @@ import Foundation
 import Services
 
 struct FetchBidHistoryAction: Action {
-  let noun: Noun
+  let auction: Auction
 }
 
 struct FetchBidHistorySucceeded: Action {
