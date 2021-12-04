@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreData
 
 /// This provider class allows interacting with cloud Nouns.
 public protocol Nouns {
@@ -76,9 +77,14 @@ public protocol Nouns {
 
 public class TheGraphNounsProvider: Nouns {
     private let graphQLClient: GraphQL
+//    private let persistentStore: PersistenceStore
     
-    public init(graphQLClient: GraphQL = GraphQLClient()) {
+    public init(
+        graphQLClient: GraphQL = GraphQLClient()//,
+//        persistentStore: PersistenceStore = CoreDataStore(dataModel: "Nouns")
+    ) {
         self.graphQLClient = graphQLClient
+//        self.persistentStore = persistentStore
     }
     
     public func fetchOnChainNouns(limit: Int, after cursor: Int) -> AnyPublisher<[Noun], Error> {

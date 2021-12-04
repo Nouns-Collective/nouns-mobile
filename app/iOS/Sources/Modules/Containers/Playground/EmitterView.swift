@@ -34,7 +34,6 @@ struct EmitterView: UIViewRepresentable {
     for index in 1...10 {
       let cell = CAEmitterCell()
       cell.contents = UIImage(named: "confetti-\(index)")?.cgImage
-
       cell.birthRate = 8
       cell.lifetime = 20
       cell.velocity = 120

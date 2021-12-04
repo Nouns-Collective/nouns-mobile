@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="AccountManagedObject" syncable="YES">
+        <attribute name="id" attributeType="String"/>
+        <relationship name="bid" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Bid" inverseName="bidder" inverseEntity="Bid"/>
+        <relationship name="nouns" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Noun" inverseName="owner" inverseEntity="Noun"/>
+    </entity>
+    <entity name="Auction" representedClassName="AuctionManagedObject" syncable="YES">
+        <attribute name="amount" attributeType="String"/>
+        <attribute name="endTime" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="settled" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="startTime" attributeType="String"/>
+        <relationship name="noun" maxCount="1" deletionRule="Cascade" destinationEntity="Noun" inverseName="auction" inverseEntity="Noun"/>
+    </entity>
+    <entity name="Bid" representedClassName="BidManagedObject" syncable="YES">
+        <attribute name="amount" attributeType="String"/>
+        <attribute name="blockTimestamp" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <relationship name="bidder" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="bid" inverseEntity="Account"/>
+    </entity>
+    <entity name="Noun" representedClassName="NounManagedObject" syncable="YES">
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="auction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Auction" inverseName="noun" inverseEntity="Auction"/>
+        <relationship name="owner" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="nouns" inverseEntity="Account"/>
+        <relationship name="seed" maxCount="1" deletionRule="Cascade" destinationEntity="Seed" inverseName="noun" inverseEntity="Seed"/>
+    </entity>
+    <entity name="Proposal" representedClassName="ProposalManagedObject" syncable="YES">
+        <attribute name="desc" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="status" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+        <relationship name="vote" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Vote" inverseName="proposal" inverseEntity="Vote"/>
+    </entity>
+    <entity name="Seed" representedClassName="SeedManagedObject" syncable="YES">
+        <attribute name="accessory" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="background" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="body" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="glasses" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="head" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="noun" maxCount="1" deletionRule="Cascade" destinationEntity="Noun" inverseName="seed" inverseEntity="Noun"/>
+    </entity>
+    <entity name="Vote" representedClassName="VoteManagedObject" syncable="YES">
+        <attribute name="supportDetailed" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="proposal" maxCount="1" deletionRule="Nullify" destinationEntity="Proposal" inverseName="vote" inverseEntity="Proposal"/>
+    </entity>
+    <elements>
+        <element name="Account" positionX="-36" positionY="63" width="128" height="74"/>
+        <element name="Auction" positionX="18" positionY="90" width="128" height="119"/>
+        <element name="Bid" positionX="36" positionY="99" width="128" height="89"/>
+        <element name="Noun" positionX="-91.85546875" positionY="-149.90625" width="128" height="119"/>
+        <element name="Proposal" positionX="0" positionY="81" width="128" height="104"/>
+        <element name="Seed" positionX="-486.546875" positionY="137.2890625" width="128" height="119"/>
+        <element name="Vote" positionX="-231.53125" positionY="308.4609375" width="128" height="59"/>
+    </elements>
+</model>
