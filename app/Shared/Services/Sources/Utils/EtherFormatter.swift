@@ -23,6 +23,9 @@ public class EtherFormatter: Formatter {
     /// The ether unit we are converting to (defaults to eth)
     public var unit: Unit = .eth
     
+    /// The minimum number of digits after the decimal point
+    public var minimumFractionDigits: Int = 2
+    
     public init(from fromUnit: Unit) {
         self.fromUnit = fromUnit
         super.init()
@@ -56,7 +59,7 @@ public class EtherFormatter: Formatter {
     public func string(from stringVal: String) -> String? {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
-        formatter.minimumFractionDigits = 2
+        formatter.minimumFractionDigits = minimumFractionDigits
         guard let number = formatter.number(from: stringVal) as? NSDecimalNumber else {
             return nil
         }
