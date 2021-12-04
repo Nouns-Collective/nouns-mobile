@@ -23,7 +23,7 @@ public protocol PersistenceStore {
     func fetch(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?) -> Result<[Entity], Error>
     
     /// Insert an entity.
-    func insert(_ entity: Entity) -> Result<Entity, Error>
+    func insert() -> Result<Entity, Error>
     
     /// Deletes an entity.
     /// - Parameter entity: The entity to be deleted.
@@ -36,42 +36,33 @@ public protocol PersistenceStore {
 public class CoreDataStore<T: NSManagedObject>: PersistenceStore {
     public typealias Entity = T
 
-//    /// The NSManagedObjectContext instance to be used for performing the operations.
-//    private var managedObjectContext: NSManagedObjectContext {
-//        persistentContainer.viewContext
-//    }
-//
-//    /// A container that encapsulates the Core Data stack.
-//    private let persistentContainer: NSPersistentContainer
-//
-//    /// Abstracts & simplifies the creation and management of the Core Data stack
-//    /// by handling the creation of the managed object model.
-//    /// - Parameters:
-//    ///   - dataModel: the name the persistent store.
-//    ///   - mergePolicy: The merge policy of the context
-//    ///   - completionHandler: will be called if there is an error in the loading of the persistent stores.
-//    public init(
-//        dataModel: String,
-//        mergePolicy: NSMergePolicy = .mergeByPropertyObjectTrump,
-//        completionHandler: ((Error) -> Void)? = nil
-//    ) {
-//        persistentContainer = NSPersistentContainer(name: dataModel)
-//        persistentContainer.viewContext.mergePolicy = mergePolicy
-//        persistentContainer.loadPersistentStores(completionHandler: { _, error in
-//            guard let error = error else {
-//                return
-//            }
-//            completionHandler?(error)
-//        })
-//    }
-    
     /// The NSManagedObjectContext instance to be used for performing the operations.
-    private let managedObjectContext: NSManagedObjectContext
-    
-    /// Designated initializer.
-    /// - Parameter managedObjectContext: The NSManagedObjectContext instance to be used for performing the operations.
-    init(managedObjectContext: NSManagedObjectContext) {
-        self.managedObjectContext = managedObjectContext
+    private var managedObjectContext: NSManagedObjectContext {
+        persistentContainer.viewContext
+    }
+
+    /// A container that encapsulates the Core Data stack.
+    private let persistentContainer: NSPersistentContainer
+
+    /// Abstracts & simplifies the creation and management of the Core Data stack
+    /// by handling the creation of the managed object model.
+    /// - Parameters:
+    ///   - dataModel: the name the persistent store.
+    ///   - mergePolicy: The merge policy of the context
+    ///   - completionHandler: will be called if there is an error in the loading of the persistent stores.
+    public init(
+        dataModel: String,
+        mergePolicy: NSMergePolicy = .mergeByPropertyObjectTrump,
+        completionHandler: ((Error) -> Void)? = nil
+    ) {
+        persistentContainer = NSPersistentContainer(name: dataModel)
+        persistentContainer.viewContext.mergePolicy = mergePolicy
+        persistentContainer.loadPersistentStores(completionHandler: { _, error in
+            guard let error = error else {
+                return
+            }
+            completionHandler?(error)
+        })
     }
     
     /// Gets an array of NSManagedObject entities.
