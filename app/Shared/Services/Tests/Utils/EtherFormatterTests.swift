@@ -20,6 +20,7 @@ final class EtherFormatterTests: XCTestCase {
         
         let formatter = EtherFormatter(from: .eth)
         formatter.unit = .wei
+        formatter.minimumFractionDigits = 0
         let result = formatter.string(from: ethValue)
         
         XCTAssertEqual(result, expectedWeiValue)
