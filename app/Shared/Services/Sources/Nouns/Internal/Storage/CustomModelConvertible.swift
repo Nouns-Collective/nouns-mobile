@@ -15,14 +15,14 @@ protocol CustomModelConvertible {
     var model: ModelType { get }
 }
 
-extension NounManagedObject: CustomModelConvertible {
+extension NounDB: CustomModelConvertible {
     
     var model: Noun {
         Noun(id: id, owner: owner.model, seed: seed.model)
     }
 }
 
-extension SeedManagedObject: CustomModelConvertible {
+extension SeedDB: CustomModelConvertible {
     
     var model: Seed {
         Seed(
@@ -34,14 +34,14 @@ extension SeedManagedObject: CustomModelConvertible {
     }
 }
 
-extension AccountManagedObject: CustomModelConvertible {
+extension DBAccount: CustomModelConvertible {
     
     var model: Account {
         Account(id: id)
     }
 }
 
-extension AuctionManagedObject: CustomModelConvertible {
+extension AuctionDB: CustomModelConvertible {
     
     var model: Auction {
         Auction(
@@ -54,7 +54,7 @@ extension AuctionManagedObject: CustomModelConvertible {
     }
 }
 
-extension BidManagedObject: CustomModelConvertible {
+extension BidDB: CustomModelConvertible {
     
     var model: Bid {
         Bid(id: id,
@@ -64,7 +64,7 @@ extension BidManagedObject: CustomModelConvertible {
     }
 }
 
-extension ProposalManagedObject: CustomModelConvertible {
+extension ProposalDB: CustomModelConvertible {
     
     var model: Proposal {
         guard let status = ProposalStatus(rawValue: status) else {
@@ -79,7 +79,7 @@ extension ProposalManagedObject: CustomModelConvertible {
     }
 }
 
-extension VoteManagedObject: CustomModelConvertible {
+extension VoteDB: CustomModelConvertible {
     
     var model: Vote {
         guard let supportedDetailed = VoteSupportDetailed(rawValue: Int(supportedDetailed)) else {
