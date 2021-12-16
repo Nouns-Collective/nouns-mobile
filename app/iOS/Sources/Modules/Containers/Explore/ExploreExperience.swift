@@ -11,27 +11,14 @@ import Services
 
 /// Housing view for exploring on chain nouns, including the current on-goign auction and previously auctioned nouns
 struct ExploreExperience: View {
-  @EnvironmentObject private var store: AppStore
-  
-  private var isInitiallyLoading: Bool {
-    (liveAuctionState.isLoading || settledAuctionsState.isLoading) &&
-    settledAuctionsState.auctions.isEmpty
-  }
-  
-  private var liveAuctionState: LiveAuctionState {
-    store.state.auction.liveAuction
-  }
-  
-  private var settledAuctionsState: SettledAuctionsState {
-    store.state.auction.settledAuctions
-  }
+  @StateObject var viewModel = ViewModel()
   
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 20) {
-          if let auction = liveAuctionState.auction {
-            LiveAuctionCard(auction: auction)
+          if let auction = viewModel.liveAuction {
+            LiveAuctionCard(viewModel: .init(auction: auction))
           }
           
           SettledAuctionFeed()
@@ -40,12 +27,36 @@ struct ExploreExperience: View {
         .softNavigationTitle(R.string.explore.title())
       }
       // Disable scrolling when data is initially loading.
-      .disabled(isInitiallyLoading)
+      .disabled(viewModel.isFetching)
       .background(Gradient.lemonDrop)
       .ignoresSafeArea()
     }
-    .onAppear {
-      store.dispatch(ListenLiveAuctionAction())
+  }
+}
+
+extension ExploreExperience {
+  
+  @MainActor
+  class ViewModel: ObservableObject {
+    @Published var liveAuction: Auction?
+    @Published var isFetching = false
+    
+    private let cloudNounsService: CloudNounsService
+    
+    init(cloudNounsService: CloudNounsService = AppCore.shared.cloudNounsService) {
+      self.cloudNounsService = cloudNounsService
+    }
+    
+    private func listenLiveAuctionChanges() {
+      Task {
+        do {
+          isFetching = true
+          liveAuction = try await cloudNounsService.liveAuctionStateDidChange()
+          
+        } catch { }
+        
+        isFetching = false
+      }
     }
   }
 }

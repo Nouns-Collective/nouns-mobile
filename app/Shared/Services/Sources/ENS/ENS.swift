@@ -25,12 +25,12 @@ public protocol ENS {
   ///   - token: The address resource.
   ///
   /// - Returns: A publisher emitting the domain in a `String` type  instance or an error was encountered.
-  func domainLookup(token: String) -> AnyPublisher<String, Error>
+  func domainLookup(token: String) async throws -> String
 }
 
 /// Ethereum Name Service.
 public struct ENSDomain: Decodable, Equatable {
-    
+  
   /// The ETH address
   public let id: String
   
@@ -45,16 +45,12 @@ public class TheGraphENSProvider: ENS {
     self.graphQLClient = graphQLClient
   }
   
-  public func domainLookup(token: String) -> AnyPublisher<String, Error> {
+  public func domainLookup(token: String) async throws -> String {
     let query = ENSSubgraph.DomainLookupQuery(token: token)
-    return graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-      .tryCompactMap { (page: Page<[ENSDomain]>) in
-          guard let name = page.data.first?.name else {
-              throw ENSError.noDomain
-          }
-          return name
-      }
-      .receive(on: DispatchQueue.main)
-      .eraseToAnyPublisher()
+    let page: Page<[ENSDomain]> = try await graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+    guard let name = page.data.first?.name else {
+      throw ENSError.noDomain
+    }
+    return name
   }
 }

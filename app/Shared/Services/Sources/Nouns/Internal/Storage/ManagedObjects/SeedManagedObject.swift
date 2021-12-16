@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 /// `Seed Core Data` model object.
-final class SeedManagedObject: NSManagedObject, Entity {
+final class SeedManagedObject: NSManagedObject, StoredEntity {
   @NSManaged var head: Int32
   @NSManaged var body: Int32
   @NSManaged var glasses: Int32
@@ -31,5 +31,17 @@ extension SeedManagedObject {
     managedObject.accessory = Int32(seed.accessory)
     managedObject.background = Int32(seed.background)
     return managedObject
+  }
+}
+
+extension SeedManagedObject: CustomModelConvertible {
+
+  var model: Seed {
+    Seed(
+      background: Int(background),
+      glasses: Int(glasses),
+      head: Int(head),
+      body: Int(body),
+      accessory: Int(accessory))
   }
 }

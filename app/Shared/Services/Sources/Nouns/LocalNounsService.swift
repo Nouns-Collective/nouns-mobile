@@ -7,32 +7,32 @@
 
 import CoreData
 
-/// <#Description#>
-public enum OnfflineNounsError: Error {
+/// `LocalNounsService` request error.
+public enum LocalNounsRequestError: Error {
   case invalidData
 }
 
-/// <#Description#>
+/// Service allows interacting with the `Offline Nouns`.
 public protocol LocalNounsService {
   
-  /// <#Description#>
+  /// Fetches the list of Nouns from the persistence store.
   /// - Parameters:
   ///   - limit: A limit up to the  `n` elements from the list.
   ///   - cursor: A cursor for use in pagination.
-  ///   - ascending: <#ascending description#>
-  /// - Returns: <#description#>
+  ///   - ascending: Specify the order of the list returned.
+  /// - Returns: a list of `Noun` type  instance or an error was encountered.
   func fetchNouns(limit: Int, cursor: Int, ascending: Bool) throws -> [Noun]
   
-  /// <#Description#>
-  /// - Parameter noun: <#noun description#>
+  /// Stores a given `Noun` into the persistence store.
+  /// - Parameter noun: The noun to be persisted.
   func store(noun: Noun) throws
 
-  /// <#Description#>
-  /// - Parameter noun: <#noun description#>
+  /// Deletes a given `Noun` from the persistence store.
+  /// - Parameter noun: The noun to be deleted.
   func delete(noun: Noun) throws
 }
 
-/// <#Description#>
+/// Concrete implementation of the `LocalNounsService` using `CoreData`.
 public class CoreDataNounsProvider: LocalNounsService {
   
   /// The NSManagedObjectContext instance to be used for performing the operations.
@@ -43,9 +43,8 @@ public class CoreDataNounsProvider: LocalNounsService {
   /// A container that encapsulates the Core Data stack.
   private let persistentContainer: NSPersistentContainer
   
-  /// <#Description#>
-  /// - Parameter dataModel: <#dataModel description#>
-  init(dataModel: String = "Nouns") async throws {
+  /// Creates a container using the model named `dataModel` in the main bundle.
+  public init(dataModel: String = "Nouns") async throws {
     persistentContainer = NSPersistentContainer(name: dataModel)
     persistentContainer.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     
@@ -59,12 +58,6 @@ public class CoreDataNounsProvider: LocalNounsService {
     }
   }
   
-  /// <#Description#>
-  /// - Parameters:
-  ///   - limit: A limit up to the  `n` elements from the list.
-  ///   - cursor: A cursor for use in pagination.
-  ///   - ascending: <#ascending description#>
-  /// - Returns: <#description#>
   public func fetchNouns(limit: Int, cursor: Int, ascending: Bool) throws -> [Noun] {
     try NounManagedObject.fetch(in: viewContext) { fetchRequest in
       fetchRequest.fetchLimit = limit
@@ -79,20 +72,16 @@ public class CoreDataNounsProvider: LocalNounsService {
     .map { $0.model }
   }
   
-  /// <#Description#>
-  /// - Parameter noun: <#noun description#>
   public func store(noun: Noun) throws {
     _ = try NounManagedObject.insert(into: viewContext, noun: noun)
     try viewContext.save()
   }
   
-  /// <#Description#>
-  /// - Parameter noun: <#noun description#>
   public func delete(noun: Noun) throws {
     guard let managedObject = try NounManagedObject.fetch(in: viewContext, configuration: { fetchRequest in
       fetchRequest.predicate = NSPredicate(format: "id == %@", noun.id)
     }).first else {
-      throw OnfflineNounsError.invalidData
+      throw LocalNounsRequestError.invalidData
     }
     
     viewContext.delete(managedObject)

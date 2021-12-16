@@ -6,12 +6,11 @@
 //
 
 import XCTest
-import Combine
 @testable import Services
 
 final class FetchProposalsTests: XCTestCase {
     
-    func testFetchProposalsSucceed() throws {
+    func testFetchProposalsSucceed() async throws {
         
         enum MockDataURLResponder: MockURLResponder {
             static func respond(to request: URLRequest) throws -> Data? {
@@ -25,38 +24,21 @@ final class FetchProposalsTests: XCTestCase {
         let graphQLClient = GraphQLClient(networkingClient: client)
         let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
         
-        var cancellables = Set<AnyCancellable>()
-        let fetchExpectation = expectation(description: #function)
-        
-        // when
-        nounsProvider.fetchProposals()
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Finished")
-                case let .failure(error):
-                    XCTFail("💥 Something went wrong: \(error)")
-                }
-            } receiveValue: { proposals in
-                XCTAssertTrue(Thread.isMainThread)
-                XCTAssertFalse(proposals.isEmpty)
-                
-                let fetchProposal = proposals.first
-                let expectProposal = Proposal.fixture
-                
-                XCTAssertEqual(fetchProposal?.id, expectProposal.id)
-                XCTAssertEqual(fetchProposal?.title, expectProposal.title)
-                XCTAssertEqual(fetchProposal?.description, expectProposal.description)
-                
-                fetchExpectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
         // then
-        wait(for: [fetchExpectation], timeout: 1.0)
+        let proposals = try await nounsProvider.fetchProposals(limit: 10, after: 0)
+     
+        // when
+        XCTAssertFalse(proposals.isEmpty)
+        
+        let fetchProposal = proposals.first
+        let expectProposal = Proposal.fixture
+        
+        XCTAssertEqual(fetchProposal?.id, expectProposal.id)
+        XCTAssertEqual(fetchProposal?.title, expectProposal.title)
+        XCTAssertEqual(fetchProposal?.description, expectProposal.description)
     }
     
-    func testFetchProposalsFailure() {
+    func testFetchProposalsFailure() async {
         
         enum MockErrorURLResponder: MockURLResponder {
             static func respond(to request: URLRequest) throws -> Data? {
@@ -70,23 +52,12 @@ final class FetchProposalsTests: XCTestCase {
         let graphQLClient = GraphQLClient(networkingClient: client)
         let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
         
-        var cancellables = Set<AnyCancellable>()
-        let fetchExpectation = expectation(description: #function)
-        
-        // when
-        nounsProvider.fetchProposals(limit: 10, after: 0)
-            .sink { completion in
-                if case .failure = completion {
-                    XCTAssertTrue(Thread.isMainThread)
-                    
-                    fetchExpectation.fulfill()
-                }
-            } receiveValue: { _ in
-                XCTFail("💥 result unexpected")
-            }
-            .store(in: &cancellables)
-        
-        // then
-        wait(for: [fetchExpectation], timeout: 1.0)
+        do {
+            // when
+            _ = try await nounsProvider.fetchProposals(limit: 10, after: 0)
+            XCTFail("💥 result unexpected")
+        } catch {
+            
+        }
     }
 }

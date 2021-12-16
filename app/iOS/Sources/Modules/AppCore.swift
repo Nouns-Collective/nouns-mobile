@@ -9,14 +9,14 @@ import Combine
 import Services
 import UIKit
 
-class AppCore {
+final class AppCore {
   static let shared = AppCore()
   
   lazy var graphQLClient: GraphQL = {
     GraphQLClient()
   }()
   
-  lazy var nounsService: Nouns = {
+  lazy var cloudNounsService: CloudNounsService = {
     TheGraphNounsProvider(graphQLClient: graphQLClient)
   }()
   

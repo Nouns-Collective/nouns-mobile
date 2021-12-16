@@ -11,7 +11,7 @@ import Combine
 
 final class LiveAuctionStateDidChangeTests: XCTestCase {
   
-  func testLiveAuctionStateDidChange() throws {
+  func testLiveAuctionStateDidChange() async throws {
       
       enum MockDataURLResponder: MockURLResponder {
           static func respond(to request: URLRequest) throws -> Data? {
@@ -25,29 +25,11 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
       let graphQLClient = GraphQLClient(networkingClient: client)
       let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
       
-      var cancellables = Set<AnyCancellable>()
-      let fetchExpectation = expectation(description: #function)
-      
       // when
-      nounsProvider.liveAuctionStateDidChange()
-          .sink { completion in
-              switch completion {
-              case .finished:
-                  print("Finished")
-              case let .failure(error):
-                  XCTFail("💥 Something went wrong: \(error)")
-              }
-              
-          } receiveValue: { auction in
-              XCTAssertTrue(Thread.isMainThread)
-              XCTAssertEqual(auction, Auction.fixture)
-              
-              fetchExpectation.fulfill()
-          }
-          .store(in: &cancellables)
+      let auction = try await nounsProvider.liveAuctionStateDidChange()
       
       // then
-      wait(for: [fetchExpectation], timeout: 1.0)
+      XCTAssertEqual(auction, Auction.fixture)
   }
   
   func testLiveAuctionStateDidChangeFailure() {

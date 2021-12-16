@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 /// `Noun Core Data` model object.
-final class NounManagedObject: NSManagedObject, Entity {
+final class NounManagedObject: NSManagedObject, StoredEntity {
   @NSManaged var id: String
   @NSManaged var createdAt: Date
   @NSManaged var updatedAt: Date
@@ -40,5 +40,12 @@ extension NounManagedObject {
     )
     
     return managedObject
+  }
+}
+
+extension NounManagedObject: CustomModelConvertible {
+
+  var model: Noun {
+    Noun(id: id, owner: owner.model, seed: seed.model)
   }
 }

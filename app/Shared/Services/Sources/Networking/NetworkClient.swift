@@ -27,7 +27,7 @@ public protocol NetworkingClient: AnyObject {
   ///   - request: The URL request for which to create a task.
   ///
   /// - Returns: The publisher publishes data when the task completes, or terminates if the task fails with an error.
-  func data(for request: NetworkRequest) -> AnyPublisher<Data, Error>
+  func data(for request: NetworkRequest) async throws -> Data
   
   /// Reads a `WebSocket` message once all the frames of the message are available.
   ///
@@ -45,22 +45,20 @@ public class URLSessionNetworkClient: NetworkingClient {
     self.urlSession = urlSession
   }
   
-  public func data(for request: NetworkRequest) -> AnyPublisher<Data, Error> {
-    urlSession.dataTaskPublisher(for: URLRequest(for: request))
-      .tryCompactMap { [weak self] in
-        try self?.processResponse(from: $0)
-      }
-      .eraseToAnyPublisher()
+  public func data(for request: NetworkRequest) async throws -> Data {
+    let (data, response) = try await urlSession.data(for: URLRequest(for: request))
+    try processResponse(from: response)
+    return data
   }
   
-  internal func processResponse(from element: URLSession.DataTaskPublisher.Output) throws -> Data {
-    guard let httpResponse = element.response as? HTTPURLResponse else {
+  internal func processResponse(from response: URLResponse) throws {
+    guard let httpResponse = response as? HTTPURLResponse else {
       throw RequestError.noData
     }
     
     switch httpResponse.statusCode {
     case 200:
-      return element.data
+      break
     default:
       throw RequestError.http(statusCode: httpResponse.statusCode)
     }

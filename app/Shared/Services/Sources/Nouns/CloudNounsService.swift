@@ -9,13 +9,15 @@ import Foundation
 import Combine
 import CoreData
 
-/// <#Description#>
-public enum CloudNounsError: Error {
-  case noDataFound
+/// `CloudNounsService` request error.
+public enum CloudNounsRequestError: Error {
+  
+  /// The response is empty
+  case noData
 }
 
-/// This provider class allows interacting with cloud Nouns.
-public protocol CloudNounsService {
+/// Service allows interacting with the `OnChain Nouns`.
+public protocol CloudNounsService: AnyObject {
   
   /// Fetches the list of Nouns settled from the chain.
   ///
@@ -80,6 +82,7 @@ public protocol CloudNounsService {
   func fetchProposals(limit: Int, after cursor: Int) async throws -> [Proposal]
 }
 
+/// Concrete implementation of the `CloudNounsService` using `TheGraph` Service.
 public class TheGraphNounsProvider: CloudNounsService {
   private let graphQLClient: GraphQL
   
@@ -124,7 +127,7 @@ public class TheGraphNounsProvider: CloudNounsService {
     )
     
     guard let auction = page.data.first else {
-      throw CloudNounsError.noDataFound
+      throw CloudNounsRequestError.noData
     }
     return auction
   }

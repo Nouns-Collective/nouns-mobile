@@ -41,6 +41,9 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
     self.content = content
     self.loadMoreAction = loadMoreAction
     self.placeholder = placeholder
+    
+    // Initially load data.
+    loadMore()
   }
   
   private func loadMore() {

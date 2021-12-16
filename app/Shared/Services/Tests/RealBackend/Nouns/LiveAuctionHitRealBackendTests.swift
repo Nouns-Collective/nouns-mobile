@@ -6,36 +6,18 @@
 //
 
 import XCTest
-import Combine
 @testable import Services
 
 final class LiveAuctionHitRealBackendTests: XCTestCase {
     
-    func testLiveAuctionSubscriptionHitRealBackend() throws {
+    func testLiveAuctionSubscriptionHitRealBackend() async throws {
         // given
         let nounsProvider = TheGraphNounsProvider()
         
-        let expectation = expectation(description: #function)
-        var subscriptions = Set<AnyCancellable>()
-        
-        // when
-        nounsProvider.liveAuctionStateDidChange()
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Finished ", #function)
-                case let .failure(error):
-                    XCTFail("💥 Something went wrong: \(error)")
-                }
-            } receiveValue: { auction in
-                XCTAssertTrue(Thread.isMainThread)
-                print(auction)
-                
-                expectation.fulfill()
-            }
-            .store(in: &subscriptions)
+        let auction = try await nounsProvider.liveAuctionStateDidChange()
+        print(auction)
         
         // then
-        wait(for: [expectation], timeout: 5.0)
+        XCTAssertTrue(Thread.isMainThread)
     }
 }

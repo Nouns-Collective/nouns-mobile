@@ -24,18 +24,7 @@ extension EnvironmentValues {
 
 @main
 struct NounsApp: App {
-  @StateObject private var store = AppStore(
-    initialState: AppState(),
-    reducer: appReducer,
-    middlewares: [
-      auctionsMiddleware(),
-      activityMiddleware(),
-      bidMiddleware()
-    ]
-  )
-  
   private var nounComposer = AppCore.shared.nounComposer
-  private var persistenceStore = PersistenceStore.shared
   
   init() {
     UIComponents.configure()
@@ -44,9 +33,7 @@ struct NounsApp: App {
   var body: some Scene {
     WindowGroup {
       RouterView()
-        .environmentObject(store)
         .environment(\.nounComposer, nounComposer)
-        .environment(\.managedObjectContext, persistenceStore.viewContext)
         .preferredColorScheme(.light)
     }
   }

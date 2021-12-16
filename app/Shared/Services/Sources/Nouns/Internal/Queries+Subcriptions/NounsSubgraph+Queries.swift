@@ -8,124 +8,124 @@
 import Foundation
 
 internal enum NounsSubgraph {
+  
+  internal struct NounsQuery: GraphQLQuery {
+    internal let url = CloudConfiguration.Nouns.query.url
+    internal let first: Int
+    internal let skip: Int
     
-    internal struct NounsQuery: GraphQLQuery {
-        internal let url = CloudConfiguration.Nouns.query.url
-        internal let first: Int
-        internal let skip: Int
-        
-        internal var operationDefinition: String {
-          """
-          {
-            nouns(first: \(first), skip: \(skip)) {
+    internal var operationDefinition: String {
+      """
+      {
+        nouns(first: \(first), skip: \(skip)) {
+          id
+          seed {
+            background
+            body
+            accessory
+            head
+            glasses
+          }
+          owner {
+            id
+          }
+        }
+      }
+      """
+    }
+  }
+  
+  internal struct ActivitiesQuery: GraphQLQuery {
+    internal var url = CloudConfiguration.Nouns.query.url
+    internal let nounID: String
+    
+    internal var operationDefinition: String {
+      """
+      {
+        noun(id: \(nounID)) {
+          votes {
+            supportDetailed
+            proposal {
               id
-              seed {
-                background
-                body
-                accessory
-                head
-                glasses
-              }
-              owner {
-                id
-              }
+              description
+              status
             }
           }
-          """
         }
+      }
+      """
     }
+  }
+  
+  internal struct AutionsQuery: GraphQLQuery {
+    internal var url = CloudConfiguration.Nouns.query.url
+    internal let settled: Bool
+    internal let first: Int
+    internal let skip: Int
     
-    internal struct ActivitiesQuery: GraphQLQuery {
-        internal var url = CloudConfiguration.Nouns.query.url
-        internal let nounID: String
-        
-        internal var operationDefinition: String {
-          """
-          {
-            noun(id: \(nounID)) {
-              votes {
-                supportDetailed
-                proposal {
-                  id
-                  description
-                  status
-                }
-              }
-            }
-          }
-          """
-        }
-    }
-    
-    internal struct AutionsQuery: GraphQLQuery {
-        internal var url = CloudConfiguration.Nouns.query.url
-        internal let settled: Bool
-        internal let first: Int
-        internal let skip: Int
-        
-        var operationDefinition: String {
-        """
-          {
-            auctions(first: \(first), skip: \(skip), orderBy: startTime, orderDirection: desc, where: { settled: \(settled) }) {
+    var operationDefinition: String {
+      """
+      {
+        auctions(first: \(first), skip: \(skip), orderBy: startTime, orderDirection: desc, where: { settled: \(settled) }) {
+          id
+          amount
+          startTime
+          endTime
+          settled
+          noun {
+            id
+            owner {
               id
-              amount
-              startTime
-              endTime
-              settled
-              noun {
-                id
-                owner {
-                  id
-                }
-                seed {
-                  background
-                  head
-                  glasses
-                  accessory
-                  body
-                }
-              }
+            }
+            seed {
+              background
+              head
+              glasses
+              accessory
+              body
             }
           }
-          """
         }
+      }
+      """
     }
+  }
+  
+  internal struct ProposalsQuery: GraphQLQuery {
+    internal var url = CloudConfiguration.Nouns.query.url
+    internal let first: Int
+    internal let skip: Int
     
-    internal struct ProposalsQuery: GraphQLQuery {
-        internal var url = CloudConfiguration.Nouns.query.url
-        internal let first: Int
-        internal let skip: Int
-        
-        internal var operationDefinition: String {
-          """
-            {
-              proposals(skip: \(skip), first: \(first), orderBy: startBlock, orderDirection: desc) {
-                id
-                description
-                status
-              }
-            }
-          """
+    internal var operationDefinition: String {
+      """
+        {
+          proposals(skip: \(skip), first: \(first), orderBy: startBlock, orderDirection: desc) {
+            id
+            description
+            status
+          }
         }
+      """
     }
+  }
+  
+  internal struct BidsQuery: GraphQLQuery {
+    internal var url = CloudConfiguration.Nouns.query.url
+    internal let nounID: String
     
-    internal struct BidsQuery: GraphQLQuery {
-        internal var url = CloudConfiguration.Nouns.query.url
-        internal let nounID: String
-        
-        internal var operationDefinition: String {
-          """
-            {
-              bids(orderBy: blockTimestamp, orderDirection: desc, where: { noun: "\(nounID)" }) {
-                id
-                amount
-                blockTimestamp
-                bidder {
-                  id
-                }
-              }
+    internal var operationDefinition: String {
+      """
+        {
+          bids(orderBy: blockTimestamp, orderDirection: desc, where: { noun: "\(nounID)" }) {
+            id
+            amount
+            blockTimestamp
+            bidder {
+              id
             }
-          """
+          }
         }
+      """
     }
+  }
 }

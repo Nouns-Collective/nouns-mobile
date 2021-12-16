@@ -12,7 +12,6 @@ public struct Page<T> where T: Decodable {
     
     /// Data retrived from the response.
     public let data: T
-    
 }
 
 /// The Noun

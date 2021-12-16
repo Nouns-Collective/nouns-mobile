@@ -11,11 +11,16 @@ import Combine
 
 class MockGraphQLClient: GraphQL {
     
-    func fetch<Query, T>(_ query: Query, cachePolicy: CachePolicy) -> AnyPublisher<T, Error> where Query : GraphQLQuery, T : Decodable {
+    func fetch<Query, T>(
+        _ query: Query,
+        cachePolicy: CachePolicy
+    ) async throws -> T where Query : GraphQLQuery, T : Decodable {
         fatalError("Implementation for \(#function) missing")
     }
     
-    func subscription<Subscription, T>(_ subscription: Subscription) -> AnyPublisher<T, Error> where Subscription : GraphQLSubscription, T : Decodable {
+    func subscription<Subscription, T>(
+        _ subscription: Subscription
+    ) async throws -> T where Subscription : GraphQLSubscription, T : Decodable {
         fatalError("Implementation for \(#function) missing")
     }
 }

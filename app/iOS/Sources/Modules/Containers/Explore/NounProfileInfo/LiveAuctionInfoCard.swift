@@ -9,6 +9,14 @@ import SwiftUI
 import Services
 import UIComponents
 
+extension LiveAuctionInfoCard {
+  
+  @MainActor
+  class ViewModel: ObservableObject {
+    
+  }
+}
+
 struct LiveAuctionInfoCard: View {
   let auction: Auction
   @Binding var isActivityPresented: Bool

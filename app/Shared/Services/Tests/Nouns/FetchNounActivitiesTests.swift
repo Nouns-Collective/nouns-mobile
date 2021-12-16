@@ -6,91 +6,59 @@
 //
 
 import XCTest
-import Combine
 @testable import Services
 
 final class FetchNounActivitiesTests: XCTestCase {
+  
+  func testFetchNounActivitiesSucceed() async throws {
     
-    func testFetchNounActivitiesSucceed() throws {
-        
-        enum MockDataURLResponder: MockURLResponder {
-            static func respond(to request: URLRequest) throws -> Data? {
-                Fixtures.data(contentOf: "nouns-activities-response-valid", withExtension: "json")
-            }
-        }
-        
-        // given
-        let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
-        let client = URLSessionNetworkClient(urlSession: urlSession)
-        let graphQLClient = GraphQLClient(networkingClient: client)
-        let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
-        
-        var cancellables = Set<AnyCancellable>()
-        let fetchExpectation = expectation(description: #function)
-        
-        // when
-        nounsProvider.fetchActivity(for: "0")
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Finished")
-                case let .failure(error):
-                    XCTFail("💥 Something went wrong: \(error)")
-                }
-                
-            } receiveValue: { votes in
-                XCTAssertTrue(Thread.isMainThread)
-                XCTAssertFalse(votes.isEmpty)
-                
-                let fetchedVote = votes.first
-                let expectedVote = Vote.fixture
-                
-                XCTAssertEqual(fetchedVote?.supportDetailed, expectedVote.supportDetailed)
-                XCTAssertEqual(fetchedVote?.proposal.id, expectedVote.proposal.id)
-                XCTAssertEqual(fetchedVote?.proposal.title, expectedVote.proposal.title)
-                XCTAssertEqual(fetchedVote?.proposal.description, expectedVote.proposal.description)
-                XCTAssertEqual(fetchedVote?.proposal.status, expectedVote.proposal.status)
-                
-                fetchExpectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
-        // then
-        wait(for: [fetchExpectation], timeout: 1.0)
+    enum MockDataURLResponder: MockURLResponder {
+      static func respond(to request: URLRequest) throws -> Data? {
+        Fixtures.data(contentOf: "nouns-activities-response-valid", withExtension: "json")
+      }
     }
     
-    func testFetchNounActivitiesFailure() {
-        
-        enum MockErrorURLResponder: MockURLResponder {
-          static func respond(to request: URLRequest) throws -> Data? {
-            throw QueryError.badQuery
-          }
-        }
-        
-        // given
-        let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
-        let client = URLSessionNetworkClient(urlSession: urlSession)
-        let graphQLClient = GraphQLClient(networkingClient: client)
-        let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
-        
-        var cancellables = Set<AnyCancellable>()
-        let fetchExpectation = expectation(description: #function)
-        
-        // when
-        nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
-            .sink { completion in
-                if case .failure = completion {
-                    XCTAssertTrue(Thread.isMainThread)
-                    
-                    fetchExpectation.fulfill()
-                }
-                
-            } receiveValue: { _ in
-                XCTFail("💥 result unexpected")
-            }
-            .store(in: &cancellables)
-        
-        // then
-        wait(for: [fetchExpectation], timeout: 1.0)
+    // given
+    let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
+    let client = URLSessionNetworkClient(urlSession: urlSession)
+    let graphQLClient = GraphQLClient(networkingClient: client)
+    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    
+    let votes = try await nounsProvider.fetchActivity(for: "0")
+    
+    XCTAssertFalse(votes.isEmpty)
+    
+    let fetchedVote = votes.first
+    let expectedVote = Vote.fixture
+    
+    XCTAssertEqual(fetchedVote?.supportDetailed, expectedVote.supportDetailed)
+    XCTAssertEqual(fetchedVote?.proposal.id, expectedVote.proposal.id)
+    XCTAssertEqual(fetchedVote?.proposal.title, expectedVote.proposal.title)
+    XCTAssertEqual(fetchedVote?.proposal.description, expectedVote.proposal.description)
+    XCTAssertEqual(fetchedVote?.proposal.status, expectedVote.proposal.status)
+  }
+  
+  func testFetchNounActivitiesFailure() async {
+    
+    enum MockErrorURLResponder: MockURLResponder {
+      static func respond(to request: URLRequest) throws -> Data? {
+        throw QueryError.badQuery
+      }
     }
+    
+    // given
+    let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
+    let client = URLSessionNetworkClient(urlSession: urlSession)
+    let graphQLClient = GraphQLClient(networkingClient: client)
+    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    
+    do {
+      // when
+      _ = try await nounsProvider.fetchActivity(for: "0")
+      
+      XCTFail("💥 result unexpected")
+    } catch {
+      
+    }
+  }
 }

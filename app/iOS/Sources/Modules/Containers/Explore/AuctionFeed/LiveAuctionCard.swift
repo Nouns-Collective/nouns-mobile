@@ -7,57 +7,107 @@
 
 import SwiftUI
 import Services
+import Combine
 import UIComponents
+
+extension LiveAuctionCard {
+  
+  @MainActor
+  class ViewModel: ObservableObject {
+    @Published var auction: Auction
+    @Published var isFetching = false
+    @Published var remainingTime =  R.string.shared.notApplicable()
+    
+    private let cloudNounsService: CloudNounsService
+    
+    init(
+      auction: Auction,
+      cloudNounsService: CloudNounsService = AppCore.shared.cloudNounsService
+    ) {
+      self.auction = auction
+      self.cloudNounsService = cloudNounsService
+      
+      setUpAuctionTimer()
+    }
+    
+    var title: String {
+      R.string.explore.noun(auction.noun.id)
+    }
+    
+    var currentBid: String {
+      guard let amount = EtherFormatter.eth(
+        from: auction.amount
+      ) else {
+        return R.string.shared.notApplicable()
+      }
+      
+      return amount
+    }
+    
+    private func setUpAuctionTimer() {
+      // Timer sequence to emit every 1 second.
+      let componentsSequence = Timer.publish(every: 1, on: .main, in: .common)
+        .autoconnect()
+        .compactMap { _ -> DateComponents? in
+          guard let endDateTimeInterval = Double(self.auction.endTime) else {
+            return nil
+          }
+
+          let now = Date()
+          let end = Date(timeIntervalSince1970: endDateTimeInterval)
+          return Calendar.current.dateComponents(
+            [.hour, .minute, .second],
+            from: now,
+            to: end
+          )
+        }
+        .values
+      
+      // Update the remaining time.
+      Task {
+        for await components in componentsSequence {
+          guard let hour = components.hour,
+                let minute = components.minute,
+                let second = components.second
+          else {
+            continue
+          }
+
+          remainingTime = R.string.liveAuction.timeLeft(hour, minute, second)
+        }
+      }
+    }
+  }
+}
+
 
 /// Diplay the auction of the day in real time.
 struct LiveAuctionCard: View {
-  let auction: Auction
+  @StateObject var viewModel: ViewModel
   
-  @EnvironmentObject private var store: AppStore
-  @Environment(\.nounComposer) private var nounComposer
-  
-  private var liveAuctionState: LiveAuctionState {
-    store.state.auction.liveAuction
-  }
-  
-  private var remainingTime: String {
-    guard let hour = liveAuctionState.remainingTime?.hour,
-          let minute = liveAuctionState.remainingTime?.minute,
-          let second = liveAuctionState.remainingTime?.second
-    else {
-      return R.string.shared.notApplicable()
-    }
-    
-    return R.string.liveAuction.timeLeft(hour, minute, second)
-  }
+  @Environment(\.nounComposer) private var nounComposer: NounComposer
   
   var body: some View {
     StandardCard(
       media: {
-        NounPuzzle(seed: auction.noun.seed)
-          .background(Color(hex: nounComposer.backgroundColors[auction.noun.seed.background]))
+        NounPuzzle(seed: viewModel.auction.noun.seed)
+          .background(Color(hex: nounComposer.backgroundColors[viewModel.auction.noun.seed.background]))
       },
-      header: R.string.explore.noun(auction.noun.id),
+      header: viewModel.title,
       accessoryImage: Image.mdArrowCorner,
       leftDetail: {
         // Displays Remaining Time.
         CompoundLabel(
-          Text(remainingTime),
+          Text(viewModel.remainingTime),
           icon: Image.timeleft,
           caption: R.string.liveAuction.timeLeftLabel())
       },
       rightDetail: {
         // Displays Current Bid.
         CompoundLabel(
-          SafeLabel(
-            EtherFormatter.eth(from: auction.amount) ?? R.string.shared.notApplicable(),
-            icon: Image.eth
-          ),
+          SafeLabel(viewModel.currentBid, icon: Image.eth),
           icon: Image.currentBid,
           caption: R.string.liveAuction.currentBid())
       })
-      .onAppear {
-        store.dispatch(ListenLiveAuctionRemainingTimeChangesAction(auction: auction))
-      }
   }
 }

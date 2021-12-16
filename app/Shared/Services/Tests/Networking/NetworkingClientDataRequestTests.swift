@@ -6,14 +6,13 @@
 //
 
 import XCTest
-import Combine
 @testable import Services
 
 final class NetworkingClientDataRequestTests: XCTestCase {
     
     fileprivate static let baseURL = "https://nouns.wtf"
     
-    func testNetworkingClientDataRequestSucceed() throws {
+    func testNetworkingClientDataRequestSucceed() async throws {
         
         enum MockDataURLResponder: MockURLResponder {
             static func respond(to request: URLRequest) throws -> Data? {
@@ -26,28 +25,14 @@ final class NetworkingClientDataRequestTests: XCTestCase {
         let client = URLSessionNetworkClient(urlSession: urlSession)
         let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
         
-        var cancellables = Set<AnyCancellable>()
-        let expectation = expectation(description: #function)
-        
         // when
-        client.data(for: request)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    expectation.fulfill()
-                case .failure(let error):
-                    XCTFail("🔥 Oops failed: \(error)")
-                }
-            } receiveValue: { data in
-                XCTAssertEqual("Valid Response", String(data: data, encoding: .utf8))
-            }
-            .store(in: &cancellables)
+        let data = try await client.data(for: request)
         
         // then
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual("Valid Response", String(data: data, encoding: .utf8))
     }
     
-    func testNetworkingClientDataRequestFailedWithBadURL() {
+    func testNetworkingClientDataRequestFailedWithBadURL() async {
         
         enum MockErrorURLResponder: MockURLResponder {
             static func respond(to request: URLRequest) throws -> Data? {
@@ -60,23 +45,13 @@ final class NetworkingClientDataRequestTests: XCTestCase {
         let client = URLSessionNetworkClient(urlSession: urlSession)
         let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
         
-        var cancellables = Set<AnyCancellable>()
-        let expectation = expectation(description: #function)
-        
         // when
-        client.data(for: request)
-            .sink { completion in
-                if case let .failure(error) = completion {
-                    XCTAssertEqual((error as? URLError)?.code, .badURL)
-                    
-                    expectation.fulfill()
-                }
-            } receiveValue: { _ in
-                XCTFail("💥 result unexpected")
-            }
-            .store(in: &cancellables)
-        
-        // then
-        wait(for: [expectation], timeout: 1.0)
+        do {
+            _ = try await client.data(for: request)
+            XCTFail("💥 result unexpected")
+            
+        } catch {
+            XCTAssertEqual((error as? URLError)?.code, .badURL)
+        }
     }
 }
