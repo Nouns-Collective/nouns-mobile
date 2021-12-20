@@ -7,18 +7,13 @@
 
 import Combine
 import Services
-import UIKit
 
 final class AppCore {
   static let shared = AppCore()
   
-  lazy var graphQLClient: GraphQL = {
-    GraphQLClient()
-  }()
-  
-  lazy var cloudNounsService: CloudNounsService = {
-    TheGraphNounsProvider(graphQLClient: graphQLClient)
-  }()
+  let onChainNounsService: OnChainNounsService = TheGraphNounsProvider()
+  let offChainNounsService: OffChainNounsService = CoreDataNounsProvider()
+  let settingsStore = SettingsStore()
   
   lazy var nounComposer: NounComposer = {
     do {

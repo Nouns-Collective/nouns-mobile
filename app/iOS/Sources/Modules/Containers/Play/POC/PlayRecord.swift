@@ -107,41 +107,6 @@ struct Triangle: Shape {
   }
 }
 
-/*
- struct PlayButton: View {
- @Namespace var namespace
- 
- @ObservedObject var audioPlayer: AudioPlayer
- 
- var body: some View {
- Button {
- withAnimation {
- audioPlayer.isPlaying.toggle()
- }
- } label: {
- ZStack {
- if audioPlayer.isPlaying {
- RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
- .fill(Color.componentRaspberry)
- .matchedGeometryEffect(id: "shape", in: namespace)
- .padding(25)
- } else {
- Triangle()
- .fill(Color.componentRaspberry)
- .rotationEffect(.radians(.pi / 2))
- .cornerRadius(5)
- .matchedGeometryEffect(id: "shape", in: namespace)
- .padding(25)
- }
- 
- Circle()
- .strokeBorder(Color.componentRaspberry, lineWidth: 2.5)
- }
- }
- }
- }
- */
-
 let nounGameScene = NounGameScene(size: CGSize(width: 320, height: 320))
 
 struct PlayRecord: View {
@@ -221,15 +186,18 @@ struct PlayRecord: View {
     .background(Gradient.bubbleGum)
     .onAppear {
       // Request permission to use microphone
-      recorder.requestPermission { success, error in
+      recorder.requestPermission { [weak recorder] success, error in
         if success {
-          recorder.startRecording()
+          recorder?.startRecording()
         } else {
           if let error = error {
             print("Error: \(error)")
           }
         }
       }
+    }
+    .onDisappear {
+      recorder.stopRecording()
     }
   }
 }

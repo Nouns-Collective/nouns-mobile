@@ -12,27 +12,24 @@ import UIComponents
 struct CardPlaceholder: View {
   let count: Int
   
-  private let gridLayout = [
-    GridItem(.flexible(), spacing: 20),
-    GridItem(.flexible(), spacing: 20),
-  ]
-  
   var body: some View {
-    LazyVGrid(columns: gridLayout) {
-      ForEach(1...count, id: \.self) { _ in
-        StandardCard(
-          media: {
-            Image(R.image.placeholder.name)
-              .resizable()
-              .scaledToFit()
-          },
-          smallHeader: "_______",
-          accessoryImage: Image.mdArrowCorner,
-          detail: {
-            SafeLabel("_____", icon: Image.eth)
-          })
-          .skeleton()
-      }
+    ForEach(1...count, id: \.self) { _ in
+      StandardCard(
+        header: "_______",
+        accessory: {
+          Image.mdArrowCorner
+        },
+        media: {
+          Image(R.image.placeholder.name)
+            .resizable()
+            .scaledToFit()
+        },
+        content: {
+          SafeLabel("_____", icon: Image.eth)
+            .padding(.top, 8)
+        })
+        .headerStyle(.small)
+        .loading()
     }
   }
 }

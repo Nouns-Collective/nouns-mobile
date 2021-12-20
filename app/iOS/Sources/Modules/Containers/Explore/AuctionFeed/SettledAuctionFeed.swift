@@ -9,39 +9,6 @@ import SwiftUI
 import Services
 import UIComponents
 
-extension SettledAuctionFeed {
-  
-  @MainActor
-  class ViewModel: ObservableObject {
-    @Published var auctions = [Auction]()
-    @Published var isFetching = false
-    
-    private let pageLimit = 20
-    private var cloudNounsService: CloudNounsService
-    
-    init(cloudNounsService: CloudNounsService = AppCore.shared.cloudNounsService) {
-      self.cloudNounsService = cloudNounsService
-    }
-    
-    func loadData() {
-      Task {
-        do {
-          isFetching = true
-          
-          // load next batch of the settled auctions from the network.
-          auctions = try await cloudNounsService.fetchAuctions(
-            settled: true,
-            limit: pageLimit,
-            cursor: auctions.count
-          )
-        } catch  { }
-        
-        isFetching = false
-      }
-    }
-  }
-}
-
 /// Displays Settled Auction Feed.
 struct SettledAuctionFeed: View {
   @StateObject var viewModel = SettledAuctionFeed.ViewModel()
@@ -56,7 +23,7 @@ struct SettledAuctionFeed: View {
   var body: some View {
     VPageGrid(viewModel.auctions, columns: gridLayout, loadMoreAction: {
       // load next settled auctions batch.
-      viewModel.loadData()
+      viewModel.loadAuctions()
       
     }, placeholder: {
       // An activity indicator while loading auctions from the network.
@@ -75,7 +42,7 @@ struct SettledAuctionFeed: View {
         selection = nil
         
       }, content: { auction in
-        NounProfileInfoCard(auction: auction)
+        NounProfileInfoCard(viewModel: .init(auction: auction))
       })
   }
 }
@@ -87,33 +54,21 @@ struct SettledAuctionCard: View {
   @Environment(\.nounComposer) private var nounComposer: NounComposer
   
   var body: some View {
-    StandardCard(media: {
-      NounPuzzle(seed: viewModel.auction.noun.seed)
-        .background(Color(hex: nounComposer.backgroundColors[viewModel.auction.noun.seed.background]))
-      
-    }, smallHeader: R.string.explore.noun(viewModel.auction.noun.id), accessoryImage: Image.mdArrowCorner, detail: {
-      SafeLabel(viewModel.winnerBid, icon: Image.eth)
-    })
-  }
-}
-
-extension SettledAuctionCard {
-  
-  class ViewModel: ObservableObject {
-    let auction: Auction
-    
-    init(auction: Auction) {
-      self.auction = auction
-    }
-    
-    var winnerBid: String {
-      guard let bid = EtherFormatter.eth(
-        from: auction.amount
-      ) else {
-        return R.string.shared.notApplicable()
-      }
-      
-      return bid
-    }
+    StandardCard(
+      header: R.string.explore.noun(viewModel.auction.noun.id),
+      accessory: {
+        Image.mdArrowCorner
+      },
+      media: {
+        NounPuzzle(seed: viewModel.auction.noun.seed)
+          .background(Color(hex: nounComposer.backgroundColors[viewModel.auction.noun.seed.background]))
+      },
+      content: {
+        SafeLabel(
+          R.string.explore.noun(viewModel.auction.noun.id),
+          icon: Image.eth)
+          .padding(.top, 8)
+      })
+      .headerStyle(.small)
   }
 }

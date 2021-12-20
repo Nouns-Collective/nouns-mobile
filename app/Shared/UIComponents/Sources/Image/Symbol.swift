@@ -10,6 +10,20 @@ import SwiftUI
 /// Creates a labeled image that you can use as content for controls.
 extension Image {
     
+    public static let active = Image("sm-active", bundle: .module)
+    
+    public static let cancel = Image("sm-cancel", bundle: .module)
+    
+    public static let check = Image("sm-check", bundle: .module)
+    
+    public static let queued = Image("sm-queued", bundle: .module)
+    
+    public static let pending = Image("sm-pending", bundle: .module)
+    
+    public static let absent = Image("sm-absent", bundle: .module)
+    
+    public static let smArrowOut = Image("sm-arrow-out", bundle: .module)
+    
     public static let save = Image("save", bundle: .module)
     
     public static let about = Image("about", bundle: .module)
@@ -101,4 +115,6 @@ extension Image {
     public static let shakePhone = Image("shake-phone", bundle: .module)
     
     public static let swipePick = Image("swipe-pick", bundle: .module)
+    
+    public static let pointRight = Image("hand-point-right", bundle: .module)
 }

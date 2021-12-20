@@ -12,7 +12,17 @@ private struct OutlineTabItemSelection: EnvironmentKey {
     static var defaultValue: Int = 0
 }
 
+/// Accessing the height of the tab view
+public struct OutlineTabViewHeightKey: EnvironmentKey {
+    public static var defaultValue: CGFloat = 0
+}
+
 extension EnvironmentValues {
+    
+    public var outlineTabViewHeight: CGFloat {
+        get { self[OutlineTabViewHeightKey.self] }
+        set { self[OutlineTabViewHeightKey.self] = newValue }
+    }
     
     fileprivate var outlineTabItemSelection: Int {
         get { self[OutlineTabItemSelection.self] }
@@ -175,6 +185,8 @@ public struct OutlineTabView<Content>: View where Content: View {
     @State private var items: [OutlineTabItem] = []
     private let content: Content
     
+    @State private var tabBarHeight: CGFloat = 0
+
     public init(
         selection: Binding<Int>,
         @ViewBuilder content: @escaping () -> Content
@@ -184,12 +196,23 @@ public struct OutlineTabView<Content>: View where Content: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .top) {
             content
-                .ignoresSafeArea()
-            
+                .environment(\.outlineTabViewHeight, tabBarHeight)
+        }
+        .safeAreaInset(edge: .bottom, spacing: 40) {
             OutlineTabBar(items)
                 .opacity(hideOutlineTabBar ? 0 : 1)
+                .background(
+                    /// A clear background to capture the height of the tab bar and pass it to it's children.
+                    /// This is to allow children to set the necessary amount of padding to the bottom of the view.
+                    GeometryReader { proxy in
+                        Color.clear
+                            .onChange(of: proxy.size.height, perform: { newValue in
+                                tabBarHeight = newValue
+                            })
+                    }
+                )
         }
         .environment(\.outlineTabItemSelection, selection)
         .onPreferenceChange(OutlineTabItems.self) { items in
@@ -198,37 +221,24 @@ public struct OutlineTabView<Content>: View where Content: View {
         .onPreferenceChange(OutlineTabItemSelectionDidChange.self) { newSelectedTabItem in
             selection = newSelectedTabItem
         }
-//        .onPreferenceChange(HideOutlineTabBar.self) { visibility in
-//            hideOutlineTabBar = visibility
-//            print("=====", visibility)
-//        }
     }
 }
 
-// TODO: Should be removed after all the Todos been addressed.
 struct OutlineTabView_preview: PreviewProvider {
     
-    struct Example: View {
-        @State var selection: Int = 0
-        
-        var body: some View {
-            OutlineTabView(selection: $selection) {
-                Gradient.cherrySunset
-                    .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
-                
-                Gradient.bubbleGum
-                    .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
-                
-                Gradient.lemonDrop
-                    .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
-                
-                Gradient.orangesicle
-                    .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
-            }
-        }
-    }
-    
     static var previews: some View {
-        Example()
+        OutlineTabView(selection: .constant(0)) {
+            Gradient.cherrySunset
+                .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
+            
+            Gradient.bubbleGum
+                .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
+            
+            Gradient.lemonDrop
+                .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
+            
+            Gradient.orangesicle
+                .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
+        }
     }
 }

@@ -12,8 +12,29 @@
 
 "learn.more" = "Learn more";
 
+"done" = "Done";
+
 // MARK: - States
 
 "unavailable" = "Unavailable";
 
 "not.applicable" = "N/A";
+
+"untitled" = "Untitled";
+
+// MARK: - Noun Parts
+
+"glasses" = "Glasses";
+
+"head" = "Head";
+
+"body" = "Body";
+
+"accessory" = "Accessory";
+
+"background" = "Background";
+
+// MARK: - Links
+
+"nouns.website" = "https://nouns.wtf";
+

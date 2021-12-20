@@ -2,72 +2,55 @@
 //  AboutView.swift
 //  Nouns
 //
-//  Created by Ziad Tamim on 19.11.21.
+//  Created by Ziad Tamim on 05.12.21.
 //
 
 import SwiftUI
 import UIComponents
 
 struct AboutView: View {
-  @Binding var isPresented: Bool
-
-  @Environment(\.openURL) private var openURL
+  @Environment(\.outlineTabViewHeight) var tabBarHeight
   
-  init(isPresented: Binding<Bool>) {
-    self._isPresented = isPresented
-  }
+  @State private var isAboutNounsPresented = false
+  @State private var isSettingsPresented = false
+  private let localize = R.string.about.self
   
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
-        VStack(spacing: 0) {
-          NounSpeechBubble(
-            R.string.aboutNouns.message(),
-            noun: "talking-noun")
-            .padding(.horizontal)
-
-          Divider()
-            .background(Color.componentNounsBlack)
-            .frame(height: 2)
-
-          Text(R.string.aboutNouns.nounsWtfDescription())
-            .font(.custom(.regular, size: 17))
-            .lineSpacing(6)
-            .padding(.horizontal)
-            .padding(.top, 22)
-
-          // TODO: Shouldn't leave the app to open the website.
-          // Opens `nouns.wtf`
-          OutlineButton(
-            text: R.string.aboutNouns.learnMore(),
-            icon: { Image.web },
-            smallAccessory: { Image.squareArrowDown },
-            action: {
-              if let url = URL(string: "https://nouns.wtf") {
-                openURL(url)
-              }
-            },
-            fill: [.width])
-            .padding(.horizontal)
-            .padding(.top, 25)
+        VStack(spacing: 20) {
+          GovernanceInfoSection(isAboutNounsPresented: $isAboutNounsPresented)
+          ProposalsInfoSection()
+          SpacesInfoSection()
+          DocumentationInfoSection()
         }
-        .softNavigationTitle(R.string.aboutNouns.title(), leftAccessory: {
-          // Dismiss About Nouns.wtf
-          SoftButton(
-            icon: { Image.xmark },
-            action: { isPresented.toggle() })
+        .padding(.horizontal, 20)
+        .padding(.bottom, tabBarHeight)
+        // Extra padding between the bottom of the last noun card and the top of the tab view
+        .padding(.bottom, 20)
+        .softNavigationTitle(localize.title(), rightAccessory: {
+          // App's Settings
+          Button(action: {
+            isSettingsPresented.toggle()
+          }, label: {
+            Image.settingsOutline
+          })
         })
       }
-      .background(Gradient.lemonDrop)
+      .ignoresSafeArea(edges: .top)
+      .background(Gradient.bubbleGum)
+      .bottomSheet(isPresented: $isAboutNounsPresented) {
+        AboutNounsView(isPresented: $isAboutNounsPresented)
+      }
+      .fullScreenCover(isPresented: $isSettingsPresented) {
+        SettingsView()
+      }
     }
   }
 }
 
-struct AboutViews_Previews: PreviewProvider {
+struct AboutView_Previews: PreviewProvider {
   static var previews: some View {
-    AboutView(isPresented: .constant(false))
-      .onAppear {
-        UIComponents.configure()
-      }
+    AboutView()
   }
 }

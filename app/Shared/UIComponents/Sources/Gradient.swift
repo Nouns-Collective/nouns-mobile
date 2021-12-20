@@ -7,251 +7,134 @@
 
 import SwiftUI
 
+public enum GradientColors: CaseIterable {
+    
+    case coolGreydient
+    case warmGreydient
+    case cherrySunset
+    case orangesicle
+    case mangoChunks
+    case lemonDrop
+    case keyLimePie
+    case kiwiDream
+    case freshMint
+    case oceanBreeze
+    case blueberryJam
+    case grapeAttack
+    case magnoliaGarden
+    case bubbleGum
+        
+    var colors: [Color] {
+        switch self {
+        case .coolGreydient:
+            return [.componentCoolGrey, .componentCanadianSky]
+        case .warmGreydient:
+            return [.componentWarmGrey, .componentOctoberSky]
+        case .cherrySunset:
+            return [.componentPeachy, .componentSoftCherry]
+        case .orangesicle:
+            return [.componentOrangeCream, .componentClementine]
+        case .mangoChunks:
+            return [.componentSeriousMango, .componentOrangeCream]
+        case .lemonDrop:
+            return [.componentUnripeLemon, .componentSeriousMango]
+        case .keyLimePie:
+            return [.componentUnripeLemon, .componentInsideLime]
+        case .kiwiDream:
+            return [.componentConcord, .componentNuclearMint]
+        case .freshMint:
+            return [.componentAqua, .componentSpearmint]
+        case .oceanBreeze:
+            return [.componentLinen, .componentAqua]
+        case .blueberryJam:
+            return [.componentPerriwinkle, .componentMountainSky]
+        case .grapeAttack:
+            return [.componentPurpleCabbage, .componentBrambleberry]
+        case .magnoliaGarden:
+            return [.componentSmoothie, .componentEggplant]
+        case .bubbleGum:
+            return [.componentPeachy, .componentRaspberry]
+        }
+    }
+}
+
 /// Various component gradients.
 extension Gradient {
     
+    /// A collection of all the gradient color combinations
+    public static let allGradients: [[Color]] = GradientColors.allCases.map { $0.colors }
+    
     /// A context-dependent CoolGreydient gradient suitable for use in UI elements.
-    public static let coolGreydient = CoolGreydient()
+    public static let coolGreydient = GradientView(.coolGreydient, startPoint: .center, endPoint: .bottom)
     
     /// A context-dependent warmGreydient gradient suitable for use in UI elements.
-    public static let warmGreydient = WarmGreydient()
+    public static let warmGreydient = GradientView(.warmGreydient, startPoint: .center, endPoint: .bottom)
     
     /// A context-dependent cherrySunset gradient suitable for use in UI elements.
-    public static let cherrySunset = CherrySunset()
+    public static let cherrySunset = GradientView(.cherrySunset)
     
     /// A context-dependent orangesicle gradient suitable for use in UI elements.
-    public static let orangesicle = Orangesicle()
+    public static let orangesicle = GradientView(.orangesicle)
     
     /// A context-dependent mangoChunks gradient suitable for use in UI elements.
-    public static let mangoChunks = MangoChunks()
+    public static let mangoChunks = GradientView(.mangoChunks)
     
     /// A context-dependent lemonDrop gradient suitable for use in UI elements.
-    public static let lemonDrop = LemonDrop()
+    public static let lemonDrop = GradientView(.lemonDrop)
     
     /// A context-dependent keyLimePie gradient suitable for use in UI elements.
-    public static let keyLimePie = KeyLimePie()
+    public static let keyLimePie = GradientView(.keyLimePie)
     
     /// A context-dependent kiwiDream gradient suitable for use in UI elements.
-    public static let kiwiDream = KiwiDream()
+    public static let kiwiDream = GradientView(.kiwiDream)
     
     /// A context-dependent freshMint gradient suitable for use in UI elements.
-    public static let freshMint = FreshMint()
+    public static let freshMint = GradientView(.freshMint)
     
     /// A context-dependent oceanBreeze gradient suitable for use in UI elements.
-    public static let oceanBreeze = OceanBreeze()
+    public static let oceanBreeze = GradientView(.oceanBreeze)
     
     /// A context-dependent blueberryJam gradient suitable for use in UI elements.
-    public static let blueberryJam = BlueberryJam()
+    public static let blueberryJam = GradientView(.blueberryJam)
     
     /// A context-dependent grapeAttack gradient suitable for use in UI elements.
-    public static let grapeAttack = GrapeAttack()
+    public static let grapeAttack = GradientView(.grapeAttack)
     
     /// A context-dependent magnoliaGarden gradient suitable for use in UI elements.
-    public static let magnoliaGarden = MagnoliaGarden()
+    public static let magnoliaGarden = GradientView(.magnoliaGarden)
     
     /// A context-dependent bubbleGum gradient suitable for use in UI elements.
-    public static let bubbleGum = BubbleGum()
-    
-    public static func allGradients() -> [[Color]] {
-        [
-            Gradient.coolGreydient.colors,
-            Gradient.warmGreydient.colors,
-            Gradient.cherrySunset.colors,
-            Gradient.orangesicle.colors,
-            Gradient.mangoChunks.colors,
-            Gradient.lemonDrop.colors,
-            Gradient.keyLimePie.colors,
-            Gradient.kiwiDream.colors,
-            Gradient.freshMint.colors,
-            Gradient.oceanBreeze.colors,
-            Gradient.blueberryJam.colors,
-            Gradient.grapeAttack.colors,
-            Gradient.magnoliaGarden.colors,
-            Gradient.bubbleGum.colors
-        ]
-    }
+    public static let bubbleGum = GradientView(.bubbleGum)
 }
 
-/// A context-dependent CoolGreydient color suitable for use in UI elements.
-public struct CoolGreydient: ShapeStyle, View {
+/// A gradient view for use in UI elements
+public struct GradientView: ShapeStyle, View {
     
-    let colors: [Color] = [.componentCoolGrey, .componentCanadianSky]
+    /// An enumeration for the intended direction of the gradient
+    let colors: [Color]
+    
+    /// The intended start point of the gradient
+    let startPoint: UnitPoint
+    
+    /// The intended end point of the gradient
+    let endPoint: UnitPoint
+    
+    init(colors: [Color], startPoint: UnitPoint = .topLeading, endPoint: UnitPoint = .bottom) {
+        self.colors = colors
+        self.startPoint = startPoint
+        self.endPoint = endPoint
+    }
+    
+    init(_ gradient: GradientColors, startPoint: UnitPoint = .topLeading, endPoint: UnitPoint = .bottom) {
+        self.colors = gradient.colors
+        self.startPoint = startPoint
+        self.endPoint = endPoint
+    }
     
     public var body: some View {
         LinearGradient(
             colors: colors,
-            startPoint: .center,
-            endPoint: .bottom)
-    }
-}
-
-/// A context-dependent WarmGreydient color suitable for use in UI elements.
-public struct WarmGreydient: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentWarmGrey, .componentOctoberSky]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .center,
-            endPoint: .bottom)
-    }
-}
-
-/// A context-dependent CherrySunset color suitable for use in UI elements.
-public struct CherrySunset: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentPeachy, .componentSoftCherry]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent Orangesicle color suitable for use in UI elements.
-public struct Orangesicle: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentOrangeCream, .componentClementine]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent MangoChunks color suitable for use in UI elements.
-public struct MangoChunks: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentSeriousMango, .componentOrangeCream]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent LemonDrop color suitable for use in UI elements.
-public struct LemonDrop: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentUnripeLemon, .componentSeriousMango]
-    
-    public init() {}
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent KeyLimePie color suitable for use in UI elements.
-public struct KeyLimePie: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentUnripeLemon, .componentInsideLime]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent KiwiDream color suitable for use in UI elements.
-public struct KiwiDream: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentConcord, .componentNuclearMint]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent FreshMint color suitable for use in UI elements.
-public struct FreshMint: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentAqua, .componentSpearmint]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent OceanBreeze color suitable for use in UI elements.
-public struct OceanBreeze: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentLinen, .componentAqua]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent BlueberryJam color suitable for use in UI elements.
-public struct BlueberryJam: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentPerriwinkle, .componentMountainSky]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent GrapeAttack color suitable for use in UI elements.
-public struct GrapeAttack: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentPurpleCabbage, .componentBrambleberry]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent MagnoliaGarden color suitable for use in UI elements.
-public struct MagnoliaGarden: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentSmoothie, .componentEggplant]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
-    }
-}
-
-/// A context-dependent BubbleGum color suitable for use in UI elements.
-public struct BubbleGum: ShapeStyle, View {
-    
-    let colors: [Color] = [.componentPeachy, .componentRaspberry]
-    
-    public var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing)
+            startPoint: startPoint,
+            endPoint: endPoint)
     }
 }

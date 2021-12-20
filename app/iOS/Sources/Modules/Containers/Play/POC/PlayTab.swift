@@ -194,8 +194,8 @@ struct PlayTab: View {
         
         OutlineButton(text: "Get Started",
                       icon: { Image.playOutline },
-                      action: { willMoveToNextScreen.toggle() },
-                      fill: [.width])
+                      action: { willMoveToNextScreen.toggle() })
+          .controlSize(.large)
           .padding(.horizontal, 20)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

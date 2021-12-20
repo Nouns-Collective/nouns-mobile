@@ -25,7 +25,7 @@ final class FetchOnChainNounsTests: XCTestCase {
     let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     // when
-    let nouns = try await nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
+    let nouns = try await nounsProvider.fetchSettledNouns(limit: 10, after: 0)
     
     // then
     XCTAssertFalse(nouns.isEmpty)
@@ -53,7 +53,7 @@ final class FetchOnChainNounsTests: XCTestCase {
     let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     do {
-      _ = try await nounsProvider.fetchOnChainNouns(limit: 10, after: 0)
+      _ = try await nounsProvider.fetchSettledNouns(limit: 10, after: 0)
       XCTFail("💥 result unexpected")
       
     } catch {

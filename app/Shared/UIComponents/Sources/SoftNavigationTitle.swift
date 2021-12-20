@@ -73,38 +73,58 @@ private struct SoftNavigationTitle<LeftAccessory, RightAccessory>: ViewModifier 
     
     func body(content: Content) -> some View {
         // TODO: Too much responsibilities for the `SoftNavigationTitle` component. Should have multiple styles.
+        VStack {
+            if !(leftAccessory.self is EmptyView) && !(rightAccessory.self is EmptyView) {
+                plain
+            } else {
+                large
+            }
+            
+            content
+                .navigationBarHidden(true)
+        }
+    }
+    
+    private var large: some View {
         VStack(alignment: .leading) {
-            if let title = title {
-                leftAccessory
-                    .padding(.leading, 20)
-                          
-                HStack(alignment: .center) {
+            leftAccessory
+                .padding(.leading, 20)
+            
+            HStack(alignment: .center) {
+                if let title = title {
                     Text(title)
                         .font(.custom(.bold, size: 52))
                         .minimumScaleFactor(0.7)
                         .foregroundColor(Color.componentNounsBlack)
-                    
-                    Spacer()
-                    
-                    rightAccessory
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, (leftAccessory is EmptyView) ? 60 : 20)
-                .padding(.bottom, 20)
                 
-            } else {
-                HStack {
-                    leftAccessory
-                    Spacer()
-                    rightAccessory
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
+                Spacer()
+                
+                rightAccessory
             }
-            
-            content
+            .padding(.horizontal, 20)
+            .padding(.top, (leftAccessory is EmptyView) ? 60 : 20)
+            .padding(.bottom, 20)
         }
-        .navigationBarHidden(true) // Hides stock navigation bar
+    }
+    
+    private var plain: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                leftAccessory
+                Spacer()
+                rightAccessory
+            }
+            .padding(.top, 20)
+            
+            if let title = title {
+                Text(title)
+                    .font(.custom(.bold, size: 52))
+                    .minimumScaleFactor(0.7)
+                    .foregroundColor(Color.componentNounsBlack)
+            }
+        }
+        .padding(.horizontal, 20)
     }
 }
 

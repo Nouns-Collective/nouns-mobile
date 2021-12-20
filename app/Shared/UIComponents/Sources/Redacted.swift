@@ -21,18 +21,18 @@ extension EnvironmentValues {
 
 /// A view extension that sets the loading environment key to true for the specified view and it's children view
 public extension View {
-    func skeleton(when condition: Bool = true) -> some View {
+    func loading(when condition: Bool = true) -> some View {
         environment(\.loading, condition)
     }
 }
 
 /// The view modifier that applies a skeleton view if the environment loading property is set to true
-struct Redactable: ViewModifier {
+public struct Redactable: ViewModifier {
     @Environment(\.loading) private var isLoading
     
     let style: Style
     
-    enum Style {
+    public enum Style {
         case skeleton
         case gray
     }
@@ -44,11 +44,11 @@ struct Redactable: ViewModifier {
             .frame(height: 2)
     }
     
-    func body(content: Content) -> some View {
-        if isLoading {
-            content
-                .opacity(0)
-                .overlay {
+    public func body(content: Content) -> some View {
+        content
+            .opacity(isLoading ? 0 : 1)
+            .overlay {
+                if isLoading {
                     switch style {
                     case .skeleton:
                         skeletonView
@@ -57,18 +57,12 @@ struct Redactable: ViewModifier {
                             .fill(Color.black.opacity(0.5))
                     }
                 }
-        } else {
-            content
-        }
+            }
     }
 }
 
-extension View {
-    func skeletonWhenRedacted() -> some View {
-        modifier(Redactable(style: .skeleton))
-    }
-    
-    func grayWhenRedacted() -> some View {
-        modifier(Redactable(style: .gray))
+public extension View {
+    func redacted(style: Redactable.Style) -> some View {
+        modifier(Redactable(style: style))
     }
 }

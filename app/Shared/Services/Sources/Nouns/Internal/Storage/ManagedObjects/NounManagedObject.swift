@@ -11,6 +11,7 @@ import CoreData
 /// `Noun Core Data` model object.
 final class NounManagedObject: NSManagedObject, StoredEntity {
   @NSManaged var id: String
+  @NSManaged var name: String
   @NSManaged var createdAt: Date
   @NSManaged var updatedAt: Date
   @NSManaged var owner: AccountManagedObject
@@ -46,6 +47,13 @@ extension NounManagedObject {
 extension NounManagedObject: CustomModelConvertible {
 
   var model: Noun {
-    Noun(id: id, owner: owner.model, seed: seed.model)
+    Noun(
+      id: id,
+      name: name,
+      owner: owner.model,
+      seed: seed.model,
+      createdAt: createdAt,
+      updatedAt: updatedAt
+    )
   }
 }

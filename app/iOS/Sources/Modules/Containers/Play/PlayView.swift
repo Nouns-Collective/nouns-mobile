@@ -10,6 +10,7 @@ import UIComponents
 import Services
 
 struct PlayView: View {
+  @Environment(\.outlineTabViewHeight) var tabBarHeight
   @State private var isPlayPresented = false
   
   init() {
@@ -24,26 +25,28 @@ struct PlayView: View {
         Text(R.string.play.subhealine())
           .font(.custom(.regular, size: 17))
         
-        Color.clear
-//        NounPuzzle(
-//          head: Image(nounTraitName: AppCore.shared.nounComposer.heads[26].assetImage),
-//          body: Image(nounTraitName: AppCore.shared.nounComposer.bodies[20].assetImage),
-//          glass: Image(nounTraitName: AppCore.shared.nounComposer.glasses[8].assetImage),
-//          accessory: Image(nounTraitName: AppCore.shared.nounComposer.accessories[0].assetImage))
+        NounPuzzle(
+          head: AppCore.shared.nounComposer.heads[26].assetImage,
+          body: AppCore.shared.nounComposer.bodies[20].assetImage,
+          glasses: AppCore.shared.nounComposer.glasses[8].assetImage,
+          accessory: AppCore.shared.nounComposer.accessories[0].assetImage)
           .padding(.top, 40)
         
         OutlineButton(
           text: R.string.play.proceedTitle(),
           largeAccessory: { Image.fingergunsRight },
-          action: { isPlayPresented.toggle() },
-          fill: [.width])
+          action: { isPlayPresented.toggle() })
+          .controlSize(.large)
         
         Spacer()
       }
       .padding(.horizontal, 20)
+      .padding(.bottom, tabBarHeight)
+      // Extra padding between the bottom of the last noun card and the top of the tab view
+      .padding(.bottom, 20)
       .softNavigationTitle(R.string.play.title())
       .background(Gradient.blueberryJam)
-      .ignoresSafeArea()
+      .ignoresSafeArea(edges: .top)
       .fullScreenCover(isPresented: $isPlayPresented) {
         PlayTab(isPresented: $isPlayPresented)
       }

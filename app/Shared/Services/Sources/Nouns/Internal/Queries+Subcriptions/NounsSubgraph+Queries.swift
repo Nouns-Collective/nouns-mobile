@@ -38,12 +38,15 @@ internal enum NounsSubgraph {
   internal struct ActivitiesQuery: GraphQLQuery {
     internal var url = CloudConfiguration.Nouns.query.url
     internal let nounID: String
+    internal let first: Int
+    internal let skip: Int
     
     internal var operationDefinition: String {
       """
       {
         noun(id: \(nounID)) {
-          votes {
+          votes(first: \(first), skip: \(skip)) {
+            id
             supportDetailed
             proposal {
               id
@@ -112,11 +115,13 @@ internal enum NounsSubgraph {
   internal struct BidsQuery: GraphQLQuery {
     internal var url = CloudConfiguration.Nouns.query.url
     internal let nounID: String
+    internal let first: Int
+    internal let skip: Int
     
     internal var operationDefinition: String {
       """
         {
-          bids(orderBy: blockTimestamp, orderDirection: desc, where: { noun: "\(nounID)" }) {
+          bids(skip: \(skip), first: \(first), orderBy: blockTimestamp, orderDirection: desc, where: { noun: "\(nounID)" }) {
             id
             amount
             blockTimestamp

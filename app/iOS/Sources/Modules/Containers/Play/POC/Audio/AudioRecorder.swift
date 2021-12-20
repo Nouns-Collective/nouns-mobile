@@ -134,7 +134,7 @@ class AudioRecorder: NSObject, ObservableObject {
   }
   
   deinit {
-    print(stopRecording())
+    stopRecording()
   }
   
   func requestPermission(completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
@@ -265,6 +265,7 @@ class AudioRecorder: NSObject, ObservableObject {
 
 // Methods for invoking the recorder
 extension AudioRecorder {
+  
   func startRecording() {
     let tapNode: AVAudioNode = engine.inputNode
     let format = tapNode.outputFormat(forBus: 0)

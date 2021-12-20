@@ -1,0 +1,25 @@
+/* 
+  Settings.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+"title" = "Settings";
+
+"noun-oclock.notification.title" = "Noun O’Clock";
+
+"new-noun.notification.title" = "New Noun";
+
+"notification.note" = "Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.";
+
+"theme.title" = "Theme";
+
+"theme.system" = "System";
+
+"app.icon.title" = "App Icon";
+
+"app.icon.default" = "Default";
+
+"share.friends" = "Share with friends";

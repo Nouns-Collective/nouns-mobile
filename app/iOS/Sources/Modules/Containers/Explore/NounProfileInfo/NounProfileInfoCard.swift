@@ -10,33 +10,41 @@ import UIComponents
 import Services
 
 struct NounProfileInfoCard: View {
-  let auction: Auction
+  @StateObject var viewModel: ViewModel
+  
   @State private var isActivityPresented = false
   @State private var isShareSheetPresented = false
+  @Environment(\.dismiss) private var dismiss
   
   var body: some View {
     NavigationView {
       VStack(spacing: 0) {
         Spacer()
-        NounPuzzle(seed: auction.noun.seed)
+        NounPuzzle(seed: viewModel.auction.noun.seed)
         
-        PlainCell {
-          NounProfileInfoCardNavigation(auction: auction)
+        PlainCell(length: 20) {
+          CardToolBar(viewModel: viewModel, dismiss: dismiss)
           
-          if auction.settled {
+          if viewModel.isAuctionSettled {
             SettledAuctionInfoCard(
-              auction: auction,
+              viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
             )
             
           } else {
             LiveAuctionInfoCard(
-              auction: auction,
+              viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
             )
           }
           
-          NounProfileInfoCardItems(
+          // Navigation link showing the noun's bid history & owner activity
+          // TODO: - Build a component to hide the navigation implementation details.
+          NavigationLink(
+            destination: AuctionInfoContainer(viewModel: .init(auction: viewModel.auction)),
+            isActive: $isActivityPresented) { EmptyView() }
+          
+          CardActionsItems(
             isShareSheetPresented: $isShareSheetPresented
           )
         }
@@ -45,49 +53,56 @@ struct NounProfileInfoCard: View {
       .background(Gradient.warmGreydient)
     }
     .sheet(isPresented: $isShareSheetPresented) {
-      if let url = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)") {
+      if let url = viewModel.nounProfileURL {
         ShareSheet(activityItems: [url])
       }
     }
   }
 }
 
-private struct NounProfileInfoCardNavigation: View {
-  let auction: Auction
+extension NounProfileInfoCard {
   
-  var body: some View {
-    HStack {
-      Text(R.string.explore.noun(auction.noun.id))
-        .font(.custom(.bold, relativeTo: .title2))
-      
-      Spacer()
-      
-      SoftButton(
-        icon: { Image.xmark },
-        action: { })
+  struct CardToolBar: View {
+    @ObservedObject var viewModel: ViewModel
+    let dismiss: DismissAction
+    
+    var body: some View {
+      HStack {
+        Text(viewModel.title)
+          .font(.custom(.bold, relativeTo: .title2))
+        
+        Spacer()
+        
+        SoftButton(
+          icon: { Image.xmark },
+          action: { dismiss() })
+      }
     }
   }
 }
 
-private struct NounProfileInfoCardItems: View {
-  @Binding var isShareSheetPresented: Bool
+extension NounProfileInfoCard {
   
-  var body: some View {
-    // Various available actions.
-    HStack {
-      // Shares the live auction link.
-      SoftButton(
-        text: R.string.shared.share(),
-        largeAccessory: { Image.share },
-        action: { isShareSheetPresented.toggle() },
-        fill: [.width])
-      
-      // Switch context to the playground exprience using the current Noun's seed.
-      SoftButton(
-        text: R.string.shared.remix(),
-        largeAccessory: { Image.splice },
-        action: { },
-        fill: [.width])
+  struct CardActionsItems: View {
+    @Binding var isShareSheetPresented: Bool
+    
+    var body: some View {
+      // Various available actions.
+      HStack {
+        // Shares the live auction link.
+        SoftButton(
+          text: R.string.shared.share(),
+          largeAccessory: { Image.share },
+          action: { isShareSheetPresented.toggle() })
+          .controlSize(.large)
+        
+        // Switch context to the playground exprience using the current Noun's seed.
+        SoftButton(
+          text: R.string.shared.remix(),
+          largeAccessory: { Image.splice },
+          action: { })
+          .controlSize(.large)
+      }
     }
   }
 }

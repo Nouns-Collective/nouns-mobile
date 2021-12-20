@@ -1,0 +1,15 @@
+/* 
+  About.strings
+  Nouns
+
+  Created by Ziad Tamim on 05.12.21.
+  
+*/
+
+"title" = "About";
+
+"treasury" = "Treasury";
+
+"learn.more" = "Learn more at nouns.wtf";
+
+"about.link" = "https://nouns.wtf";

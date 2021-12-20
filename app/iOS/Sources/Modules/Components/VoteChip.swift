@@ -9,20 +9,20 @@ import SwiftUI
 import UIComponents
 import Services
 
-/// Displays different Vote states using the ``ChipLabel`` component.
+/// Displays different Vote states using the `ChipLabel` component.
 struct VoteChip: View {
   let vote: Vote
   
   var body: some View {
     switch vote.supportDetailed {
     case .abstain:
-      return ChipLabel(R.string.activity.absent(), state: .neutral)
+      return ChipLabel(R.string.activity.absent(), state: .cancelled)
       
     case .for:
-      return ChipLabel(R.string.activity.for(), state: .positive)
+      return ChipLabel(R.string.activity.for(), state: .executed)
       
     case .against:
-      return ChipLabel(R.string.activity.against(), state: .negative)
+      return ChipLabel(R.string.activity.against(), state: .vetoed)
     }
   }
 }

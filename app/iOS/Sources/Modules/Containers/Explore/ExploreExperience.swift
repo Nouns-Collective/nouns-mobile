@@ -27,35 +27,11 @@ struct ExploreExperience: View {
         .softNavigationTitle(R.string.explore.title())
       }
       // Disable scrolling when data is initially loading.
-      .disabled(viewModel.isFetching)
+      .disabled(viewModel.isLoading)
       .background(Gradient.lemonDrop)
       .ignoresSafeArea()
-    }
-  }
-}
-
-extension ExploreExperience {
-  
-  @MainActor
-  class ViewModel: ObservableObject {
-    @Published var liveAuction: Auction?
-    @Published var isFetching = false
-    
-    private let cloudNounsService: CloudNounsService
-    
-    init(cloudNounsService: CloudNounsService = AppCore.shared.cloudNounsService) {
-      self.cloudNounsService = cloudNounsService
-    }
-    
-    private func listenLiveAuctionChanges() {
-      Task {
-        do {
-          isFetching = true
-          liveAuction = try await cloudNounsService.liveAuctionStateDidChange()
-          
-        } catch { }
-        
-        isFetching = false
+      .onAppear {
+        viewModel.listenLiveAuctionChanges()
       }
     }
   }

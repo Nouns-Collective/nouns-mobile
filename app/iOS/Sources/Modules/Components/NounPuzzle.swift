@@ -11,24 +11,50 @@ import Services
 /// Builds a Noun given the traits head, glass, body, and accessory.
 struct NounPuzzle: View {
   
-  let seed: Seed
   @Environment(\.nounComposer) private var nounComposer: NounComposer
+  
+  private var headImage: String = ""
+  
+  private var bodyImage: String = ""
+  
+  private var glassesImage: String = ""
+  
+  private var accessoryImage: String = ""
+  
+  init(seed: Seed) {
+    self.headImage = nounComposer.heads[seed.head].assetImage
+    self.bodyImage = nounComposer.bodies[seed.body].assetImage
+    self.glassesImage = nounComposer.glasses[seed.glasses].assetImage
+    self.accessoryImage = nounComposer.accessories[seed.accessory].assetImage
+  }
+  
+  init(
+    head: String,
+    body: String,
+    glasses: String,
+    accessory: String
+  ) {
+    self.headImage = head
+    self.bodyImage = body
+    self.glassesImage = glasses
+    self.accessoryImage = accessory
+  }
   
   public var body: some View {
     ZStack {
-      Image(nounTraitName: nounComposer.heads[seed.head].assetImage)
+      Image(nounTraitName: headImage)
         .interpolation(.none)
         .resizable()
       
-      Image(nounTraitName: nounComposer.bodies[seed.body].assetImage)
+      Image(nounTraitName: bodyImage)
         .interpolation(.none)
         .resizable()
       
-      Image(nounTraitName: nounComposer.glasses[seed.glasses].assetImage)
+      Image(nounTraitName: glassesImage)
         .interpolation(.none)
         .resizable()
       
-      Image(nounTraitName: nounComposer.accessories[seed.accessory].assetImage)
+      Image(nounTraitName: accessoryImage)
         .interpolation(.none)
         .resizable()
     }

@@ -76,8 +76,7 @@ public struct ErrorStateBubble: View {
                 .scaledToFit()
             OutlineButton(text: "Try again",
                           icon: { Image.retry },
-                          action: { },
-                          fill: [.width])
+                          action: { })
         }
     }
 }

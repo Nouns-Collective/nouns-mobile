@@ -8,10 +8,20 @@
 import SwiftUI
 
 /// The button style configuration for the SoftButton
-public struct SoftButtonStyle<Label: View>: ButtonStyle {
+public struct SoftButtonStyle: ButtonStyle {
+    @Environment (\.controlSize) var controlSize: ControlSize
     
-    /// The height of the button
-    public let fill: Set<SoftButton<Label>.Fill>
+    /// The width of the button, determined by the controlSize environment property
+    /// The two options are either an automatic width where it expands to fit it's contents (nil)
+    /// or a width that takes up the width of the entire parent view
+    private var width: CGFloat? {
+        switch controlSize {
+        case .large:
+            return .infinity
+        default:
+            return nil
+        }
+    }
     
     /// Corner radius style of the button
     public let continuous: Bool
@@ -19,7 +29,7 @@ public struct SoftButtonStyle<Label: View>: ButtonStyle {
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label
-            .frame(maxWidth: fill.contains(.width) ? .infinity : nil, maxHeight: fill.contains(.height) ? .infinity : nil)
+            .frame(maxWidth: width)
             .multilineTextAlignment(.center)
             .lineLimit(1)
             .foregroundColor(Color.black)
@@ -37,6 +47,7 @@ public struct SoftButtonStyle<Label: View>: ButtonStyle {
 
 /// A label for buttons with text and an optional icon on the left of the text as well as an optional accessory image
 public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
+    @Environment (\.controlSize) var controlSize: ControlSize
     
     /// The optional icon to show on the left of the text
     let icon: Image?
@@ -51,7 +62,9 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
     let text: String
     
     /// Boolean value to determine whether the button should be full width
-    let fullWidth: Bool
+    private var fullWidth: Bool {
+        controlSize == .large
+    }
     
     private var onlyText: Bool {
         icon == nil
@@ -60,28 +73,24 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
     public init(
         _ text: String,
         icon: Image?,
-        accessoryImage: Image?,
-        fullWidth: Bool
+        accessoryImage: Image?
     ) where Accessory == EmptyView {
         self.text = text
         self.icon = icon
         self.accessoryImage = accessoryImage
         self.accessory = EmptyView()
-        self.fullWidth = fullWidth
     }
     
     public init(
         _ text: String,
         icon: Image?,
         accessory: Accessory,
-        accessoryImage: Image? = nil,
-        fullWidth: Bool
+        accessoryImage: Image? = nil
     ) {
         self.text = text
         self.icon = icon
         self.accessory = accessory
         self.accessoryImage = accessoryImage
-        self.fullWidth = fullWidth
     }
     
     public var body: some View {
@@ -101,22 +110,27 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
                 Spacer()
             }
             
-            accessory
-            
-            if let accessory = accessoryImage {
+            HStack {
                 accessory
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16, alignment: .center)
+            
+                if let accessory = accessoryImage {
+                    accessory
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 16, height: 28, alignment: .center)
+                }
             }
+            .padding(.trailing, 6)
         }
-        .padding(16)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
 
 /// A label for buttons with text as well as an optional large accessory image
 public struct LargeAccessoryButtonLabel: View {
-    
+    @Environment (\.controlSize) var controlSize: ControlSize
+
     /// The icon for the button on the far right of the button (accessory image)
     let accessoryImage: Image?
     
@@ -127,7 +141,9 @@ public struct LargeAccessoryButtonLabel: View {
     let color: Color
     
     /// Boolean value to determine whether the button should be full width
-    let fullWidth: Bool
+    private var fullWidth: Bool {
+        controlSize == .large
+    }
     
     public var body: some View {
         HStack(spacing: 10) {
@@ -170,19 +186,11 @@ public struct IconButtonLabel: View {
 ///
 public struct SoftButton<Label: View>: View {
     
-    /// Enumeration declaration for the fill mode of the button
-    public enum Fill {
-        case height, width
-    }
-    
     /// The user-set label content for the button
     private let label: Label
     
     /// The action for the button once tapped
     private let action: () -> Void
-    
-    /// The fill mode for the buttons height and width
-    private var fill = Set<Fill>()
     
     /// The corner radius style of the button
     private var continuous: Bool = false
@@ -215,17 +223,14 @@ public struct SoftButton<Label: View>: View {
     ///   corner radius and a continuous corner curve
     ///   - label: A view for the label of the button
     ///   - action: The action function for when the button is tapped
-    ///   - fill: A value to set the fill mode for the button's height and width
     public init(
         continuous: Bool = false,
         @ViewBuilder label: () -> Label,
-        action: @escaping () -> Void,
-        fill: Set<Fill> = []
+        action: @escaping () -> Void
     ) {
         self.continuous = continuous
         self.label = label()
         self.action = action
-        self.fill = fill
     }
     
     /// Initializes a soft button with an optional  icon, text, and optional accessory image to create a standard button, as well as a designated action
@@ -237,7 +242,7 @@ public struct SoftButton<Label: View>: View {
     ///   Image(systemName: "hand.thumbsup.fill")
     /// }, text: "Get Started", smallAccessory: {
     ///     Image(systemName: "arrow.right")
-    /// }, action: {}, fill: [.width])
+    /// }, action: {})
     /// ```
     ///
     /// - Parameters:
@@ -245,24 +250,20 @@ public struct SoftButton<Label: View>: View {
     ///   - text: The text for the button (optional)
     ///   - smallAccessory: The accessory image of the button
     ///   - action: The action function for when the button is tapped
-    ///   - fill: A value to set the fill mode for the button's height and width
     public init(
         text: String,
         @ViewBuilder icon: () -> Image? = { nil },
         @ViewBuilder smallAccessory: () -> Image? = { nil },
-        action: @escaping () -> Void,
-        fill: Set<Fill> = []
+        action: @escaping () -> Void
     ) where Label == AccessoryButtonLabel<EmptyView> {
         self.label = {
-            return AccessoryButtonLabel(
+            return AccessoryButtonLabel<EmptyView>(
                 text,
                 icon: icon(),
-                accessoryImage: smallAccessory(),
-                fullWidth: fill.contains(.width))
+                accessoryImage: smallAccessory())
         }()
         
         self.action = action
-        self.fill = fill
     }
     
     /// Initializes a soft button with text, and an optional large accessory image to create a standard button, as well as a designated action
@@ -272,7 +273,7 @@ public struct SoftButton<Label: View>: View {
     /// ```swift
     /// SoftButton(text: "Get Started", largeAccessory: {
     ///     Image(systemName: "arrow.right")
-    /// }, action: {}, fill: [.width])
+    /// }, action: {})
     /// ```
     ///
     /// - Parameters:
@@ -280,24 +281,21 @@ public struct SoftButton<Label: View>: View {
     ///   - text: The text for the button (optional)
     ///   - largeAccessory: The accessory image of the button
     ///   - action: The action function for when the button is tapped
-    ///   - fill: A value to set the fill mode for the button's height and width
     public init(
         text: String,
         @ViewBuilder largeAccessory: () -> Image? = { nil },
         color: Color = .black,
-        action: @escaping () -> Void,
-        fill: Set<Fill> = []
+        action: @escaping () -> Void
     ) where Label == LargeAccessoryButtonLabel {
         self.label = {
             return LargeAccessoryButtonLabel(
                 accessoryImage: largeAccessory(),
                 text: text,
-                color: color,
-                fullWidth: fill.contains(.width))
+                color: color
+            )
         }()
         
         self.action = action
-        self.fill = fill
     }
     
     /// Initializes a soft button with only an icon as it's label, as well as a designated action
@@ -330,6 +328,6 @@ public struct SoftButton<Label: View>: View {
         } label: {
             label
         }
-        .buttonStyle(SoftButtonStyle(fill: fill, continuous: continuous))
+        .buttonStyle(SoftButtonStyle(continuous: continuous))
     }
 }

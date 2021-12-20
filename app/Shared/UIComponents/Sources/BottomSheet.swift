@@ -143,32 +143,3 @@ extension View {
         modifier(BottomSheet(isPresented: isPresented, content: content, showDimmingView: showDimmingView))
     }
 }
-
-// TODO: - Just an example for the review process, will remove once approved.
-struct BindingContainer: View {
-     @State private var isPresented = true
-
-     var body: some View {
-         Button(action: {
-            isPresented.toggle()
-         }, label: {
-             Text("Click Me")
-         })
-         .bottomSheet(isPresented: $isPresented) {
-             VStack(alignment: .leading, spacing: 20) {
-                 Text("What is this?")
-                     .font(Font.title.bold())
-                 Text("Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.")
-                     .font(.body)
-             }
-             .padding(16)
-            .padding(.bottom, 4)
-         }
-     }
-}
-
-struct BottomSheet_Provider: PreviewProvider {
-    static var previews: some View {
-        BindingContainer()
-    }
-}

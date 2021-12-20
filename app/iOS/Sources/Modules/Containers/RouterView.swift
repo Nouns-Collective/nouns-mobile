@@ -7,8 +7,26 @@
 
 import SwiftUI
 import UIComponents
+import Services
+
+extension RouterView {
+  
+  final class ViewModel: ObservableObject {
+    private let settingsStore: SettingsStore
+    
+    init(settingsStore: SettingsStore = AppCore.shared.settingsStore) {
+      self.settingsStore = settingsStore
+    }
+    
+    var shouldPresentOnboardingFlow: Bool {
+      !settingsStore.hasCompletedOnboarding
+    }
+  }
+}
 
 struct RouterView: View {
+  @StateObject var viewModel = ViewModel()
+  
   @State private var selectedTab = 0
   
   init() {
@@ -29,14 +47,9 @@ struct RouterView: View {
       PlayView()
         .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
       
-      SettingsView()
+      AboutView()
         .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
     }
-  }
-}
-
-struct ContentView_Previews: PreviewProvider {
-  static var previews: some View {
-    RouterView()
+    .onboarding()
   }
 }

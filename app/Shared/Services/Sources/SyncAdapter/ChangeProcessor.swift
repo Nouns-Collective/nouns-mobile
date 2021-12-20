@@ -25,5 +25,5 @@ protocol ChangeProcessContext {
     
     var context: NSManagedObjectContext { get }
     
-    var cloud: CloudNounsService { get }
+    var cloud: OnChainNounsService { get }
 }

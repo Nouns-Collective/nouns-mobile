@@ -32,7 +32,11 @@ struct ActivityIndicator: ViewModifier {
   let isPresented: Bool
   
   func body(content: Content) -> some View {
-    isPresented ? AnyView(placeholder) : AnyView(content)
+    if isPresented {
+      placeholder
+    } else {
+      content
+    }
   }
   
   private var placeholder: some View {

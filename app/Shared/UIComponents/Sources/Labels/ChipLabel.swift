@@ -12,9 +12,12 @@ import SwiftUI
 public struct ChipLabel: View {
     /// Various label's states.
     public enum State {
-        case positive
-        case negative
-        case neutral
+        case pending
+        case active
+        case cancelled
+        case vetoed
+        case queued
+        case executed
     }
     
     private let title: String
@@ -49,34 +52,44 @@ extension ChipLabel.State {
     
     fileprivate var image: Image {
         switch self {
-        case .neutral:
-            return Image.noSign
-        case .positive:
-            return Image.checkmark
-        case .negative:
-            return Image.xmark
+        case .pending:
+            return .pending
+        case .active:
+            return .active
+        case .cancelled:
+            return .absent
+        case .vetoed:
+            return .cancel
+        case .queued:
+            return .queued
+        case .executed:
+            return .check
         }
     }
     
     fileprivate var foregroundColor: Color {
         switch self {
-        case .neutral:
+        case .queued:
             return .componentNounsBlack.opacity(0.5)
-        case .positive:
-            return .white
-        case .negative:
+        default:
             return .white
         }
     }
     
     fileprivate var backgroundColor: Color {
         switch self {
-        case .neutral:
-            return .componentNounsBlack.opacity(0.15)
-        case .positive:
+        case .pending:
             return .blue
-        case .negative:
-            return .red
+        case .active:
+            return .componentNounsBlack
+        case .cancelled:
+            return .componentNounsBlack.opacity(0.7)
+        case .vetoed:
+            return .componentSoftCherry
+        case .queued:
+            return .componentNounsBlack.opacity(0.22)
+        case .executed:
+            return .green
         }
     }
 }
