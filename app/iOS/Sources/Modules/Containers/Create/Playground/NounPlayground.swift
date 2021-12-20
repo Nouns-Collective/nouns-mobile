@@ -22,6 +22,11 @@ struct NounPlayground: View {
         Spacer()
         SlotMachine(viewModel: viewModel)
         Spacer()
+        
+        TraitTypePicker(
+          viewModel: viewModel,
+          animation: namespace
+        )
       }
     }
     // Resuable components to close & back buttons...

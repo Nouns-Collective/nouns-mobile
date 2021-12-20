@@ -11,12 +11,12 @@ import Services
 
 extension NounPlayground {
   
-  struct TraitPicker: View {
+  struct TraitTypePicker: View {
     @ObservedObject var viewModel: ViewModel
+    let animation: Namespace.ID
     
-    @Namespace var slideActiveTabSpace
-    var animation: Namespace.ID
-    @Binding var isPresented: Bool
+    @State private var isExpanded = false
+    @Namespace private var typeSelectionNamespace
     
     private let rowSpec = [
       GridItem(.flexible()),
@@ -24,51 +24,49 @@ extension NounPlayground {
       GridItem(.flexible()),
     ]
     
-    init(isPresented: Binding<Bool>, animation: Namespace.ID) {
-      self.animation = animation
-      self._isPresented = isPresented
-    }
-    
     var body: some View {
-      VStack(spacing: 3) {
+      // TODO: - Delete once Picker accepts types that conform to `Hashable`.
+      let selectionTraitType = Binding(
+        get: { viewModel.currentModifiableTraitType.rawValue },
+        set: { viewModel.currentModifiableTraitType = ViewModel.TraitType(rawValue: $0) ?? .head }
+      )
+      
+      return VStack(spacing: 3) {
+        
+        // Control to expand or fold `PickerTrait`.
         Image.chevronDown
-          .rotationEffect(.degrees(isPresented ? 180 : 0))
+          .rotationEffect(.degrees(isExpanded ? 180 : 0))
           .onTapGesture {
             withAnimation {
-              isPresented.toggle()
+              isExpanded.toggle()
             }
           }
         
         VStack(spacing: 0) {
           ScrollView(.horizontal, showsIndicators: false) {
             
-            OutlinePicker(selection: viewModel.$currentModifiableTraitType) {
+            // Displays all Noun's trait types in a segement control.
+            OutlinePicker(selection: selectionTraitType) {
               ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
                 Text(type.description)
                   .id(type.rawValue)
-                  .pickerItemTag(type.rawValue, namespace: slideActiveTabSpace)
+                  .pickerItemTag(type.rawValue, namespace: typeSelectionNamespace)
               }
             }
-//            .onChange(of: selectedTraitType) { newValue in
-              //              store.dispatch(PlaygroundUpdateSelectedTrait(trait: newValue))
-//            }
             .padding(.horizontal)
           }
           
-          if isPresented {
-            TraitGrid()
+          // Expand or Fold the collection of Noun's Traits.
+          if isExpanded {
+            TraitTypeGrid(viewModel: viewModel)
           }
         }
       }
     }
   }
-  
 }
 
-
-
 struct TraitPickerItem: View {
-  
   let image: String
   
   init(image: String) {
@@ -83,9 +81,6 @@ struct TraitPickerItem: View {
       .background(Color.componentSoftGrey)
       .clipShape(RoundedRectangle(cornerRadius: 8))
   }
-}
-
-extension TraitPickerItem {
   
   func selected(_ condition: Bool) -> some View {
     if condition {

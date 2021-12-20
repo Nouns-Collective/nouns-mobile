@@ -11,7 +11,7 @@ import Services
 extension AuctionInfoContainer {
   
   /// The type of pages available.
-  enum Page: Int {
+  enum Page: Int, Hashable {
     case activity
     case bidHitory
   }

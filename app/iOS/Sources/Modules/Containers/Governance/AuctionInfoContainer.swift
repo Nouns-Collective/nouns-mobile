@@ -12,17 +12,23 @@ struct AuctionInfoContainer: View {
   @StateObject var viewModel: ViewModel
   
   @Namespace private var pickerNamespace
-  @State private var selectedPage: Int
+  @State private var selectedPage: Page
   @State private var isGovernanceInfoPresented = false
   @Environment(\.dismiss) private var dismiss
   
   init(viewModel: ViewModel) {
     _viewModel = StateObject(wrappedValue: viewModel)
-    _selectedPage = State(initialValue: viewModel.initialVisiblePage.rawValue)
+    _selectedPage = State(initialValue: viewModel.initialVisiblePage)
   }
   
   var body: some View {
-    PickerTabView(animation: pickerNamespace, selection: $selectedPage) {
+    // TODO: - Delete once PickerTabView accepts hashable.
+    let selection = Binding(
+      get: { selectedPage.rawValue },
+      set: { selectedPage = Page(rawValue: $0) ?? .activity }
+    )
+    
+    return PickerTabView(animation: pickerNamespace, selection: selection) {
       
       if viewModel.isActivityAvailable {
         NounActivityFeed(viewModel: .init(auction: viewModel.auction))

@@ -10,9 +10,9 @@ import SwiftUI
 struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View where Data.Element: Hashable {
   let tag: Int
   let items: Data
-  private let content: (Data.Element, Int) -> Content
-  
   var selected: Data.Element?
+  
+  private let content: (Data.Element, Int) -> Content
   
   init(tag: Int, items: Data, @ViewBuilder cell: @escaping (_ item: Data.Element, _ index: Int) -> Content) {
     self.tag = tag
