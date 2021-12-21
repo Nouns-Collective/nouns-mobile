@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View where Data.Element: Hashable {
-  let tag: Int
+  let tag: Int // magic number and enums 
   let items: Data
   var selected: Data.Element?
   
@@ -23,7 +23,8 @@ struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View
   var body: some View {
     Section {
       ForEach(0..<items.count, id: \.self) { index in
-        content(items[index as! Data.Index], index)
+        Text("")
+//        content(items[index as! Data.Index], index)
       }
     }
   }

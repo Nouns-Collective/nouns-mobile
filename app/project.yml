@@ -10,11 +10,14 @@ packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
     from: 5.4.0
+  Firebase: 
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 8.10.0
   UIComponents:
     path: Shared/UIComponents
   Services:
     path: Shared/Services
-
+  
 settings:
   base:
     MARKETING_VERSION: 1
@@ -38,6 +41,12 @@ targets:
       - package: Rswift
       - package: UIComponents
       - package: Services
+      # - package: Firebase
+      #   product: FirebaseCrashlytics
+      - package: Firebase
+        product: FirebaseMessaging
+      # - package: Firebase
+      #   product: FirebaseAnalytics
     scheme:
       testTargets:
         - Nouns iOS Tests
