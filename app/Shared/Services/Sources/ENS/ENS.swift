@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import web3
 
 /// Various `ENS` error cases.
 public enum ENSError: Error {
@@ -25,7 +26,7 @@ public protocol ENS {
   ///   - token: The address resource.
   ///
   /// - Returns: A publisher emitting the domain in a `String` type  instance or an error was encountered.
-  func domainLookup(token: String) async throws -> String
+  func domainLookup(address: String) async throws -> String
 }
 
 /// Ethereum Name Service.
@@ -38,19 +39,42 @@ public struct ENSDomain: Decodable, Equatable {
   public let name: String
 }
 
-public class TheGraphENSProvider: ENS {
-  private let graphQLClient: GraphQL
+/// An ENS provider utilizing the ENS name service and Ethereum Client from the `web3swift` package
+public class Web3ENSProvider: ENS {
+
+  /// The ethereum client layer provided by `web3swift` package
+  private let ethereumClient: EthereumClient
   
-  public init(graphQLClient: GraphQL = GraphQLClient()) {
-    self.graphQLClient = graphQLClient
+  /// The ENS name service layer provided by the `web3swift` package
+  private let nameService: EthereumNameService
+  
+  /// Cache machsim to reduce the cost of hitting the server for domains already fecthed.
+  private var cache = [String: String]()
+  
+  public init(ethereumClient: EthereumClient) {
+    self.ethereumClient = ethereumClient
+    self.nameService = EthereumNameService(client: ethereumClient)
   }
   
-  public func domainLookup(token: String) async throws -> String {
-    let query = ENSSubgraph.DomainLookupQuery(token: token)
-    let page: Page<[ENSDomain]> = try await graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-    guard let name = page.data.first?.name else {
-      throw ENSError.noDomain
+  public func domainLookup(address: String) async throws -> String {
+    // Check the cache for already fecthed domain.
+    if let name = cache[address] {
+      return name
     }
-    return name
+    
+    return try await withCheckedThrowingContinuation { continuation in
+      nameService.resolve(address: EthereumAddress(address)) { [weak self] error, name in
+        if let error = error {
+          continuation.resume(throwing: error)
+        }
+        
+        if let name = name {
+          // Save name in memory
+          self?.cache[address] = name
+          
+          continuation.resume(returning: name)
+        }
+      }
+    }
   }
 }

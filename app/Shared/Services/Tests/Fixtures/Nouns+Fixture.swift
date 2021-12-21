@@ -29,8 +29,11 @@ extension Noun {
     static var fixture: Self = {
         Noun(
             id: "0",
+            name: "Untitled",
             owner: .fixture,
-            seed: .fixture
+            seed: .fixture,
+            createdAt: .now,
+            updatedAt: .now
         )
     }()
 }
@@ -86,8 +89,9 @@ extension Proposal {
 extension Vote {
     
     static var fixture: Self = {
-        Vote(
-            supportDetailed: .for,
-            proposal: .fixture)
+      Vote(
+        id: UUID().uuidString,
+        supportDetailed: .for,
+        proposal: .fixture)
     }()
 }

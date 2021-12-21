@@ -24,7 +24,7 @@ final class FetchNounActivitiesTests: XCTestCase {
     let graphQLClient = GraphQLClient(networkingClient: client)
     let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
-    let votes = try await nounsProvider.fetchActivity(for: "0")
+    let votes = try await nounsProvider.fetchActivity(for: "0", limit: 20, after: 0)
     
     XCTAssertFalse(votes.isEmpty)
     
@@ -54,7 +54,7 @@ final class FetchNounActivitiesTests: XCTestCase {
     
     do {
       // when
-      _ = try await nounsProvider.fetchActivity(for: "0")
+      _ = try await nounsProvider.fetchActivity(for: "0", limit: 20, after: 0)
       
       XCTFail("💥 result unexpected")
     } catch {

@@ -12,7 +12,7 @@ final class FetchBidsHitRealBackendTests: XCTestCase {
     
     func testFetchBidsHitRealBackend() async throws {
         // given
-        let query = NounsSubgraph.BidsQuery(nounID: "99")
+        let query = NounsSubgraph.BidsQuery(nounID: "99", first: 20, skip: 0)
         let networkingClient = URLSessionNetworkClient(urlSession: URLSession.shared)
         let client = GraphQLClient(networkingClient: networkingClient)
         

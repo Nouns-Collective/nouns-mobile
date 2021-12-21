@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import CoreData
+import web3
 
 /// `onChainNounsService` request error.
 public enum OnChainNounsRequestError: Error {
@@ -18,6 +19,8 @@ public enum OnChainNounsRequestError: Error {
 
 /// Service allows interacting with the `OnChain Nouns`.
 public protocol OnChainNounsService: AnyObject {
+  
+  func fetchTreasury() async throws -> String
   
   /// Fetches the list of Nouns settled from the chain.
   ///
@@ -88,10 +91,33 @@ public protocol OnChainNounsService: AnyObject {
 public class TheGraphNounsProvider: OnChainNounsService {
   private let graphQLClient: GraphQL
   
+  /// The ethereum client layer provided by `web3swift` package
+  private let ethereumClient = EthereumClient(url: CloudConfiguration.Infura.mainnet.url!)
+  
+  /// NounsDAOExecutor contract address.
+  private let nounsDAOExecutorContract = "0x0BC3807Ec262cB779b38D65b38158acC3bfedE10"
+  
   public init(
     graphQLClient: GraphQL = GraphQLClient()
   ) {
     self.graphQLClient = graphQLClient
+  }
+  
+  public func fetchTreasury() async throws -> String {
+    try await withCheckedThrowingContinuation { continuation in
+      ethereumClient.eth_getBalance(
+        address: EthereumAddress(nounsDAOExecutorContract),
+        block: .Latest
+      ) { error, balance in
+        if let error = error {
+          return continuation.resume(throwing: error)
+        }
+
+        if let balance = balance {
+          continuation.resume(returning: String(balance))
+        }
+      }
+    }
   }
   
   public func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> [Noun] {

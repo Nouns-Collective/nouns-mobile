@@ -17,6 +17,10 @@ internal enum CloudConfiguration {
     internal enum ENS {
         case query
     }
+  
+  internal enum Infura {
+      case mainnet
+  }
 }
 
 extension CloudConfiguration.Nouns {
@@ -53,3 +57,18 @@ extension CloudConfiguration.ENS {
         }
     }
 }
+
+extension CloudConfiguration.Infura {
+    
+    var url: URL? {
+        switch self {
+        case .mainnet:
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = "mainnet.infura.io"
+            components.path = "/v3/2abc0ffe9968475ab1858dfdf9d0365a"
+            return components.url
+        }
+    }
+}
+

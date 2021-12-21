@@ -6,22 +6,30 @@
 //
 
 import XCTest
+import Combine
 @testable import Services
+@testable import web3
 
 final class FetchENSDomainHitRealBackendTests: XCTestCase {
     
-    fileprivate static let token = "0x0000044a32f0964f4bf8fb4d017e230ad33595c0e149b6b2d0c34b733dcf906a"
+    fileprivate static let token = "0x6e24ac7a957ba929e48e298c75f6b76d0cdfa901"
     
     func testFetchENSDomainHitRealBackend() async throws {
         // given
-        let query = ENSSubgraph.DomainLookupQuery(token: Self.token)
-        let networkingClient = URLSessionNetworkClient(urlSession: URLSession.shared)
-        let client = GraphQLClient(networkingClient: networkingClient)
+        let ethClient = EthereumClient(url: CloudConfiguration.Infura.mainnet.url!)
+        let web3Client = Web3ENSProvider(ethereumClient: ethClient)
+        
+        let expectation = expectation(description: #function)
         
         // when
-        let domain: String = try await client.fetch(query, cachePolicy: .fetchIgnoringCacheData)
+        do {
+            _ = try await web3Client.domainLookup(address: FetchENSDomainHitRealBackendTests.token)
+            expectation.fulfill()
+        } catch {
+            XCTFail("💥 Something went wrong: \(error)")
+        }
         
         // then
-        XCTAssertNotNil(domain)
+        wait(for: [expectation], timeout: 5.0)
     }
 }

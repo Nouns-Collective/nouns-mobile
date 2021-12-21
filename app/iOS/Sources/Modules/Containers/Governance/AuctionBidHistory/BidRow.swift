@@ -37,10 +37,13 @@ struct BidRow: View {
         
         // An Account is any address that holds any amount of Nouns
         Label {
-          Text(viewModel.bidderIdentifier)
-            .foregroundColor(Color.componentNounsBlack)
-            .font(.custom(.medium, relativeTo: .subheadline))
-            .truncationMode(.middle)
+          ENSText(viewModel: .init(token: viewModel.bidderIdentifier)) {
+            AddressLabel(token: viewModel.bidderIdentifier)
+              .font(.custom(.medium, relativeTo: .subheadline))
+          }
+          .foregroundColor(Color.componentNounsBlack)
+          .font(.custom(.medium, relativeTo: .subheadline))
+          .truncationMode(.middle)
           
         } icon: {
           // Token avatar

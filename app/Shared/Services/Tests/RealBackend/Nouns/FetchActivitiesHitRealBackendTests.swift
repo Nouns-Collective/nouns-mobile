@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import XCTest
 @testable import Services
 
@@ -14,7 +13,7 @@ final class FetchActivitiesHitRealBackendTests: XCTestCase {
   
   func testFetchActivitiesHitRealBackend() async throws {
     // given
-    let query = NounsSubgraph.ActivitiesQuery(nounID: "0")
+    let query = NounsSubgraph.ActivitiesQuery(nounID: "0", first: 20, skip: 0)
     let networkingClient = URLSessionNetworkClient(urlSession: URLSession.shared)
     let client = GraphQLClient(networkingClient: networkingClient)
     
