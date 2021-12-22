@@ -29,16 +29,6 @@ extension ExploreExperience {
           self.liveAuction = auction
         }
         .store(in: &cancellables)
-      
-//      Task {
-//        do {
-//          isLoading = true
-//          liveAuction = try await onChainNounsService.liveAuctionStateDidChange()
-//
-//        } catch { }
-//
-//        isLoading = false
-//      }
     }
   }
 }
