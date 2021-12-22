@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import Services
 
 extension ExploreExperience {
@@ -15,22 +16,29 @@ extension ExploreExperience {
     @Published var isLoading = false
     
     private let onChainNounsService: OnChainNounsService
+    private var cancellables = Set<AnyCancellable>()
     
     init(onChainNounsService: OnChainNounsService = AppCore.shared.onChainNounsService) {
       self.onChainNounsService = onChainNounsService
     }
     
-    @MainActor
     func listenLiveAuctionChanges() {
-      Task {
-        do {
-          isLoading = true
-          liveAuction = try await onChainNounsService.liveAuctionStateDidChange()
-          
-        } catch { }
-        
-        isLoading = false
-      }
+      onChainNounsService.liveAuctionStateDidChange()
+        .receive(on: DispatchQueue.main)
+        .sink { (auction) in
+          self.liveAuction = auction
+        }
+        .store(in: &cancellables)
+      
+//      Task {
+//        do {
+//          isLoading = true
+//          liveAuction = try await onChainNounsService.liveAuctionStateDidChange()
+//
+//        } catch { }
+//
+//        isLoading = false
+//      }
     }
   }
 }

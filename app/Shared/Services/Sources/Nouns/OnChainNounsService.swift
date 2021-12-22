@@ -67,13 +67,15 @@ public protocol OnChainNounsService: AnyObject {
   /// - Returns: A publisher emitting a list of `Bid` type  instance or an error was encountered.
   func fetchBids(for nounID: String, limit: Int, after cursor: Int) async throws -> [Bid]
   
-  /// Registers a publisher that publishes the last auction and bid created on
-  /// the network  state changes.
-  ///
-  /// The publisher will emit events on the **main** thread.
-  ///
-  /// - Returns: A publisher emitting a `Auction` instance or an error was encountered.
-  func liveAuctionStateDidChange() async throws -> Auction
+//  /// Registers a publisher that publishes the last auction and bid created on
+//  /// the network  state changes.
+//  ///
+//  /// The publisher will emit events on the **main** thread.
+//  ///
+//  /// - Returns: A publisher emitting a `Auction` instance or an error was encountered.
+//  func liveAuctionStateDidChange() async throws -> Auction
+  
+  func liveAuctionStateDidChange() -> AnyPublisher<Auction, Never>
   
   /// Fetches the list of proposals for all type status.
   ///
@@ -147,13 +149,40 @@ public class TheGraphNounsProvider: OnChainNounsService {
     return page.data
   }
   
-  public func liveAuctionStateDidChange() async throws -> Auction {
+  public func liveAuctionStateDidChange() -> AnyPublisher<Auction, Never> {
+    let subject = PassthroughSubject<Auction, Never>()
+    
+    let task = Task {
+      do {
+        var auction = try await fetchLiveAuction()
+        subject.send(auction)
+        
+        // Timer sequence to emit every 1 second.
+        for await _ in Timer.publish(every: 1, on: .main, in: .common).autoconnect().values {
+          let newAuction = try await fetchLiveAuction()
+          if newAuction.id != auction.id || newAuction.amount != auction.amount {
+            auction = newAuction
+            subject.send(auction)
+          }
+        }
+
+      } catch { }
+    }
+    
+    return subject
+      .handleEvents(receiveCancel: {
+        task.cancel()
+      })
+      .eraseToAnyPublisher()
+  }
+  
+  private func fetchLiveAuction() async throws -> Auction {
     let query = NounsSubgraph.LiveAuctionSubscription()
     let page: Page<[Auction]> = try await graphQLClient.fetch(
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-    
+
     guard let auction = page.data.first else {
       throw OnChainNounsRequestError.noData
     }
