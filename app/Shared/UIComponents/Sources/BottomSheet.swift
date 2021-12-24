@@ -28,20 +28,27 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
     /// A boolean value to show or hide the dimming view beneath the sheet and above the underlying content
     private let showDimmingView: Bool
     
+    /// A boolean to determine if dragging the bottom sheet should dismiss it
+    private let allowDrag: Bool
+    
     /// Initializes a view modification with a binding boolean for presentation and any content for a bottom sheet
     ///
     ///
     /// - Parameters:
     ///   - isPresented: A binding boolean value to indicate whether or not the bottom sheet should be shown
     ///   - content: Any view to be the content of the bottom sheet
+    ///   - showDimmingView: A boolean value to show or hide the dimming view beneath the sheet and above the underlying content
+    ///   - allowDrag: A boolean to determine if dragging the bottom sheet should dismiss it
     public init(
         isPresented: Binding<Bool>,
         @ViewBuilder content: () -> SheetContent,
-        showDimmingView: Bool = true
+        showDimmingView: Bool = true,
+        allowDrag: Bool = true
     ) {
         self._isPresented = isPresented
         self.sheetContent = content()
         self.showDimmingView = showDimmingView
+        self.allowDrag = allowDrag
     }
     
     public func body(content: Content) -> some View {
@@ -50,16 +57,18 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
                 .zIndex(1)
             
             if isPresented {
-                Color.black
-                    .zIndex(2)
-                    .opacity(showDimmingView ? 0.2 : 0)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        withAnimation {
-                            isPresented.toggle()
+                if showDimmingView {
+                    Color.black
+                        .zIndex(2)
+                        .opacity(0.2)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            withAnimation {
+                                isPresented.toggle()
+                            }
                         }
-                    }
-                    .ignoresSafeArea()
+                        .ignoresSafeArea()
+                }
                 
                 VStack {
                     Spacer()
@@ -89,6 +98,8 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
     }
     
     private func dragChanged(_ value: DragGesture.Value) {
+        guard allowDrag else { return }
+        
         if value.translation.height > 0 {
             lastDragPosition = value
             translation = value.translation.height
@@ -96,6 +107,8 @@ public struct BottomSheet<SheetContent: View>: ViewModifier {
     }
     
     private func dragEnded(_ value: DragGesture.Value) {
+        guard allowDrag else { return }
+        
         var speed: CGFloat = 0
         
         if let lastDragPosition = lastDragPosition {
@@ -135,11 +148,48 @@ extension View {
     /// - Parameters:
     ///   - isPresented: A binding boolean value to indicate whether or not the bottom sheet should be shown
     ///   - content: Any view to be the content of the bottom sheet
+    ///   - showDimmingView: A boolean value to show or hide the dimming view beneath the sheet and above the underlying content
+    ///   - allowDrag: A boolean to determine if dragging the bottom sheet should dismiss it
     public func bottomSheet<Content: View>(
         isPresented: Binding<Bool>,
         showDimmingView: Bool = true,
+        allowDrag: Bool = true,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View {
-        modifier(BottomSheet(isPresented: isPresented, content: content, showDimmingView: showDimmingView))
+        modifier(BottomSheet(isPresented: isPresented, content: content, showDimmingView: showDimmingView, allowDrag: allowDrag))
+    }
+    
+    /// An extension to any view to add a conditional bottom sheet to the the screen.
+    /// It takes a boolean value and any content to place within the sheet
+    ///
+    /// An example of using this view modifier is:
+    /// ```swift
+    /// NavigationView {
+    ///     Button(action: {
+    ///         isPresented.toggle()
+    ///     }, label: {
+    ///         Text("Click Me")
+    ///     })
+    /// }
+    /// .bottomSheet(isPresented: isPresented) {
+    ///     Text("Sheet Content")
+    /// }
+    /// ```
+    ///
+    /// Note: Bottom sheets should only be attached to views that take up the entire screen, such as a full-size VStack or NavigationView,
+    /// to ensure proper placement and sizing
+    ///
+    /// - Parameters:
+    ///   - isPresented: A boolean value to indicate whether or not the bottom sheet should be shown
+    ///   - content: Any view to be the content of the bottom sheet
+    ///   - showDimmingView: A boolean value to show or hide the dimming view beneath the sheet and above the underlying content
+    ///   - allowDrag: A boolean to determine if dragging the bottom sheet should dismiss it
+    public func bottomSheet<Content: View>(
+        isPresented: Bool,
+        showDimmingView: Bool = true,
+        allowDrag: Bool = true,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View {
+        modifier(BottomSheet(isPresented: .constant(isPresented), content: content, showDimmingView: showDimmingView, allowDrag: allowDrag))
     }
 }

@@ -12,6 +12,19 @@ extension NounPlayground {
   
   final class ViewModel: ObservableObject {
     
+    /// List all the different states that the user can be in while creating their noun
+    enum Mode {
+      
+      /// Set when a user wants to cancel their creation process
+      case cancel
+      
+      /// Set when a user is currently creating their noun
+      case creating
+      
+      /// Set when a user is done creating their noun, and is presented a sheet to save their noun
+      case done
+    }
+    
     /// List all variouse `Noun's Traits Types`.
     enum TraitType: Int, CaseIterable, Hashable {
       case glasses
@@ -37,6 +50,12 @@ extension NounPlayground {
     
     /// Indicates the current modifiable trait type selected in the slot machine.
     @Published var currentModifiableTraitType: TraitType = .head
+    
+    /// The name of the noun currently being created
+    @Published var nounName: String = ""
+    
+    /// Inidicates the current state of the user while creating their noun.
+    @Published var mode: Mode = .creating
     
     /// Recognizes if the drag gesture should be enabled.
     /// - Parameter type: The Noun's `Trait Type` to validate.
@@ -133,6 +152,10 @@ extension NounPlayground {
       case .glasses:
         return index == seed.glasses
       }
+    }
+    
+    func setMode(to mode: Mode) {
+      self.mode = mode
     }
   }
 }

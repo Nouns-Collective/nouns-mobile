@@ -31,7 +31,6 @@ struct OffChainNounProfile: View {
           showMoreActions: {
             selected = 1
           })
-          // TODO: - What is it for?
           .actionSheetStackItem(
             tag: 0,
             title: viewModel.noun.name

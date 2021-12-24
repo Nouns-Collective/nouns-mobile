@@ -31,20 +31,9 @@ extension NounPlayground {
                   .onTapGesture {
                     viewModel.selectTrait(index, ofType: type)
                   }
+                //                  .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
               }
             }
-//            ForEach(0..<traits.count) { trait in
-//              TraitCollectionSection(tag: trait, items: traits[trait]) { item, index in
-//                TraitPickerItem(image: item.assetImage)
-//  //                .selected(playgroundState.seed[trait] == index)
-//                  .id("\(trait)-\(index)")
-//                  .onTapGesture {
-//  //                  store.dispatch(PlaygroundUpdateTraitItem(trait: trait, item: index))
-//                  }
-//                  .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
-//              }
-//            }
-            
 //            // Gradient background selection
 //            TraitCollectionSection(tag: 4, items: Gradient.allGradients) { gradient, index in
 //              GradientPickerItem(colors: gradient)
@@ -56,7 +45,7 @@ extension NounPlayground {
 //                .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
 //            }
           }
-//          .padding(.vertical, 12)
+          .padding(.vertical, 12)
   //        .onChange(of: playgroundState.selectedTraitType, perform: { newTrait in
   //          withAnimation {
   //            proxy.scrollTo("\(newTrait)-0", anchor: .leading)
