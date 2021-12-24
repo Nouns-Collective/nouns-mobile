@@ -31,7 +31,7 @@ extension NounPlayground.SlotMachine {
           }
         }
         .padding(.horizontal, proxy.size.width * 0.10)
-        .offset(x: viewModel.moveSelectedTrait(by: offset))
+        .offset(x: viewModel.traitOffset(for: type))
         .gesture(onDrag)
         .allowsHitTesting(viewModel.isDraggingEnabled(for: type))
         .animation(.easeInOut, value: offset == 0)

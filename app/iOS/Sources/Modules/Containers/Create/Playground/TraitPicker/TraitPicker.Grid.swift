@@ -21,13 +21,16 @@ extension NounPlayground {
     var body: some View {
       ScrollViewReader { proxy in
         ScrollView(.horizontal, showsIndicators: false) {
-          
+
           LazyHGrid(rows: rowSpec, spacing: 4) {
-            
             // Trait selection
             ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
-              TraitCollectionSection(tag: type.rawValue, items: type.traits) { item, index in
-                TraitPickerItem(image: item.assetImage)
+              TraitCollectionSection(tag: type.rawValue, items: type.traits) { trait, _ in
+                TraitPickerItem(image: trait.assetImage)
+                  .selected(viewModel.isSelected(trait: trait, traitType: type))
+                  .onTapGesture {
+                    viewModel.selectTrait(trait, ofType: type)
+                  }
               }
             }
 //            ForEach(0..<traits.count) { trait in

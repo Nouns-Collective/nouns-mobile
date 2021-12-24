@@ -29,16 +29,11 @@ struct NounPlayground: View {
         )
       }
     }
-    // Resuable components to close & back buttons...
-    .modifier(AccessoryItems(dismiss: {
+    .modifier(AccessoryItems(done: {
+      // TODO: - Implement Done action
+    }, dismiss: {
       dismiss()
     }))
     .background(Gradient.bubbleGum)
-  }
-}
-
-struct NounPlaygroundView_Previews: PreviewProvider {
-  static var previews: some View {
-    NounPlayground()
   }
 }

@@ -14,15 +14,15 @@ extension NounPlayground {
     
     /// List all variouse `Noun's Traits Types`.
     enum TraitType: Int, CaseIterable, Hashable {
-      case background
-      case body
-      case accessory
-      case head
       case glasses
+      case head
+      case accessory
+      case body
+      case background
     }
     
     /// The `Seed` in build progress.
-    var seed: Seed = {
+    @Published var seed: Seed = {
       Seed(
         background: 0,
         glasses: 0,
@@ -64,7 +64,27 @@ extension NounPlayground {
       }
     }
     
-    ///
+    /// Moves the currently selected `Noun's Trait` by the given offset.
+    func traitOffset(for type: TraitType) -> Double {
+      switch type {
+      case .background:
+        return 0
+        
+      case .body:
+        return (Double(seed.body) * -imageSize)
+        
+      case .accessory:
+        return (Double(seed.accessory) * -imageSize)
+        
+      case .head:
+        return (Double(seed.head) * -imageSize)
+        
+      case .glasses:
+        return (Double(seed.glasses) * -imageSize)
+      }
+    }
+    
+    /// Selecting a trait by swiping left or right on the noun
     func selectTrait(at offsetX: Double) {
       // Calculate the visible index based on the offsetX progress.
       let progress = -offsetX / imageSize
@@ -99,6 +119,50 @@ extension NounPlayground {
           minLimit)
       }
     }
+    
+    /// Select a trait using the grid view
+    func selectTrait(_ trait: Trait, ofType traitType: TraitType) {
+      switch traitType {
+      case .background:
+        break
+        
+      case .body:
+        seed.body = traitType.traits.firstIndex(of: trait) ?? 0
+        
+      case .accessory:
+        seed.accessory = traitType.traits.firstIndex(of: trait) ?? 0
+        
+      case .head:
+        seed.head = traitType.traits.firstIndex(of: trait) ?? 0
+        
+      case .glasses:
+        seed.glasses = traitType.traits.firstIndex(of: trait) ?? 0
+      }
+    }
+    
+    func isSelected(trait: Trait, traitType: TraitType) -> Bool {
+      switch traitType {
+      case .background:
+        return false
+      case .body:
+        return traitType.traits.firstIndex(of: trait) == seed.body
+      case .accessory:
+        return traitType.traits.firstIndex(of: trait) == seed.accessory
+      case .head:
+        return traitType.traits.firstIndex(of: trait) == seed.head
+      case .glasses:
+        return traitType.traits.firstIndex(of: trait) == seed.glasses
+      }
+    }
+    
+    func traitIndex(forTrait trait: Trait, forType traitType: TraitType) -> Int {
+      switch traitType {
+      case .background:
+        return 0
+      default:
+        return traitType.traits.firstIndex(of: trait) ?? 0
+      }
+    }
   }
 }
 
@@ -127,6 +191,8 @@ extension NounPlayground.ViewModel.TraitType {
       return composer.glasses
     }
   }
+  
+  static let layeredOrder: [NounPlayground.ViewModel.TraitType] = [.background, .body, .accessory, .head, .glasses]
 }
 
 extension NounPlayground.ViewModel.TraitType: CustomStringConvertible {

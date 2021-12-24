@@ -7,24 +7,27 @@
 
 import SwiftUI
 
-struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View where Data.Element: Hashable {
-  let tag: Int // magic number and enums 
-  let items: Data
-  var selected: Data.Element?
-  
-  private let content: (Data.Element, Int) -> Content
-  
-  init(tag: Int, items: Data, @ViewBuilder cell: @escaping (_ item: Data.Element, _ index: Int) -> Content) {
-    self.tag = tag
-    self.items = items
-    self.content = cell
-  }
-  
-  var body: some View {
-    Section {
-      ForEach(0..<items.count, id: \.self) { index in
-        Text("")
-//        content(items[index as! Data.Index], index)
+// swiftlint:disable all
+extension NounPlayground {
+
+  struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View where Data.Element: Hashable {
+    let tag: Int // magic number and enums
+    let items: Data
+    var selected: Data.Element?
+    
+    private let content: (Data.Element, Int) -> Content
+    
+    init(tag: Int, items: Data, @ViewBuilder cell: @escaping (_ item: Data.Element, _ index: Int) -> Content) {
+      self.tag = tag
+      self.items = items
+      self.content = cell
+    }
+    
+    var body: some View {
+      Section {
+        ForEach(0..<items.count, id: \.self) { index in
+          content(items[index as! Data.Index], index)
+        }
       }
     }
   }

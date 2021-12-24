@@ -11,6 +11,11 @@ import UIComponents
 extension NounPlayground {
   
   struct AccessoryItems: ViewModifier {
+    
+    /// Designated action for the done button
+    let done: () -> Void
+    
+    /// Designated action for the dismiss button
     let dismiss: () -> Void
     
     func body(content: Content) -> some View {
@@ -24,9 +29,7 @@ extension NounPlayground {
           SoftButton(
             text: R.string.shared.done(),
             smallAccessory: { Image.checkmark },
-            action: {
-              
-            })
+            action: done)
         })
     }
   }
