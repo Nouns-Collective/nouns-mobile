@@ -52,7 +52,7 @@ private struct GradientSelectedModifier: ViewModifier {
   }
 }
 
-fileprivate extension View {
+extension NounPlayground.GradientPickerItem {
   
   func selected(_ condition: Bool) -> some View {
     if condition {

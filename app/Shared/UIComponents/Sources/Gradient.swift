@@ -119,13 +119,13 @@ public struct GradientView: ShapeStyle, View {
     /// The intended end point of the gradient
     let endPoint: UnitPoint
     
-    init(colors: [Color], startPoint: UnitPoint = .topLeading, endPoint: UnitPoint = .bottom) {
+    public init(colors: [Color], startPoint: UnitPoint = .topLeading, endPoint: UnitPoint = .bottom) {
         self.colors = colors
         self.startPoint = startPoint
         self.endPoint = endPoint
     }
     
-    init(_ gradient: GradientColors, startPoint: UnitPoint = .topLeading, endPoint: UnitPoint = .bottom) {
+    public init(_ gradient: GradientColors, startPoint: UnitPoint = .topLeading, endPoint: UnitPoint = .bottom) {
         self.colors = gradient.colors
         self.startPoint = startPoint
         self.endPoint = endPoint

@@ -36,7 +36,6 @@ public struct Noun: Equatable, Identifiable {
   /// The date when the noun was updated.
   public var updatedAt: Date
   
-
   public init(
     id: String = UUID().uuidString,
     name: String,

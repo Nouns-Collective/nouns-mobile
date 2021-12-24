@@ -24,7 +24,7 @@ extension NounPlayground {
       ) {
         VStack(alignment: .leading) {
           NounDialogContent()
-          NounDialogActions()
+          NounDialogActions(viewModel: viewModel)
         }
       }
       .padding(.bottom, 4)
@@ -49,14 +49,16 @@ extension NounPlayground {
   
   ///
   struct NounDialogActions: View {
+    @ObservedObject var viewModel: NounPlayground.ViewModel
+
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.managedObjectContext) private var context
     
     var body: some View {
       SoftButton(
         text: R.string.createNounDialog.actionSave(),
         largeAccessory: { Image.save },
         action: {
+          viewModel.save()
           dismiss()
         })
         .controlSize(.large)

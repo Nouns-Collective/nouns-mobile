@@ -11,9 +11,7 @@ import Services
 
 struct NounPlayground: View {
   @StateObject var viewModel = ViewModel()
-  
-  @Environment(\.dismiss) private var dismiss
-  
+    
   @Namespace private var namespace
   
   @State var name: String = ""
@@ -48,12 +46,14 @@ struct NounPlayground: View {
         }
       }
     }))
+    // Sheet presented when the user is finished creating their noun and is ready to name/save their noun
     .bottomSheet(isPresented: viewModel.mode == .done, showDimmingView: false, allowDrag: false, content: {
       NounMetadataDialog(viewModel: viewModel)
     })
+    // Sheet presented when the user wants to cancel the noun creation process and go to the previous screen
     .bottomSheet(isPresented: viewModel.mode == .cancel, showDimmingView: true, allowDrag: false, content: {
       DiscardNounPlaygroundSheet(viewModel: viewModel)
     })
-    .background(Gradient.bubbleGum)
+    .background(GradientView(GradientColors.allCases[viewModel.seed.background]))
   }
 }

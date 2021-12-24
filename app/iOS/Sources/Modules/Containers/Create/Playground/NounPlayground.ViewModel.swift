@@ -57,6 +57,8 @@ extension NounPlayground {
     /// Inidicates the current state of the user while creating their noun.
     @Published var mode: Mode = .creating
     
+    private let offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService
+    
     /// Recognizes if the drag gesture should be enabled.
     /// - Parameter type: The Noun's `Trait Type` to validate.
     func isDraggingEnabled(for type: TraitType) -> Bool {
@@ -123,17 +125,13 @@ extension NounPlayground {
     func selectTrait(_ index: Int, ofType traitType: TraitType) {
       switch traitType {
       case .background:
-        break
-        
+        seed.background = index
       case .body:
         seed.body = index
-        
       case .accessory:
         seed.accessory = index
-        
       case .head:
         seed.head = index
-        
       case .glasses:
         seed.glasses = index
       }
@@ -142,7 +140,7 @@ extension NounPlayground {
     func isSelected(_ index: Int, traitType: TraitType) -> Bool {
       switch traitType {
       case .background:
-        return false
+        return index == seed.background
       case .body:
         return index == seed.body
       case .accessory:
@@ -156,6 +154,15 @@ extension NounPlayground {
     
     func setMode(to mode: Mode) {
       self.mode = mode
+    }
+    
+    func save() {
+      do {
+        try offChainNounsService.store(noun: Noun(name: nounName, owner: Account(), seed: seed))
+      } catch {
+        //
+        print("Error: \(error)")
+      }
     }
   }
 }
