@@ -45,8 +45,8 @@ extension NounPlayground {
     }
     
     /// Moves the currently selected `Noun's Trait` by the given offset.
-    func moveSelectedTrait(by offsetX: Double) -> Double {
-      switch currentModifiableTraitType {
+    func traitOffset(for type: TraitType, by offsetX: Double = 0) -> Double {
+      switch type {
       case .background:
         return 0
         
@@ -61,26 +61,6 @@ extension NounPlayground {
         
       case .glasses:
         return (Double(seed.glasses) * -imageSize) + offsetX
-      }
-    }
-    
-    /// Moves the currently selected `Noun's Trait` by the given offset.
-    func traitOffset(for type: TraitType) -> Double {
-      switch type {
-      case .background:
-        return 0
-        
-      case .body:
-        return (Double(seed.body) * -imageSize)
-        
-      case .accessory:
-        return (Double(seed.accessory) * -imageSize)
-        
-      case .head:
-        return (Double(seed.head) * -imageSize)
-        
-      case .glasses:
-        return (Double(seed.glasses) * -imageSize)
       }
     }
     
@@ -121,46 +101,37 @@ extension NounPlayground {
     }
     
     /// Select a trait using the grid view
-    func selectTrait(_ trait: Trait, ofType traitType: TraitType) {
+    func selectTrait(_ index: Int, ofType traitType: TraitType) {
       switch traitType {
       case .background:
         break
         
       case .body:
-        seed.body = traitType.traits.firstIndex(of: trait) ?? 0
+        seed.body = index
         
       case .accessory:
-        seed.accessory = traitType.traits.firstIndex(of: trait) ?? 0
+        seed.accessory = index
         
       case .head:
-        seed.head = traitType.traits.firstIndex(of: trait) ?? 0
+        seed.head = index
         
       case .glasses:
-        seed.glasses = traitType.traits.firstIndex(of: trait) ?? 0
+        seed.glasses = index
       }
     }
     
-    func isSelected(trait: Trait, traitType: TraitType) -> Bool {
+    func isSelected(_ index: Int, traitType: TraitType) -> Bool {
       switch traitType {
       case .background:
         return false
       case .body:
-        return traitType.traits.firstIndex(of: trait) == seed.body
+        return index == seed.body
       case .accessory:
-        return traitType.traits.firstIndex(of: trait) == seed.accessory
+        return index == seed.accessory
       case .head:
-        return traitType.traits.firstIndex(of: trait) == seed.head
+        return index == seed.head
       case .glasses:
-        return traitType.traits.firstIndex(of: trait) == seed.glasses
-      }
-    }
-    
-    func traitIndex(forTrait trait: Trait, forType traitType: TraitType) -> Int {
-      switch traitType {
-      case .background:
-        return 0
-      default:
-        return traitType.traits.firstIndex(of: trait) ?? 0
+        return index == seed.glasses
       }
     }
   }
@@ -192,6 +163,7 @@ extension NounPlayground.ViewModel.TraitType {
     }
   }
   
+  /// This is the order that the assets and traits should be presented in order to replicate how the nouns should look
   static let layeredOrder: [NounPlayground.ViewModel.TraitType] = [.background, .body, .accessory, .head, .glasses]
 }
 

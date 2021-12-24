@@ -25,11 +25,11 @@ extension NounPlayground {
           LazyHGrid(rows: rowSpec, spacing: 4) {
             // Trait selection
             ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
-              TraitCollectionSection(tag: type.rawValue, items: type.traits) { trait, _ in
+              TraitCollectionSection(items: type.traits) { trait, index in
                 TraitPickerItem(image: trait.assetImage)
-                  .selected(viewModel.isSelected(trait: trait, traitType: type))
+                  .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
-                    viewModel.selectTrait(trait, ofType: type)
+                    viewModel.selectTrait(index, ofType: type)
                   }
               }
             }
