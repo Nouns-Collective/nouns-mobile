@@ -31,18 +31,21 @@ extension NounPlayground {
         set: { viewModel.currentModifiableTraitType = ViewModel.TraitType(rawValue: $0) ?? .head }
       )
       
-      return VStack(spacing: 3) {
-        
-        // Control to expand or fold `PickerTrait`.
-        Image.chevronDown
-          .rotationEffect(.degrees(isExpanded ? 180 : 0))
-          .onTapGesture {
-            withAnimation {
-              isExpanded.toggle()
-            }
-          }
-        
+      return PlainCell(
+        background: isExpanded ? Color.white : nil,
+        borderColor: isExpanded ? Color.black : nil
+      ) {
         VStack(spacing: 0) {
+          // Control to expand or fold `PickerTrait`.
+          Image.chevronDown
+            .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            .onTapGesture {
+              withAnimation {
+                isExpanded.toggle()
+              }
+            }
+            .padding(.vertical, 4)
+          
           ScrollView(.horizontal, showsIndicators: false) {
             
             // Displays all Noun's trait types in a segement control.
@@ -61,7 +64,9 @@ extension NounPlayground {
             TraitTypeGrid(viewModel: viewModel)
           }
         }
+        .padding(.bottom, 4)
       }
+      .padding(isExpanded ? 12 : 0)
     }
   }
 }

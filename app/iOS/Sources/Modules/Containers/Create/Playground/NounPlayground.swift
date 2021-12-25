@@ -14,8 +14,6 @@ struct NounPlayground: View {
     
   @Namespace private var namespace
   
-  @State var name: String = ""
-  
   var body: some View {
     ZStack {
       VStack(spacing: 0) {

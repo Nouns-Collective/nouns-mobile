@@ -79,6 +79,8 @@ struct OffChainFeedPlaceholder: View {
     VStack(alignment: .leading, spacing: 0) {
       Text(R.string.create.subhealine())
         .font(.custom(.regular, size: 17))
+      
+      Spacer()
 
       // TODO: OffChainNoun && OnchainNoun conform to Noun
       // TODO: Integrate the NounPlayground to randomly generate Traits each time the view appear.
