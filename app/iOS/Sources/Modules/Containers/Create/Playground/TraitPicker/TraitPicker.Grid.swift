@@ -21,9 +21,8 @@ extension NounPlayground {
     var body: some View {
       ScrollViewReader { proxy in
         ScrollView(.horizontal, showsIndicators: false) {
-
+          
           LazyHGrid(rows: rowSpec, spacing: 4) {
-            
             // Trait selection
             ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
               TraitCollectionSection(items: type.traits) { trait, index in
@@ -32,6 +31,7 @@ extension NounPlayground {
                   .onTapGesture {
                     viewModel.selectTrait(index, ofType: type)
                   }
+                  // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                   .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
               }
             }
@@ -43,23 +43,25 @@ extension NounPlayground {
                 .onTapGesture {
                   viewModel.selectTrait(index, ofType: .background)
                 }
+                // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
           }
           .padding(.vertical, 12)
-  //        .onChange(of: playgroundState.selectedTraitType, perform: { newTrait in
-  //          withAnimation {
-  //            proxy.scrollTo("\(newTrait)-0", anchor: .leading)
-  //          }
-  //        })
-//          .onChange(of: viewModel.seed, perform: { seed in
-//            withAnimation {
-//              proxy.scrollTo("\(viewModel.sel)-\(seed[playgroundState.selectedTraitType])", anchor: .center)
-//            }
-//          })
-  //        .onAppear(perform: {
-  //          proxy.scrollTo("\(playgroundState.selectedTraitType)-\(playgroundState.seed[playgroundState.selectedTraitType])", anchor: .leading)
-  //        })
+          .padding(.trailing)
+          //        .onChange(of: playgroundState.selectedTraitType, perform: { newTrait in
+          //          withAnimation {
+          //            proxy.scrollTo("\(newTrait)-0", anchor: .leading)
+          //          }
+          //        })
+          //          .onChange(of: viewModel.seed, perform: { seed in
+          //            withAnimation {
+          //              proxy.scrollTo("\(viewModel.sel)-\(seed[playgroundState.selectedTraitType])", anchor: .center)
+          //            }
+          //          })
+          //        .onAppear(perform: {
+          //          proxy.scrollTo("\(playgroundState.selectedTraitType)-\(playgroundState.seed[playgroundState.selectedTraitType])", anchor: .leading)
+          //        })
         }
         .frame(maxHeight: 250)
       }
