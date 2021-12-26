@@ -11,10 +11,9 @@ import Services
 
 /// A view to present the user's created noun, it's infromation, and edit options
 struct OffChainNounProfile: View {
-  @StateObject var viewModel: ViewModel
   
-  @State private var isRenamePresented = false
-  @State private var isDeletePresented = false
+  @StateObject var viewModel: ViewModel
+
   @Environment(\.dismiss) private var dismiss
   
   private enum SheetState: Int {
@@ -45,9 +44,7 @@ struct OffChainNounProfile: View {
           }
         
         // Displays various options to amend the built Noun.
-        MoreActionsDialog(
-          isRenameActionPresented: $isRenamePresented,
-          isDeleteActionPresented: $isDeletePresented)
+        MoreActionsDialog(viewModel: viewModel)
           .actionSheetStackItem(
             tag: SheetState.moreActions,
             title: R.string.offchainNounActions.title()
@@ -56,16 +53,14 @@ struct OffChainNounProfile: View {
       .padding(.bottom, 40)
       .padding(.horizontal, 20)
     }
-    .bottomSheet(isPresented: $isDeletePresented) {
+    .bottomSheet(isPresented: $viewModel.isDeletePresented) {
       DeleteSheet(
-        isPresented: $isDeletePresented,
         viewModel: viewModel
       )
     }
     // Sheet to rename the Noun.
-    .bottomSheet(isPresented: $isRenamePresented) {
+    .bottomSheet(isPresented: $viewModel.isRenamePresented) {
       RenameActionSheet(
-        isPresented: $isRenamePresented,
         viewModel: viewModel
       )
     }
