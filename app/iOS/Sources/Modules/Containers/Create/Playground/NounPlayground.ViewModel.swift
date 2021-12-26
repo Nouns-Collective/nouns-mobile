@@ -137,6 +137,7 @@ extension NounPlayground {
       }
     }
     
+    /// Returns a boolean indicating if an index is the selected index given a trait type
     func isSelected(_ index: Int, traitType: TraitType) -> Bool {
       switch traitType {
       case .background:
@@ -152,6 +153,7 @@ extension NounPlayground {
       }
     }
     
+    /// Returns the selected index given a trait type
     func selectedTrait(forType traitType: TraitType) -> Int {
       switch traitType {
       case .glasses:
@@ -167,10 +169,12 @@ extension NounPlayground {
       }
     }
     
+    /// Sets the view state of the playground
     func setMode(to mode: Mode) {
       self.mode = mode
     }
     
+    /// Saves the current playground noun
     func save() {
       do {
         try offChainNounsService.store(noun: Noun(name: nounName, owner: Account(), seed: seed))

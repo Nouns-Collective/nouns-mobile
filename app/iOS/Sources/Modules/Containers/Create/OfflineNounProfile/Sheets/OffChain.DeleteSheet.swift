@@ -12,6 +12,7 @@ extension OffChainNounProfile {
  
   /// A sheet presented to offer a user the option to delete their created noun, or to cancel and keep it
   struct DeleteSheet: View {
+    
     @ObservedObject var viewModel: OffChainNounProfile.ViewModel
     
     @Environment(\.dismiss) private var dismiss
