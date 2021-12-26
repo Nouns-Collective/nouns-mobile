@@ -18,7 +18,10 @@ extension OffChainNounProfile {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-      ActionSheet(title: R.string.nounDeleteDialog.title()) {
+      ActionSheet(
+        title: R.string.nounDeleteDialog.title(),
+        borderColor: nil
+      ) {
         Text(R.string.nounDeleteDialog.message())
           .font(.custom(.regular, size: 17))
           .lineSpacing(6)

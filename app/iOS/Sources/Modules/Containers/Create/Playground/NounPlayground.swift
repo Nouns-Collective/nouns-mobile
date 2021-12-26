@@ -16,16 +16,20 @@ struct NounPlayground: View {
   
   @State private var isExpanded: Bool = false
   
+  private var mode: ViewModel.Mode {
+    viewModel.mode
+  }
+  
   var body: some View {
     ZStack {
       VStack(spacing: 0) {
-        ConditionalSpacer(viewModel.mode == .creating)
+        ConditionalSpacer(mode == .creating)
         
         SlotMachine(viewModel: viewModel)
         
-        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+        ConditionalSpacer(!isExpanded || mode != .creating)
         
-        if viewModel.mode != .done {
+        if mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
             animation: namespace,
@@ -40,7 +44,7 @@ struct NounPlayground: View {
       }
     }, cancel: {
       withAnimation {
-        if viewModel.mode == .done {
+        if mode == .done {
           viewModel.setMode(to: .creating)
         } else {
           viewModel.setMode(to: .cancel)
@@ -48,11 +52,11 @@ struct NounPlayground: View {
       }
     }))
     // Sheet presented when the user is finished creating their noun and is ready to name/save their noun
-    .bottomSheet(isPresented: viewModel.mode == .done, showDimmingView: false, allowDrag: false, content: {
+    .bottomSheet(isPresented: mode == .done, showDimmingView: false, allowDrag: false, content: {
       NounMetadataDialog(viewModel: viewModel)
     })
     // Sheet presented when the user wants to cancel the noun creation process and go to the previous screen
-    .bottomSheet(isPresented: viewModel.mode == .cancel, showDimmingView: true, allowDrag: false, content: {
+    .bottomSheet(isPresented: mode == .cancel, showDimmingView: true, allowDrag: false, content: {
       DiscardNounPlaygroundSheet(viewModel: viewModel)
     })
     .background(GradientView(GradientColors.allCases[viewModel.seed.background]))

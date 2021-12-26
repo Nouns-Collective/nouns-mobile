@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UIComponents
+import Services
 
 /// A view to present the user's created noun, it's infromation, and edit options
 struct OffChainNounProfile: View {
@@ -16,23 +17,28 @@ struct OffChainNounProfile: View {
   @State private var isDeletePresented = false
   @Environment(\.dismiss) private var dismiss
   
-  // TODO: - What is it for?
-  @State private var selected: Int = 0
+  private enum SheetState: Int {
+    case info
+    case moreActions
+  }
+  
+  @State private var sheetState: SheetState = .info
   
   var body: some View {
     VStack(spacing: 0) {
       // Build & Display the Noun.
       NounPuzzle(seed: viewModel.noun.seed)
       
-      ActionSheetStack(selection: $selected) {
+      ActionSheetStack(selection: $sheetState) {
         
+        // Info sheet detailing the nouns name and creation information
         InfoSheetDialog(
           viewModel: viewModel,
           showMoreActions: {
-            selected = 1
+            sheetState = .moreActions
           })
           .actionSheetStackItem(
-            tag: 0,
+            tag: SheetState.info,
             title: viewModel.noun.name
           ) {
             dismiss()
@@ -41,11 +47,11 @@ struct OffChainNounProfile: View {
         // Displays various options to amend the built Noun.
         MoreActionsDialog(
           isRenameActionPresented: $isRenamePresented,
-          isDeleteActionPresented: $isDeletePresented
-        ).actionSheetStackItem(
-          tag: 1,
-          title: R.string.offchainNounActions.title()
-        )
+          isDeleteActionPresented: $isDeletePresented)
+          .actionSheetStackItem(
+            tag: SheetState.moreActions,
+            title: R.string.offchainNounActions.title()
+          )
       }
       .padding(.bottom, 40)
       .padding(.horizontal, 20)
@@ -64,5 +70,11 @@ struct OffChainNounProfile: View {
       )
     }
     .background(Gradient.blueberryJam)
+  }
+}
+
+struct OffChainNounProfile_Previews: PreviewProvider {
+  static var previews: some View {
+    OffChainNounProfile(viewModel: .init(noun: Noun(name: "Test", owner: Account(), seed: Seed(background: 1, glasses: 2, head: 3, body: 4, accessory: 5))))
   }
 }
