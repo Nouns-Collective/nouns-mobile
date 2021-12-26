@@ -15,7 +15,7 @@ extension NounPlayground {
     @ObservedObject var viewModel: ViewModel
     let animation: Namespace.ID
     
-    @State private var isExpanded = false
+    @Binding var isExpanded: Bool
     @Namespace private var typeSelectionNamespace
     
     private let rowSpec = [
@@ -66,7 +66,7 @@ extension NounPlayground {
         }
         .padding(.bottom, 4)
       }
-      .padding(isExpanded ? 12 : 0)
+      .padding([.leading, .bottom, .trailing], isExpanded ? 12 : 0)
     }
   }
 }

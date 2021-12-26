@@ -12,6 +12,9 @@ import Services
 extension NounPlayground {
   
   struct TraitPickerItem: View {
+    
+    static let size: CGFloat = 72
+    
     let image: String
     
     init(image: String) {
@@ -22,7 +25,7 @@ extension NounPlayground {
       Image(nounTraitName: image)
         .interpolation(.none)
         .resizable()
-        .frame(width: 72, height: 72, alignment: .top)
+        .frame(width: TraitPickerItem.size, height: TraitPickerItem.size, alignment: .top)
         .background(Color.componentSoftGrey)
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }

@@ -6,6 +6,15 @@
 //
 
 import SwiftUI
+import Combine
+
+struct ViewOffsetKey: PreferenceKey {
+    typealias Value = CGFloat
+    static var defaultValue = CGFloat.zero
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value += nextValue()
+    }
+}
 
 extension NounPlayground {
   
@@ -18,19 +27,31 @@ extension NounPlayground {
       GridItem(.flexible(), spacing: 4),
     ]
     
+    /// Returns the `id` of the very first trait in a given trait type
+    private func traitFirstIndexID(_ trait: ViewModel.TraitType) -> String {
+      return "\(trait.rawValue)-0"
+    }
+    
+    /// Returns the `id` of the currently selected trait, which is based on which trait type is currently selected from the tab picker
+    private var currentlySelectedTraitID: String {
+      return "\(viewModel.currentModifiableTraitType.rawValue)-\(viewModel.selectedTrait(forType: viewModel.currentModifiableTraitType))"
+    }
+    
     var body: some View {
       ScrollViewReader { proxy in
         ScrollView(.horizontal, showsIndicators: false) {
-          
           LazyHGrid(rows: rowSpec, spacing: 4) {
+            
             // Trait selection
             ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
+              
               TraitCollectionSection(items: type.traits) { trait, index in
                 TraitPickerItem(image: trait.assetImage)
                   .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
                     viewModel.selectTrait(index, ofType: type)
                   }
+                  .id("\(type.rawValue)-\(index)")
                   // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                   .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
               }
@@ -38,30 +59,31 @@ extension NounPlayground {
             
             // Gradient background selection
             TraitCollectionSection(items: Gradient.allGradients) { gradient, index in
+              
               GradientPickerItem(colors: gradient)
                 .selected(viewModel.isSelected(index, traitType: .background))
                 .onTapGesture {
                   viewModel.selectTrait(index, ofType: .background)
                 }
+                .id("\(ViewModel.TraitType.background.rawValue)-\(index)")
                 // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
           }
           .padding(.vertical, 12)
           .padding(.trailing)
-          //        .onChange(of: playgroundState.selectedTraitType, perform: { newTrait in
-          //          withAnimation {
-          //            proxy.scrollTo("\(newTrait)-0", anchor: .leading)
-          //          }
-          //        })
-          //          .onChange(of: viewModel.seed, perform: { seed in
-          //            withAnimation {
-          //              proxy.scrollTo("\(viewModel.sel)-\(seed[playgroundState.selectedTraitType])", anchor: .center)
-          //            }
-          //          })
-          //        .onAppear(perform: {
-          //          proxy.scrollTo("\(playgroundState.selectedTraitType)-\(playgroundState.seed[playgroundState.selectedTraitType])", anchor: .leading)
-          //        })
+          .onChange(of: viewModel.currentModifiableTraitType, perform: { newTrait in
+            withAnimation {
+              // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
+              proxy.scrollTo(traitFirstIndexID(newTrait), anchor: .leading)
+            }
+          })
+          .onChange(of: viewModel.seed, perform: { _ in
+            withAnimation {
+              // Provides an animation on the grid to always scroll to the center of the currently selected trait
+              proxy.scrollTo(currentlySelectedTraitID, anchor: .center)
+            }
+          })
         }
         .frame(maxHeight: 250)
       }

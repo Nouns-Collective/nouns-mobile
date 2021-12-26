@@ -14,6 +14,8 @@ struct NounPlayground: View {
     
   @Namespace private var namespace
   
+  @State private var isExpanded: Bool = false
+  
   var body: some View {
     ZStack {
       VStack(spacing: 0) {
@@ -21,12 +23,13 @@ struct NounPlayground: View {
         
         SlotMachine(viewModel: viewModel)
         
-        Spacer()
+        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
         
-        if viewModel.mode == .creating {
+        if viewModel.mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
-            animation: namespace
+            animation: namespace,
+            isExpanded: $isExpanded
           )
         }
       }

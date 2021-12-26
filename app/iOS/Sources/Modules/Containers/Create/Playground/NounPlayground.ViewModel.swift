@@ -25,7 +25,7 @@ extension NounPlayground {
       case done
     }
     
-    /// List all variouse `Noun's Traits Types`.
+    /// List all various `Noun's Traits Types`.
     enum TraitType: Int, CaseIterable, Hashable {
       case glasses
       case head
@@ -49,7 +49,7 @@ extension NounPlayground {
     let imageSize: Double = 320
     
     /// Indicates the current modifiable trait type selected in the slot machine.
-    @Published var currentModifiableTraitType: TraitType = .head
+    @Published var currentModifiableTraitType: TraitType = .glasses
     
     /// The name of the noun currently being created
     @Published var nounName: String = ""
@@ -149,6 +149,21 @@ extension NounPlayground {
         return index == seed.head
       case .glasses:
         return index == seed.glasses
+      }
+    }
+    
+    func selectedTrait(forType traitType: TraitType) -> Int {
+      switch traitType {
+      case .glasses:
+        return seed.glasses
+      case .head:
+        return seed.head
+      case .accessory:
+        return seed.accessory
+      case .body:
+        return seed.body
+      case .background:
+        return seed.background
       }
     }
     
