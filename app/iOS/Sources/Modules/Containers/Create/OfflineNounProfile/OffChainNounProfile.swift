@@ -64,7 +64,7 @@ struct OffChainNounProfile: View {
         viewModel: viewModel
       )
     }
-    .background(Gradient.blueberryJam)
+    .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
   }
 }
 
