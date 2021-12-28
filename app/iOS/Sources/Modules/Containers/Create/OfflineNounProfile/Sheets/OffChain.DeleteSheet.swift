@@ -12,13 +12,16 @@ extension OffChainNounProfile {
  
   /// A sheet presented to offer a user the option to delete their created noun, or to cancel and keep it
   struct DeleteSheet: View {
-    @Binding var isPresented: Bool
+    
     @ObservedObject var viewModel: OffChainNounProfile.ViewModel
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-      ActionSheet(title: R.string.nounDeleteDialog.title()) {
+      ActionSheet(
+        title: R.string.nounDeleteDialog.title(),
+        borderColor: nil
+      ) {
         Text(R.string.nounDeleteDialog.message())
           .font(.custom(.regular, size: 17))
           .lineSpacing(6)
@@ -44,7 +47,7 @@ extension OffChainNounProfile {
           largeAccessory: { Image.smAbsent },
           action: {
             withAnimation {
-              isPresented.toggle()
+              viewModel.isDeletePresented.toggle()
             }
           })
           .controlSize(.large)

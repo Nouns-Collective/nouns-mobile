@@ -6,47 +6,40 @@
 //
 
 import SwiftUI
+import UIComponents
 
-struct GradientPickerItem: View {
+extension NounPlayground {
   
-  @State private var width: CGFloat = 10
-  
-  private let colors: [Color]
-  
-  init(colors: [Color]) {
-    self.colors = colors
-  }
-  
-  var body: some View {
-    LinearGradient(
-      colors: colors,
-      startPoint: .topLeading,
-      endPoint: .bottomTrailing)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
-      .frame(width: width)
-      .background(
-        GeometryReader { proxy in
-          Color.clear
-            .onAppear {
-              self.width = proxy.size.height
-            }
-        }
-      )
-  }
-}
-
-extension GradientPickerItem {
-  
-  func selected(_ condition: Bool) -> some View {
-    if condition {
-      return AnyView(modifier(GradientSelectedModifier()))
-    } else {
-      return AnyView(self)
+  struct GradientPickerItem: View {
+    
+    @State private var width: CGFloat = 10
+    
+    private let colors: [Color]
+    
+    init(colors: [Color]) {
+      self.colors = colors
+    }
+    
+    var body: some View {
+      LinearGradient(
+        colors: colors,
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .frame(width: width)
+        .background(
+          GeometryReader { proxy in
+            Color.clear
+              .onAppear {
+                self.width = proxy.size.height
+              }
+          }
+        )
     }
   }
 }
 
-struct GradientSelectedModifier: ViewModifier {
+private struct GradientSelectedModifier: ViewModifier {
   func body(content: Content) -> some View {
     content
       .background(Color.black.opacity(0.05))
@@ -57,5 +50,16 @@ struct GradientSelectedModifier: ViewModifier {
           Image.checkmark
         }
       }
+  }
+}
+
+extension NounPlayground.GradientPickerItem {
+  
+  func selected(_ condition: Bool) -> some View {
+    if condition {
+      return AnyView(modifier(GradientSelectedModifier()))
+    } else {
+      return AnyView(self)
+    }
   }
 }

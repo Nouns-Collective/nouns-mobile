@@ -12,8 +12,8 @@ extension OffChainNounProfile {
   
   /// A dialog to show more actions for a user's created noun, such as playing with the noun and editing/deleting
   struct MoreActionsDialog: View {
-    @Binding var isRenameActionPresented: Bool
-    @Binding var isDeleteActionPresented: Bool
+    
+    @ObservedObject var viewModel: ViewModel
     
     var body: some View {
       VStack(alignment: .leading, spacing: 10) {
@@ -29,7 +29,7 @@ extension OffChainNounProfile {
           text: R.string.offchainNounActions.edit(),
           largeAccessory: { Image.createOutline },
           action: {
-  //          isMoreActionPresented.toggle()
+            
           })
           .controlSize(.large)
         
@@ -39,7 +39,7 @@ extension OffChainNounProfile {
           largeAccessory: { Image.rename },
           action: {
             withAnimation {
-              isRenameActionPresented.toggle()
+              viewModel.isRenamePresented.toggle()
             }
           })
           .controlSize(.large)
@@ -51,7 +51,7 @@ extension OffChainNounProfile {
           color: Color.componentNounRaspberry,
           action: {
             withAnimation {
-              isDeleteActionPresented.toggle()
+              viewModel.isDeletePresented.toggle()
             }
           })
           .controlSize(.large)

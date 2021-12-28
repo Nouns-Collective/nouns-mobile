@@ -12,7 +12,7 @@ extension OffChainNounProfile {
  
   /// A sheet to present the user with a text field to edit the noun's name
   struct RenameActionSheet: View {
-    @Binding var isPresented: Bool
+    
     @ObservedObject var viewModel: OffChainNounProfile.ViewModel
 
     var body: some View {
@@ -20,6 +20,7 @@ extension OffChainNounProfile {
         title: "Beets Battlestar Galactica",
         isEditing: true,
         placeholder: R.string.createNounDialog.inputPlaceholder(),
+        borderColor: nil,
         text: $viewModel.noun.name
       ) {
 
@@ -29,7 +30,7 @@ extension OffChainNounProfile {
           largeAccessory: { Image.save },
           action: {
             withAnimation {
-              isPresented.toggle()
+              viewModel.isRenamePresented.toggle()
             }
           })
           .controlSize(.large)
@@ -39,7 +40,7 @@ extension OffChainNounProfile {
             // Dismisses the presented sheet.
             SoftButton(icon: { Image.xmark }, action: {
               withAnimation {
-                isPresented.toggle()
+                viewModel.isRenamePresented.toggle()
               }
             })
           })

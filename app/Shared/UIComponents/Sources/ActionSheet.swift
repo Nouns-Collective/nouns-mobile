@@ -249,6 +249,12 @@ public struct ActionSheet<Content: View>: View {
     /// The placeholder for the text field, if necessary
     private let placeholder: String
     
+    /// The background color of the action sheet
+    let background: Color?
+    
+    /// The border color of the action sheet
+    let borderColor: Color?
+    
     /// A binding string value for the text field, if necessary
     @Binding private var text: String
 
@@ -265,6 +271,8 @@ public struct ActionSheet<Content: View>: View {
         title: String,
         isEditing: Bool = false,
         placeholder: String = "",
+        background: Color? = Color.white,
+        borderColor: Color? = Color.black,
         text: Binding<String> = .constant(""),
         @ViewBuilder content: @escaping () -> Content
     ) {
@@ -273,10 +281,15 @@ public struct ActionSheet<Content: View>: View {
         self.placeholder = placeholder
         self._text = text
         self.content = content
+        self.background = background
+        self.borderColor = borderColor
     }
     
     public var body: some View {
-        PlainCell {
+        PlainCell(
+            background: background,
+            borderColor: borderColor
+        ) {
             VStack(alignment: .leading) {
                 ActionSheetTitleView(title: title, isEditing: isEditing, text: $text, placeholder: placeholder) {
                     leadingView
