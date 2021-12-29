@@ -20,10 +20,9 @@ packages:
   
 settings:
   base:
-    MARKETING_VERSION: 1
-    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 15
     DEVELOPMENT_TEAM: 9XX3PA6349
-    CODE_SIGN_STYLE: Manual
 
 targets:
 # Nouns iOS App
@@ -41,12 +40,12 @@ targets:
       - package: Rswift
       - package: UIComponents
       - package: Services
-      # - package: Firebase
-      #   product: FirebaseCrashlytics
+      - package: Firebase
+        product: FirebaseCrashlytics
       - package: Firebase
         product: FirebaseMessaging
-      # - package: Firebase
-      #   product: FirebaseAnalytics
+      - package: Firebase
+        product: FirebaseAnalytics
     scheme:
       testTargets:
         - Nouns iOS Tests
