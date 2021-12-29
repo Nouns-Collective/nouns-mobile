@@ -12,6 +12,7 @@ extension OffChainNounProfile {
   
   /// A dialog to present the information of a user's created noun (such as the created date) and options to edit or share
   struct InfoSheetDialog: View {
+    
     let viewModel: OffChainNounProfile.ViewModel
     let showMoreActions: () -> Void
     

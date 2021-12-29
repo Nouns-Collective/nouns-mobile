@@ -36,19 +36,3 @@ struct OffChainNounCard: View {
       .headerStyle(.large)
   }
 }
-
-extension OffChainNounCard {
-  
-  @MainActor
-  class ViewModel: ObservableObject {
-    let noun: Noun
-    
-    init(noun: Noun) {
-      self.noun = noun
-    }
-    
-    var nounBirthday: String {
-      DateFormatter.string(from: noun.createdAt)
-    }
-  }
-}

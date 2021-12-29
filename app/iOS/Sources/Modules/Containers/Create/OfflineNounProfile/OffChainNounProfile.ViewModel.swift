@@ -11,9 +11,14 @@ import Services
 extension OffChainNounProfile {
   
   final class ViewModel: ObservableObject {
+    
     @Published var noun: Noun
     
     private let service: OffChainNounsService
+    
+    @Published var isRenamePresented: Bool = false
+    
+    @Published var isDeletePresented: Bool = false
     
     init(
       noun: Noun,

@@ -11,22 +11,30 @@ import UIComponents
 extension NounPlayground {
   
   struct AccessoryItems: ViewModifier {
-    let dismiss: () -> Void
+    
+    @ObservedObject var viewModel: ViewModel
+    
+    /// Designated action for the done button
+    let done: () -> Void
+    
+    /// Designated action for the cancel button
+    let cancel: () -> Void
     
     func body(content: Content) -> some View {
       content
         .softNavigationItems(leftAccessory: {
           SoftButton(
             icon: { Image.xmark },
-            action: dismiss)
+            action: cancel)
           
         }, rightAccessory: {
           SoftButton(
             text: R.string.shared.done(),
             smallAccessory: { Image.checkmark },
-            action: {
-              
-            })
+            action: done)
+            .emptyPlaceholder(when: viewModel.mode == .done) {
+              EmptyView()
+            }
         })
     }
   }
