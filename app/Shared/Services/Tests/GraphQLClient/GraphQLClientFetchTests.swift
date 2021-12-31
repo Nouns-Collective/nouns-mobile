@@ -15,7 +15,7 @@ final class GraphQLClientFetchTests: XCTestCase {
         
         enum MockDataURLResponder: MockURLResponder {
             static func respond(to request: URLRequest) throws -> Data? {
-                Fixtures.data(contentOf: "on-chain-nouns-response-valid", withExtension: "json")
+                Fixtures.data(contentOf: "nouns-response-valid", withExtension: "json")
             }
         }
         

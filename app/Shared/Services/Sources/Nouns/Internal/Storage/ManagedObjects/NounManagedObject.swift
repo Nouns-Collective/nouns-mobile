@@ -9,7 +9,8 @@ import Foundation
 import CoreData
 
 /// `Noun Core Data` model object.
-final class NounManagedObject: NSManagedObject, StoredEntity {
+@objc(NounManagedObject)
+final class NounManagedObject: NSManagedObject {
   @NSManaged var id: String
   @NSManaged var name: String
   @NSManaged var createdAt: Date
@@ -19,7 +20,11 @@ final class NounManagedObject: NSManagedObject, StoredEntity {
   @NSManaged var auction: AuctionManagedObject?
 }
 
-extension NounManagedObject {
+extension NounManagedObject: StoredEntity {
+  
+  static var entityName: String? {
+    return "Noun"
+  }
   
   static func insert(
     into context: NSManagedObjectContext,
@@ -27,8 +32,9 @@ extension NounManagedObject {
   ) throws -> Self {
     let managedObject: Self = try context.insertObject()
     managedObject.id = noun.id
-    managedObject.createdAt = Date()
-    managedObject.updatedAt = Date()
+    managedObject.name = noun.name
+    managedObject.createdAt = noun.createdAt
+    managedObject.updatedAt = noun.updatedAt
     
     managedObject.owner = try AccountManagedObject.insert(
       into: context,

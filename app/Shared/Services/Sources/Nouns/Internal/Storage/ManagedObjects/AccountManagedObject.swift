@@ -9,12 +9,17 @@ import Foundation
 import CoreData
 
 /// `Account Core Data` model object.
-final class AccountManagedObject: NSManagedObject, StoredEntity {
+@objc(AccountManagedObject)
+final class AccountManagedObject: NSManagedObject {
   @NSManaged var id: String
   @NSManaged var nouns: Set<NounManagedObject>?
 }
 
-extension AccountManagedObject {
+extension AccountManagedObject: StoredEntity {
+  
+  static var entityName: String? {
+    return "Account"
+  }
   
   static func insert(
     into context: NSManagedObjectContext,

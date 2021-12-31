@@ -12,12 +12,12 @@ final class LiveAuctionHitRealBackendTests: XCTestCase {
     
     func testLiveAuctionSubscriptionHitRealBackend() async throws {
         // given
-        let nounsProvider = TheGraphNounsProvider()
-        
-        let auction = try await nounsProvider.liveAuctionStateDidChange()
-        print(auction)
-        
-        // then
-        XCTAssertTrue(Thread.isMainThread)
+//        let nounsProvider = TheGraphNounsProvider()
+//        
+//        let auction = await nounsProvider.liveAuctionStateDidChange()
+//        print(auction)
+//        
+//        // then
+//        XCTAssertTrue(Thread.isMainThread)
     }
 }

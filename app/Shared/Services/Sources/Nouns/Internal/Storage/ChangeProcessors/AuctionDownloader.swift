@@ -15,11 +15,11 @@ final class AuctionDownloader: ChangeProcessor {
   }
   
   func fetchCloudEntities(in context: ChangeProcessContext, limit: Int, cursor: Int) async throws {
-    let auctions = try await context.cloud.fetchAuctions(
-      settled: true,
-      limit: limit,
-      cursor: cursor
-    )
+//    let auctions = try await context.cloud.fetchAuctions(
+//      settled: true,
+//      limit: limit,
+//      cursor: cursor
+//    )
     
   }
   

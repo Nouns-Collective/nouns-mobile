@@ -7,13 +7,10 @@
 
 import CoreData
 
-/// <#Description#>
 protocol StoredEntity: AnyObject {
   
-  /// <#Description#>
   static var entity: NSEntityDescription { get }
   
-  /// <#Description#>
   static var entityName: String? { get }
 }
 
