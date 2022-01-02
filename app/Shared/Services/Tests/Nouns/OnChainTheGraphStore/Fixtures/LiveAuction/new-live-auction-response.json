@@ -1,0 +1,32 @@
+{
+  "data": {
+    "auctions": [
+      {
+        "id": "107",
+        "amount": "1000000000000000000",
+        "endTime": "1636844955",
+        "settled": false,
+        "startTime": "1636758555",
+        "noun": {
+          "id": "0",
+          "owner": {
+            "id": "0x2573c60a6d127755aa2dc85e342f7da2378a0cc5"
+          },
+          "seed": {
+            "accessory": "132",
+            "background": "0",
+            "body": "14",
+            "glasses": "18",
+            "head": "94"
+          }
+        },
+        "bids": [
+          {
+            "id": "0xaf1rfeeaedf13ad7cbaa66661d9411f6118ac4e4884daae6a3b81ab12d15f082",
+            "amount": "100000000000000000"
+          },
+        ]
+      },
+    ]
+  }
+}

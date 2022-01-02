@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Nouns+Fixture.swift
 //  
 //
 //  Created by Ziad Tamim on 14.11.21.
@@ -16,6 +16,39 @@ extension Auction {
       id: "106",
       noun: .fixture(),
       amount: "2000000000000000000",
+      startTime: "1636758555",
+      endTime: "1636844955",
+      settled: false
+    )
+  }()
+  
+  static var fixtureLiveNewBid: Self = {
+    Auction(
+      id: "106",
+      noun: .fixture(),
+      amount: "3500000000000000000",
+      startTime: "1636758555",
+      endTime: "1636844955",
+      settled: false
+    )
+  }()
+  
+  static var fixtureLiveSettled: Self = {
+    Auction(
+      id: "106",
+      noun: .fixture(),
+      amount: "4500000000000000000",
+      startTime: "1636758555",
+      endTime: "1636844955",
+      settled: true
+    )
+  }()
+  
+  static var fixtureLiveNew: Self = {
+    Auction(
+      id: "107",
+      noun: .fixture(),
+      amount: "1000000000000000000",
       startTime: "1636758555",
       endTime: "1636844955",
       settled: false

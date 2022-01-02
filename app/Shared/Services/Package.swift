@@ -28,6 +28,11 @@ let package = Package(
       name: "ServicesTests",
       dependencies: ["Services"],
       path: "Tests",
-      resources: [.process("Fixtures/Resources")]),
+      resources: [
+        .process("Fixtures/Resources"),
+        .process("Nouns/OnChainTheGraphStore/Fixtures"),
+        .process("Nouns/NounComposer/Fixtures"),
+        .process("ENS/Fixtures"),
+      ]),
   ]
 )
