@@ -11,6 +11,7 @@ import CoreData
 public enum OffChainNounsRequestError: Error {
   case invalidData
   case unableToLoadStore
+  case noContext
 }
 
 /// Service allows interacting with the `Offline Nouns`.
@@ -18,11 +19,9 @@ public protocol OffChainNounsService {
   
   /// Fetches the list of Nouns from the persistence store.
   /// - Parameters:
-  ///   - limit: A limit up to the  `n` elements from the list.
-  ///   - cursor: A cursor for use in pagination.
   ///   - ascending: Specify the order of the list returned.
   /// - Returns: a list of `Noun` type  instance or an error was encountered.
-  func fetchNouns(limit: Int, cursor: Int, ascending: Bool) throws -> [Noun]
+  func fetchNouns(ascending: Bool) throws -> [Noun]
   
   /// Stores a given `Noun` into the persistence store.
   /// - Parameter noun: The noun to be persisted.
@@ -36,15 +35,19 @@ public protocol OffChainNounsService {
 /// Concrete implementation of the `LocalNounsService` using `CoreData`.
 public class CoreDataNounsProvider: OffChainNounsService {
   
+  /// The name of the data model.
   private static let modelName = "Nouns"
   
-  /// The NSManagedObjectContext instance to be used for performing the operations.
+  /// The `NSManagedObjectContext` instance to be used for performing the operations.
   private var viewContext: NSManagedObjectContext {
     persistentContainer.viewContext
   }
   
   /// A container that encapsulates the Core Data stack.
   private let persistentContainer: PersistentContainer
+  
+  /// Reference to the store watcher for new `Nouns` entities Changes.
+  private var autoStoreFetcher: AutoStoreFetcher<NounManagedObject>?
   
   /// Creates a container using the model named `dataModel` in the main bundle.
   public convenience init() {
@@ -53,8 +56,7 @@ public class CoreDataNounsProvider: OffChainNounsService {
   }
   
   init(persistentContainer: PersistentContainer) {
-      self.persistentContainer = persistentContainer
-    
+    self.persistentContainer = persistentContainer
     persistentContainer.loadPersistentStores { _, error in
       guard let error = error else {
         return
@@ -63,10 +65,38 @@ public class CoreDataNounsProvider: OffChainNounsService {
     }
   }
   
-  public func fetchNouns(limit: Int = 20, cursor: Int = 0, ascending: Bool = true) throws -> [Noun] {
+  public func nounsStoreDidChange(ascendingOrder: Bool = true) -> AsyncThrowingStream<[Noun], Error> {
+    AsyncThrowingStream { [weak self] continuation in
+      guard let self = self else { return }
+      
+      do {
+        if autoStoreFetcher == nil {
+          autoStoreFetcher = try AutoStoreFetcher<NounManagedObject>(
+            viewContext: viewContext,
+            sortKeyPath: \NounManagedObject.createdAt,
+            ascendingOrder: ascendingOrder
+          )
+        }
+        
+        let fetchedObjectsCancellable = self.autoStoreFetcher?.$fetchedObjects
+          .map { $0.map { $0.model } }
+          .sink { nouns in
+            continuation.yield(nouns)
+        }
+        
+        continuation.onTermination = { @Sendable _ in
+          self.autoStoreFetcher = nil
+          fetchedObjectsCancellable?.cancel()
+        }
+        
+      } catch {
+        continuation.finish(throwing: error)
+      }
+    }
+  }
+  
+  public func fetchNouns(ascending: Bool = true) throws -> [Noun] {
     try NounManagedObject.fetch(in: viewContext) { fetchRequest in
-      fetchRequest.fetchLimit = limit
-      fetchRequest.fetchOffset = cursor
       fetchRequest.sortDescriptors = [
         NSSortDescriptor(
           keyPath: \NounManagedObject.createdAt,
@@ -95,33 +125,5 @@ public class CoreDataNounsProvider: OffChainNounsService {
     
     viewContext.delete(managedObject)
     try viewContext.save()
-  }
-}
-
-final class PersistentContainer: NSPersistentContainer {
-  
-  init(name: String, bundle: Bundle = .module, inMemory: Bool = false) {
-    guard let mom = NSManagedObjectModel.mergedModel(
-      from: [bundle]
-    ) else {
-      fatalError("💥 Couldn't load data model")
-    }
-    
-    super.init(name: name, managedObjectModel: mom)
-    configureDefaults(inMemory: inMemory)
-  }
-  
-  private func configureDefaults(inMemory: Bool = false) {
-    viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-
-    guard let storeDescription = persistentStoreDescriptions.first else {
-      return
-    }
-    
-    storeDescription.shouldAddStoreAsynchronously = true
-    if inMemory {
-      storeDescription.url = URL(fileURLWithPath: "/dev/null")
-      storeDescription.shouldAddStoreAsynchronously = false
-    }
   }
 }

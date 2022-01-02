@@ -144,9 +144,11 @@ public class TheGraphNounsProvider: OnChainNounsService {
   }
   
   public func fetchTreasury() async throws -> String {
-    let eth = try await ethTreasury()
-    let stEth = try await stEthTreasury()
-    return String(eth + stEth)
+    async let eth = ethTreasury()
+    async let stEth = stEthTreasury()
+    
+    let (ethValue, stEthValue) = try await (eth, stEth)
+    return String(ethValue + stEthValue)
   }
   
   public func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> [Noun] {
