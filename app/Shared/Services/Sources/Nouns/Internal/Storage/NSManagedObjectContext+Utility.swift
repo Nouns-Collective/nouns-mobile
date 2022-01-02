@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  NSManagedObjectContext.swift
 //  
 //
 //  Created by Ziad Tamim on 16.12.21.
@@ -16,7 +16,7 @@ extension NSManagedObjectContext {
         forEntityName: entityName,
         into: self
       ) as? A else {
-        throw PersistenceStoreError.invalidEntityType
+        throw StoredEntityError.invalidEntityType
       }
     
     return entity

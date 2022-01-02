@@ -12,6 +12,7 @@ public enum OffChainNounsRequestError: Error {
   case invalidData
   case unableToLoadStore
   case noContext
+  case invalidEntityType
 }
 
 /// Service allows interacting with the `Offline Nouns`.

@@ -63,8 +63,4 @@ class AutoStoreFetcher<T>: NSObject, NSFetchedResultsControllerDelegate where T:
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     try? publishFetchedObjects()
   }
-  
-  deinit {
-    print("======")
-  }
 }

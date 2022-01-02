@@ -7,6 +7,10 @@
 
 import CoreData
 
+enum StoredEntityError: Error {
+  case invalidEntityType
+}
+
 protocol StoredEntity: AnyObject {
   
   static var entity: NSEntityDescription { get }
@@ -29,7 +33,7 @@ extension StoredEntity where Self: NSManagedObject {
     configuration: ((NSFetchRequest<Self>) -> Void)? = nil
   ) throws -> [Self] {
     guard let entityName = Self.entityName else {
-      throw PersistenceStoreError.invalidEntityType
+      throw StoredEntityError.invalidEntityType
     }
     
     let request = NSFetchRequest<Self>(entityName: entityName)
