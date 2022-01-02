@@ -117,4 +117,13 @@ extension Image {
     public static let swipePick = Image("swipe-pick", bundle: .module)
     
     public static let pointRight = Image("hand-point-right", bundle: .module)
+
+    public static let alien = Image("alien", bundle: .module)
+    
+    public static let chipmunk = Image("chipmunk", bundle: .module)
+
+    public static let monster = Image("monster", bundle: .module)
+
+    public static let robot = Image("robot", bundle: .module)
+
 }

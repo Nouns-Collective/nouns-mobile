@@ -13,12 +13,6 @@ struct PlayView: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
   @State private var isPlayPresented = false
   
-  init() {
-    // TODO: Theming Should be extracted as it is related to the theme.
-    UINavigationBar.appearance().barTintColor = .clear
-    UITableView.appearance().backgroundColor = .clear
-  }
-  
   var body: some View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
