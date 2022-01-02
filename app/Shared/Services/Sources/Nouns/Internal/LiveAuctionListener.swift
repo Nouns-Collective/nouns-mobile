@@ -7,24 +7,28 @@
 
 import Foundation
 
+/// `Short-Poll` implementation to handle non-settled auction changes.
 class LiveAuctionListener {
-  ///
+  /// Stream continuation type.
   typealias ListenerContinuation = AsyncStream<Auction>.Continuation
   
-  ///
+  /// Stream continuation to populate auction changes.
   private var continuation: ListenerContinuation?
   
-  ///
+  /// The graphQL client reference to update the current live auction.
   private weak var graphQLClient: GraphQL?
   
-  ///
-  private var timer: DispatchSourceTimer = {
+  /// `Short-Poll` interval.
+  private let pollingInterval = 1
+  
+  /// A dispatch source that submits the event handler block based on timer.
+  private lazy var timer: DispatchSourceTimer = {
     let queue = DispatchQueue(
       label: "wtf.nouns.ios.live-auction",
       qos: .userInitiated
     )
     let timer = DispatchSource.makeTimerSource(queue: queue)
-    timer.schedule(deadline: .now(), repeating: .seconds(1))
+    timer.schedule(deadline: .now(), repeating: .seconds(pollingInterval))
     return timer
   }()
   
@@ -32,14 +36,18 @@ class LiveAuctionListener {
   init(continuation: ListenerContinuation, graphQLClient: GraphQL) {
     self.continuation = continuation
     self.graphQLClient = graphQLClient
-    
+
+    handlePollingEvent()
+  }
+  
+  private func handlePollingEvent() {
     timer.setEventHandler { [weak self] in
       guard let self = self else { return }
       
       Task {
         do {
           let auction = try await self.fetchLiveAuction()
-          continuation.yield(auction)
+          self.continuation?.yield(auction)
         } catch { }
       }
     }

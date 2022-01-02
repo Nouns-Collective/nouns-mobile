@@ -21,70 +21,61 @@ public enum OnChainNounsRequestError: Error {
 /// Service allows interacting with the `OnChain Nouns`.
 public protocol OnChainNounsService: AnyObject {
   
+  /// Asynchronously fetch the Nouns treasury from the eth network.
+  ///
+  /// - Returns: The total amount stored of `Ether + staked Ether in Lido`.
   func fetchTreasury() async throws -> String
   
-  /// Fetches the list of Nouns settled from the chain.
-  ///
-  /// The publisher will emit events on the **main** thread.
+  /// Asynchronously fetches the list of the settled Nouns from the chain.
   ///
   /// - Parameters:
   ///   - limit: A limit up to the  `n` elements from the list.
   ///   - cursor: A cursor for use in pagination.
   ///
-  /// - Returns: A publisher emitting a list of `Noun` type  instance or an error was encountered.
+  /// - Returns: A list of `Noun` type  instance or throw an error.
   func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> [Noun]
   
-  /// Fetches the list of auction settled from the chain.
-  ///
-  /// The publisher will emit events on the **main** thread.
+  ///Asynchronously fetches the list of auction settled from the chain.
   ///
   /// - Parameters:
   ///   - settled: Whether or not the auction has been settled.
   ///   - limit: A limit up to the  `n` elements from the list.
   ///   - cursor: A cursor for use in pagination.
   ///
-  /// - Returns: A publisher emitting a list of `Auction` type  instance or an error was encountered.
+  /// - Returns: A list of `Auction` type  instance or throw an error.
   func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> [Auction]
   
-  /// Fetches the list of Activities of a given Noun from the chain.
-  ///
-  /// The publisher will emit events on the **main** thread.
+  /// Asynchronously fetches the list of Activities of a given Noun from the chain.
   ///
   /// - Parameters:
   ///   - nounID: A settled `Noun` identifier.
   ///   - limit: A limit up to the  `n` elements from the list.
   ///   - cursor: A cursor for use in pagination.
   ///
-  /// - Returns: A publisher emitting a list of `Activity` type  instance or an error was encountered.
+  /// - Returns: A list of `Activity` type  instance or throw an error.
   func fetchActivity(for nounID: String, limit: Int, after cursor: Int) async throws -> [Vote]
   
-  /// Fetches the list of Bids of a given Noun from the chain.
-  ///
-  /// The publisher will emit events on the **main** thread.
+  /// Asynchronously fetches the list of Bids of a given Noun from the chain.
   ///
   /// - Parameters:
   ///   - nounID: A settled `Noun` identifier.
   ///
-  /// - Returns: A publisher emitting a list of `Bid` type  instance or an error was encountered.
+  /// - Returns: A list of `Bid` type  instance or throw an error.
   func fetchBids(for nounID: String, limit: Int, after cursor: Int) async throws -> [Bid]
   
   /// Registers a publisher that publishes the last auction and bid created on
   /// the network  state changes.
   ///
-  /// The publisher will emit events on the **main** thread.
-  ///
-  /// - Returns: A publisher emitting a `Auction` instance or an error was encountered.
+  /// - Returns: A `Auction` instance or throw an error.
   func liveAuctionStateDidChange() -> AsyncStream<Auction>
   
-  /// Fetches the list of proposals for all type status.
-  ///
-  /// The publisher will emit events on the **main** thread.
+  /// Asynchronously fetches the list of proposals for all type status.
   ///
   /// - Parameters:
   ///   - limit: A limit up to the  `n` elements from the list.
   ///   - cursor: A cursor for use in pagination.
   ///
-  /// - Returns: A publisher emitting a list of `Proposal` type  instance or an error was encountered.
+  /// - Returns: A list of `Proposal` type  instance or throw an error.
   func fetchProposals(limit: Int, after cursor: Int) async throws -> [Proposal]
 }
 
@@ -104,9 +95,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
     static let stEthDAOExecutor = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
   }
   
-  public init(
-    graphQLClient: GraphQL = GraphQLClient()
-  ) {
+  public init(graphQLClient: GraphQL = GraphQLClient()) {
     self.graphQLClient = graphQLClient
   }
   
