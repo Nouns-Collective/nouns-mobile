@@ -11,8 +11,14 @@ import Services
 final class AppCore {
   static let shared = AppCore()
   
+  let crashReporting: CrashReporting = CrashlyticsProvider()
+  
+  let analytics: Analytics = FirebaseAnalyticsProvider()
+  
   let onChainNounsService: OnChainNounsService = TheGraphNounsProvider()
+  
   let offChainNounsService: OffChainNounsService = CoreDataNounsProvider()
+  
   let settingsStore = SettingsStore()
   
   /// The web3Client is abstracted out to a private property as it is re-used in both the Ethereum and ENS front-layer clients below.
