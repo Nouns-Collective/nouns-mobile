@@ -10,9 +10,6 @@ packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
     from: 5.4.0
-  Firebase: 
-    url: https://github.com/firebase/firebase-ios-sdk
-    from: 8.10.0
   UIComponents:
     path: Shared/UIComponents
   Services:
@@ -40,28 +37,25 @@ targets:
       - package: Rswift
       - package: UIComponents
       - package: Services
-      - package: Firebase
-        product: FirebaseCrashlytics
-      - package: Firebase
-        product: FirebaseMessaging
-      - package: Firebase
-        product: FirebaseAnalytics
     scheme:
       testTargets:
         - Nouns iOS Tests
         - Nouns iOS UITests
     preBuildScripts:
-      - script: |
-                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Sources/Resources/R.generated.swift"
+      - path: scripts/rswift.sh
         name: R.swift
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
           - $SRCROOT/iOS/Sources/Resources/R.generated.swift
     postBuildScripts:
-      - script: |
-                /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
+      - path: scripts/swiftlint.sh
         name: SwiftLint
+      - path: scripts/crashlytics.sh
+        name: Crashlytics
+        inputFiles:
+          - ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}
+          - $(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)
 
 # Nouns iOS Unit Tests
   Nouns iOS Tests:
