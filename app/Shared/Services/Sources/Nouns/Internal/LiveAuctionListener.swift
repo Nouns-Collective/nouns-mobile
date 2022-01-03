@@ -36,8 +36,22 @@ class LiveAuctionListener {
   init(continuation: ListenerContinuation, graphQLClient: GraphQL) {
     self.continuation = continuation
     self.graphQLClient = graphQLClient
-
+  }
+  
+  func startPolling() {
     handlePollingEvent()
+    
+    continuation?.onTermination = { @Sendable [weak self] termination in
+      self?.stopPolling()
+    }
+  }
+  
+  func stopPolling() {
+    timer.cancel()
+  }
+  
+  deinit {
+    stopPolling()
   }
   
   private func handlePollingEvent() {
@@ -46,6 +60,10 @@ class LiveAuctionListener {
       
       Task {
         do {
+          guard !self.timer.isCancelled else {
+            return
+          }
+          
           let auction = try await self.fetchLiveAuction()
           self.continuation?.yield(auction)
         } catch { }

@@ -174,6 +174,8 @@ public class TheGraphNounsProvider: OnChainNounsService {
         continuation: continuation,
         graphQLClient: graphQLClient 
       )
+      
+      self?.liveAuctionListener?.startPolling()
     }
   }
   
