@@ -33,6 +33,7 @@ targets:
       base:
         INFOPLIST_FILE: iOS/Sources/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
+        DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
     dependencies:
       - package: Rswift
       - package: UIComponents
