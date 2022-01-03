@@ -11,14 +11,6 @@ import Combine
 
 final class LiveAuctionStateDidChangeTests: XCTestCase {
   
-  fileprivate enum AuctionState {
-    case none
-    case initial
-    case newBid
-    case settled
-    case new
-  }
-  
   func assertAuctionEquality(_ lhs: Auction, _ rhs: Auction) {
     // Auction
     XCTAssertEqual(lhs.id, rhs.id)
@@ -36,14 +28,30 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
     XCTAssertEqual(lhs.noun.owner.id, rhs.noun.owner.id)
   }
   
+  /// Assert that the short-poll mechanism does update the live auction model when changes occur.
   func testLiveAuctionStateDidChange() throws {
     
     enum MockDataURLResponder: MockURLResponder {
-      static var auctionState: AuctionState = .none
+      /// States the current fake auction state that should be state to the network API.
+      static var auctionStateIndex = 0
+      
+      static let auctionFilenames = [
+        /// Fake initial auction fetch.
+        "live-auction-response-initial",
+        /// Fake auction's new bid
+        "live-auction-response-new-bid",
+        /// Fake auction's settled.
+        "live-auction-response-settled",
+        /// Fake new auction published.
+        "new-live-auction-response",
+      ]
       
       static func respond(to request: URLRequest) throws -> Data? {
-        auctionState.next()
-        return Fixtures.data(contentOf: auctionState.filename, withExtension: "json")
+        defer { auctionStateIndex += 1 }
+        return Fixtures.data(
+          contentOf: auctionFilenames[auctionStateIndex],
+          withExtension: "json"
+        )
       }
     }
     
@@ -58,72 +66,33 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
     expectation.expectedFulfillmentCount = 4
     
     Task {
+      var fetchedAuctions = [Auction]()
       for try await auction in nounsProvider.liveAuctionStateDidChange() {
+        fetchedAuctions.append(auction)
         
-        switch MockDataURLResponder.auctionState {
-        case .none:
-          XCTFail("No filename associated with the Auction State `None`")
-          
-        case .initial:
-          assertAuctionEquality(auction, .fixture)
-          expectation.fulfill()
-          
-        case .newBid:
-          assertAuctionEquality(auction, .fixtureLiveNewBid)
-          expectation.fulfill()
-          
-        case .settled:
-          assertAuctionEquality(auction, .fixtureLiveSettled)
-          expectation.fulfill()
-          
-        case .new:
-          assertAuctionEquality(auction, .fixtureLiveNew)
-          expectation.fulfill()
-        }
+        expectation.fulfill()
       }
+      
+      XCTAssertEqual(fetchedAuctions, [
+        .fixture,
+          .fixtureLiveNewBid,
+          .fixtureLiveSettled,
+          .fixtureLiveNew
+      ])
     }
     
     wait(for: [expectation], timeout: 4.0)
   }
-}
-
-extension LiveAuctionStateDidChangeTests.AuctionState {
   
-  var filename: String {
-    switch self {
-    case .none:
-      fatalError("No filename associated with the Auction State `None`")
-      
-    case .initial:
-      return "live-auction-response-initial"
-      
-    case .newBid:
-      return "live-auction-response-new-bid"
-      
-    case .settled:
-      return "live-auction-response-settled"
-      
-    case .new:
-      return "new-live-auction-response"
-    }
+  /// Asserts whether the short-poll mechanism is not stopped after
+  /// the failure of the live auction retrieval.
+  func testLiveAuctionStateDidChangeContinueAfterAuctionFetchFail() {
+    
   }
   
-  mutating func next() {
-    switch self {
-    case .none:
-      self = .initial
-      
-    case .initial:
-      self = .newBid
-      
-    case .newBid:
-      self = .settled
-      
-    case .settled:
-      self = .new
-      
-    case .new:
-      XCTFail("There is next state for the case `New Auction`.")
-    }
+  /// Asserts the live auction does always fetch the most recent creation
+  /// auction instead of just the non-settled ones.
+  func testLiveAuctionStateDidChangeFetchMostRecentAuction() {
+    
   }
 }

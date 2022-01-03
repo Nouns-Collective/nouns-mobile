@@ -15,7 +15,7 @@ extension NounsSubgraph {
     internal var operationDefinition: String {
       """
       {
-        auctions( where: {settled: false}) {
+        auctions(where: {settled: false}) {
           id
           amount
           startTime
