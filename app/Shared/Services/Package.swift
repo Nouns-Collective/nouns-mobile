@@ -28,6 +28,7 @@ let package = Package(
       dependencies: [
         "web3.swift",
         .product(name: "FirebaseAnalytics", package: "Firebase"),
+        .product(name: "FirebaseMessaging", package: "Firebase"),
       ],
       path: "Sources",
       resources: [.process("Resources")]
