@@ -15,12 +15,20 @@ let package = Package(
     .package(
       url: "https://github.com/argentlabs/web3.swift",
       from: "0.7.0"
+    ),
+    .package(
+      name: "Firebase",
+      url: "https://github.com/firebase/firebase-ios-sdk",
+      from: "8.10.0"
     )
   ],
   targets: [
     .target(
       name: "Services",
-      dependencies: ["web3.swift"],
+      dependencies: [
+        "web3.swift",
+        .product(name: "FirebaseAnalytics", package: "Firebase"),
+      ],
       path: "Sources",
       resources: [.process("Resources")]
     ),
