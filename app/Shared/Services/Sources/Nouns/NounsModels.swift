@@ -16,7 +16,7 @@ public struct Page<T> where T: Decodable {
 }
 
 /// The Noun
-public struct Noun: Equatable, Identifiable {
+public struct Noun: Equatable, Identifiable, Hashable {
   
   /// The Noun's ERC721 token id
   public let id: String
@@ -54,7 +54,7 @@ public struct Noun: Equatable, Identifiable {
 }
 
 /// The seed used to determine the Noun's traits.
-public struct Seed: Equatable {
+public struct Seed: Equatable, Hashable {
   
   /// The background trait.
   public var background: Int
@@ -81,7 +81,7 @@ public struct Seed: Equatable {
 }
 
 /// The owner of the Noun
-public struct Account: Equatable, Decodable {
+public struct Account: Equatable, Decodable, Hashable {
   
   /// An Account is any address that holds any
   /// amount of Nouns, the id used is the blockchain address.

@@ -35,7 +35,17 @@ extension OffChainNounProfile {
     func deleteNoun() {
       do {
         try service.delete(noun: noun)
-      } catch { }
+      } catch {
+        print("Error: \(error)")
+      }
+    }
+    
+    func renameNoun() {
+      do {
+        try service.store(noun: noun)
+      } catch {
+        print("Error: \(error)")
+      }
     }
   }
 }
