@@ -27,7 +27,7 @@ public protocol OffChainNounsService {
   /// Listens to changes in the offline nouns store
   /// - Parameters:
   ///   - ascending: Specify the order of the list returned.
-  /// - Returns: a list of `Noun` type  instance or an error was encountered.
+  /// - Returns: a list of `Noun` type  instance or an error was encountered, which is returned everytime an addition, deletion or change is observed in the offline noun store.
   func nounsStoreDidChange(ascendingOrder: Bool) -> AsyncThrowingStream<[Noun], Error>
     
   /// Stores a given `Noun` into the persistence store.
