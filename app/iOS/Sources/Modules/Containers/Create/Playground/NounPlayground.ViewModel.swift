@@ -179,7 +179,6 @@ extension NounPlayground {
       do {
         try offChainNounsService.store(noun: Noun(name: nounName, owner: Account(), seed: seed))
       } catch {
-        //
         print("Error: \(error)")
       }
     }

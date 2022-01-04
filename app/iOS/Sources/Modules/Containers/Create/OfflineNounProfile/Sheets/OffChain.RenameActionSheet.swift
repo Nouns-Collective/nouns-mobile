@@ -29,6 +29,7 @@ extension OffChainNounProfile {
           text: R.string.offchainNounActions.useName(),
           largeAccessory: { Image.save },
           action: {
+            viewModel.renameNoun()
             withAnimation {
               viewModel.isRenamePresented.toggle()
             }

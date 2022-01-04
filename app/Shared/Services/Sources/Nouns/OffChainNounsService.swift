@@ -24,6 +24,12 @@ public protocol OffChainNounsService {
   /// - Returns: a list of `Noun` type  instance or an error was encountered.
   func fetchNouns(ascending: Bool) throws -> [Noun]
   
+  /// Listens to changes in the offline nouns store
+  /// - Parameters:
+  ///   - ascending: Specify the order of the list returned.
+  /// - Returns: a list of `Noun` type  instance or an error was encountered, which is returned everytime an addition, deletion or change is observed in the offline noun store.
+  func nounsStoreDidChange(ascendingOrder: Bool) -> AsyncThrowingStream<[Noun], Error>
+    
   /// Stores a given `Noun` into the persistence store.
   /// - Parameter noun: The noun to be persisted.
   func store(noun: Noun) throws
@@ -83,7 +89,7 @@ public class CoreDataNounsProvider: OffChainNounsService {
           .map { $0.map { $0.model } }
           .sink { nouns in
             continuation.yield(nouns)
-        }
+          }
         
         continuation.onTermination = { @Sendable _ in
           self.autoStoreFetcher = nil
@@ -118,7 +124,8 @@ public class CoreDataNounsProvider: OffChainNounsService {
       in: viewContext,
       configuration: { fetchRequest in
       fetchRequest.predicate = NSPredicate(format: "id == %@", noun.id)
-    })
+      }
+    )
     
     guard let managedObject = managedObjects.first else {
       throw OffChainNounsRequestError.invalidData
