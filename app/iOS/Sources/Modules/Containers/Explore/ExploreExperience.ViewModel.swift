@@ -15,20 +15,20 @@ extension ExploreExperience {
     @Published var liveAuction: Auction?
     @Published var isLoading = false
     
-    private let onChainNounsService: OnChainNounsService
+    private let service: OnChainNounsService
     private var cancellables = Set<AnyCancellable>()
     
-    init(onChainNounsService: OnChainNounsService = AppCore.shared.onChainNounsService) {
-      self.onChainNounsService = onChainNounsService
+    init(service: OnChainNounsService = AppCore.shared.onChainNounsService) {
+      self.service = service
     }
     
+    @MainActor
     func listenLiveAuctionChanges() {
-      onChainNounsService.liveAuctionStateDidChange()
-        .receive(on: DispatchQueue.main)
-        .sink { (auction) in
+      Task {
+        for await auction in service.liveAuctionStateDidChange() {
           self.liveAuction = auction
         }
-        .store(in: &cancellables)
+      }
     }
   }
 }

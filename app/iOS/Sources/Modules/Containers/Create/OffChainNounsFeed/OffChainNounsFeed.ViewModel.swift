@@ -25,8 +25,6 @@ extension OffChainNounsFeed {
     func fetchOffChainNouns() {
       do {
         nouns += try offChainNounsService.fetchNouns(
-          limit: pageLimit,
-          cursor: nouns.count,
           ascending: false
         )
         

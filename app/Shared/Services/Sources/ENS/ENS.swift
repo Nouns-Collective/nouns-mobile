@@ -12,6 +12,7 @@ import web3
 /// Various `ENS` error cases.
 public enum ENSError: Error {
   case noDomain
+  case downloadFailed
 }
 
 /// A secure & decentralized way to address resources on and off
@@ -40,7 +41,7 @@ public struct ENSDomain: Decodable, Equatable {
 }
 
 /// An ENS provider utilizing the ENS name service and Ethereum Client from the `web3swift` package
-public class Web3ENSProvider: ENS {
+public actor Web3ENSProvider: ENS {
 
   /// The ethereum client layer provided by `web3swift` package
   private let ethereumClient: EthereumClient
@@ -49,7 +50,13 @@ public class Web3ENSProvider: ENS {
   private let nameService: EthereumNameService
   
   /// Cache machsim to reduce the cost of hitting the server for domains already fecthed.
-  private var cache = [String: String]()
+  private var cache: [String: DownloadState] = [:]
+  
+  private enum DownloadState {
+    case inProgress(Task<String, Error>)
+    case completed(String)
+    case failed
+  }
   
   public init(ethereumClient: EthereumClient) {
     self.ethereumClient = ethereumClient
@@ -57,24 +64,54 @@ public class Web3ENSProvider: ENS {
   }
   
   public func domainLookup(address: String) async throws -> String {
-    // Check the cache for already fecthed domain.
-    if let name = cache[address] {
-      return name
+    // Check the address availability in cache.
+    if let cached = cache[address] {
+      switch cached {
+      case .completed(let image):
+        return image
+        
+      case .inProgress(let task):
+        return try await task.value
+        
+      case .failed:
+        throw ENSError.downloadFailed
+      }
     }
     
-    return try await withCheckedThrowingContinuation { continuation in
-      nameService.resolve(address: EthereumAddress(address)) { [weak self] error, name in
+    let download: Task<String, Error> = Task.detached { [weak self] in
+      guard let self = self else {
+        throw CancellationError()
+      }
+      return try await self.resolve(address: address)
+    }
+    
+    do {
+      let name = try await download.value
+      updateCache(address: address, name: name)
+      return name
+      
+    } catch {
+      cache[address] = .failed
+      throw error
+    }
+  }
+  
+  private func resolve(address: String) async throws -> String {
+    try await withCheckedThrowingContinuation { continuation in
+      nameService.resolve(address: EthereumAddress(address)) { error, name in
+        
         if let error = error {
           continuation.resume(throwing: error)
         }
         
         if let name = name {
-          // Save name in memory
-          self?.cache[address] = name
-          
           continuation.resume(returning: name)
         }
       }
     }
+  }
+  
+  private func updateCache(address: String, name: String) {
+    cache[address] = .completed(name)
   }
 }

@@ -12,7 +12,7 @@ import UIComponents
 
 /// Diplay the auction of the day in real time.
 struct LiveAuctionCard: View {
-  @StateObject var viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   
   @State private var showNounProfile = false
   @Environment(\.nounComposer) private var nounComposer: NounComposer
@@ -26,8 +26,8 @@ struct LiveAuctionCard: View {
           .frame(width: 24, height: 24)
       },
       media: {
-        NounPuzzle(seed: viewModel.auction.noun.seed)
-          .background(Color(hex: nounComposer.backgroundColors[viewModel.auction.noun.seed.background]))
+        NounPuzzle(seed: viewModel.nounSeed)
+          .background(Color(hex: viewModel.nounBackground))
       },
       content: {
         HStack {
@@ -49,9 +49,6 @@ struct LiveAuctionCard: View {
         }
         .padding(.top, 20)
       })
-      .onAppear {
-        viewModel.setUpAuctionTimer()
-      }
       .onTapGesture {
         showNounProfile.toggle()
       }

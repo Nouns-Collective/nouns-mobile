@@ -35,7 +35,7 @@ public protocol OnChainNounsService: AnyObject {
   /// - Returns: A list of `Noun` type  instance or throw an error.
   func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> [Noun]
   
-  ///Asynchronously fetches the list of auction settled from the chain.
+  /// Asynchronously fetches the list of auction settled from the chain.
   ///
   /// - Parameters:
   ///   - settled: Whether or not the auction has been settled.

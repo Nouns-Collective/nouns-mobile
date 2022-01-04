@@ -18,6 +18,8 @@ extension LiveAuctionInfoCard {
     
     init(auction: Auction) {
       self.auction = auction
+      
+      setUpAuctionTimer()
     }
     
     var birthdate: String {
@@ -40,20 +42,14 @@ extension LiveAuctionInfoCard {
     }
     
     /// Update the remaining time.
-    @MainActor
-    func setUpAuctionTimer() {
-      Task {
-        for await components in auction.componentsSequence.values {
-          guard let hour = components.hour,
-                let minute = components.minute,
-                let second = components.second
-          else {
-            continue
-          }
-          
-          remainingTime = R.string.liveAuction.timeLeft(hour, minute, second)
-        }
-      }
+    private func setUpAuctionTimer() {
+      guard let components = auction.components,
+            let hour = components.hour,
+            let minute = components.minute,
+            let second = components.second
+      else { return }
+      
+      remainingTime = R.string.liveAuction.timeLeft(hour, minute, second)
     }
   }
 }
