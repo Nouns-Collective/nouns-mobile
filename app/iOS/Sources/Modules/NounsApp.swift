@@ -14,11 +14,11 @@ struct NounComposerKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-    
-    var nounComposer: NounComposer {
-        get { self[NounComposerKey.self] }
-        set { self[NounComposerKey.self] = newValue }
-    }
+  
+  var nounComposer: NounComposer {
+    get { self[NounComposerKey.self] }
+    set { self[NounComposerKey.self] = newValue }
+  }
 }
 
 @main
@@ -45,19 +45,51 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-
-    Task {
-      do {
-        _ = try await AppCore.shared.messaging.appAuthorization(
-          application,
-          authorizationOptions:  [.alert, .badge, .sound]
-        )
-      } catch {
-        print("Couldn't grant authorization: ", error)
-      }
-    }
+    
+    /// Set up remote notifications.
+    Task { await setUpMessaging() }
     
     return true
+  }
+  
+}
+
+
+// MARK: - Messaging
+
+extension AppDelegate {
+  
+  @MainActor
+  func setUpMessaging() async {
+    do {
+      let messaging = AppCore.shared.messaging
+      let settingsStore = AppCore.shared.settingsStore
+      // Subscribe to topics on APNs registration.
+      messaging.setTokenHandler = { [weak self, weak messaging] in
+        guard let messaging = messaging else { return }
+        
+        try await self?.subscribe(to: messaging, settingsStore: settingsStore)
+      }
+      
+      // Requests APNs authorization.
+      _ = try await messaging.appAuthorization(
+        UIApplication.shared,
+        authorizationOptions: [.alert, .badge, .sound]
+      )
+      
+    } catch {
+      print("Couldn't grant authorization: ", error)
+    }
+  }
+  
+  private func subscribe(to messaging: Messaging, settingsStore: SettingsStore) async throws {
+    if settingsStore.isNounOClockNotificationEnabled {
+      try await messaging.subscribe(toTopic: "auction_will_end")
+    }
+    
+    if settingsStore.isNewNounNotificationEnabled {
+      try await messaging.subscribe(toTopic: "auction_did_start")
+    }
   }
   
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }

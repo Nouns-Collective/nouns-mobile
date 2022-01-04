@@ -13,6 +13,9 @@ import os.log
 
 public protocol Messaging: AnyObject {
   
+  /// Asynchronously sets the event handler work item on received registration token.
+  var setTokenHandler: (() async throws -> Void)? { get set }
+  
   /// Requests authorization to interact with the user when local and remote
   /// notifications are delivered to the user’s device.
   ///
@@ -28,6 +31,8 @@ public protocol Messaging: AnyObject {
 }
 
 public class FirebaseMessagingProvider: NSObject {
+  
+  public var setTokenHandler: (() async throws -> Void)?
   
   public override init() {
     super.init()
@@ -88,6 +93,6 @@ extension FirebaseMessagingProvider: Firebase.MessagingDelegate {
   public func messaging(_ messaging: Firebase.Messaging, didReceiveRegistrationToken fcmToken: String?) {
     print("Firebase registration token: ", String(describing: fcmToken))
     
-    // TODO: communicate the message that the registration has been completed.
+    Task { try await setTokenHandler?() }
   }
 }
