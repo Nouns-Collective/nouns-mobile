@@ -46,14 +46,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     
-    /// Set up remote notifications.
+    // Set up remote notifications.
     Task { await setUpMessaging() }
     
     return true
   }
   
 }
-
 
 // MARK: - Messaging
 
