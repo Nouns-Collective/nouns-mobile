@@ -18,12 +18,16 @@ public protocol Messaging: AnyObject {
   ///
   /// - Parameters:
   ///  - application: The singleton app object.
-  func requestAutorization(for application: UIApplication, completionHandler: @escaping (Bool, Error?) -> Void)
+  func appAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool
   
+  /// Asynchronously subscribe to the provided topic, retrying on failure.
+  ///
+  /// - Parameters:
+  ///   - topic: The topic name to subscribe to, for example, @"sports".
   func subscribe(toTopic topic: String) async throws
 }
 
-public class FirebaseMessagingProvider: NSObject, Messaging {
+public class FirebaseMessagingProvider: NSObject {
   
   public override init() {
     super.init()
@@ -31,76 +35,59 @@ public class FirebaseMessagingProvider: NSObject, Messaging {
     if FirebaseApp.app() == nil {
       FirebaseApp.configure()
     }
+    
+    // Use Firebase library to configure APIs
+    Firebase.Messaging.messaging().delegate = self
   }
   
-  public func requestAutorization(for application: UIApplication, completionHandler: @escaping (Bool, Error?) -> Void) {
-    // Use Firebase library to configure APIs
-    FirebaseMessaging.Messaging.messaging().delegate = self
+}
+
+extension FirebaseMessagingProvider: Messaging {
+  
+  @MainActor
+  public func appAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool {
+    let center = UNUserNotificationCenter.current()
     
-    // For iOS 10 display notification (sent via APNS)
-    UNUserNotificationCenter.current().delegate = self
+    // Display notification (sent via APNS)
+    center.delegate = self
     
-    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-    UNUserNotificationCenter.current().requestAuthorization(
-      options: authOptions,
-      completionHandler: completionHandler
-    )
+    let authOptions: UNAuthorizationOptions = authorizationOptions
+    async let requestAuthorization = center.requestAuthorization(options: authOptions)
     
+    // Register for remote notification at all time in case
+    // the user has authorized notification from the settings.
     application.registerForRemoteNotifications()
+    
+    return try await requestAuthorization
   }
   
   public func subscribe(toTopic topic: String) async throws {
-    try await FirebaseMessaging.Messaging.messaging().subscribe(toTopic: topic)
-  }
-}
-
-// MARK: - UIApplicationDelegate
-
-extension FirebaseMessagingProvider {
-  
-  func application(
-    _ application: UIApplication,
-    didReceiveRemoteNotification userInfo: [AnyHashable : Any],
-    fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-      
-    }
-  
-  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    FirebaseMessaging.Messaging.messaging().apnsToken = deviceToken
-  }
-  
-  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    
+    try await Firebase.Messaging.messaging().subscribe(toTopic: topic)
   }
 }
 
 extension FirebaseMessagingProvider: UNUserNotificationCenterDelegate {
   
   // Receive displayed notifications for iOS 10 devices.
-  public func userNotificationCenter(
-    _ center: UNUserNotificationCenter,
-    willPresent notification: UNNotification,
-    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-      let userInfo = notification.request.content.userInfo
-      
-      FirebaseMessaging.Messaging.messaging().appDidReceiveMessage(userInfo)
-      
-      // Change this to your preferred presentation option
-      completionHandler([[.banner, .list, .sound]])
-    }
+  public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    
+    // Change this to your preferred presentation option
+    completionHandler([[.banner, .list, .sound]])
+  }
   
   public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    let userInfo = response.notification.request.content.userInfo
-    
-    FirebaseMessaging.Messaging.messaging().appDidReceiveMessage(userInfo)
     
     completionHandler()
   }
 }
 
-extension FirebaseMessagingProvider: FirebaseMessaging.MessagingDelegate {
+// MARK: - Firebase.MessagingDelegate
+
+extension FirebaseMessagingProvider: Firebase.MessagingDelegate {
   
-  private func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    os_log("Firebase registration token: ", type: .info, String(describing: fcmToken))
+  public func messaging(_ messaging: Firebase.Messaging, didReceiveRegistrationToken fcmToken: String?) {
+    print("Firebase registration token: ", String(describing: fcmToken))
+    
+    // TODO: communicate the message that the registration has been completed.
   }
 }

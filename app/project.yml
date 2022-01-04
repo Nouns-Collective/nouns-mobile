@@ -36,6 +36,10 @@ targets:
       base:
         INFOPLIST_FILE: iOS/Sources/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
+    entitlements:
+      path: iOS/Nouns.entitlements
+      properties:
+        aps-environment: development
     dependencies:
       - package: Rswift
       - package: UIComponents
