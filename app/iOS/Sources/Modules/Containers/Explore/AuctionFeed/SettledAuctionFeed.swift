@@ -65,7 +65,7 @@ struct SettledAuctionCard: View {
       },
       content: {
         SafeLabel(
-          R.string.explore.noun(viewModel.auction.noun.id),
+          viewModel.winnerBid,
           icon: Image.eth)
           .padding(.top, 8)
       })

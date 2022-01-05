@@ -111,7 +111,7 @@ public class GraphQLClient: GraphQL {
   
   public func subscription<Subscription, T>(
     _ subscription: Subscription
-  ) async throws -> T where Subscription : GraphQLSubscription, T : Decodable {
+  ) async throws -> T where Subscription: GraphQLSubscription, T: Decodable {
     fatalError("Implementaiton for \(#function) missing")
   }
 }
