@@ -16,7 +16,7 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
   private let content: (Data.Element) -> Content
   
   /// A method to call after reaching the bottom of the scroll view, to load more content
-  private let loadMoreAction: () -> Void
+  private let loadMoreAction: @Sendable () async -> Void
   
   /// A placeholder view to show at the bottom of the list while loading more nouns
   private let placeholder: () -> Placeholder
@@ -31,7 +31,7 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
     _ data: Data,
     columns: [GridItem],
     spacing: CGFloat = 20,
-    loadMoreAction: @escaping () -> Void,
+    loadMoreAction: @Sendable @escaping () async -> Void,
     placeholder: @escaping () -> Placeholder,
     @ViewBuilder content: @escaping (_ item: Data.Element) -> Content
   ) {
@@ -43,9 +43,9 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
     self.placeholder = placeholder
   }
   
-  private func loadMore() {
-    loadMoreAction()
-  }
+//  private func loadMore() {
+//    loadMoreAction()
+//  }
   
   public var body: some View {
     LazyVGrid(columns: columns, spacing: spacing) {
@@ -57,7 +57,9 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
       }, footer: {
         // Load next batch when footer appears.
         placeholder()
-          .onAppear(perform: loadMore)
+          .task {
+            await loadMoreAction()
+          }
       })
     }
   }

@@ -23,11 +23,9 @@ extension ExploreExperience {
     }
     
     @MainActor
-    func listenLiveAuctionChanges() {
-      Task {
-        for await auction in service.liveAuctionStateDidChange() {
-          self.liveAuction = auction
-        }
+    func listenLiveAuctionChanges() async {
+      for await auction in service.liveAuctionStateDidChange() {
+        self.liveAuction = auction
       }
     }
   }

@@ -10,46 +10,45 @@ import Services
 
 extension LiveAuctionInfoCard {
   
-  @MainActor
   class ViewModel: ObservableObject {
-    @Published var remainingTime = R.string.shared.notApplicable()
+    @Published private(set) var birthdate: String
+    @Published private(set) var lastBid: String
+    @Published private(set) var remainingTime: String
     
-    let auction: Auction
+    private let auction: Auction
     
     init(auction: Auction) {
       self.auction = auction
       
-      setUpAuctionTimer()
+      let amount = EtherFormatter.eth(from: auction.amount)
+      lastBid = amount ?? R.string.shared.notApplicable()
+      
+      remainingTime = Self.formatTimeLeft(auction) ?? R.string.shared.notApplicable()
+      
+      if let startDate = Self.date(from: auction.startTime) {
+        birthdate = R.string.nounProfile.birthday(startDate)
+      } else {
+        birthdate = R.string.shared.notApplicable()
+      }
     }
     
-    var birthdate: String {
-      guard let timeInterval = Double(auction.startTime) else {
-        return R.string.shared.notApplicable()
+    private static func date(from timeInterval: String) -> String? {
+      guard let timeInterval = TimeInterval(timeInterval) else {
+        return nil
       }
       
       let date = Date(timeIntervalSince1970: timeInterval)
-      return R.string.nounProfile.birthday(DateFormatter.string(from: date))
+      return DateFormatter.string(from: date)
     }
     
-    var lastBid: String {
-      guard let amount = EtherFormatter.eth(
-        from: auction.amount
-      ) else {
-        return R.string.shared.notApplicable()
-      }
-      
-      return amount
-    }
-    
-    /// Update the remaining time.
-    private func setUpAuctionTimer() {
+    private static func formatTimeLeft(_ auction: Auction) -> String? {
       guard let components = auction.components,
             let hour = components.hour,
             let minute = components.minute,
             let second = components.second
-      else { return }
+      else { return nil }
       
-      remainingTime = R.string.liveAuction.timeLeft(hour, minute, second)
+      return R.string.liveAuction.timeLeft(hour, minute, second)
     }
   }
 }

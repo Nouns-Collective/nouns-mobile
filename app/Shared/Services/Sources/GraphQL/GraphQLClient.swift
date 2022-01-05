@@ -93,7 +93,7 @@ public class GraphQLClient: GraphQL {
   public func fetch<Query, T>(
     _ query: Query,
     cachePolicy: CachePolicy
-  ) async throws -> T where Query : GraphQLQuery, T : Decodable {
+  ) async throws -> T where Query: GraphQLQuery, T: Decodable {
     
     guard let url = query.url else {
       throw URLError(.badURL)

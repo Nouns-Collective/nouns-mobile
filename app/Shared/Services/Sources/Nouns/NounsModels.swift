@@ -157,6 +157,18 @@ public struct Auction: Equatable, Decodable, Identifiable {
   
   /// Whether or not the auction has been settled
   public let settled: Bool
+  
+  /// The auction bids.
+  public let bidder: Account
+  
+  /// Whether the auction is over and bidding is stopped.
+  public var hasEnded: Bool {
+    guard let endTimeInterval = TimeInterval(endTime) else {
+      return false
+    }
+    
+    return Date().timeIntervalSince1970 > endTimeInterval
+  }
 }
 
 /// The auction's Bid

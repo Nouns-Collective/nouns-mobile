@@ -32,7 +32,6 @@ class LiveAuctionListener {
     return timer
   }()
   
-  
   init(continuation: ListenerContinuation, graphQLClient: GraphQL) {
     self.continuation = continuation
     self.graphQLClient = graphQLClient
@@ -41,7 +40,7 @@ class LiveAuctionListener {
   func startPolling() {
     handlePollingEvent()
     
-    continuation?.onTermination = { @Sendable [weak self] termination in
+    continuation?.onTermination = { @Sendable [weak self] _ in
       self?.stopPolling()
     }
   }

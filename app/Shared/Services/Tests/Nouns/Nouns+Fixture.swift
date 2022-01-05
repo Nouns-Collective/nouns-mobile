@@ -11,16 +11,17 @@ import Foundation
 /// Various `Auction` fixtures.
 extension Auction {
   
-  static var fixture: Self = {
+  static func fixture(startTime: String? = nil, endTime: String? = nil) -> Auction {
     Auction(
       id: "106",
       noun: .fixture(),
-      amount: "2000000000000000000",
+      amount: startTime ?? "1636758555",
       startTime: "1636758555",
-      endTime: "1636844955",
-      settled: false
+      endTime: endTime ?? "1636844955",
+      settled: false,
+      bidder: .fixture
     )
-  }()
+  }
   
   static var fixtureLiveNewBid: Self = {
     Auction(
@@ -29,7 +30,8 @@ extension Auction {
       amount: "3500000000000000000",
       startTime: "1636758555",
       endTime: "1636844955",
-      settled: false
+      settled: false,
+      bidder: .fixture
     )
   }()
   
@@ -40,7 +42,8 @@ extension Auction {
       amount: "4500000000000000000",
       startTime: "1636758555",
       endTime: "1636844955",
-      settled: true
+      settled: true,
+      bidder: .fixture
     )
   }()
   
@@ -51,7 +54,8 @@ extension Auction {
       amount: "1000000000000000000",
       startTime: "1636758555",
       endTime: "1636844955",
-      settled: false
+      settled: false,
+      bidder: .fixture
     )
   }()
 }

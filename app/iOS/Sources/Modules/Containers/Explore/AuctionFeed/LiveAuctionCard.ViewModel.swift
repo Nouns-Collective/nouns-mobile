@@ -11,10 +11,18 @@ import Services
 extension LiveAuctionCard {
   
   class ViewModel: ObservableObject {
-    @Published var auction: Auction
-//    @Published var isFetching = false
-    @Published var remainingTime = R.string.shared.notApplicable()
+    @Published private(set) var auction: Auction
+    @Published private(set) var title: String
+    @Published private(set) var nounTrait: Seed
+    @Published private(set) var nounBackground: String
+    @Published private(set) var bidStatus: String
+    @Published private(set) var lastBid: String
+    @Published private(set) var remainingTime: String
+    @Published private(set) var winner: String = ""
+    /// Indicate whether the auction time is over.
+    @Published private(set) var isWinnerAnounced = false
     
+    private let localize = R.string.liveAuction.self
     private let composer: NounComposer
     
     init(
@@ -24,42 +32,36 @@ extension LiveAuctionCard {
       self.auction = auction
       self.composer = composer
       
-      setUpAuctionTimer()
-    }
-    
-    ///
-    var title: String {
-      R.string.explore.noun(auction.noun.id)
-    }
-    
-    ///
-    var currentBid: String {
-      guard let amount = EtherFormatter.eth(from: auction.amount) else {
-        return R.string.shared.notApplicable()
-      }
+      title = R.string.explore.noun(auction.noun.id)
+      nounTrait = auction.noun.seed
+      isWinnerAnounced = auction.hasEnded
       
-      return amount
-    }
-    
-    ///
-    var nounSeed: Seed {
-      auction.noun.seed
-    }
-    
-    ///
-    var nounBackground: String {
       let backgroundIndex = auction.noun.seed.background
-      return composer.backgroundColors[backgroundIndex]
+      nounBackground = composer.backgroundColors[backgroundIndex]
+      
+      let amount = EtherFormatter.eth(from: auction.amount)
+      lastBid = amount ?? R.string.shared.notApplicable()
+      
+      if auction.hasEnded {
+        bidStatus = localize.winningBid()
+        winner = auction.bidder.id
+        remainingTime = "00h:00m:00s"
+        
+      } else {
+        let timeLeft = Self.formatTimeLeft(auction)
+        remainingTime = timeLeft ?? R.string.shared.notApplicable()
+        bidStatus = localize.currentBid()
+      }
     }
     
-    private func setUpAuctionTimer() {
+    private static func formatTimeLeft(_ auction: Auction) -> String? {
       guard let components = auction.components,
             let hour = components.hour,
             let minute = components.minute,
             let second = components.second
-      else { return }
+      else { return nil }
       
-      remainingTime = R.string.liveAuction.timeLeft(hour, minute, second)
+      return R.string.liveAuction.timeLeft(hour, minute, second)
     }
   }
 }

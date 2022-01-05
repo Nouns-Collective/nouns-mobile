@@ -27,7 +27,7 @@ struct AuctionBidHistory: View {
         
         VPageGrid(viewModel.bids, columns: gridLayout, loadMoreAction: {
           // load next bid history batch.
-          viewModel.fetchBidHistory()
+          await viewModel.fetchBidHistory()
           
         }, placeholder: {
           // An activity indicator while loading votes from the network.

@@ -24,11 +24,11 @@ struct StandardCard_Previews: PreviewProvider {
                     .frame(height: 400)
             }, content: {
                 HStack {
-                    CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Bid")
+                  CompoundLabel({ Text("Some Text") }, icon: Image.currentBid, caption: "Current Bid")
                     
                     Spacer()
                     
-                    CompoundLabel(Text("Some Text"), icon: Image.currentBid, caption: "Current Bid")
+                  CompoundLabel({ Text("Some Text") }, icon: Image.currentBid, caption: "Current Bid")
                     
                     Spacer()
                 }

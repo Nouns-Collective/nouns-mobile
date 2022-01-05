@@ -16,7 +16,7 @@ extension AuctionInfoContainer {
     case bidHitory
   }
   
-  final class ViewModel: ObservableObject {
+  class ViewModel: ObservableObject {
     let auction: Auction
     
     init(auction: Auction) {

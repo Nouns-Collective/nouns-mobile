@@ -11,22 +11,20 @@ import Services
 extension NounProfileInfoCard {
   
   class ViewModel: ObservableObject {
+    @Published private(set) var title: String
+    @Published private(set) var nounTraits: Seed
+    @Published private(set) var isAuctionSettled: Bool
+    @Published private(set) var nounProfileURL: URL?
+    
     let auction: Auction
     
     init(auction: Auction) {
       self.auction = auction
-    }
-    
-    var title: String {
-      R.string.explore.noun(auction.noun.id)
-    }
-    
-    var isAuctionSettled: Bool {
-      auction.settled
-    }
-    
-    var nounProfileURL: URL? {
-      URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
+      
+      title = R.string.explore.noun(auction.noun.id)
+      isAuctionSettled = auction.settled
+      nounTraits = auction.noun.seed
+      nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
     }
   }
 }

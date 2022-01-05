@@ -11,41 +11,35 @@ import Services
 extension SettledAuctionInfoCard {
   
   class ViewModel: ObservableObject {
-    let auction: Auction
+    @Published private(set) var winner: String
+    @Published private(set) var birthdate: String
+    @Published private(set) var winningBid: String
+    @Published private(set) var nounProfileURL: URL?
+    
+    private let auction: Auction
     
     init(auction: Auction) {
       self.auction = auction
+      
+      winner = auction.noun.owner.id
+      let amount = EtherFormatter.eth(from: auction.amount)
+      winningBid = amount ?? R.string.shared.notApplicable()
+      nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
+      
+      if let startDate = Self.date(from: auction.startTime) {
+        birthdate = R.string.nounProfile.birthday(startDate)
+      } else {
+        birthdate = R.string.shared.notApplicable()
+      }
     }
     
-    /// The owner of the `Noun's`.
-    var holder: String {
-      auction.noun.owner.id
-    }
-    
-    /// The date when the `Noun's` is settled.
-    var birthdate: String {
-      guard let timeInterval = Double(auction.startTime) else {
-        return R.string.shared.notApplicable()
+    private static func date(from timeInterval: String) -> String? {
+      guard let timeInterval = TimeInterval(timeInterval) else {
+        return nil
       }
       
       let date = Date(timeIntervalSince1970: timeInterval)
-      return R.string.nounProfile.birthday(
-        DateFormatter.string(from: date)
-      )
-    }
-    
-    /// `Noun's` winning bid.
-    var winningBid: String {
-      guard let amount = EtherFormatter.eth(from: auction.amount) else {
-        return R.string.shared.notApplicable()
-      }
-      
-      return amount
-    }
-    
-    /// `Noun's Profile` External link .
-    var nounProfileURL: URL? {
-      URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
+      return DateFormatter.string(from: date)
     }
   }
 }

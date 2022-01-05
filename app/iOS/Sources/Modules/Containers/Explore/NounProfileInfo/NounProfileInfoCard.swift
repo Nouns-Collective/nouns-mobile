@@ -20,7 +20,7 @@ struct NounProfileInfoCard: View {
     NavigationView {
       VStack(spacing: 0) {
         Spacer()
-        NounPuzzle(seed: viewModel.auction.noun.seed)
+        NounPuzzle(seed: viewModel.nounTraits)
         
         PlainCell(length: 20) {
           CardToolBar(viewModel: viewModel, dismiss: dismiss)

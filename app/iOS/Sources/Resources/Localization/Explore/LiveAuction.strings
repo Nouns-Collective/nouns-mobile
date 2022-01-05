@@ -8,6 +8,10 @@
 
 "time.left.label" = "Remaining";
 
+"winner" = "Winner";
+
 "current.bid" = "Current bid";
+
+"winning.bid" = "Winning bid";
 
 "time.left" = "%dh %dm %ds";

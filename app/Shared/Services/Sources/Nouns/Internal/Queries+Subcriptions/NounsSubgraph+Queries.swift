@@ -88,6 +88,9 @@ internal enum NounsSubgraph {
               body
             }
           }
+          bidder {
+            id
+          }
         }
       }
       """

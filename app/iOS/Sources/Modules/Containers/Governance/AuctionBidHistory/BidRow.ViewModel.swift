@@ -10,7 +10,7 @@ import Services
 
 extension BidRow {
   
-  final class ViewModel: ObservableObject {
+  class ViewModel: ObservableObject {
     let bid: Bid
     
     init(bid: Bid) {

@@ -35,7 +35,9 @@ extension NounsSubgraph {
               body
             }
           }
-          
+          bidder {
+            id
+          }
           bids(orderDirection: desc, first: 10) {
             id
             amount

@@ -32,7 +32,7 @@ struct SettledAuctionInfoCard: View {
       // Displays the winner of the auction using `ENS` or `Token`.
       InfoCell(
         text: R.string.nounProfile.heldBy(),
-        calloutText: viewModel.holder,
+        calloutText: viewModel.winner,
         icon: { Image.holder },
         accessory: { Image.mdArrowRight },
         action: { isSafariPresented.toggle() })

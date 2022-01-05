@@ -29,9 +29,9 @@ public struct CompoundLabel<Title>: View where Title: View {
     ///    - title: A title view.
     ///    - icon: An instance of image resource.
     ///    - caption: of the title provided.
-    public init(_ title: Title, icon: Image, caption: String) {
+    public init(_ title: () -> Title, icon: Image, caption: String) {
         self.icon = icon
-        self.title = title
+        self.title = title()
         self.caption = caption
     }
     

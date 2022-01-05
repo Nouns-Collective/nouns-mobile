@@ -52,7 +52,7 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
       }
       
       XCTAssertEqual(auctions, [
-        .fixture,
+        .fixture(),
           .fixtureLiveNewBid,
           .fixtureLiveSettled,
           .fixtureLiveNew
@@ -107,7 +107,7 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
       }
       
       XCTAssertEqual(auctions, [
-        .fixture,
+        .fixture(),
           .fixtureLiveNewBid,
           .fixtureLiveSettled,
           .fixtureLiveNew
