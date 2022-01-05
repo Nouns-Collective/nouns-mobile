@@ -18,7 +18,7 @@ extension LiveAuctionCard {
     @Published private(set) var bidStatus: String
     @Published private(set) var lastBid: String
     @Published private(set) var remainingTime: String
-    @Published private(set) var winner: String = ""
+    @Published private(set) var winner = ""
     /// Indicate whether the auction time is over.
     @Published private(set) var isWinnerAnounced = false
     
@@ -42,12 +42,13 @@ extension LiveAuctionCard {
       let amount = EtherFormatter.eth(from: auction.amount)
       lastBid = amount ?? R.string.shared.notApplicable()
       
+      // On auction end, anounce the winner.
       if auction.hasEnded {
         bidStatus = localize.winningBid()
         winner = auction.bidder.id
         remainingTime = "00h:00m:00s"
-        
       } else {
+        // Calculating the time left for the auction to end.
         let timeLeft = Self.formatTimeLeft(auction)
         remainingTime = timeLeft ?? R.string.shared.notApplicable()
         bidStatus = localize.currentBid()
