@@ -30,7 +30,7 @@ extension OnboardingView {
     @Namespace var onboardingAnimation
     
     /// Store where app configuration is persisted.
-    private let settingsStore: SettingsStore
+    private var settingsStore: SettingsStore
     
     init(settingsStore: SettingsStore = AppCore.shared.settingsStore) {
       self.settingsStore = settingsStore

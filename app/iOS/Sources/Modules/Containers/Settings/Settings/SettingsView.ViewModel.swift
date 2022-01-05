@@ -13,7 +13,7 @@ extension SettingsView {
   final class ViewModel: ObservableObject {
     
     /// Store where app configuration is persisted.
-    private let settingsStore: SettingsStore
+    private var settingsStore: SettingsStore
     
     init(
       settingsStore: SettingsStore = AppCore.shared.settingsStore

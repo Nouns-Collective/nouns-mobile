@@ -28,6 +28,12 @@ public protocol Messaging: AnyObject {
   /// - Parameters:
   ///   - topic: The topic name to subscribe to, for example, @"sports".
   func subscribe(toTopic topic: String) async throws
+  
+  /// Asynchronously unsubscribe from the provided topic, retrying on failure.
+  ///
+  /// - Parameters:
+  ///   - topic: The topic name to subscribe to, for example, @"sports".
+  func unsubscribe(fromTopic topic: String) async throws
 }
 
 public class FirebaseMessagingProvider: NSObject {
@@ -68,6 +74,10 @@ extension FirebaseMessagingProvider: Messaging {
   
   public func subscribe(toTopic topic: String) async throws {
     try await Firebase.Messaging.messaging().subscribe(toTopic: topic)
+  }
+  
+  public func unsubscribe(fromTopic topic: String) async throws {
+    try await Firebase.Messaging.messaging().unsubscribe(fromTopic: topic)
   }
 }
 

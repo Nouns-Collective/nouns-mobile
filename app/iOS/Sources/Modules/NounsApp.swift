@@ -64,10 +64,8 @@ extension AppDelegate {
       let messaging = AppCore.shared.messaging
       let settingsStore = AppCore.shared.settingsStore
       // Subscribe to topics on APNs registration.
-      messaging.setTokenHandler = { [weak self, weak messaging] in
-        guard let messaging = messaging else { return }
-        
-        try await self?.subscribe(to: messaging, settingsStore: settingsStore)
+      messaging.setTokenHandler = {
+        settingsStore.syncMessagingTopicsSubscription()
       }
       
       // Requests APNs authorization.
@@ -78,16 +76,6 @@ extension AppDelegate {
       
     } catch {
       print("Couldn't grant authorization: ", error)
-    }
-  }
-  
-  private func subscribe(to messaging: Messaging, settingsStore: SettingsStore) async throws {
-    if settingsStore.isNounOClockNotificationEnabled {
-      try await messaging.subscribe(toTopic: "auction_will_end")
-    }
-    
-    if settingsStore.isNewNounNotificationEnabled {
-      try await messaging.subscribe(toTopic: "auction_did_start")
     }
   }
   
