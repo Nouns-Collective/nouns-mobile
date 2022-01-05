@@ -22,14 +22,14 @@ extension OffChainNounsFeed {
       self.offChainNounsService = offChainNounsService
     }
     
-    func fetchOffChainNouns() {
+    func fetchOffChainNouns() async {
+      // when
       do {
-        nouns += try offChainNounsService.fetchNouns(
-          ascending: false
-        )
-        
+        for try await nouns in offChainNounsService.nounsStoreDidChange(ascendingOrder: false) {
+          self.nouns = nouns
+        }
       } catch {
-        
+        print("Error: \(error)")
       }
     }
   }
