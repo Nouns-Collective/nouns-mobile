@@ -18,7 +18,7 @@ final class AuctionHasEndedTests: XCTestCase {
   func testAuctionHasNotEnded() {
     let startTime = Date.now.timeIntervalSince1970 - 200
     let endTime = Date.now.timeIntervalSince1970 + 1000
-    let auction = Auction.fixture(startTime: String(startTime), endTime: String(endTime))
+    let auction = Auction.fixture(startTime: startTime, endTime: endTime)
     
     XCTAssertFalse(auction.hasEnded)
   }

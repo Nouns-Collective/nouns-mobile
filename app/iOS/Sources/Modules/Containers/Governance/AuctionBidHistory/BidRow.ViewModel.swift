@@ -35,7 +35,7 @@ extension BidRow {
       }
       
       let date = Date(timeIntervalSince1970: timeInterval)
-      return DateFormatter.string(from: date, timeStyle: .short)
+      return date.formatted(timeStyle: .short)
     }
   }
 }

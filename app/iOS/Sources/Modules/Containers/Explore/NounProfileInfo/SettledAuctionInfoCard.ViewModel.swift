@@ -26,20 +26,8 @@ extension SettledAuctionInfoCard {
       winningBid = amount ?? R.string.shared.notApplicable()
       nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
       
-      if let startDate = Self.date(from: auction.startTime) {
-        birthdate = R.string.nounProfile.birthday(startDate)
-      } else {
-        birthdate = R.string.shared.notApplicable()
-      }
-    }
-    
-    private static func date(from timeInterval: String) -> String? {
-      guard let timeInterval = TimeInterval(timeInterval) else {
-        return nil
-      }
-      
-      let date = Date(timeIntervalSince1970: timeInterval)
-      return DateFormatter.string(from: date)
+      let startDate = Date(timeIntervalSince1970: auction.startTime)
+      birthdate = R.string.nounProfile.birthday(startDate.formatted())
     }
   }
 }

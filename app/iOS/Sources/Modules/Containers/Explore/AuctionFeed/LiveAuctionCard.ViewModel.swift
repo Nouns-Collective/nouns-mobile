@@ -49,15 +49,14 @@ extension LiveAuctionCard {
         remainingTime = "00h:00m:00s"
       } else {
         // Calculating the time left for the auction to end.
-        let timeLeft = Self.formatTimeLeft(auction)
+        let timeLeft = Self.formatTimeLeft(auction.timeLeft)
         remainingTime = timeLeft ?? R.string.shared.notApplicable()
         bidStatus = localize.currentBid()
       }
     }
     
-    private static func formatTimeLeft(_ auction: Auction) -> String? {
-      guard let components = auction.components,
-            let hour = components.hour,
+    private static func formatTimeLeft(_ components: DateComponents) -> String? {
+      guard let hour = components.hour,
             let minute = components.minute,
             let second = components.second
       else { return nil }

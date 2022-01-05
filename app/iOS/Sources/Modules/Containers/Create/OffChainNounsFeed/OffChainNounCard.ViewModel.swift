@@ -19,7 +19,7 @@ extension OffChainNounCard {
     }
     
     var nounBirthday: String {
-      DateFormatter.string(from: noun.createdAt)
+      noun.createdAt.formatted()
     }
   }
 }

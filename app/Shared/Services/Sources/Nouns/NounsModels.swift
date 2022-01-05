@@ -150,10 +150,10 @@ public struct Auction: Equatable, Decodable, Identifiable {
   public let amount: String
   
   /// The time that the auction started
-  public let startTime: String
+  public let startTime: TimeInterval
   
   /// The time that the auction is scheduled to end
-  public let endTime: String
+  public let endTime: TimeInterval
   
   /// Whether or not the auction has been settled
   public let settled: Bool
@@ -163,11 +163,16 @@ public struct Auction: Equatable, Decodable, Identifiable {
   
   /// Whether the auction is over and bidding is stopped.
   public var hasEnded: Bool {
-    guard let endTimeInterval = TimeInterval(endTime) else {
-      return false
-    }
-    
-    return Date().timeIntervalSince1970 > endTimeInterval
+    Date().timeIntervalSince1970 > endTime
+  }
+  
+  /// Calculate the time left for the auction to end.
+  public var timeLeft: DateComponents {
+    Calendar.current.dateComponents(
+      [.hour, .minute, .second],
+      from: .now,
+      to: Date(timeIntervalSince1970: endTime)
+    )
   }
 }
 

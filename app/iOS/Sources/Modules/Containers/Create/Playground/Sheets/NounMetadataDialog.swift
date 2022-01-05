@@ -37,7 +37,7 @@ extension NounPlayground {
     var body: some View {
       VStack(spacing: 20) {
         InfoCell(
-          text: R.string.createNounDialog.nounBirthdayLabel(DateFormatter.string(from: Date())),
+          text: R.string.createNounDialog.nounBirthdayLabel(Date().formatted()),
           icon: { Image.birthday })
         
         InfoCell(

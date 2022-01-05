@@ -23,27 +23,15 @@ extension LiveAuctionInfoCard {
       let amount = EtherFormatter.eth(from: auction.amount)
       lastBid = amount ?? R.string.shared.notApplicable()
       
-      remainingTime = Self.formatTimeLeft(auction) ?? R.string.shared.notApplicable()
+      let timeLeft = Self.formatTimeLeft(auction.timeLeft)
+      remainingTime = timeLeft ?? R.string.shared.notApplicable()
       
-      if let startDate = Self.date(from: auction.startTime) {
-        birthdate = R.string.nounProfile.birthday(startDate)
-      } else {
-        birthdate = R.string.shared.notApplicable()
-      }
+      let startDate = Date(timeIntervalSince1970: auction.startTime)
+      birthdate = R.string.nounProfile.birthday(startDate.formatted())
     }
     
-    private static func date(from timeInterval: String) -> String? {
-      guard let timeInterval = TimeInterval(timeInterval) else {
-        return nil
-      }
-      
-      let date = Date(timeIntervalSince1970: timeInterval)
-      return DateFormatter.string(from: date)
-    }
-    
-    private static func formatTimeLeft(_ auction: Auction) -> String? {
-      guard let components = auction.components,
-            let hour = components.hour,
+    private static func formatTimeLeft(_ components: DateComponents) -> String? {
+      guard let hour = components.hour,
             let minute = components.minute,
             let second = components.second
       else { return nil }
