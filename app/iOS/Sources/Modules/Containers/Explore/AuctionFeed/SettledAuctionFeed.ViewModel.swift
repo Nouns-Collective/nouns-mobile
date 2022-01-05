@@ -22,6 +22,15 @@ extension SettledAuctionFeed {
     }
     
     @MainActor
+    func watchNewlyAuctions() async {
+      for await auction in service.settledAuctionsDidChange() {
+        if !auctions.isEmpty && auctions.first?.id != auction.id {
+          auctions.insert(auction, at: 0)
+        }
+      }
+    }
+    
+    @MainActor
     func loadAuctions() async {
       do {
         isFetching = true

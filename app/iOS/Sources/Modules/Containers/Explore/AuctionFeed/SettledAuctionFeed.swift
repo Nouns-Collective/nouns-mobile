@@ -13,7 +13,7 @@ import UIComponents
 struct SettledAuctionFeed: View {
   @StateObject var viewModel = SettledAuctionFeed.ViewModel()
   
-  @State private var selection: Auction?
+  @State private var selectedAuction: Auction?
   
   private let gridLayout = [
     GridItem(.flexible(), spacing: 20),
@@ -33,13 +33,16 @@ struct SettledAuctionFeed: View {
       SettledAuctionCard(viewModel: .init(auction: auction))
         .onTapGesture {
           withAnimation(.spring()) {
-            selection = auction
+            selectedAuction = auction
           }
         }
     })
-    // Presents more details about the settled auction.
-      .fullScreenCover(item: $selection, onDismiss: {
-        selection = nil
+      .task {
+        await viewModel.watchNewlyAuctions()
+      }
+      // Presents more details about the settled auction.
+      .fullScreenCover(item: $selectedAuction, onDismiss: {
+        selectedAuction = nil
         
       }, content: { auction in
         NounProfileInfoCard(viewModel: .init(auction: auction))

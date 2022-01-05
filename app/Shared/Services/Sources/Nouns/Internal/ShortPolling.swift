@@ -8,15 +8,15 @@
 import Foundation
 
 /// `Short-Poll` implementation to handle non-settled auction changes.
-class LiveAuctionListener {
+class ShortPolling<T> {
   /// Stream continuation type.
-  typealias ListenerContinuation = AsyncStream<Auction>.Continuation
+  typealias ListenerContinuation = AsyncStream<T>.Continuation
   
   /// Stream continuation to populate auction changes.
   private var continuation: ListenerContinuation?
   
-  /// The graphQL client reference to update the current live auction.
-  private weak var graphQLClient: GraphQL?
+  /// Action to perform on each event.
+  private let action: @Sendable () async throws -> T
   
   /// `Short-Poll` interval.
   private let pollingInterval = 1
@@ -32,9 +32,12 @@ class LiveAuctionListener {
     return timer
   }()
   
-  init(continuation: ListenerContinuation, graphQLClient: GraphQL) {
+  init(
+    continuation: ListenerContinuation,
+    action: @Sendable @escaping () async throws -> T
+  ) {
     self.continuation = continuation
-    self.graphQLClient = graphQLClient
+    self.action = action
   }
   
   func startPolling() {
@@ -63,26 +66,12 @@ class LiveAuctionListener {
             return
           }
           
-          let auction = try await self.fetchLiveAuction()
+          let auction = try await self.action()
           self.continuation?.yield(auction)
         } catch { }
       }
     }
     
     timer.resume()
-  }
-  
-  private func fetchLiveAuction() async throws -> Auction {
-    let query = NounsSubgraph.LiveAuctionSubscription()
-    let page: Page<[Auction]>? = try await graphQLClient?.fetch(
-      query,
-      cachePolicy: .returnCacheDataAndFetch
-    )
-
-    guard let auction = page?.data.first else {
-      throw OnChainNounsRequestError.noData
-    }
-    
-    return auction
   }
 }

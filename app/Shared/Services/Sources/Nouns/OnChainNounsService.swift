@@ -45,6 +45,17 @@ public protocol OnChainNounsService: AnyObject {
   /// - Returns: A list of `Auction` type  instance or throw an error.
   func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> [Auction]
   
+  /// An asynchronous sequence that  produce the live auction and
+  /// react to its properties changes
+  ///
+  /// - Returns: A `Auction` instance or throw an error.
+  func liveAuctionStateDidChange() -> AsyncStream<Auction>
+  
+  /// An asynchronous sequence that  produce the last settled auction added.
+  ///
+  /// - Returns: A `Auction` instance or throw an error.
+  func settledAuctionsDidChange() -> AsyncStream<Auction>
+  
   /// Asynchronously fetches the list of Activities of a given Noun from the chain.
   ///
   /// - Parameters:
@@ -62,12 +73,6 @@ public protocol OnChainNounsService: AnyObject {
   ///
   /// - Returns: A list of `Bid` type  instance or throw an error.
   func fetchBids(for nounID: String, limit: Int, after cursor: Int) async throws -> [Bid]
-  
-  /// Registers a publisher that publishes the last auction and bid created on
-  /// the network  state changes.
-  ///
-  /// - Returns: A `Auction` instance or throw an error.
-  func liveAuctionStateDidChange() -> AsyncStream<Auction>
   
   /// Asynchronously fetches the list of proposals for all type status.
   ///
@@ -87,7 +92,10 @@ public class TheGraphNounsProvider: OnChainNounsService {
   private let ethereumClient = EthereumClient(url: CloudConfiguration.Infura.mainnet.url!)
   
   /// Live auction watcher for all properties changes.
-  private var liveAuctionListener: LiveAuctionListener?
+  private var liveAuctionListener: ShortPolling<Auction>?
+  
+  /// Watcher for newly added settled auctions.
+  private var settledAuctionsListener: ShortPolling<Auction>?
   
   /// NounsDAOExecutor contract address.
   private enum Address {
@@ -108,7 +116,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
         if let error = error {
           return continuation.resume(throwing: error)
         }
-
+        
         if let balance = balance {
           continuation.resume(returning: balance)
         }
@@ -125,7 +133,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
         if let error = error {
           return continuation.resume(throwing: error)
         }
-
+        
         if let balance = balance {
           continuation.resume(returning: balance)
         }
@@ -159,6 +167,61 @@ public class TheGraphNounsProvider: OnChainNounsService {
     return page.data
   }
   
+  public func settledAuctionsDidChange() -> AsyncStream<Auction> {
+    AsyncStream { [weak self] continuation in
+      guard let self = self else { return }
+      
+      if self.settledAuctionsListener == nil {
+        self.settledAuctionsListener = ShortPolling(
+          continuation: continuation,
+          action: {
+            
+            guard let auction = try await self.fetchAuctions(
+              settled: true,
+              limit: 1,
+              cursor: 0
+            ).first else {
+              throw OnChainNounsRequestError.noData
+            }
+            
+            return auction
+          }
+        )
+      }
+      
+      self.settledAuctionsListener?.startPolling()
+    }
+  }
+  
+  public func liveAuctionStateDidChange() -> AsyncStream<Auction> {
+    AsyncStream { [weak self] continuation in
+      guard let self = self else { return }
+      
+      if self.liveAuctionListener == nil {
+        self.liveAuctionListener = ShortPolling(
+          continuation: continuation,
+          action: { try await self.fetchLiveAuction() }
+        )
+      }
+      
+      self.liveAuctionListener?.startPolling()
+    }
+  }
+  
+  private func fetchLiveAuction() async throws -> Auction {
+    let query = NounsSubgraph.LiveAuctionSubscription()
+    let page: Page<[Auction]>? = try await graphQLClient.fetch(
+      query,
+      cachePolicy: .returnCacheDataAndFetch
+    )
+
+    guard let auction = page?.data.first else {
+      throw OnChainNounsRequestError.noData
+    }
+    
+    return auction
+  }
+  
   public func fetchActivity(for nounID: String, limit: Int, after cursor: Int) async throws -> [Vote] {
     let query = NounsSubgraph.ActivitiesQuery(nounID: nounID, first: limit, skip: cursor)
     let page: Page<[Vote]> = try await graphQLClient.fetch(
@@ -166,17 +229,6 @@ public class TheGraphNounsProvider: OnChainNounsService {
       cachePolicy: .returnCacheDataAndFetch
     )
     return page.data
-  }
-  
-  public func liveAuctionStateDidChange() -> AsyncStream<Auction> {
-    AsyncStream { [weak self] continuation in
-      self?.liveAuctionListener = LiveAuctionListener(
-        continuation: continuation,
-        graphQLClient: graphQLClient 
-      )
-      
-      self?.liveAuctionListener?.startPolling()
-    }
   }
   
   public func fetchProposals(limit: Int, after cursor: Int) async throws -> [Proposal] {
