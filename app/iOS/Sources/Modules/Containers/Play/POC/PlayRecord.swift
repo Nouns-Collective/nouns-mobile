@@ -46,7 +46,7 @@ struct PlayRecord: View {
   var body: some View {
     let selectedEffect = Binding(
       get: { viewModel.selectedEffect.rawValue },
-      set: { viewModel.selectedEffect = AudioService.AudioEffect(rawValue: $0) ?? .alien }
+      set: { viewModel.updateEffect(to: AudioService.AudioEffect(rawValue: $0) ?? .alien) }
     )
     
     VStack(spacing: 50) {
@@ -79,9 +79,9 @@ struct PlayRecord: View {
     .background(Gradient.bubbleGum)
     .onAppear {
       // Request permission to use microphone
-      viewModel.requestPermission { success, error in
+      viewModel.requestMicrophonePermission { success, error in
         if success {
-          viewModel.startRecording()
+          viewModel.startListening()
         } else {
           if let error = error {
             print("Error: \(error)")
@@ -90,7 +90,7 @@ struct PlayRecord: View {
       }
     }
     .onDisappear {
-      viewModel.stopRecording()
+      viewModel.stopListening()
     }
   }
 }

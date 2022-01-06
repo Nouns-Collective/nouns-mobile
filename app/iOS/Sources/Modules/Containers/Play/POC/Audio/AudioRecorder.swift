@@ -49,7 +49,7 @@ class AudioService: NSObject, ObservableObject {
       if oldValue == .recording && state == .stopped {
         playBack()
       } else if oldValue == .playback && state == .stopped {
-        startRecording()
+        startListening()
       }
     }
   }
@@ -94,7 +94,7 @@ class AudioService: NSObject, ObservableObject {
   }
   
   deinit {
-    stopRecording()
+    stopListening()
   }
   
   func requestPermission(completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
@@ -169,7 +169,7 @@ class AudioService: NSObject, ObservableObject {
   
   private func playBack() {
     // Stop recording first (remove tap on input node)
-    stopRecording()
+    stopListening()
     
     state = .playback
     
@@ -229,7 +229,7 @@ class AudioService: NSObject, ObservableObject {
 // Methods for invoking the recorder
 extension AudioService {
   
-  func startRecording() {
+  func startListening() {
     let tapNode: AVAudioNode = engine.inputNode
     let format = tapNode.outputFormat(forBus: 0)
     
@@ -305,7 +305,7 @@ extension AudioService {
     engine.pause()
   }
   
-  func stopRecording() {
+  func stopListening() {
     engine.inputNode.removeTap(onBus: 0)
   }
 }

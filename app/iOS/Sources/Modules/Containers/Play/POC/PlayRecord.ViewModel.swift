@@ -11,8 +11,9 @@ extension PlayRecord {
   
   @MainActor
   final class ViewModel: ObservableObject {
-    @Published public var selectedEffect: AudioService.AudioEffect = .alien
-    @Published public var isRecording: Bool = false
+    
+    @Published private(set) var selectedEffect: AudioService.AudioEffect = .alien
+    @Published private(set) var isRecording: Bool = false
     
     private let audioService: AudioService
     
@@ -20,16 +21,29 @@ extension PlayRecord {
       self.audioService = audioService
     }
     
-    func requestPermission(completion: @escaping (Bool, Error?) -> Void) {
+    /// Requests the user's permission to use the microphone
+    func requestMicrophonePermission(completion: @escaping (Bool, Error?) -> Void) {
       audioService.requestPermission(completion: completion)
     }
     
-    func startRecording() {
-      audioService.startRecording()
+    /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
+    func startListening() {
+      audioService.startListening()
     }
     
-    func stopRecording() {
-      audioService.stopRecording()
+    /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
+    func stopListening() {
+      audioService.stopListening()
+    }
+    
+    /// Updates the currently selected effect
+    func updateEffect(to effect: AudioService.AudioEffect) {
+      self.selectedEffect = effect
+    }
+    
+    /// Toggles the `isRecording` boolean value
+    func toggleRecording() {
+      isRecording.toggle()
     }
   }
 }
