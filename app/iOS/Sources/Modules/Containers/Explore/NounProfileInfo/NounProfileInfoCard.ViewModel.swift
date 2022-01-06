@@ -16,6 +16,9 @@ extension NounProfileInfoCard {
     @Published private(set) var isAuctionSettled: Bool
     @Published private(set) var nounProfileURL: URL?
     
+    /// Indicate whether the auction time is over.
+    @Published private(set) var isWinnerAnounced = false
+    
     let auction: Auction
     
     init(auction: Auction) {
@@ -23,6 +26,7 @@ extension NounProfileInfoCard {
       
       title = R.string.explore.noun(auction.noun.id)
       isAuctionSettled = auction.settled
+      isWinnerAnounced = auction.hasEnded
       nounTraits = auction.noun.seed
       nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
     }
