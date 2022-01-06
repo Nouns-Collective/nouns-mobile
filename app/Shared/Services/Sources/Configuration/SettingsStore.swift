@@ -10,12 +10,19 @@ import SwiftUI
 
 public protocol SettingsStore {
 
+  /// A boolean value to determine whether the user has seen and completed
+  /// with the onboarding experience (on first launch).
   var hasCompletedOnboarding: Bool { get set }
 
+  /// A boolean value to determine whether the user has
+  /// enabled APNs for `Noun O'Clock`.
   var isNewNounNotificationEnabled: Bool { get set }
 
+  /// A boolean value to determine whether the user has enabled APNs for `New Noun`.
   var isNounOClockNotificationEnabled: Bool { get set }
   
+  /// Sync locally stored notification states with the cloud to subscribe
+  /// or unsubscribe from related topics.
   func syncMessagingTopicsSubscription()
 }
 
@@ -28,15 +35,12 @@ public struct UserDefaultsSettingsStore: SettingsStore {
     static let auctionWillEnd = "auction_will_end"
   }
   
-  /// A boolean value to determine whether the user has seen and completed with the onboarding experience (on first launch).
   @AppStorage("hasCompletedOnboarding") public var hasCompletedOnboarding = false
   
-  /// A boolean value to determine whether the user has enabled APNs for `Noun O'Clock`.
   @AppStorage("isNounOClockNotificationEnabled") public var isNounOClockNotificationEnabled = true {
     didSet { syncMessagingTopicsSubscription() }
   }
   
-  /// A boolean value to determine whether the user has enabled APNs for `New Noun`.
   @AppStorage("isNewNounNotificationEnabled") public var isNewNounNotificationEnabled = true {
     didSet { syncMessagingTopicsSubscription() }
   }
