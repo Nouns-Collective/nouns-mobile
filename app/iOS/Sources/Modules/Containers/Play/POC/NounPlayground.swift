@@ -33,13 +33,11 @@ struct NounPlayground: View {
       
       Spacer()
       
-      NounPuzzle(
-         head: AppCore.shared.nounComposer.heads[26].assetImage,
-         body: AppCore.shared.nounComposer.bodies[20].assetImage,
-         glasses: AppCore.shared.nounComposer.glasses[8].assetImage,
-         accessory: AppCore.shared.nounComposer.accessories[0].assetImage)
-         .padding(.top, 40)
-        
+      if let noun = viewModel.nouns.first {
+        NounPuzzle(seed: noun.seed)
+          .padding()
+      }
+     
       Spacer()
       
       OutlinePicker(selection: selectedEffect) {
@@ -60,6 +58,9 @@ struct NounPlayground: View {
     }, rightAccessory: { EmptyView() })
     .background(Gradient.bubbleGum)
     .onAppear {
+      // Fetch the off chain nouns the user has created
+      viewModel.fetchOffChainNouns()
+      
       // Request permission to use microphone
       viewModel.requestMicrophonePermission { success, error in
         if success {

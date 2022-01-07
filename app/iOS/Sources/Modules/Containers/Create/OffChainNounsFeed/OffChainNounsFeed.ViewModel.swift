@@ -15,7 +15,6 @@ extension OffChainNounsFeed {
     @Published var nouns = [Noun]()
     @Published var isFetching = false
     
-    private let pageLimit = 20
     private let offChainNounsService: OffChainNounsService
     
     init(offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService) {

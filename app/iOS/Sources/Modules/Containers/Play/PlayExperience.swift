@@ -26,7 +26,6 @@ struct PlayExperience: View {
           body: AppCore.shared.nounComposer.bodies[20].assetImage,
           glasses: AppCore.shared.nounComposer.glasses[8].assetImage,
           accessory: AppCore.shared.nounComposer.accessories[0].assetImage)
-          .padding(.top, 40)
         
         OutlineButton(
           text: R.string.play.proceedTitle(),
@@ -36,6 +35,11 @@ struct PlayExperience: View {
         
         Spacer()
       }
+      .onAppear(perform: {
+        Task {
+          await viewModel.checkOfflineNouns()
+        }
+      })
       .padding(.horizontal, 20)
       .padding(.bottom, tabBarHeight)
       // Extra padding between the bottom of the last noun card and the top of the tab view
@@ -44,7 +48,11 @@ struct PlayExperience: View {
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
       .fullScreenCover(isPresented: $isPlayPresented) {
-        NounPlayground(isPresented: $isPlayPresented)
+        if viewModel.hasCreatedNouns {
+          AnyView(NounPlayground(isPresented: $isPlayPresented))
+        } else {
+          AnyView(PlayMissingNounView(isPresented: $isPlayPresented))
+        }
       }
     }
   }

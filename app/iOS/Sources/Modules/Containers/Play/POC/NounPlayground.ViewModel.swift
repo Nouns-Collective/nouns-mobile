@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Services
 
 extension NounPlayground {
   
@@ -13,11 +14,14 @@ extension NounPlayground {
     
     @Published private(set) var selectedEffect: AudioService.AudioEffect = .alien
     @Published private(set) var isRecording: Bool = false
+    @Published private(set) var nouns: [Noun] = []
     
     private let audioService: AudioService
+    private let offChainNounService: OffChainNounsService
     
-    init(audioService: AudioService = AudioService()) {
+    init(audioService: AudioService = AudioService(), offChainNounService: OffChainNounsService = AppCore.shared.offChainNounsService) {
       self.audioService = audioService
+      self.offChainNounService = offChainNounService
     }
     
     /// Requests the user's permission to use the microphone
@@ -43,6 +47,19 @@ extension NounPlayground {
     /// Toggles the `isRecording` boolean value
     func toggleRecording() {
       isRecording.toggle()
+    }
+    
+    /// Fetch off chain nouns to allow the user to scroll through the noun they want to play with
+    func fetchOffChainNouns() {
+      // This only needs to be called once as a new noun cannot be created
+      // while the user is in the playground experience
+      // As such, there's no need to watch for changes
+      
+      do {
+        self.nouns = try offChainNounService.fetchNouns(ascending: true)
+      } catch {
+        // Present an error
+      }
     }
   }
 }
