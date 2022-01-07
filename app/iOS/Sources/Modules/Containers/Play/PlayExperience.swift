@@ -1,5 +1,5 @@
 //
-//  PlayView.swift
+//  PlayExperience.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 21.11.21.
@@ -9,9 +9,11 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct PlayView: View {
+struct PlayExperience: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
   @State private var isPlayPresented = false
+  
+  @StateObject private var viewModel = ViewModel()
   
   var body: some View {
     NavigationView {
@@ -42,7 +44,7 @@ struct PlayView: View {
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
       .fullScreenCover(isPresented: $isPlayPresented) {
-        PlayTab(isPresented: $isPlayPresented)
+        NounPlayground(isPresented: $isPlayPresented)
       }
     }
   }

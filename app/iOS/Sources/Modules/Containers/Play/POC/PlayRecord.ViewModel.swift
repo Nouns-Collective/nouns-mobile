@@ -1,5 +1,5 @@
 //
-//  PlayRecord.ViewModel.swift
+//  NounPlayground.ViewModel.swift
 //  Nouns
 //
 //  Created by Mohammed Ibrahim on 2022-01-05.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension PlayRecord {
+extension NounPlayground {
   
   final class ViewModel: ObservableObject {
     

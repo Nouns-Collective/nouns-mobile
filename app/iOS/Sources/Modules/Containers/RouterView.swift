@@ -44,7 +44,7 @@ struct RouterView: View {
       CreateExperience()
         .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
       
-      PlayView()
+      PlayExperience()
         .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
       
       AboutView()

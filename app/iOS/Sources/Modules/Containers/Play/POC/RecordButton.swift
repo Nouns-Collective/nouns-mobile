@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension PlayRecord {
+extension NounPlayground {
 
   struct RecordButton: View {
     @Namespace var animatingShapeNamespace

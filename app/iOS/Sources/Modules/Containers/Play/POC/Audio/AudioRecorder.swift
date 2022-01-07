@@ -382,15 +382,18 @@ extension AudioService {
       
       print("Meter Level: \(meterLevel)")
       if meterLevel >= 0.5 {
-        nounGameScene.startMouthMoving()
+        // TODO: - Implement mouth moving animation using NounPuzzle
+        // nounGameScene.startMouthMoving()
       } else {
-        nounGameScene.stopMouthMoving()
+        // TODO: - Implement mouth moving animation using NounPuzzle
+        // nounGameScene.stopMouthMoving()
       }
     }
   }
   
   private func disconnectVolumeTap() {
-    nounGameScene.stopMouthMoving()
+    // TODO: - Implement mouth moving animation using NounPuzzle
+    // nounGameScene.stopMouthMoving()
     engine.mainMixerNode.removeTap(onBus: 0)
   }
 }

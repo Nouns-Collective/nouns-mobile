@@ -1532,14 +1532,44 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.play` struct is generated, and contains static references to 3 localization keys.
+    /// This `R.string.play` struct is generated, and contains static references to 5 localization keys.
     struct play {
+      /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
+      static let createNounTitle = Rswift.StringResource(key: "create.noun.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Create noun
+      static let createNoun = Rswift.StringResource(key: "create.noun", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Get going
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Give your noun something to say!
       static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Play
       static let title = Rswift.StringResource(key: "title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
+      static func createNounTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("create.noun.title", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "create.noun.title"
+        }
+
+        return NSLocalizedString("create.noun.title", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Create noun
+      static func createNoun(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("create.noun", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "create.noun"
+        }
+
+        return NSLocalizedString("create.noun", tableName: "Play", bundle: bundle, comment: "")
+      }
 
       /// Value: Get going
       static func proceedTitle(preferredLanguages: [String]? = nil) -> String {

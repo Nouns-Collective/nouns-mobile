@@ -1,5 +1,5 @@
 //
-//  PlayRecord.swift
+//  NounPlayground.swift
 //  Nouns
 //
 //  Created by Mohammed Ibrahim on 2021-11-05.
@@ -11,22 +11,7 @@ import UIComponents
 import Combine
 import SpriteKit
 
-struct Triangle: Shape {
-  func path(in rect: CGRect) -> Path {
-    var path = Path()
-    
-    path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-    path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-    path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-    path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
-    
-    return path
-  }
-}
-
-let nounGameScene = NounGameScene(size: CGSize(width: 320, height: 320))
-
-struct PlayRecord: View {
+struct NounPlayground: View {
   
   @Namespace var animation
   @Namespace private var typeSelectionNamespace
@@ -38,11 +23,6 @@ struct PlayRecord: View {
   
   var subscriptions = Set<AnyCancellable>()
   
-  var scene: SKScene {
-    nounGameScene.scaleMode = .fill
-    return nounGameScene
-  }
-  
   var body: some View {
     let selectedEffect = Binding(
       get: { viewModel.selectedEffect.rawValue },
@@ -53,10 +33,12 @@ struct PlayRecord: View {
       
       Spacer()
       
-      ZStack {
-        SpriteView(scene: scene, options: [.allowsTransparency])
-          .frame(width: 400, height: 400)
-      }
+      NounPuzzle(
+         head: AppCore.shared.nounComposer.heads[26].assetImage,
+         body: AppCore.shared.nounComposer.bodies[20].assetImage,
+         glasses: AppCore.shared.nounComposer.glasses[8].assetImage,
+         accessory: AppCore.shared.nounComposer.accessories[0].assetImage)
+         .padding(.top, 40)
         
       Spacer()
       
@@ -72,7 +54,7 @@ struct PlayRecord: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .softNavigationItems(leftAccessory: {
       SoftButton(
-        icon: { Image.back },
+        icon: { Image.xmark },
         action: { isPresented.toggle() })
       
     }, rightAccessory: { EmptyView() })
