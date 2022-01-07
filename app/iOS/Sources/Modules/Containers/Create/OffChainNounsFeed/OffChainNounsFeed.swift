@@ -19,7 +19,7 @@ struct OffChainNounsFeed: View {
   
   var body: some View {
     VStack(spacing: 20) {
-      ForEach(viewModel.nouns, id: \.id) { noun in
+      ForEach(viewModel.nouns, id: \.self) { noun in
         OffChainNounCard(viewModel: .init(noun: noun), animation: namespace)
           .id(noun.id)
           .onTapGesture {
@@ -33,7 +33,9 @@ struct OffChainNounsFeed: View {
       }
     }
     .onAppear {
-      viewModel.fetchOffChainNouns()
+      Task {
+        await viewModel.fetchOffChainNouns()
+      }
     }
     // Presents more details about the settled auction.
     .fullScreenCover(item: $selection, onDismiss: {

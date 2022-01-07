@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import CoreData
 import web3
+import BigInt
 
 /// `onChainNounsService` request error.
 public enum OnChainNounsRequestError: Error {
@@ -97,7 +98,10 @@ public class TheGraphNounsProvider: OnChainNounsService {
   private let ethereumClient = EthereumClient(url: CloudConfiguration.Infura.mainnet.url!)
   
   /// NounsDAOExecutor contract address.
-  private let nounsDAOExecutorContract = "0x0BC3807Ec262cB779b38D65b38158acC3bfedE10"
+  private enum Address {
+    static let ethDAOExecutor = "0x0BC3807Ec262cB779b38D65b38158acC3bfedE10"
+    static let stEthDAOExecutor = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
+  }
   
   public init(
     graphQLClient: GraphQL = GraphQLClient()
@@ -105,10 +109,10 @@ public class TheGraphNounsProvider: OnChainNounsService {
     self.graphQLClient = graphQLClient
   }
   
-  public func fetchTreasury() async throws -> String {
+  private func ethTreasury() async throws -> BigUInt {
     try await withCheckedThrowingContinuation { continuation in
       ethereumClient.eth_getBalance(
-        address: EthereumAddress(nounsDAOExecutorContract),
+        address: EthereumAddress(Address.ethDAOExecutor),
         block: .Latest
       ) { error, balance in
         if let error = error {
@@ -116,10 +120,35 @@ public class TheGraphNounsProvider: OnChainNounsService {
         }
 
         if let balance = balance {
-          continuation.resume(returning: String(balance))
+          continuation.resume(returning: balance)
         }
       }
     }
+  }
+  
+  private func stEthTreasury() async throws -> BigUInt {
+    try await withCheckedThrowingContinuation { continuation in
+      ethereumClient.eth_getBalance(
+        address: EthereumAddress(Address.stEthDAOExecutor),
+        block: .Latest
+      ) { error, balance in
+        if let error = error {
+          return continuation.resume(throwing: error)
+        }
+
+        if let balance = balance {
+          continuation.resume(returning: balance)
+        }
+      }
+    }
+  }
+  
+  public func fetchTreasury() async throws -> String {
+    async let eth = ethTreasury()
+    async let stEth = stEthTreasury()
+    
+    let (ethValue, stEthValue) = try await (eth, stEth)
+    return String(ethValue + stEthValue)
   }
   
   public func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> [Noun] {

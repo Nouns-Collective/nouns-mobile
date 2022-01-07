@@ -9,7 +9,8 @@ import Foundation
 import CoreData
 
 /// `Seed Core Data` model object.
-final class SeedManagedObject: NSManagedObject, StoredEntity {
+@objc(SeedManagedObject)
+final class SeedManagedObject: NSManagedObject {
   @NSManaged var head: Int32
   @NSManaged var body: Int32
   @NSManaged var glasses: Int32
@@ -18,7 +19,11 @@ final class SeedManagedObject: NSManagedObject, StoredEntity {
   @NSManaged var noun: NounManagedObject
 }
 
-extension SeedManagedObject {
+extension SeedManagedObject: StoredEntity {
+  
+  static var entityName: String? {
+    return "Seed"
+  }
   
   static func insert(
     into context: NSManagedObjectContext,

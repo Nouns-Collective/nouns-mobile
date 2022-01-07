@@ -126,7 +126,7 @@ extension View {
 struct ActionSheetStackItem<T: RawRepresentable & Hashable>: Equatable, Hashable where T.RawValue == Int {
     
     static func == (lhs: ActionSheetStackItem, rhs: ActionSheetStackItem) -> Bool {
-        lhs.tag == rhs.tag
+        lhs.tag == rhs.tag && lhs.title == rhs.title
     }
     
     /// The unique tag of the action sheet stack item

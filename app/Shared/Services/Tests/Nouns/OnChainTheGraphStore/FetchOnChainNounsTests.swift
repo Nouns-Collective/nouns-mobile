@@ -1,20 +1,20 @@
 //
-//  FetchAuctionsTests.swift
-//  
+//  FetchOnChainNounsTests.swift
+//  ServicesTests
 //
-//  Created by Ziad Tamim on 14.11.21.
+//  Created by Ziad Tamim on 21.10.21.
 //
 
 import XCTest
 @testable import Services
 
-final class FetchAuctionsTests: XCTestCase {
+final class FetchOnChainNounsTests: XCTestCase {
   
-  func testFetchAuctionsSucceed() async throws {
+  func testFetchOnChainNounsSucceed() async throws {
     
     enum MockDataURLResponder: MockURLResponder {
       static func respond(to request: URLRequest) throws -> Data? {
-        Fixtures.data(contentOf: "auctions-response-valid", withExtension: "json")
+        Fixtures.data(contentOf: "nouns-response-valid", withExtension: "json")
       }
     }
     
@@ -25,22 +25,20 @@ final class FetchAuctionsTests: XCTestCase {
     let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     // when
-    let auctions = try await nounsProvider.fetchAuctions(settled: true, limit: 10, cursor: 0)
+    let nouns = try await nounsProvider.fetchSettledNouns(limit: 10, after: 0)
     
     // then
-    XCTAssertFalse(auctions.isEmpty)
+    XCTAssertFalse(nouns.isEmpty)
     
-    let expectedAuction = Auction.fixture
-    let fetchedAuction = auctions.first
+    let fetchNoun = nouns.first
+    let expectedNoun = Noun.fixture()
     
-    XCTAssertEqual(fetchedAuction?.id, expectedAuction.id)
-    XCTAssertEqual(fetchedAuction?.noun, expectedAuction.noun)
-    XCTAssertEqual(fetchedAuction?.startTime, expectedAuction.startTime)
-    XCTAssertEqual(fetchedAuction?.endTime, expectedAuction.endTime)
-    XCTAssertEqual(fetchedAuction?.settled, expectedAuction.settled)
+    XCTAssertEqual(fetchNoun?.id, expectedNoun.id)
+    XCTAssertEqual(fetchNoun?.owner, expectedNoun.owner)
+    XCTAssertEqual(fetchNoun?.seed, expectedNoun.seed)
   }
   
-  func testFetchAuctionsFailed() async {
+  func testFetchOnChainNounsFailure() async {
     
     enum MockErrorURLResponder: MockURLResponder {
       static func respond(to request: URLRequest) throws -> Data? {
@@ -55,9 +53,7 @@ final class FetchAuctionsTests: XCTestCase {
     let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     do {
-      _ = try await nounsProvider.fetchAuctions(settled: true, limit: 10, cursor: 0)
-      
-      // when
+      _ = try await nounsProvider.fetchSettledNouns(limit: 10, after: 0)
       XCTFail("💥 result unexpected")
       
     } catch {
