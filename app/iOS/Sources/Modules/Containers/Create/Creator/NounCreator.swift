@@ -1,5 +1,5 @@
 //
-//  NounPlaygroundView.swift
+//  NounCreator.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 22.11.21.
@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct NounPlayground: View {
+struct NounCreator: View {
   @StateObject var viewModel = ViewModel()
     
   @Namespace private var namespace
@@ -57,7 +57,7 @@ struct NounPlayground: View {
     })
     // Sheet presented when the user wants to cancel the noun creation process and go to the previous screen
     .bottomSheet(isPresented: mode == .cancel, showDimmingView: true, allowDrag: false, content: {
-      DiscardNounPlaygroundSheet(viewModel: viewModel)
+      DiscardNounCreatorSheet(viewModel: viewModel)
     })
     .background(GradientView(GradientColors.allCases[viewModel.seed.background]))
   }

@@ -1,5 +1,5 @@
 //
-//  NounPlayground.ViewModel.swift
+//  NounCreator.ViewModel.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 20.12.21.
@@ -8,7 +8,7 @@
 import Foundation
 import Services
 
-extension NounPlayground {
+extension NounCreator {
   
   final class ViewModel: ObservableObject {
     
@@ -169,12 +169,12 @@ extension NounPlayground {
       }
     }
     
-    /// Sets the view state of the playground
+    /// Sets the view state of the creator view
     func setMode(to mode: Mode) {
       self.mode = mode
     }
     
-    /// Saves the current playground noun
+    /// Saves the current created noun
     func save() {
       do {
         try offChainNounsService.store(noun: Noun(name: nounName, owner: Account(), seed: seed))
@@ -186,7 +186,7 @@ extension NounPlayground {
   }
 }
 
-extension NounPlayground.ViewModel.TraitType {
+extension NounCreator.ViewModel.TraitType {
   
   private var composer: NounComposer {
     AppCore.shared.nounComposer
@@ -213,10 +213,10 @@ extension NounPlayground.ViewModel.TraitType {
   }
   
   /// This is the order that the assets and traits should be presented in order to replicate how the nouns should look
-  static let layeredOrder: [NounPlayground.ViewModel.TraitType] = [.background, .body, .accessory, .head, .glasses]
+  static let layeredOrder: [NounCreator.ViewModel.TraitType] = [.background, .body, .accessory, .head, .glasses]
 }
 
-extension NounPlayground.ViewModel.TraitType: CustomStringConvertible {
+extension NounCreator.ViewModel.TraitType: CustomStringConvertible {
  
   var description: String {
     switch self {

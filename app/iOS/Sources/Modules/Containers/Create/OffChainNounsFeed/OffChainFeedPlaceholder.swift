@@ -20,7 +20,7 @@ struct OffChainFeedPlaceholder: View {
       Spacer()
 
       // TODO: OffChainNoun && OnchainNoun conform to Noun
-      // TODO: Integrate the NounPlayground to randomly generate Traits each time the view appear.
+      // TODO: Integrate the NounCreator to randomly generate Traits each time the view appear.
       NounPuzzle(
         head: nounComposer.heads[3].assetImage,
         body: nounComposer.bodies[6].assetImage,

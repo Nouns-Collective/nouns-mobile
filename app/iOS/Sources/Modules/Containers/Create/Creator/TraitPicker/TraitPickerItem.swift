@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponents
 import Services
 
-extension NounPlayground {
+extension NounCreator {
   
   struct TraitPickerItem: View {
     
@@ -44,7 +44,7 @@ private struct TraitSelectedModifier: ViewModifier {
   }
 }
 
-extension NounPlayground.TraitPickerItem {
+extension NounCreator.TraitPickerItem {
   
   func selected(_ condition: Bool) -> some View {
     if condition {

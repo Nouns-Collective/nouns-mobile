@@ -8,7 +8,7 @@
 import SwiftUI
 import UIComponents
 
-extension NounPlayground {
+extension NounCreator {
   
   struct GradientPickerItem: View {
     
@@ -53,7 +53,7 @@ private struct GradientSelectedModifier: ViewModifier {
   }
 }
 
-extension NounPlayground.GradientPickerItem {
+extension NounCreator.GradientPickerItem {
   
   func selected(_ condition: Bool) -> some View {
     if condition {

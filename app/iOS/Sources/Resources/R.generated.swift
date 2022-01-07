@@ -1536,8 +1536,8 @@ struct R: Rswift.Validatable {
     struct play {
       /// Value: Get going
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Give your noun something to say
-      static let subhealine = Rswift.StringResource(key: "subhealine", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Give your noun something to say!
+      static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Play
       static let title = Rswift.StringResource(key: "title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
 
@@ -1554,17 +1554,17 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("proceed.title", tableName: "Play", bundle: bundle, comment: "")
       }
 
-      /// Value: Give your noun something to say
-      static func subhealine(preferredLanguages: [String]? = nil) -> String {
+      /// Value: Give your noun something to say!
+      static func subheadline(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("subhealine", tableName: "Play", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("subheadline", tableName: "Play", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
-          return "subhealine"
+          return "subheadline"
         }
 
-        return NSLocalizedString("subhealine", tableName: "Play", bundle: bundle, comment: "")
+        return NSLocalizedString("subheadline", tableName: "Play", bundle: bundle, comment: "")
       }
 
       /// Value: Play

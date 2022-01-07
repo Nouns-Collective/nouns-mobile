@@ -16,7 +16,7 @@ struct PlayView: View {
   var body: some View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
-        Text(R.string.play.subhealine())
+        Text(R.string.play.subheadline())
           .font(.custom(.regular, size: 17))
         
         NounPuzzle(

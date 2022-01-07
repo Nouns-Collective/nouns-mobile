@@ -23,7 +23,7 @@ struct PlayTab: View {
   var body: some View {
     NavigationView {
       VStack {
-        SpeechBubble("Give your noun something to say! Just speak and let your noun do the talking")
+        SpeechBubble(R.string.play.subheadline())
           .font(.custom(.regular, size: 15))
           .padding(.horizontal, 20)
           .padding(.vertical, 0)
@@ -41,7 +41,7 @@ struct PlayTab: View {
           EmptyView()
         }
         
-        OutlineButton(text: "Get Started",
+        OutlineButton(text: R.string.play.proceedTitle(),
                       icon: { Image.playOutline },
                       action: { willMoveToNextScreen.toggle() })
           .controlSize(.large)

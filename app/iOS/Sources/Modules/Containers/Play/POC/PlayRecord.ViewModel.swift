@@ -9,7 +9,6 @@ import SwiftUI
 
 extension PlayRecord {
   
-  @MainActor
   final class ViewModel: ObservableObject {
     
     @Published private(set) var selectedEffect: AudioService.AudioEffect = .alien

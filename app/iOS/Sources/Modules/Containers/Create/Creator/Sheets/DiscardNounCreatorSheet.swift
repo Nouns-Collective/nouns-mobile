@@ -1,5 +1,5 @@
 //
-//  DiscardNounPlaygroundSheet.swift
+//  DiscardNounCreatorSheet.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 23.11.21.
@@ -9,9 +9,9 @@ import SwiftUI
 import UIComponents
 
 /// Dialog to delete offline Nouns.
-extension NounPlayground {
+extension NounCreator {
   
-  struct DiscardNounPlaygroundSheet: View {
+  struct DiscardNounCreatorSheet: View {
     @ObservedObject var viewModel: ViewModel
     
     @Environment(\.dismiss) private var dismiss
