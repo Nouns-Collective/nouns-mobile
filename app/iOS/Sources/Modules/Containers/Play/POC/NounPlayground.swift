@@ -30,12 +30,17 @@ struct NounPlayground: View {
     )
     
     VStack(spacing: 50) {
+      Text(R.string.play.playgroundTitle())
+        .font(.custom(.bold, size: 19))
+        .offset(y: -80)
+        .foregroundColor(Color.componentNounsBlack)
       
       Spacer()
       
       if let noun = viewModel.nouns.first {
         NounPuzzle(seed: noun.seed)
           .padding()
+          .offset(y: -70)
       }
      
       Spacer()
@@ -47,7 +52,7 @@ struct NounPlayground: View {
             .pickerItemTag(effect.rawValue, namespace: typeSelectionNamespace)
         }
       }
-      .padding(.bottom, 100)
+      .padding(.bottom, 20)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .softNavigationItems(leftAccessory: {
