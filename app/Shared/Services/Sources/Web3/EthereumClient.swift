@@ -39,7 +39,6 @@ public enum EthereumError: Error {
 
 public protocol Ethereum {
     
-    
     func call(_ function: ABI) throws
 }
 

@@ -11,15 +11,21 @@ import Services
 final class AppCore {
   static let shared = AppCore()
   
-  let settingsStore = SettingsStore()
   let crashReporting: CrashReporting = CrashlyticsProvider()
   let analytics: Analytics = FirebaseAnalyticsProvider()
   
   let onChainNounsService: OnChainNounsService = TheGraphNounsProvider()
   let offChainNounsService: OffChainNounsService = CoreDataNounsProvider()
   
+  /// Service responsible for handling Apple Push Notifications.
+  lazy var messaging: Messaging = FirebaseMessagingProvider()
+  
+  /// User stored preference settings.
+  lazy var settingsStore: SettingsStore = {
+    UserDefaultsSettingsStore(messaging: messaging)
+  }()
+  
   lazy var ensNameService: ENS = Web3ENSProvider(ethereumClient: web3Client.client)
-  lazy var ethClient: Ethereum = web3Client
   
   lazy var nounComposer: NounComposer = {
     do {
@@ -28,6 +34,8 @@ final class AppCore {
       fatalError("Couldn't instantiate the NounComposer: \(error)")
     }
   }()
+  
+  lazy var ethClient: Ethereum = web3Client
   
   /// The web3Client is abstracted out to a private property as it is re-used in both the Ethereum and ENS front-layer clients below.
   /// Views should only use `ethClient` and `ensNameService` to communicate with each respective part,
