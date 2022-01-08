@@ -513,7 +513,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 21 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 22 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -761,6 +761,72 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("title", tableName: "AppIcon", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.audioPermissionDialog` struct is generated, and contains static references to 4 localization keys.
+    struct audioPermissionDialog {
+      /// Value: Do it later
+      static let ignore = Rswift.StringResource(key: "ignore", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Enable microphone
+      static let enable = Rswift.StringResource(key: "enable", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Let's get talkin!
+      static let title = Rswift.StringResource(key: "title", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: To make your noun talk, the app needs your permission to use the microphone.
+      static let body = Rswift.StringResource(key: "body", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Do it later
+      static func ignore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("ignore", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "ignore"
+        }
+
+        return NSLocalizedString("ignore", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Enable microphone
+      static func enable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("enable", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "enable"
+        }
+
+        return NSLocalizedString("enable", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Let's get talkin!
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: To make your noun talk, the app needs your permission to use the microphone.
+      static func body(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "body"
+        }
+
+        return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
@@ -1539,14 +1605,48 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.play` struct is generated, and contains static references to 3 localization keys.
+    /// This `R.string.play` struct is generated, and contains static references to 7 localization keys.
     struct play {
+      /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
+      static let createNounTitle = Rswift.StringResource(key: "create.noun.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Create noun
+      static let createNoun = Rswift.StringResource(key: "create.noun", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Get going
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Give your noun something to say
-      static let subhealine = Rswift.StringResource(key: "subhealine", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Give your noun something to say!
+      static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Play
       static let title = Rswift.StringResource(key: "title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Say something
+      static let playgroundTitle = Rswift.StringResource(key: "playground.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Swipe to pick a noun
+      static let chooseCoachmark = Rswift.StringResource(key: "choose.coachmark", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
+      static func createNounTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("create.noun.title", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "create.noun.title"
+        }
+
+        return NSLocalizedString("create.noun.title", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Create noun
+      static func createNoun(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("create.noun", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "create.noun"
+        }
+
+        return NSLocalizedString("create.noun", tableName: "Play", bundle: bundle, comment: "")
+      }
 
       /// Value: Get going
       static func proceedTitle(preferredLanguages: [String]? = nil) -> String {
@@ -1561,17 +1661,17 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("proceed.title", tableName: "Play", bundle: bundle, comment: "")
       }
 
-      /// Value: Give your noun something to say
-      static func subhealine(preferredLanguages: [String]? = nil) -> String {
+      /// Value: Give your noun something to say!
+      static func subheadline(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("subhealine", tableName: "Play", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("subheadline", tableName: "Play", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
-          return "subhealine"
+          return "subheadline"
         }
 
-        return NSLocalizedString("subhealine", tableName: "Play", bundle: bundle, comment: "")
+        return NSLocalizedString("subheadline", tableName: "Play", bundle: bundle, comment: "")
       }
 
       /// Value: Play
@@ -1585,6 +1685,32 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("title", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Say something
+      static func playgroundTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("playground.title", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "playground.title"
+        }
+
+        return NSLocalizedString("playground.title", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Swipe to pick a noun
+      static func chooseCoachmark(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("choose.coachmark", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "choose.coachmark"
+        }
+
+        return NSLocalizedString("choose.coachmark", tableName: "Play", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

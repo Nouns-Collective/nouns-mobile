@@ -16,7 +16,7 @@ struct ViewOffsetKey: PreferenceKey {
     }
 }
 
-extension NounPlayground {
+extension NounCreator {
   
   struct TraitTypeGrid: View {
     @ObservedObject var viewModel: ViewModel

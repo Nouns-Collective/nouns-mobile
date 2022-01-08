@@ -20,7 +20,7 @@ extension OnboardingView {
   }
   
   class ViewModel: ObservableObject {
-    /// Verify weather to show the Onboarding flow.
+    /// Verify whether to show the Onboarding flow.
     @Published var showOnboarding: Bool
     
     /// The currently presented onboarding screen

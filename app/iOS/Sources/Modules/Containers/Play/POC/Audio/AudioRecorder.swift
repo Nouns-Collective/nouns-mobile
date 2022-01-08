@@ -17,65 +17,25 @@ enum AudioRecordingError: Error {
 }
 
 // swiftlint:disable all
-class AudioRecorder: NSObject, ObservableObject {
+class AudioService: NSObject, ObservableObject {
+  
   private let recordingSession: AVAudioSession = AVAudioSession.sharedInstance()
   private var engine: AVAudioEngine!
   private var mixerNode: AVAudioMixerNode!
   
   private let player = AVAudioPlayerNode()
-  private let timeEffect = AVAudioUnitTimePitch()
-
+  
   var isPlaying: Bool = false
   var needsFileScheduled: Bool = true
   
   private var silenceTimer: Timer = Timer()
   static let SilenceThreshold: TimeInterval = 1.5
   
-  enum Speed: Float, Identifiable {
-    var id: RawValue { rawValue }
-    
-    static let allValues: [Speed] = [.verySlow,
-                                     .slow,
-                                     .regular,
-                                     .fast,
-                                     .veryFast]
-    case verySlow = 0.25
-    case slow = 0.5
-    case regular = 1
-    case fast = 1.5
-    case veryFast = 2
-    
-    var string: String {
-      let formatter = NumberFormatter()
-      formatter.minimumIntegerDigits = 1
-      formatter.minimumFractionDigits = 0
-      formatter.maximumFractionDigits = 2
-      return formatter.string(from: NSNumber(value: self.rawValue)) ?? String(self.rawValue)
-    }
-  }
+  private lazy var inputFormat: AVAudioFormat = {
+    engine.inputNode.outputFormat(forBus: 0)
+  }()
   
-  enum Pitch: Float, Identifiable {
-    var id: RawValue { rawValue }
-    
-    static let allValues: [Pitch] = [.veryLow,
-                                     .low,
-                                     .regular,
-                                     .high,
-                                     .veryHigh]
-    case veryLow = -0.25
-    case low = -0.5
-    case regular = 0
-    case high = 0.5
-    case veryHigh = 1
-    
-    var string: String {
-      let formatter = NumberFormatter()
-      formatter.minimumIntegerDigits = 1
-      formatter.minimumFractionDigits = 0
-      formatter.maximumFractionDigits = 2
-      return formatter.string(from: NSNumber(value: self.rawValue)) ?? String(self.rawValue)
-    }
-  }
+  private var activeEffects: [AVAudioUnit] = []
   
   enum RecordingState {
     case recording
@@ -89,7 +49,7 @@ class AudioRecorder: NSObject, ObservableObject {
       if oldValue == .recording && state == .stopped {
         playBack()
       } else if oldValue == .playback && state == .stopped {
-        startRecording()
+        startListening()
       }
     }
   }
@@ -134,7 +94,7 @@ class AudioRecorder: NSObject, ObservableObject {
   }
   
   deinit {
-    stopRecording()
+    stopListening()
   }
   
   func requestPermission(completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
@@ -177,18 +137,21 @@ class AudioRecorder: NSObject, ObservableObject {
   /// In this case, we only have one input
   private func makeConnections() {
     // Input (recording) related
-    let inputFormat = engine.inputNode.outputFormat(forBus: 0)
     engine.connect(engine.inputNode, to: mixerNode, format: inputFormat)
     
     let mainMixerNode = engine.mainMixerNode
     let mixerFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: inputFormat.sampleRate, channels: 1, interleaved: false)
     engine.connect(mixerNode, to: mainMixerNode, format: mixerFormat)
     
+    let timeEffect = AVAudioUnitTimePitch()
+    
     /// The pitch of the audio (higher = deeper, 0 = normal)
     timeEffect.pitch = 1200 * 0
     
     /// The speed of the audio (higher = faster, 1 = noral)
     timeEffect.rate = 1
+    
+    activeEffects.append(timeEffect)
     
     // Player related
     engine.attach(player)
@@ -206,7 +169,7 @@ class AudioRecorder: NSObject, ObservableObject {
   
   private func playBack() {
     // Stop recording first (remove tap on input node)
-    stopRecording()
+    stopListening()
     
     state = .playback
     
@@ -231,7 +194,7 @@ class AudioRecorder: NSObject, ObservableObject {
     print("Total Lenght (including silence): \(audioLengthSeconds)")
     
     // rate of frames (hz) * silence threshold (seconds)
-    let framesDiscounted = file.processingFormat.sampleRate * AudioRecorder.SilenceThreshold
+    let framesDiscounted = file.processingFormat.sampleRate * AudioService.SilenceThreshold
     let actualAudioLengthSeconds = (Double(audioLengthSamples) - framesDiscounted) / audioSampleRate
     print("Actual Length: \(actualAudioLengthSeconds)")
     
@@ -253,7 +216,7 @@ class AudioRecorder: NSObject, ObservableObject {
   
   private func startTimer() {
     DispatchQueue.main.async {
-      self.silenceTimer = Timer.scheduledTimer(withTimeInterval: AudioRecorder.SilenceThreshold, repeats: false, block: { _ in
+      self.silenceTimer = Timer.scheduledTimer(withTimeInterval: AudioService.SilenceThreshold, repeats: false, block: { _ in
         self.state = .stopped
       })
     }
@@ -264,9 +227,9 @@ class AudioRecorder: NSObject, ObservableObject {
 }
 
 // Methods for invoking the recorder
-extension AudioRecorder {
+extension AudioService {
   
-  func startRecording() {
+  func startListening() {
     let tapNode: AVAudioNode = engine.inputNode
     let format = tapNode.outputFormat(forBus: 0)
     
@@ -342,13 +305,13 @@ extension AudioRecorder {
     engine.pause()
   }
   
-  func stopRecording() {
+  func stopListening() {
     engine.inputNode.removeTap(onBus: 0)
   }
 }
 
 // Helper method to determine scaled power of audio
-extension AudioRecorder {
+extension AudioService {
   private func scaledPower(power: Float) -> Float {
     guard power.isFinite else {
       return 0.0
@@ -388,14 +351,7 @@ fileprivate extension NSData {
   }
 }
 
-extension AudioRecorder {
-  func adjustPitch(to pitch: Pitch) {
-    timeEffect.pitch = 1200 * pitch.rawValue
-  }
-  
-  func adjustSpeed(to speed: Speed) {
-    timeEffect.rate = speed.rawValue
-  }
+extension AudioService {
   
   private func connectVolumeTap() {
     let format = engine.mainMixerNode.outputFormat(forBus: 0)
@@ -426,16 +382,41 @@ extension AudioRecorder {
       
       print("Meter Level: \(meterLevel)")
       if meterLevel >= 0.5 {
-        nounGameScene.startMouthMoving()
+        // TODO: - Implement mouth moving animation using NounPuzzle
+        // nounGameScene.startMouthMoving()
       } else {
-        nounGameScene.stopMouthMoving()
+        // TODO: - Implement mouth moving animation using NounPuzzle
+        // nounGameScene.stopMouthMoving()
       }
     }
   }
   
   private func disconnectVolumeTap() {
-    print("Disconnected")
-    nounGameScene.stopMouthMoving()
+    // TODO: - Implement mouth moving animation using NounPuzzle
+    // nounGameScene.stopMouthMoving()
     engine.mainMixerNode.removeTap(onBus: 0)
+  }
+}
+
+extension AudioService {
+  
+  enum AudioEffect: Int, CaseIterable {
+    case robot
+    case alien
+    case chipmunk
+    case monster
+    
+    var icon: Image {
+      switch self {
+      case .robot:
+        return Image.robot
+      case .alien:
+        return Image.alien
+      case .chipmunk:
+        return Image.chipmunk
+      case .monster:
+        return Image.monster
+      }
+    }
   }
 }

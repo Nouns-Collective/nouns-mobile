@@ -1,0 +1,15 @@
+/* 
+  AudioPermissionDialog.strings
+  Nouns
+
+  Created by Mohammed Ibrahim on 2022-01-08.
+  
+*/
+
+"title" = "Let's get talkin!";
+
+"body" = "To make your noun talk, the app needs your permission to use the microphone.";
+
+"enable" = "Enable microphone";
+
+"ignore" = "Do it later";

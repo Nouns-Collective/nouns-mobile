@@ -96,7 +96,7 @@ extension NounProfileInfoCard {
           action: { isShareSheetPresented.toggle() })
           .controlSize(.large)
         
-        // Switch context to the playground exprience using the current Noun's seed.
+        // Switch context to the creator exprience using the current Noun's seed.
         SoftButton(
           text: R.string.shared.remix(),
           largeAccessory: { Image.splice },

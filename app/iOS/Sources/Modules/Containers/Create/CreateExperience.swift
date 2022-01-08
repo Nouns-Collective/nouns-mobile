@@ -12,17 +12,17 @@ import Services
 /// Displays the Create Experience route.
 struct CreateExperience: View {
   
-  @State private var isPlaygroundPresented = false
+  @State private var isCreatorPresented = false
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
   
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 20) {
-          OffChainNounsFeed(isPlaygroundPresented: $isPlaygroundPresented)
+          OffChainNounsFeed(isCreatorPresented: $isCreatorPresented)
         }
-        .fullScreenCover(isPresented: $isPlaygroundPresented) {
-          NounPlayground()
+        .fullScreenCover(isPresented: $isCreatorPresented) {
+          NounCreator()
         }
         .padding(.horizontal, 20)
         .padding(.bottom, tabBarHeight)
@@ -31,7 +31,7 @@ struct CreateExperience: View {
           SoftButton(
             text: "New",
             largeAccessory: { Image.new },
-            action: { isPlaygroundPresented.toggle() })
+            action: { isCreatorPresented.toggle() })
         })
       }
       .background(Gradient.freshMint)

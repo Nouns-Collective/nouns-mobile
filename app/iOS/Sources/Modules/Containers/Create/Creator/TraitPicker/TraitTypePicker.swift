@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponents
 import Services
 
-extension NounPlayground {
+extension NounCreator {
   
   struct TraitTypePicker: View {
     @ObservedObject var viewModel: ViewModel

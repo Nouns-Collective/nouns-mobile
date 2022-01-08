@@ -12,7 +12,7 @@ import Services
 /// A view to display a list of all the nouns that the user has created.
 struct OffChainNounsFeed: View {
   @StateObject var viewModel = ViewModel()
-  @Binding var isPlaygroundPresented: Bool
+  @Binding var isCreatorPresented: Bool
   
   @State private var selection: Noun?
   @Namespace private var namespace
@@ -29,7 +29,7 @@ struct OffChainNounsFeed: View {
     }
     .emptyPlaceholder(when: viewModel.nouns.isEmpty) {
       OffChainFeedPlaceholder {
-        isPlaygroundPresented.toggle()
+        isCreatorPresented.toggle()
       }
     }
     .onAppear {

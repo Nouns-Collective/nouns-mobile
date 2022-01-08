@@ -8,12 +8,12 @@
 import SwiftUI
 import UIComponents
 
-/// A dialog to present the current playground noun's name (as a text field to allow the user to edit),
+/// A dialog to present the current created noun's name (as a text field to allow the user to edit),
 /// infromation such as birth date, and action to save the noun
-extension NounPlayground {
+extension NounCreator {
   
   struct NounMetadataDialog: View {
-    @ObservedObject var viewModel: NounPlayground.ViewModel
+    @ObservedObject var viewModel: NounCreator.ViewModel
         
     var body: some View {
       ActionSheet(
@@ -50,7 +50,7 @@ extension NounPlayground {
   
   ///
   struct NounDialogActions: View {
-    @ObservedObject var viewModel: NounPlayground.ViewModel
+    @ObservedObject var viewModel: NounCreator.ViewModel
 
     @Environment(\.dismiss) private var dismiss
     

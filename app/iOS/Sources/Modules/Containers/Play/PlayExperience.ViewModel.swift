@@ -1,35 +1,37 @@
 //
-//  OffChainNounsFeed.ViewModel.swift
+//  PlayExperience.ViewModel.swift
 //  Nouns
 //
-//  Created by Mohammed Ibrahim on 2021-12-26.
+//  Created by Mohammed Ibrahim on 2022-01-08.
 //
 
-import SwiftUI
+import Foundation
 import Services
 
-extension OffChainNounsFeed {
+extension PlayExperience {
   
   @MainActor
   final class ViewModel: ObservableObject {
-    @Published var nouns = [Noun]()
-    @Published var isFetching = false
+    
+    /// Boolean value for whether the user has created any offline nouns
+    @Published private(set) var hasCreatedNouns: Bool = false
     
     private let offChainNounsService: OffChainNounsService
     
     init(offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService) {
       self.offChainNounsService = offChainNounsService
     }
-    
-    func fetchOffChainNouns() async {
-      // when
+        
+    func checkOfflineNouns() async {
       do {
         for try await nouns in offChainNounsService.nounsStoreDidChange(ascendingOrder: false) {
-          self.nouns = nouns
+          hasCreatedNouns = nouns.count > 0
         }
       } catch {
-        print("Error: \(error)")
+        //
       }
     }
+    
+    // TODO: - Implement blinking animation logic
   }
 }

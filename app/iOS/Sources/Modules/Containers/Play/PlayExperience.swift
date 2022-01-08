@@ -1,5 +1,5 @@
 //
-//  PlayView.swift
+//  PlayExperience.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 21.11.21.
@@ -9,20 +9,16 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct PlayView: View {
+struct PlayExperience: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
   @State private var isPlayPresented = false
   
-  init() {
-    // TODO: Theming Should be extracted as it is related to the theme.
-    UINavigationBar.appearance().barTintColor = .clear
-    UITableView.appearance().backgroundColor = .clear
-  }
+  @StateObject private var viewModel = ViewModel()
   
   var body: some View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
-        Text(R.string.play.subhealine())
+        Text(R.string.play.subheadline())
           .font(.custom(.regular, size: 17))
         
         NounPuzzle(
@@ -30,7 +26,6 @@ struct PlayView: View {
           body: AppCore.shared.nounComposer.bodies[20].assetImage,
           glasses: AppCore.shared.nounComposer.glasses[8].assetImage,
           accessory: AppCore.shared.nounComposer.accessories[0].assetImage)
-          .padding(.top, 40)
         
         OutlineButton(
           text: R.string.play.proceedTitle(),
@@ -40,6 +35,11 @@ struct PlayView: View {
         
         Spacer()
       }
+      .onAppear(perform: {
+        Task {
+          await viewModel.checkOfflineNouns()
+        }
+      })
       .padding(.horizontal, 20)
       .padding(.bottom, tabBarHeight)
       // Extra padding between the bottom of the last noun card and the top of the tab view
@@ -48,7 +48,11 @@ struct PlayView: View {
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
       .fullScreenCover(isPresented: $isPlayPresented) {
-        PlayTab(isPresented: $isPlayPresented)
+        if viewModel.hasCreatedNouns {
+          AnyView(NounPlayground(isPresented: $isPlayPresented))
+        } else {
+          AnyView(PlayMissingNounView(isPresented: $isPlayPresented))
+        }
       }
     }
   }

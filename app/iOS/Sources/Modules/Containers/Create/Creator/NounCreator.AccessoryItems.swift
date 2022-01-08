@@ -1,5 +1,5 @@
 //
-//  NounPlayground.AccessoryItems.swift
+//  NounCreator.AccessoryItems.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 20.12.21.
@@ -8,7 +8,7 @@
 import SwiftUI
 import UIComponents
 
-extension NounPlayground {
+extension NounCreator {
   
   struct AccessoryItems: ViewModifier {
     

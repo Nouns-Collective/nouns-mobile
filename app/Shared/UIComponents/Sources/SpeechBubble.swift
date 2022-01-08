@@ -88,6 +88,8 @@ public struct NounSpeechBubble: View {
     
     private let noun: String
     
+    private let spacing: CGFloat
+    
     /// Create a noun view that display a message.
     ///
     /// ```swift
@@ -101,13 +103,14 @@ public struct NounSpeechBubble: View {
     /// ```
     ///
     /// - Parameter title: The message to communicate.
-    public init(_ message: String, noun: String) {
+    public init(_ message: String, noun: String, spacing: CGFloat = -25) {
         self.message = message
         self.noun = noun
+        self.spacing = spacing
     }
     
     public var body: some View {
-        VStack(spacing: -25) {
+        VStack(spacing: spacing) {
             SpeechBubble(message)
             Image(noun, bundle: .module)
                 .resizable()

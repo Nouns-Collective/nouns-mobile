@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-// swiftlint:disable all
-extension NounPlayground {
+extension NounCreator {
 
   struct TraitCollectionSection<Data: RandomAccessCollection, Content: View>: View where Data.Element: Hashable, Data.Index == Int {
     let items: Data
