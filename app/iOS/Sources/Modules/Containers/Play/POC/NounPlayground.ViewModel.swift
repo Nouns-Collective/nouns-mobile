@@ -13,6 +13,9 @@ extension NounPlayground {
   final class ViewModel: ObservableObject {
     
     enum State {
+      /// An initial state of showing a coachmark to guide the user
+      case coachmark
+      
       /// The user is not recording but is talking and the noun is repeating
       case freestyle
       
@@ -27,7 +30,7 @@ extension NounPlayground {
     @Published private(set) var selectedEffect: AudioService.AudioEffect = .alien
     @Published private(set) var isRecording: Bool = false
     @Published private(set) var nouns: [Noun] = []
-    @Published private(set) var state: State = .freestyle
+    @Published private(set) var state: State = .coachmark
     
     private let audioService: AudioService
     private let offChainNounService: OffChainNounsService
@@ -38,7 +41,11 @@ extension NounPlayground {
       self.offChainNounService = offChainNounService
       self.settingsStore = settingsStore
       
-      self.showAudioPermissionDialog = !settingsStore.hasEnabledAudioPermissions
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        withAnimation {
+          self.showAudioPermissionDialog = !settingsStore.hasEnabledAudioPermissions
+        }
+      }
     }
     
     /// Requests the user's permission to use the microphone

@@ -1598,7 +1598,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.play` struct is generated, and contains static references to 6 localization keys.
+    /// This `R.string.play` struct is generated, and contains static references to 7 localization keys.
     struct play {
       /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
       static let createNounTitle = Rswift.StringResource(key: "create.noun.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -1612,6 +1612,8 @@ struct R: Rswift.Validatable {
       static let title = Rswift.StringResource(key: "title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Say something
       static let playgroundTitle = Rswift.StringResource(key: "playground.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Swipe to pick a noun
+      static let chooseCoachmark = Rswift.StringResource(key: "choose.coachmark", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
       static func createNounTitle(preferredLanguages: [String]? = nil) -> String {
@@ -1689,6 +1691,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("playground.title", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Swipe to pick a noun
+      static func chooseCoachmark(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("choose.coachmark", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "choose.coachmark"
+        }
+
+        return NSLocalizedString("choose.coachmark", tableName: "Play", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

@@ -28,12 +28,15 @@ extension NounPlayground {
         
         SoftButton(
           text: R.string.audioPermissionDialog.enable(),
-          largeAccessory: { Image.pointRight },
+          largeAccessory: { Image.pointRight.standard },
           action: {
             // Request permission to use microphone
             viewModel.requestMicrophonePermission { success, error in
               if success {
-                viewModel.didEnableAudioPermissions()
+                withAnimation {
+                  viewModel.didEnableAudioPermissions()
+                }
+                
                 viewModel.startListening()
               } else {
                 dismiss()

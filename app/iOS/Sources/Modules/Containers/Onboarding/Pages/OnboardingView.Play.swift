@@ -41,7 +41,7 @@ struct PlayOnboardingView: View {
             Text("Get Started")
               .font(Font.custom(.medium, size: 17))
             
-            Image.pointRight
+            Image.pointRight.standard
               .resizable()
               .aspectRatio(contentMode: .fit)
               .frame(height: 24, alignment: .center)

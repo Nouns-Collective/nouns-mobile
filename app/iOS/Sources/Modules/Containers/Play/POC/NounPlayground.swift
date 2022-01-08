@@ -53,6 +53,13 @@ struct NounPlayground: View {
         }
       }
       .padding(.bottom, 20)
+      .emptyPlaceholder(when: viewModel.state == .coachmark) {
+        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
+          Image.pointRight.white
+            .rotationEffect(.degrees(-75))
+        })
+          .padding(.bottom, 60)
+      }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .softNavigationItems(leftAccessory: {
@@ -68,6 +75,15 @@ struct NounPlayground: View {
     .onAppear {
       // Fetch the off chain nouns the user has created
       viewModel.fetchOffChainNouns()
+      
+      // Remove coachmark tool after some time
+      if viewModel.state == .coachmark {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+          withAnimation {
+            viewModel.updateState(to: .freestyle)
+          }
+        }
+      }
     }
     .onDisappear {
       viewModel.stopListening()
