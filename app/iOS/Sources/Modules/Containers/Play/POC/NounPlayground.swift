@@ -57,20 +57,12 @@ struct NounPlayground: View {
       
     }, rightAccessory: { EmptyView() })
     .background(Gradient.bubbleGum)
+    .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
+      AudioPermissionDialog(viewModel: viewModel)
+    })
     .onAppear {
       // Fetch the off chain nouns the user has created
       viewModel.fetchOffChainNouns()
-      
-      // Request permission to use microphone
-      viewModel.requestMicrophonePermission { success, error in
-        if success {
-          viewModel.startListening()
-        } else {
-          if let error = error {
-            print("Error: \(error)")
-          }
-        }
-      }
     }
     .onDisappear {
       viewModel.stopListening()

@@ -506,7 +506,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 21 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 22 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -754,6 +754,72 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("title", tableName: "AppIcon", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.audioPermissionDialog` struct is generated, and contains static references to 4 localization keys.
+    struct audioPermissionDialog {
+      /// Value: Do it later
+      static let ignore = Rswift.StringResource(key: "ignore", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Enable microphone
+      static let enable = Rswift.StringResource(key: "enable", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Let's get talkin!
+      static let title = Rswift.StringResource(key: "title", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: To make your noun talk, the app needs your permission to use the microphone.
+      static let body = Rswift.StringResource(key: "body", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Do it later
+      static func ignore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("ignore", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "ignore"
+        }
+
+        return NSLocalizedString("ignore", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Enable microphone
+      static func enable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("enable", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "enable"
+        }
+
+        return NSLocalizedString("enable", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Let's get talkin!
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: To make your noun talk, the app needs your permission to use the microphone.
+      static func body(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
+          return "body"
+        }
+
+        return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

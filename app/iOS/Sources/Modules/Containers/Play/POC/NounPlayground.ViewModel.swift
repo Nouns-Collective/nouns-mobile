@@ -12,16 +12,21 @@ extension NounPlayground {
   
   final class ViewModel: ObservableObject {
     
+    @Published private(set) var showAudioPermissionDialog = false
     @Published private(set) var selectedEffect: AudioService.AudioEffect = .alien
     @Published private(set) var isRecording: Bool = false
     @Published private(set) var nouns: [Noun] = []
     
     private let audioService: AudioService
     private let offChainNounService: OffChainNounsService
+    private let settingsStore: SettingsStore
     
-    init(audioService: AudioService = AudioService(), offChainNounService: OffChainNounsService = AppCore.shared.offChainNounsService) {
+    init(audioService: AudioService = AudioService(), offChainNounService: OffChainNounsService = AppCore.shared.offChainNounsService, settingsStore: SettingsStore = AppCore.shared.settingsStore) {
       self.audioService = audioService
       self.offChainNounService = offChainNounService
+      self.settingsStore = settingsStore
+      
+      self.showAudioPermissionDialog = !settingsStore.hasEnabledAudioPermissions
     }
     
     /// Requests the user's permission to use the microphone
@@ -60,6 +65,11 @@ extension NounPlayground {
       } catch {
         // Present an error
       }
+    }
+    
+    func didEnableAudioPermissions() {
+      settingsStore.hasEnabledAudioPermissions = true
+      showAudioPermissionDialog.toggle()
     }
   }
 }

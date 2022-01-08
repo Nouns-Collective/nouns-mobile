@@ -19,6 +19,9 @@ public struct SettingsStore {
   
   /// A boolean value to determine whether the user has enabled APNs for `New Noun`.
   @AppStorage("isNewNounNotificationEnabled") public var isNewNounNotificationEnabled = false
+    
+  /// A boolean value to determine whether the user has enabled microphone permissions
+  @AppStorage("hasEnabledAudioPermissions") public var hasEnabledAudioPermissions = false
   
   public init() { }
 }

@@ -126,4 +126,5 @@ extension Image {
 
     public static let robot = Image("robot", bundle: .module)
 
+    public static let later = Image("later", bundle: .module)
 }
