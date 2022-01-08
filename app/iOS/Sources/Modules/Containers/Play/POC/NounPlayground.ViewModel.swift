@@ -12,10 +12,22 @@ extension NounPlayground {
   
   final class ViewModel: ObservableObject {
     
+    enum State {
+      /// The user is not recording but is talking and the noun is repeating
+      case freestyle
+      
+      /// The user is recording their speech along with their noun's reptition
+      case recording
+      
+      /// The user has completed recording and is ready to share, save, or start over
+      case share
+    }
+    
     @Published private(set) var showAudioPermissionDialog = false
     @Published private(set) var selectedEffect: AudioService.AudioEffect = .alien
     @Published private(set) var isRecording: Bool = false
     @Published private(set) var nouns: [Noun] = []
+    @Published private(set) var state: State = .freestyle
     
     private let audioService: AudioService
     private let offChainNounService: OffChainNounsService
@@ -46,7 +58,7 @@ extension NounPlayground {
     
     /// Updates the currently selected effect
     func updateEffect(to effect: AudioService.AudioEffect) {
-      self.selectedEffect = effect
+      selectedEffect = effect
     }
     
     /// Toggles the `isRecording` boolean value
@@ -61,15 +73,21 @@ extension NounPlayground {
       // As such, there's no need to watch for changes
       
       do {
-        self.nouns = try offChainNounService.fetchNouns(ascending: true)
+        nouns = try offChainNounService.fetchNouns(ascending: true)
       } catch {
         // Present an error
       }
     }
     
+    /// Updates the setting store with a `true`  value and toggles the bottom sheet presentation boolean value
     func didEnableAudioPermissions() {
       settingsStore.hasEnabledAudioPermissions = true
       showAudioPermissionDialog.toggle()
+    }
+    
+    /// Updates the view state to a new state
+    func updateState(to newState: State) {
+      state = newState
     }
   }
 }
