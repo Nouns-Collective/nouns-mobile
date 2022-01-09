@@ -40,12 +40,6 @@ extension NounPlayground {
       self.audioService = audioService
       self.offChainNounService = offChainNounService
       self.settingsStore = settingsStore
-      
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        withAnimation {
-          self.showAudioPermissionDialog = !settingsStore.hasEnabledAudioPermissions
-        }
-      }
     }
     
     /// Requests the user's permission to use the microphone
@@ -88,7 +82,6 @@ extension NounPlayground {
     
     /// Updates the setting store with a `true`  value and toggles the bottom sheet presentation boolean value
     func didEnableAudioPermissions() {
-      settingsStore.hasEnabledAudioPermissions = true
       showAudioPermissionDialog.toggle()
     }
     
