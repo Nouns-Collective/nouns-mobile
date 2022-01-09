@@ -10,10 +10,10 @@ import Services
 
 extension SettingsView {
   
-  final class ViewModel: ObservableObject {
+  class ViewModel: ObservableObject {
     
     /// Store where app configuration is persisted.
-    private let settingsStore: SettingsStore
+    private var settingsStore: SettingsStore
     
     init(
       settingsStore: SettingsStore = AppCore.shared.settingsStore
@@ -25,12 +25,18 @@ extension SettingsView {
     
     var isNounOClockNotificationEnabled: Bool {
       get { settingsStore.isNounOClockNotificationEnabled }
-      set { settingsStore.isNounOClockNotificationEnabled = newValue }
+      set {
+        settingsStore.isNounOClockNotificationEnabled = newValue
+        objectWillChange.send()
+      }
     }
     
     var isNewNounNotificationEnabled: Bool {
       get { settingsStore.isNewNounNotificationEnabled }
-      set { settingsStore.isNewNounNotificationEnabled = newValue }
+      set {
+        settingsStore.isNewNounNotificationEnabled = newValue
+        objectWillChange.send()
+      }
     }
     
   }

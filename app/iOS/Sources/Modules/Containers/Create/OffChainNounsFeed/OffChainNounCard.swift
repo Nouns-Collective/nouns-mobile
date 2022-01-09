@@ -9,7 +9,7 @@ import SwiftUI
 import Services
 import UIComponents
 
-/// A card to display an offline noun card, created by the user through the playground
+/// A card to display an offline noun card, created by the user through the noun creator
 struct OffChainNounCard: View {
   @StateObject var viewModel: ViewModel
   let animation: Namespace.ID

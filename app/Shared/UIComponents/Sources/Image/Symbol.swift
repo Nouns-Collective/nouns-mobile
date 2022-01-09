@@ -10,6 +10,8 @@ import SwiftUI
 /// Creates a labeled image that you can use as content for controls.
 extension Image {
   
+  public static let crown = Image("crown", bundle: .module)
+  
   public static let active = Image("sm-active", bundle: .module)
   
   public static let cancel = Image("sm-cancel", bundle: .module)
@@ -116,7 +118,20 @@ extension Image {
   
   public static let swipePick = Image("swipe-pick", bundle: .module)
   
-  public static let pointRight = Image("hand-point-right", bundle: .module)
+  public struct pointRight {
+    
+    public static let standard = Image("hand-point-right", bundle: .module)
+    
+    public static let white = Image("hand-point-right-white", bundle: .module)
+  }
   
-  public static let crown = Image("crown", bundle: .module)
+  public static let alien = Image("alien", bundle: .module)
+  
+  public static let chipmunk = Image("chipmunk", bundle: .module)
+  
+  public static let monster = Image("monster", bundle: .module)
+  
+  public static let robot = Image("robot", bundle: .module)
+  
+  public static let later = Image("later", bundle: .module)
 }

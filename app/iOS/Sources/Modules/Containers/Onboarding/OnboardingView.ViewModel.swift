@@ -20,7 +20,7 @@ extension OnboardingView {
   }
   
   class ViewModel: ObservableObject {
-    /// Verify weather to show the Onboarding flow.
+    /// Verify whether to show the Onboarding flow.
     @Published var showOnboarding: Bool
     
     /// The currently presented onboarding screen
@@ -30,7 +30,7 @@ extension OnboardingView {
     @Namespace var onboardingAnimation
     
     /// Store where app configuration is persisted.
-    private let settingsStore: SettingsStore
+    private var settingsStore: SettingsStore
     
     init(settingsStore: SettingsStore = AppCore.shared.settingsStore) {
       self.settingsStore = settingsStore
