@@ -13,7 +13,7 @@ import UIComponents
 struct SettledAuctionFeed: View {
   @StateObject var viewModel = SettledAuctionFeed.ViewModel()
   
-  @State private var selection: Auction?
+  @State private var selectedAuction: Auction?
   
   private let gridLayout = [
     GridItem(.flexible(), spacing: 20),
@@ -23,7 +23,7 @@ struct SettledAuctionFeed: View {
   var body: some View {
     VPageGrid(viewModel.auctions, columns: gridLayout, loadMoreAction: {
       // load next settled auctions batch.
-      viewModel.loadAuctions()
+      await viewModel.loadAuctions()
       
     }, placeholder: {
       // An activity indicator while loading auctions from the network.
@@ -33,13 +33,16 @@ struct SettledAuctionFeed: View {
       SettledAuctionCard(viewModel: .init(auction: auction))
         .onTapGesture {
           withAnimation(.spring()) {
-            selection = auction
+            selectedAuction = auction
           }
         }
     })
-    // Presents more details about the settled auction.
-      .fullScreenCover(item: $selection, onDismiss: {
-        selection = nil
+      .task {
+        await viewModel.watchNewlyAuctions()
+      }
+      // Presents more details about the settled auction.
+      .fullScreenCover(item: $selectedAuction, onDismiss: {
+        selectedAuction = nil
         
       }, content: { auction in
         NounProfileInfoCard(viewModel: .init(auction: auction))
@@ -51,21 +54,19 @@ struct SettledAuctionFeed: View {
 struct SettledAuctionCard: View {
   @StateObject var viewModel: ViewModel
   
-  @Environment(\.nounComposer) private var nounComposer: NounComposer
-  
   var body: some View {
     StandardCard(
-      header: R.string.explore.noun(viewModel.auction.noun.id),
+      header: viewModel.title,
       accessory: {
         Image.mdArrowCorner
       },
       media: {
-        NounPuzzle(seed: viewModel.auction.noun.seed)
-          .background(Color(hex: nounComposer.backgroundColors[viewModel.auction.noun.seed.background]))
+        NounPuzzle(seed: viewModel.nounTraits)
+          .background(Color(hex: viewModel.nounBackground))
       },
       content: {
         SafeLabel(
-          R.string.explore.noun(viewModel.auction.noun.id),
+          viewModel.winnerBid,
           icon: Image.eth)
           .padding(.top, 8)
       })

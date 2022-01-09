@@ -6,54 +6,36 @@
 //
 
 import SwiftUI
+import Services
 
-struct AddressLabel: View {
+/// Loads the decentralised name for a given token.
+struct ENSText: View {
+  @State private var domain: String?
   
-  let token: String
+  private let ensService: ENS
+  private let token: String
+  
+  init(
+    token: String,
+    ensService: ENS = AppCore.shared.ensNameService
+  ) {
+    self.token = token
+    self.ensService = ensService
+  }
   
   var body: some View {
-    Text(token)
+    Text(domain ?? token)
       .lineLimit(1)
       .truncationMode(.middle)
-  }
-}
-
-struct ENSText<P>: View where P: View {
-  
-  @StateObject var viewModel: ViewModel
-  
-  /// A placeholder view to display while the domain is loading
-  @ViewBuilder
-  let placeholder: P
-  
-  var body: some View {
-    Text(viewModel.ens ?? "")
-      .emptyPlaceholder(when: viewModel.ens == nil) {
-        placeholder
-      }
-      .onAppear {
-        viewModel.fetchENS()
+      .task {
+        await fetchENS()
       }
   }
-}
-
-extension ENSText {
   
-  final class ViewModel: ObservableObject {
-    var token: String
-    @Published var ens: String?
-    
-    init(token: String) {
-      self.token = token
-    }
-    
-    @MainActor
-    func fetchENS() {
-      Task {
-        do {
-          ens = try await AppCore.shared.ensNameService.domainLookup(address: token)
-        } catch {}
-      }
-    }
+  @MainActor
+  private func fetchENS() async {
+    do {
+      domain = try await ensService.domainLookup(address: token)
+    } catch { }
   }
 }

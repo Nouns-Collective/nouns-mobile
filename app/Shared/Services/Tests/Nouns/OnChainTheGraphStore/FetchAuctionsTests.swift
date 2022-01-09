@@ -30,7 +30,7 @@ final class FetchAuctionsTests: XCTestCase {
     // then
     XCTAssertFalse(auctions.isEmpty)
     
-    let expectedAuction = Auction.fixture
+    let expectedAuction = Auction.fixture()
     let fetchedAuction = auctions.first
     
     XCTAssertEqual(fetchedAuction?.id, expectedAuction.id)

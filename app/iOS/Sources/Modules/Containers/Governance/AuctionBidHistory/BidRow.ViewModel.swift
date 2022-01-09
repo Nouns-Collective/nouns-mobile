@@ -10,7 +10,7 @@ import Services
 
 extension BidRow {
   
-  final class ViewModel: ObservableObject {
+  class ViewModel: ObservableObject {
     let bid: Bid
     
     init(bid: Bid) {
@@ -35,7 +35,7 @@ extension BidRow {
       }
       
       let date = Date(timeIntervalSince1970: timeInterval)
-      return DateFormatter.string(from: date, timeStyle: .short)
+      return date.formatted(timeStyle: .short)
     }
   }
 }

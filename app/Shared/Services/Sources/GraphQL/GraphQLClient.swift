@@ -59,7 +59,7 @@ public enum CachePolicy {
 }
 
 /// `GraphQL`
-public protocol GraphQL {
+public protocol GraphQL: AnyObject {
   
   /// Fetches a query from the server or from the local cache, depending on
   /// the current contents of the cache and the specified cache policy.

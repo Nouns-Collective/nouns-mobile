@@ -20,12 +20,12 @@ struct NounProfileInfoCard: View {
     NavigationView {
       VStack(spacing: 0) {
         Spacer()
-        NounPuzzle(seed: viewModel.auction.noun.seed)
+        NounPuzzle(seed: viewModel.nounTraits)
         
         PlainCell(length: 20) {
           CardToolBar(viewModel: viewModel, dismiss: dismiss)
           
-          if viewModel.isAuctionSettled {
+          if viewModel.isAuctionSettled || viewModel.isWinnerAnounced {
             SettledAuctionInfoCard(
               viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
@@ -38,7 +38,7 @@ struct NounProfileInfoCard: View {
             )
           }
           
-          // Navigation link showing the noun's bid history & owner activity
+          // Navigation link showing the noun's bid history & owner activity.
           // TODO: - Build a component to hide the navigation implementation details.
           NavigationLink(
             destination: AuctionInfoContainer(viewModel: .init(auction: viewModel.auction)),

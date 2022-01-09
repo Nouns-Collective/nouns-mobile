@@ -10,7 +10,7 @@ import Services
 import UIComponents
 
 struct LiveAuctionInfoCard: View {
-  @StateObject var viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   @Binding var isActivityPresented: Bool
   
   var body: some View {
@@ -42,8 +42,5 @@ struct LiveAuctionInfoCard: View {
     }
     .labelStyle(.titleAndIcon(spacing: 14))
     .padding(.bottom, 40)
-    .onAppear {
-      viewModel.setUpAuctionTimer()
-    }
   }
 }

@@ -29,7 +29,7 @@ struct NounActivityFeed: View {
         
         VPageGrid(viewModel.votes, columns: gridLayout, loadMoreAction: {
           // load next activities batch.
-          viewModel.fetchActivity()
+          await viewModel.fetchActivity()
           
         }, placeholder: {
           // An activity indicator while loading votes from the network.

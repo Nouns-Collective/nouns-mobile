@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Nouns+Fixture.swift
 //  
 //
 //  Created by Ziad Tamim on 14.11.21.
@@ -11,14 +11,51 @@ import Foundation
 /// Various `Auction` fixtures.
 extension Auction {
   
-  static var fixture: Self = {
+  static func fixture(startTime: TimeInterval? = nil, endTime: TimeInterval? = nil) -> Auction {
     Auction(
       id: "106",
       noun: .fixture(),
-      amount: "2000000000000000000",
-      startTime: "1636758555",
-      endTime: "1636844955",
-      settled: false
+      amount: "1636758555",
+      startTime: startTime ?? 1636758555,
+      endTime: endTime ?? 1636844955,
+      settled: false,
+      bidder: .fixture
+    )
+  }
+  
+  static var fixtureLiveNewBid: Self = {
+    Auction(
+      id: "106",
+      noun: .fixture(),
+      amount: "3500000000000000000",
+      startTime: 1636758555,
+      endTime: 1636844955,
+      settled: false,
+      bidder: .fixture
+    )
+  }()
+  
+  static var fixtureLiveSettled: Self = {
+    Auction(
+      id: "106",
+      noun: .fixture(),
+      amount: "4500000000000000000",
+      startTime: 1636758555,
+      endTime: 1636844955,
+      settled: true,
+      bidder: .fixture
+    )
+  }()
+  
+  static var fixtureLiveNew: Self = {
+    Auction(
+      id: "107",
+      noun: .fixture(),
+      amount: "1000000000000000000",
+      startTime: 1636758555,
+      endTime: 1636844955,
+      settled: false,
+      bidder: .fixture
     )
   }()
 }

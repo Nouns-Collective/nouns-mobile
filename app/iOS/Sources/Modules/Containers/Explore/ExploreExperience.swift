@@ -9,7 +9,8 @@ import SwiftUI
 import UIComponents
 import Services
 
-/// Housing view for exploring on chain nouns, including the current on-goign auction and previously auctioned nouns
+/// Housing view for exploring on chain nouns, including
+/// the current on-goign auction and previously auctioned nouns
 struct ExploreExperience: View {
   @StateObject var viewModel = ViewModel()
   
@@ -30,8 +31,8 @@ struct ExploreExperience: View {
       .disabled(viewModel.isLoading)
       .background(Gradient.lemonDrop)
       .ignoresSafeArea()
-      .onAppear {
-        viewModel.listenLiveAuctionChanges()
+      .task {
+        await viewModel.listenLiveAuctionChanges()
       }
     }
   }

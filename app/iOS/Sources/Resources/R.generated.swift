@@ -1153,7 +1153,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.liveAuction` struct is generated, and contains static references to 3 localization keys.
+    /// This `R.string.liveAuction` struct is generated, and contains static references to 5 localization keys.
     struct liveAuction {
       /// Value: %dh %dm %ds
       static let timeLeft = Rswift.StringResource(key: "time.left", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -1161,6 +1161,10 @@ struct R: Rswift.Validatable {
       static let currentBid = Rswift.StringResource(key: "current.bid", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Remaining
       static let timeLeftLabel = Rswift.StringResource(key: "time.left.label", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Winner
+      static let winner = Rswift.StringResource(key: "winner", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Winning bid
+      static let winningBid = Rswift.StringResource(key: "winning.bid", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: %dh %dm %ds
       static func timeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
@@ -1201,6 +1205,32 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("time.left.label", tableName: "LiveAuction", bundle: bundle, comment: "")
+      }
+
+      /// Value: Winner
+      static func winner(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("winner", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
+          return "winner"
+        }
+
+        return NSLocalizedString("winner", tableName: "LiveAuction", bundle: bundle, comment: "")
+      }
+
+      /// Value: Winning bid
+      static func winningBid(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("winning.bid", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
+          return "winning.bid"
+        }
+
+        return NSLocalizedString("winning.bid", tableName: "LiveAuction", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

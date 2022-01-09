@@ -15,29 +15,35 @@ extension SettledAuctionFeed {
     @Published var isFetching = false
     
     private let pageLimit = 20
-    private var onChainNounsService: OnChainNounsService
+    private var service: OnChainNounsService
     
-    init(onChainNounsService: OnChainNounsService = AppCore.shared.onChainNounsService) {
-      self.onChainNounsService = onChainNounsService
+    init(service: OnChainNounsService = AppCore.shared.onChainNounsService) {
+      self.service = service
     }
     
     @MainActor
-    func loadAuctions() {
-      Task {
-        do {
-          isFetching = true
-          
-          // load next batch of the settled auctions from the network.
-          auctions += try await onChainNounsService.fetchAuctions(
-            settled: true,
-            limit: pageLimit,
-            cursor: auctions.count
-          )
-          
-        } catch { }
-        
-        isFetching = false
+    func watchNewlyAuctions() async {
+      for await auction in service.settledAuctionsDidChange() {
+        if !auctions.isEmpty && auctions.first?.id != auction.id {
+          auctions.insert(auction, at: 0)
+        }
       }
+    }
+    
+    @MainActor
+    func loadAuctions() async {
+      do {
+        isFetching = true
+        // load next batch of the settled auctions from the network.
+        auctions += try await service.fetchAuctions(
+          settled: true,
+          limit: pageLimit,
+          cursor: auctions.count
+        )
+        
+      } catch { }
+      
+      isFetching = false
     }
   }
 }
@@ -45,20 +51,29 @@ extension SettledAuctionFeed {
 extension SettledAuctionCard {
   
   class ViewModel: ObservableObject {
-    let auction: Auction
+    @Published private(set) var title: String
+    @Published private(set) var nounTraits: Seed
+    @Published private(set) var nounBackground: String
+    @Published private(set) var winnerBid: String
     
-    init(auction: Auction) {
+    private let auction: Auction
+    private let composer: NounComposer
+    
+    init(
+      auction: Auction,
+      composer: NounComposer = AppCore.shared.nounComposer
+    ) {
       self.auction = auction
-    }
-    
-    var winnerBid: String {
-      guard let bid = EtherFormatter.eth(
-        from: auction.amount
-      ) else {
-        return R.string.shared.notApplicable()
-      }
+      self.composer = composer
       
-      return bid
+      title = R.string.explore.noun(auction.noun.id)
+      nounTraits = auction.noun.seed
+      
+      let bid = EtherFormatter.eth(from: auction.amount)
+      winnerBid = bid ?? R.string.shared.notApplicable()
+      
+      let backgroundIndex = auction.noun.seed.background
+      nounBackground = composer.backgroundColors[backgroundIndex]
     }
   }
 }

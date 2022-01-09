@@ -10,50 +10,33 @@ import Services
 
 extension LiveAuctionInfoCard {
   
-  @MainActor
   class ViewModel: ObservableObject {
-    @Published var remainingTime = R.string.shared.notApplicable()
+    @Published private(set) var birthdate: String
+    @Published private(set) var lastBid: String
+    @Published private(set) var remainingTime: String
     
-    let auction: Auction
+    private let auction: Auction
     
     init(auction: Auction) {
       self.auction = auction
-    }
-    
-    var birthdate: String {
-      guard let timeInterval = Double(auction.startTime) else {
-        return R.string.shared.notApplicable()
-      }
       
-      let date = Date(timeIntervalSince1970: timeInterval)
-      return R.string.nounProfile.birthday(DateFormatter.string(from: date))
-    }
-    
-    var lastBid: String {
-      guard let amount = EtherFormatter.eth(
-        from: auction.amount
-      ) else {
-        return R.string.shared.notApplicable()
-      }
+      let amount = EtherFormatter.eth(from: auction.amount)
+      lastBid = amount ?? R.string.shared.notApplicable()
       
-      return amount
+      let timeLeft = Self.formatTimeLeft(auction.timeLeft)
+      remainingTime = timeLeft ?? R.string.shared.notApplicable()
+      
+      let startDate = Date(timeIntervalSince1970: auction.startTime)
+      birthdate = R.string.nounProfile.birthday(startDate.formatted())
     }
     
-    /// Update the remaining time.
-    @MainActor
-    func setUpAuctionTimer() {
-      Task {
-        for await components in auction.componentsSequence.values {
-          guard let hour = components.hour,
-                let minute = components.minute,
-                let second = components.second
-          else {
-            continue
-          }
-          
-          remainingTime = R.string.liveAuction.timeLeft(hour, minute, second)
-        }
-      }
+    private static func formatTimeLeft(_ components: DateComponents) -> String? {
+      guard let hour = components.hour,
+            let minute = components.minute,
+            let second = components.second
+      else { return nil }
+      
+      return R.string.liveAuction.timeLeft(hour, minute, second)
     }
   }
 }

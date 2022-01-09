@@ -10,12 +10,11 @@ import Services
 import Combine
 import UIComponents
 
-/// Diplay the auction of the day in real time.
+/// Display the auction of the day in real time.
 struct LiveAuctionCard: View {
-  @StateObject var viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   
   @State private var showNounProfile = false
-  @Environment(\.nounComposer) private var nounComposer: NounComposer
   
   var body: some View {
     StandardCard(
@@ -26,32 +25,38 @@ struct LiveAuctionCard: View {
           .frame(width: 24, height: 24)
       },
       media: {
-        NounPuzzle(seed: viewModel.auction.noun.seed)
-          .background(Color(hex: nounComposer.backgroundColors[viewModel.auction.noun.seed.background]))
+        NounPuzzle(seed: viewModel.nounTrait)
+          .background(Color(hex: viewModel.nounBackground))
       },
       content: {
         HStack {
-          // Displays Remaining Time.
-          CompoundLabel(
-            Text(viewModel.remainingTime),
-            icon: Image.timeleft,
-            caption: R.string.liveAuction.timeLeftLabel())
+          if viewModel.isWinnerAnounced {
+            // Displays the winner.
+            CompoundLabel({
+              ENSText(token: viewModel.winner)
+                .font(.custom(.medium, relativeTo: .subheadline))
+            }, icon: Image.crown, caption: R.string.liveAuction.winner())
+            
+          } else {
+            // Displays remaining time.
+            CompoundLabel({
+              Text(viewModel.remainingTime) },
+                          icon: Image.timeleft,
+                          caption: R.string.liveAuction.timeLeftLabel())
+          }
           
           Spacer()
           
-          // Displays Current Bid.
-          CompoundLabel(
-            SafeLabel(viewModel.currentBid, icon: Image.eth),
-            icon: Image.currentBid,
-            caption: R.string.liveAuction.currentBid())
+          // Displays Bid Status.
+          CompoundLabel({
+            SafeLabel(viewModel.lastBid, icon: Image.eth) },
+                        icon: Image.currentBid,
+                        caption: viewModel.bidStatus)
           
           Spacer()
         }
         .padding(.top, 20)
       })
-      .onAppear {
-        viewModel.setUpAuctionTimer()
-      }
       .onTapGesture {
         showNounProfile.toggle()
       }

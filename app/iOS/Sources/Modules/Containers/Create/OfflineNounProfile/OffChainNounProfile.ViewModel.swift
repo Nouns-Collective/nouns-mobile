@@ -29,7 +29,7 @@ extension OffChainNounProfile {
     }
     
     var nounBirthdate: String {
-      DateFormatter.string(from: noun.createdAt)
+      noun.createdAt.formatted()
     }
     
     func deleteNoun() {

@@ -7,10 +7,9 @@
 
 import Foundation
 
-extension DateFormatter {
+extension Date {
   
-  class func string(
-    from date: Date,
+  func formatted(
     dateStyle: DateFormatter.Style = .long,
     timeStyle: DateFormatter.Style = .none
   ) -> String {
@@ -19,6 +18,6 @@ extension DateFormatter {
     dateFormatter.locale = NSLocale.current
     dateFormatter.dateStyle = dateStyle
     dateFormatter.timeStyle = timeStyle
-    return dateFormatter.string(from: date)
+    return dateFormatter.string(from: self)
   }
 }
