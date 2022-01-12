@@ -25,7 +25,7 @@ struct AuctionBidHistory: View {
         Text(viewModel.title)
           .font(.custom(.bold, size: 36))
         
-        VPageGrid(viewModel.bids, columns: gridLayout, loadMoreAction: {
+        VPageGrid(viewModel.bids, columns: gridLayout, isLoading: viewModel.isLoading, loadMoreAction: {
           // load next bid history batch.
           await viewModel.fetchBidHistory()
           

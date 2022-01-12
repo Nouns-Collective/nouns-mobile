@@ -14,6 +14,8 @@ import Services
 struct ExploreExperience: View {
   @StateObject var viewModel = ViewModel()
   
+  @Environment(\.outlineTabViewHeight) private var tabBarHeight
+
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
@@ -24,13 +26,15 @@ struct ExploreExperience: View {
           
           SettledAuctionFeed()
         }
+        .padding(.bottom, tabBarHeight)
+        .padding(.bottom, 20) // Extra padding between the bottom of the last noun card and the top of the tab view
         .padding(.horizontal, 20)
         .softNavigationTitle(R.string.explore.title())
       }
       // Disable scrolling when data is initially loading.
       .disabled(viewModel.isLoading)
       .background(Gradient.lemonDrop)
-      .ignoresSafeArea()
+      .ignoresSafeArea(edges: .top)
       .task {
         await viewModel.listenLiveAuctionChanges()
       }

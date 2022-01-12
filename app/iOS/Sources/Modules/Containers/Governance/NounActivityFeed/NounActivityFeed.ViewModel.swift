@@ -34,6 +34,8 @@ extension NounActivityFeed {
     @MainActor
     func fetchActivity() async {
       do {
+        isLoading = true
+        
         votes += try await service.fetchActivity(
           for: auction.noun.id,
              limit: pageLimit,
@@ -41,6 +43,8 @@ extension NounActivityFeed {
         )
         
       } catch { }
+      
+      isLoading = false
     }
   }
 }

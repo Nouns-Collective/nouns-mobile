@@ -27,7 +27,7 @@ struct NounActivityFeed: View {
           .font(.custom(.bold, size: 36))
           .truncationMode(.middle)
         
-        VPageGrid(viewModel.votes, columns: gridLayout, loadMoreAction: {
+        VPageGrid(viewModel.votes, columns: gridLayout, isLoading: viewModel.isLoading, loadMoreAction: {
           // load next activities batch.
           await viewModel.fetchActivity()
           

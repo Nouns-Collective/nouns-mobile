@@ -26,11 +26,15 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
   
   /// Spacing of the grid
   private let spacing: CGFloat
+    
+  /// Boolean value to determine if the grid is loading more items
+  private let isLoading: Bool
   
   public init(
     _ data: Data,
     columns: [GridItem],
     spacing: CGFloat = 20,
+    isLoading: Bool,
     loadMoreAction: @Sendable @escaping () async -> Void,
     placeholder: @escaping () -> Placeholder,
     @ViewBuilder content: @escaping (_ item: Data.Element) -> Content
@@ -38,29 +42,54 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
     self.data = data
     self.columns = columns
     self.spacing = spacing
+    self.isLoading = isLoading
     self.content = content
     self.loadMoreAction = loadMoreAction
     self.placeholder = placeholder
   }
-  
-//  private func loadMore() {
-//    loadMoreAction()
-//  }
-  
+ 
+  /// Loads more items if the last item has appeared or if there are no items loaded yet
+  private func loadMoreIfNecessary(_ item: Data.Element?) async {
+    guard let item = item else {
+      await loadMoreAction()
+      return
+    }
+    
+    if item.id == data.last?.id {
+      await loadMoreAction()
+    }
+  }
+
   public var body: some View {
     LazyVGrid(columns: columns, spacing: spacing) {
       Section(content: {
         ForEach(data) { element in
           content(element)
+            .task {
+              // Load additional pages if last element of current data collection has appeared
+              await loadMoreIfNecessary(element)
+            }
         }
         
-      }, footer: {
-        // Load next batch when footer appears.
-        placeholder()
-          .task {
-            await loadMoreAction()
-          }
+        if isLoading {
+          placeholder()
+        }
       })
     }
+    .task {
+      // Load initial page
+      await loadMoreIfNecessary(nil)
+    }
   }
+}
+
+extension View {
+    func hidden(when condition: Bool) -> some View {
+        if condition {
+            return AnyView(self
+                .hidden())
+        } else {
+            return AnyView(self)
+        }
+    }
 }

@@ -34,6 +34,8 @@ extension AuctionBidHistory {
     @MainActor
     func fetchBidHistory() async {
       do {
+        isLoading = true
+        
         bids += try await service.fetchBids(
           for: auction.noun.id,
              limit: pageLimit,
@@ -41,6 +43,8 @@ extension AuctionBidHistory {
         )
         
       } catch { }
+      
+      isLoading = false
     }
   }
 }
