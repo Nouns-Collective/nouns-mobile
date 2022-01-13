@@ -16,6 +16,12 @@ struct NounActivityFeed: View {
     GridItem(.flexible(), spacing: 20),
   ]
   
+  /// Only show the empty placeholder when there are no votes and when the data source is not loading
+  /// This occurs mainly on initial appearance, before any votes have loaded
+  private var isEmpty: Bool {
+    viewModel.votes.isEmpty && !viewModel.isLoading
+  }
+  
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       
@@ -40,6 +46,13 @@ struct NounActivityFeed: View {
         })
       }
       .padding()
+    }
+    .frame(maxWidth: .infinity)
+    .emptyPlaceholder(when: isEmpty, view: {
+      ActivityFeedEmptyView(viewModel: viewModel)
+    })
+    .task {
+      await viewModel.fetchActivity()
     }
   }
 }
@@ -74,6 +87,37 @@ struct ActivityPlaceholderRow: View {
         .padding(.top, 8)
         
       }.padding()
+    }
+  }
+}
+
+extension NounActivityFeed {
+  
+  /// A view to display when there are no votes placed by the owner of the noun
+  struct ActivityFeedEmptyView: View {
+    
+    @ObservedObject var viewModel: ViewModel
+    
+    var body: some View {
+      VStack(alignment: .leading, spacing: 10) {
+        
+        // Displays the owner token.
+        Text(viewModel.title)
+          .lineLimit(1)
+          .font(.custom(.bold, size: 36))
+          .truncationMode(.middle)
+        
+        Spacer()
+        
+        Text(R.string.activity.emptyState())
+            .font(.custom(.medium, relativeTo: .headline))
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .padding()
+            .opacity(0.6)
+        
+        Spacer()
+      }
+      .padding()
     }
   }
 }
