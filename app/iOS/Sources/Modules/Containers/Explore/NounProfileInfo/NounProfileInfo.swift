@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct NounProfileInfoCard: View {
+struct NounProfileInfo: View {
   @StateObject var viewModel: ViewModel
   
   @State private var isActivityPresented = false
@@ -26,13 +26,13 @@ struct NounProfileInfoCard: View {
           CardToolBar(viewModel: viewModel, dismiss: dismiss)
           
           if viewModel.isAuctionSettled || viewModel.isWinnerAnounced {
-            SettledAuctionInfoCard(
+            SettledAuctionInfoSheet(
               viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
             )
             
           } else {
-            LiveAuctionInfoCard(
+            LiveAuctionInfoSheet(
               viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
             )
@@ -60,7 +60,7 @@ struct NounProfileInfoCard: View {
   }
 }
 
-extension NounProfileInfoCard {
+extension NounProfileInfo {
   
   struct CardToolBar: View {
     @ObservedObject var viewModel: ViewModel
@@ -81,7 +81,7 @@ extension NounProfileInfoCard {
   }
 }
 
-extension NounProfileInfoCard {
+extension NounProfileInfo {
   
   struct CardActionsItems: View {
     @Binding var isShareSheetPresented: Bool

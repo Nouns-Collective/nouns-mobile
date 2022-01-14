@@ -9,7 +9,7 @@ import SwiftUI
 import Services
 import UIComponents
 
-struct LiveAuctionInfoCard: View {
+struct LiveAuctionInfoSheet: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var isActivityPresented: Bool
   

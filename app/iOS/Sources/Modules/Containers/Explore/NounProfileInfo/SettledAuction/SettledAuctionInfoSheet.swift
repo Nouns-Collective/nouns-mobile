@@ -9,7 +9,7 @@ import SwiftUI
 import Services
 import UIComponents
 
-struct SettledAuctionInfoCard: View {
+struct SettledAuctionInfoSheet: View {
   @StateObject var viewModel: ViewModel
   @Binding var isActivityPresented: Bool
   

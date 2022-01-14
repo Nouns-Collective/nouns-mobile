@@ -33,13 +33,18 @@ extension NounPlayground {
     @Published private(set) var state: State = .coachmark
     
     private let audioService: AudioService
-    private let offChainNounService: OffChainNounsService
     private let settingsStore: SettingsStore
     
-    init(audioService: AudioService = AudioService(), offChainNounService: OffChainNounsService = AppCore.shared.offChainNounsService, settingsStore: SettingsStore = AppCore.shared.settingsStore) {
+    init(
+      audioService: AudioService = AudioService(),
+      settingsStore: SettingsStore = AppCore.shared.settingsStore
+    ) {
       self.audioService = audioService
-      self.offChainNounService = offChainNounService
       self.settingsStore = settingsStore
+    }
+    
+    deinit {
+      stopListening()
     }
     
     /// Requests the user's permission to use the microphone
@@ -65,19 +70,6 @@ extension NounPlayground {
     /// Toggles the `isRecording` boolean value
     func toggleRecording() {
       isRecording.toggle()
-    }
-    
-    /// Fetch off chain nouns to allow the user to scroll through the noun they want to play with
-    func fetchOffChainNouns() {
-      // This only needs to be called once as a new noun cannot be created
-      // while the user is in the playground experience
-      // As such, there's no need to watch for changes
-      
-      do {
-        nouns = try offChainNounService.fetchNouns(ascending: true)
-      } catch {
-        // Present an error
-      }
     }
     
     /// Updates the setting store with a `true`  value and toggles the bottom sheet presentation boolean value

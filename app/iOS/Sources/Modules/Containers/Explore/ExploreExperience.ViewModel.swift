@@ -16,7 +16,6 @@ extension ExploreExperience {
     @Published var isLoading = false
     
     private let service: OnChainNounsService
-    private var cancellables = Set<AnyCancellable>()
     
     init(service: OnChainNounsService = AppCore.shared.onChainNounsService) {
       self.service = service

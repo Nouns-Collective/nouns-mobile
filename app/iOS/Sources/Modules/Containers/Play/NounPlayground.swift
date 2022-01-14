@@ -12,16 +12,11 @@ import Combine
 import SpriteKit
 
 struct NounPlayground: View {
+  @State var isRecording = false
   
-  @Namespace var animation
-  @Namespace private var typeSelectionNamespace
-
-  @Binding var isPresented: Bool
-  @State var isRecording: Bool = false
-  
+  @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ViewModel()
-  
-  var subscriptions = Set<AnyCancellable>()
+  @Namespace private var typeSelectionNamespace
   
   var body: some View {
     let selectedEffect = Binding(
@@ -65,28 +60,12 @@ struct NounPlayground: View {
     .softNavigationItems(leftAccessory: {
       SoftButton(
         icon: { Image.xmark },
-        action: { isPresented.toggle() })
+        action: { dismiss() })
       
     }, rightAccessory: { EmptyView() })
     .background(Gradient.bubbleGum)
     .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
       AudioPermissionDialog(viewModel: viewModel)
     })
-    .onAppear {
-      // Fetch the off chain nouns the user has created
-      viewModel.fetchOffChainNouns()
-      
-      // Remove coachmark tool after some time
-      if viewModel.state == .coachmark {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-          withAnimation {
-            viewModel.updateState(to: .freestyle)
-          }
-        }
-      }
-    }
-    .onDisappear {
-      viewModel.stopListening()
-    }
   }
 }
