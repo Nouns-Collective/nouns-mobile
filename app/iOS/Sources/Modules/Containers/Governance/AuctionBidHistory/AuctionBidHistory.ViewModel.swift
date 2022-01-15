@@ -19,6 +19,12 @@ extension AuctionBidHistory {
     private let pageLimit = 20
     private let service: OnChainNounsService
     
+    /// Only show the empty placeholder when there are no bids and when the data source is not loading
+    /// This occurs mainly on initial appearance, before any bids have loaded
+    var isEmpty: Bool {
+      bids.isEmpty && !isLoading
+    }
+    
     init(
       auction: Auction,
       service: OnChainNounsService = AppCore.shared.onChainNounsService
