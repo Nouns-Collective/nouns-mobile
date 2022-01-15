@@ -7,6 +7,7 @@
 
 import Foundation
 import Services
+import UIKit
 
 extension OffChainNounProfile {
   
@@ -21,6 +22,9 @@ extension OffChainNounProfile {
     @Published var isDeletePresented: Bool = false
     
     @Published var isShareSheetPresented: Bool = false
+    
+    /// The image of the noun to export and share
+    var shareImage: UIImage?
         
     init(
       noun: Noun,

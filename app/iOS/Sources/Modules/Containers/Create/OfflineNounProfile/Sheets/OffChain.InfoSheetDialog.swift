@@ -43,6 +43,11 @@ extension OffChainNounProfile {
             text: R.string.createNounDialog.actionShare(),
             largeAccessory: { Image.share },
             action: {
+              // Builds the view and generates the image
+              // before the share sheet is presented
+              // to ensure a blank image is not returned
+              let image = NounExportImage(viewModel: viewModel).asImage()
+              viewModel.shareImage = image
               viewModel.isShareSheetPresented.toggle()
             })
             .controlSize(.large)

@@ -22,9 +22,7 @@ struct OffChainNounProfile: View {
   }
   
   @State private var sheetState: SheetState = .info
-  
-  @State private var exportImage: UIImage?
-  
+    
   var body: some View {
     VStack(spacing: 0) {
       // Build & Display the Noun.
@@ -67,10 +65,10 @@ struct OffChainNounProfile: View {
       )
     }
     .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
-    .sheet(isPresented: $viewModel.isShareSheetPresented, onDismiss: {
-      UIImageWriteToSavedPhotosAlbum(NounExportImage(viewModel: viewModel).snapshot(), nil, nil, nil)
-    }) {
-      ShareSheet(activityItems: [NounExportImage(viewModel: viewModel).snapshot()])
+    .sheet(isPresented: $viewModel.isShareSheetPresented) {
+      if let image = viewModel.shareImage {
+        ShareSheet(activityItems: [image], imageMetadata: image, textMetadata: viewModel.noun.name)
+      }
     }
   }
 }
