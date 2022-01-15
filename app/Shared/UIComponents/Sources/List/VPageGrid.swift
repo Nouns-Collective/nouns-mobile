@@ -82,14 +82,3 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
     }
   }
 }
-
-extension View {
-    func hidden(when condition: Bool) -> some View {
-        if condition {
-            return AnyView(self
-                .hidden())
-        } else {
-            return AnyView(self)
-        }
-    }
-}
