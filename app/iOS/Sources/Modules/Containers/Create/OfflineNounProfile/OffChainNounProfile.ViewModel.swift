@@ -20,6 +20,8 @@ extension OffChainNounProfile {
     
     @Published var isDeletePresented: Bool = false
     
+    @Published var isShareSheetPresented: Bool = false
+        
     init(
       noun: Noun,
       service: OffChainNounsService = AppCore.shared.offChainNounsService

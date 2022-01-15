@@ -42,7 +42,9 @@ extension OffChainNounProfile {
           SoftButton(
             text: R.string.createNounDialog.actionShare(),
             largeAccessory: { Image.share },
-            action: { })
+            action: {
+              viewModel.isShareSheetPresented.toggle()
+            })
             .controlSize(.large)
           
           SoftButton(
