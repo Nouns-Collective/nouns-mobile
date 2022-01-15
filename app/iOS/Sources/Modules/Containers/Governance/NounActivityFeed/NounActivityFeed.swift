@@ -16,12 +16,6 @@ struct NounActivityFeed: View {
     GridItem(.flexible(), spacing: 20),
   ]
   
-  /// Only show the empty placeholder when there are no votes and when the data source is not loading
-  /// This occurs mainly on initial appearance, before any votes have loaded
-  private var isEmpty: Bool {
-    viewModel.votes.isEmpty && !viewModel.isLoading
-  }
-  
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       
@@ -48,7 +42,7 @@ struct NounActivityFeed: View {
       .padding()
     }
     .frame(maxWidth: .infinity)
-    .emptyPlaceholder(when: isEmpty, view: {
+    .emptyPlaceholder(when: viewModel.isEmpty, view: {
       ActivityFeedEmptyView(viewModel: viewModel)
     })
     .task {

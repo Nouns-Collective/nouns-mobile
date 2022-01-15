@@ -19,6 +19,12 @@ extension NounActivityFeed {
     private let pageLimit = 20
     private let service: OnChainNounsService
     
+    /// Only show the empty placeholder when there are no votes and when the data source is not loading
+    /// This occurs mainly on initial appearance, before any votes have loaded
+    var isEmpty: Bool {
+      votes.isEmpty && !isLoading
+    }
+    
     init(
       auction: Auction,
       service: OnChainNounsService = AppCore.shared.onChainNounsService

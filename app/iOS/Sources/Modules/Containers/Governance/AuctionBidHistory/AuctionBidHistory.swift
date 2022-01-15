@@ -16,12 +16,6 @@ struct AuctionBidHistory: View {
     GridItem(.flexible(), spacing: 20),
   ]
   
-  /// Only show the empty placeholder when there are no bids and when the data source is not loading
-  /// This occurs mainly on initial appearance, before any bids have loaded
-  private var isEmpty: Bool {
-    viewModel.bids.isEmpty && !viewModel.isLoading
-  }
-  
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       
@@ -48,7 +42,7 @@ struct AuctionBidHistory: View {
     }
     .frame(maxWidth: .infinity)
     .ignoresSafeArea()
-    .emptyPlaceholder(when: isEmpty, view: {
+    .emptyPlaceholder(when: viewModel.isEmpty, view: {
       BidHistoryEmptyView(viewModel: viewModel)
     })
     .task {
