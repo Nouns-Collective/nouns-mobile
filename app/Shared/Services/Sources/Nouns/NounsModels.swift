@@ -42,13 +42,16 @@ public struct Noun: Equatable, Identifiable, Hashable {
   /// The date when the noun was updated.
   public var updatedAt: Date
   
+  public var nounderOwned: Bool
+  
   public init(
     id: String = UUID().uuidString,
     name: String,
     owner: Account,
     seed: Seed,
     createdAt: Date = .now,
-    updatedAt: Date = .now
+    updatedAt: Date = .now,
+    nounderOwned: Bool = false
   ) {
     self.id = id
     self.name = name
@@ -56,6 +59,7 @@ public struct Noun: Equatable, Identifiable, Hashable {
     self.seed = seed
     self.createdAt = createdAt
     self.updatedAt = updatedAt
+    self.nounderOwned = nounderOwned
   }
 }
 
@@ -232,6 +236,7 @@ public struct ProposalVote: Equatable, Identifiable {
 
 /// The Auction
 public struct Auction: Equatable, Decodable, Identifiable {
+  
   /// The Noun's ERC721 token id
   public let id: String
   

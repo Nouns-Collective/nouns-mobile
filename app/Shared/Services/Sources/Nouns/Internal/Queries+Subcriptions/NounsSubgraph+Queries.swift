@@ -9,6 +9,31 @@ import Foundation
 
 internal enum NounsSubgraph {
   
+  internal struct NounQuery: GraphQLPaginatingQuery {
+    internal let url = CloudConfiguration.Nouns.query.url
+    internal let id: String
+    
+    internal var operationDefinition: String {
+      """
+      {
+        nouns(where: {id: "\(id)"}) {
+          id
+          seed {
+            background
+            body
+            accessory
+            head
+            glasses
+          }
+          owner {
+            id
+          }
+        }
+      }
+      """
+    }
+  }
+  
   internal struct NounsQuery: GraphQLPaginatingQuery {
     internal let url = CloudConfiguration.Nouns.query.url
     internal var limit: Int

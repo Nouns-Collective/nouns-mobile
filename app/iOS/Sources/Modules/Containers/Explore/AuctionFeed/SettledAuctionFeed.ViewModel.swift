@@ -22,6 +22,10 @@ extension SettledAuctionFeed {
     private let pageLimit = 20
     private var service: OnChainNounsService
     
+    private var notNounderOwnedCount: Int {
+      auctions.filter { $0.noun.nounderOwned == false }.count
+    }
+    
     init(service: OnChainNounsService = AppCore.shared.onChainNounsService) {
       self.service = service
     }
@@ -42,8 +46,9 @@ extension SettledAuctionFeed {
         // load next batch of the settled auctions from the network.
         let auctions = try await service.fetchAuctions(
           settled: true,
+          includeNounderOwned: true,
           limit: pageLimit,
-          cursor: auctions.count
+          cursor: notNounderOwnedCount
         )
         
         shouldLoadMore = auctions.hasNext

@@ -26,6 +26,8 @@ public protocol OnChainNounsService: AnyObject {
   /// - Returns: The total amount stored of `Ether + staked Ether in Lido`.
   func fetchTreasury() async throws -> String
   
+  func fetchNoun(withId id: String) async throws -> Noun?
+  
   /// Asynchronously fetches the list of the settled Nouns from the chain.
   ///
   /// - Parameters:
@@ -39,11 +41,12 @@ public protocol OnChainNounsService: AnyObject {
   ///
   /// - Parameters:
   ///   - settled: Whether or not the auction has been settled.
+  ///   - includeNounderOwned: Whether or not to include nouns owned by nounders (every 10th noun)
   ///   - limit: A limit up to the  `n` elements from the list.
   ///   - cursor: A cursor for use in pagination.
   ///
   /// - Returns: A list of `Auction` type  instance or throw an error.
-  func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]>
+  func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]>
   
   /// An asynchronous sequence that  produce the live auction and
   /// react to its properties changes
@@ -158,10 +161,18 @@ public class TheGraphNounsProvider: OnChainNounsService {
     return String(ethValue + stEthValue)
   }
   
+  public func fetchNoun(withId id: String) async throws -> Noun? {
+    let query = NounsSubgraph.NounQuery(id: id)
+    let noun: Page<[Noun]> = try await graphQLClient.fetch(
+      query,
+      cachePolicy: .returnCacheDataAndFetch
+    )
+    return noun.data.first
+  }
+  
   public func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> Page<[Noun]> {
-    let query = NounsSubgraph.NounsQuery(limit: limit, skip: cursor)
-    let page = try await pageProvider.page(
-      Noun.self,
+    let query = NounsSubgraph.NounsQuery(first: limit, skip: cursor)
+    let page: Page<[Noun]> = try await graphQLClient.fetch(
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
@@ -169,15 +180,38 @@ public class TheGraphNounsProvider: OnChainNounsService {
     return page
   }
   
-  public func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]> {
-    let query = NounsSubgraph.AutionsQuery(settled: settled, limit: limit, skip: cursor)
-    let page = try await pageProvider.page(
-      Auction.self,
+  public func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int) async throws -> [Auction] {
+
+    // Deduct the expected number of nounder owned nouns if `includeNounderOwned` is set to true
+    let auctionLimit = limit - (includeNounderOwned ? limit / 10 : 0)
+    let query = NounsSubgraph.AuctionsQuery(settled: settled, first: auctionLimit, skip: cursor)
+    
+    let page: Page<[Auction]> = try await graphQLClient.fetch(
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-
-    return page
+    
+    var auctions = page.data
+    
+    if includeNounderOwned, let lastNoun = auctions.first?.noun, let lastNounId = Int(lastNoun.id) {
+      let nounderOwnedIds = ((lastNounId - limit)...lastNounId).filter { $0 % 10 == 0 }.map { String($0) }
+      
+      print("DEBUGGANG (lastNounId - limit): \((lastNounId - limit)) and lastNounId: \(lastNounId)")
+      print("DEBUGGANG nounderOwnedIds: \(nounderOwnedIds)")
+      print("----------------")
+      
+      for id in nounderOwnedIds {
+        guard var noun = try await fetchNoun(withId: id) else {
+          continue
+        }
+        
+        noun.nounderOwned = true
+        let auction = Auction(id: noun.id, noun: noun, amount: "N/A", startTime: .zero, endTime: .zero, settled: true, bidder: noun.owner)
+        auctions.append(auction)
+      }
+    }
+    
+    return Array(auctions.sorted { Int($0.noun.id)! > Int($1.noun.id)! })
   }
   
   public func settledAuctionsDidChange() -> AsyncStream<Auction> {
@@ -191,6 +225,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
             
             guard let auction = try await self.fetchAuctions(
               settled: true,
+              includeNounderOwned: false,
               limit: 1,
               cursor: 0
             ).data.first else {

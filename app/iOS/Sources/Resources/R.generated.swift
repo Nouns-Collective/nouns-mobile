@@ -153,7 +153,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 41 images.
+  /// This `R.image` struct is generated, and contains static references to 51 images.
   struct image {
     /// Image `confetti-10`.
     static let confetti10 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-10")
@@ -179,6 +179,14 @@ struct R: Rswift.Validatable {
     static let createNounPizza = Rswift.ImageResource(bundle: R.hostingBundle, name: "create-noun-pizza")
     /// Image `explore-onboarding`.
     static let exploreOnboarding = Rswift.ImageResource(bundle: R.hostingBundle, name: "explore-onboarding")
+    /// Image `eyes-blink-1`.
+    static let eyesBlink1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-1")
+    /// Image `eyes-blink-2`.
+    static let eyesBlink2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-2")
+    /// Image `eyes-blink-3`.
+    static let eyesBlink3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-3")
+    /// Image `eyes-blink-4`.
+    static let eyesBlink4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-4")
     /// Image `eyes-blink_1`.
     static let eyesBlink_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_1")
     /// Image `eyes-blink_2`.
@@ -189,6 +197,18 @@ struct R: Rswift.Validatable {
     static let eyesBlink_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_4")
     /// Image `eyes-blink_5`.
     static let eyesBlink_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_5")
+    /// Image `eyes-shift-1`.
+    static let eyesShift1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-1")
+    /// Image `eyes-shift-2`.
+    static let eyesShift2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-2")
+    /// Image `eyes-shift-3`.
+    static let eyesShift3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-3")
+    /// Image `eyes-shift-4`.
+    static let eyesShift4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-4")
+    /// Image `eyes-shift-5`.
+    static let eyesShift5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-5")
+    /// Image `eyes-shift-6`.
+    static let eyesShift6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-6")
     /// Image `eyes-shift_0`.
     static let eyesShift_0 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_0")
     /// Image `eyes-shift_1`.
@@ -203,6 +223,14 @@ struct R: Rswift.Validatable {
     static let eyesShift_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_5")
     /// Image `eyes-shift_6`.
     static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
+    /// Image `head-ape-mouth-1`.
+    static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
+    /// Image `head-ape-mouth-2`.
+    static let headApeMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-2")
+    /// Image `head-ape-mouth-3`.
+    static let headApeMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-3")
+    /// Image `head-ape-mouth-4`.
+    static let headApeMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-4")
     /// Image `head-ape-mouth_1`.
     static let headApeMouth_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth_1")
     /// Image `head-ape-mouth_2`.
@@ -219,14 +247,6 @@ struct R: Rswift.Validatable {
     static let nounLogo = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun-logo")
     /// Image `noun`.
     static let noun = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun")
-    /// Image `onboarding-create-background`.
-    static let onboardingCreateBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-create-background")
-    /// Image `onboarding-explore-background`.
-    static let onboardingExploreBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-explore-background")
-    /// Image `onboarding-noun-background`.
-    static let onboardingNounBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-noun-background")
-    /// Image `onboarding-play-background`.
-    static let onboardingPlayBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-play-background")
     /// Image `pizza-noun`.
     static let pizzaNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "pizza-noun")
     /// Image `placeholder-ens`.
@@ -323,6 +343,34 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-1", bundle: ..., traitCollection: ...)`
+    static func eyesBlink1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-2", bundle: ..., traitCollection: ...)`
+    static func eyesBlink2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-3", bundle: ..., traitCollection: ...)`
+    static func eyesBlink3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-4", bundle: ..., traitCollection: ...)`
+    static func eyesBlink4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "eyes-blink_1", bundle: ..., traitCollection: ...)`
     static func eyesBlink_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_1, compatibleWith: traitCollection)
@@ -354,6 +402,48 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-blink_5", bundle: ..., traitCollection: ...)`
     static func eyesBlink_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-1", bundle: ..., traitCollection: ...)`
+    static func eyesShift1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-2", bundle: ..., traitCollection: ...)`
+    static func eyesShift2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-3", bundle: ..., traitCollection: ...)`
+    static func eyesShift3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-4", bundle: ..., traitCollection: ...)`
+    static func eyesShift4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-5", bundle: ..., traitCollection: ...)`
+    static func eyesShift5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-6", bundle: ..., traitCollection: ...)`
+    static func eyesShift6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift6, compatibleWith: traitCollection)
     }
     #endif
 
@@ -403,6 +493,34 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-shift_6", bundle: ..., traitCollection: ...)`
     static func eyesShift_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesShift_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-1", bundle: ..., traitCollection: ...)`
+    static func headApeMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-2", bundle: ..., traitCollection: ...)`
+    static func headApeMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-3", bundle: ..., traitCollection: ...)`
+    static func headApeMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth-4", bundle: ..., traitCollection: ...)`
+    static func headApeMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth4, compatibleWith: traitCollection)
     }
     #endif
 
@@ -459,34 +577,6 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "noun-logo", bundle: ..., traitCollection: ...)`
     static func nounLogo(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.nounLogo, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-create-background", bundle: ..., traitCollection: ...)`
-    static func onboardingCreateBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingCreateBackground, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-explore-background", bundle: ..., traitCollection: ...)`
-    static func onboardingExploreBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingExploreBackground, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-noun-background", bundle: ..., traitCollection: ...)`
-    static func onboardingNounBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingNounBackground, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-play-background", bundle: ..., traitCollection: ...)`
-    static func onboardingPlayBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingPlayBackground, compatibleWith: traitCollection)
     }
     #endif
 
