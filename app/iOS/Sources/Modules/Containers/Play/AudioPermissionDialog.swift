@@ -29,6 +29,7 @@ extension NounPlayground {
           text: R.string.audioPermissionDialog.enable(),
           largeAccessory: { Image.pointRight.standard },
           action: {
+            viewModel.requestMicrophonePermission()
           })
           .controlSize(.large)
         

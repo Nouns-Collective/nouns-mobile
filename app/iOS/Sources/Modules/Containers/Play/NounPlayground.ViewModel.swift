@@ -27,20 +27,18 @@ extension NounPlayground {
     }
     
     @Published private(set) var showAudioPermissionDialog = false
-    @Published private(set) var selectedEffect: AudioService.AudioEffect = .alien
-    @Published private(set) var isRecording: Bool = false
-    @Published private(set) var nouns: [Noun] = []
+    @Published private(set) var selectedEffect: VoiceChangerEffect = .alien
+    @Published private(set) var isRecording = false
     @Published private(set) var state: State = .coachmark
     
-    private let audioService: AudioService
-    private let settingsStore: SettingsStore
+    private let voiceChangerEngine: VoiceChangerEngine
     
-    init(
-      audioService: AudioService = AudioService(),
-      settingsStore: SettingsStore = AppCore.shared.settingsStore
-    ) {
-      self.audioService = audioService
-      self.settingsStore = settingsStore
+    init(voiceChangerEngine: VoiceChangerEngine = AVVoiceChangerEngine()) {
+      self.voiceChangerEngine = voiceChangerEngine
+      
+      if voiceChangerEngine.recordPermission == .undetermined {
+        showAudioPermissionDialog = true
+      }
     }
     
     deinit {
@@ -48,22 +46,30 @@ extension NounPlayground {
     }
     
     /// Requests the user's permission to use the microphone
-    func requestMicrophonePermission(completion: @escaping (Bool, Error?) -> Void) {
-      audioService.requestPermission(completion: completion)
+    @MainActor
+    func requestMicrophonePermission() {
+      Task {
+        do {
+          let isGranted = try await voiceChangerEngine.requestRecordPermission()
+          
+          showAudioPermissionDialog = false
+          
+        } catch { }
+      }
     }
     
     /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
     func startListening() {
-      audioService.startListening()
+//      voiceChangerEngine.startListening()
     }
     
     /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
     func stopListening() {
-      audioService.stopListening()
+      voiceChangerEngine.stopListening()
     }
     
     /// Updates the currently selected effect
-    func updateEffect(to effect: AudioService.AudioEffect) {
+    func updateEffect(to effect: VoiceChangerEffect) {
       selectedEffect = effect
     }
     
@@ -80,6 +86,22 @@ extension NounPlayground {
     /// Updates the view state to a new state
     func updateState(to newState: State) {
       state = newState
+    }
+  }
+}
+
+extension VoiceChangerEffect {
+  
+  var icon: Image {
+    switch self {
+    case .robot:
+      return Image.robot
+    case .alien:
+      return Image.alien
+    case .chipmunk:
+      return Image.chipmunk
+    case .monster:
+      return Image.monster
     }
   }
 }

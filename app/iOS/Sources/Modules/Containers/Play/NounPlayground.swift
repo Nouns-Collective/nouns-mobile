@@ -18,10 +18,17 @@ struct NounPlayground: View {
   @StateObject private var viewModel = ViewModel()
   @Namespace private var typeSelectionNamespace
   
+  var nounPlayScene: PlayScene {
+    let scene = PlayScene(viewModel: viewModel, size: CGSize(width: 320, height: 320))
+    scene.scaleMode = .fill
+    scene.view?.showsFPS = false
+    return scene
+  }
+  
   var body: some View {
     let selectedEffect = Binding(
       get: { viewModel.selectedEffect.rawValue },
-      set: { viewModel.updateEffect(to: AudioService.AudioEffect(rawValue: $0) ?? .alien) }
+      set: { viewModel.updateEffect(to: VoiceChangerEffect(rawValue: $0) ?? .alien) }
     )
     
     VStack(spacing: 50) {
@@ -32,29 +39,26 @@ struct NounPlayground: View {
       
       Spacer()
       
-      if let noun = viewModel.nouns.first {
-        NounPuzzle(seed: noun.seed)
-          .padding()
-          .offset(y: -70)
-      }
-     
+      SpriteView(scene: nounPlayScene, options: [.allowsTransparency])
+        .frame(width: 320, height: 320)
+      
       Spacer()
       
       OutlinePicker(selection: selectedEffect) {
-        ForEach(AudioService.AudioEffect.allCases, id: \.self) { effect in
+        ForEach(VoiceChangerEffect.allCases, id: \.self) { effect in
           effect.icon
             .frame(width: 40)
             .pickerItemTag(effect.rawValue, namespace: typeSelectionNamespace)
         }
       }
       .padding(.bottom, 20)
-      .emptyPlaceholder(when: viewModel.state == .coachmark) {
-        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
-          Image.pointRight.white
-            .rotationEffect(.degrees(-75))
-        })
-          .padding(.bottom, 60)
-      }
+//      .emptyPlaceholder(when: viewModel.state == .coachmark) {
+//        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
+//          Image.pointRight.white
+//            .rotationEffect(.degrees(-75))
+//        })
+//          .padding(.bottom, 60)
+//      }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .softNavigationItems(leftAccessory: {
