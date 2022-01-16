@@ -46,8 +46,8 @@ extension OffChainNounProfile {
               // Builds the view and generates the image
               // before the share sheet is presented
               // to ensure a blank image is not returned
-              let image = NounExportImage(viewModel: viewModel).asImage()
-              viewModel.shareImage = image
+              let imageData = NounExportImage(viewModel: viewModel).asImageData()
+              viewModel.exportImageData = imageData
               viewModel.isShareSheetPresented.toggle()
             })
             .controlSize(.large)

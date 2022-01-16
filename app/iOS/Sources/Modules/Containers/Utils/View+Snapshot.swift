@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-  func asImage() -> UIImage {
+  func asImageData() -> Data {
     let controller = UIHostingController(rootView: self)
     let view = controller.view
     
@@ -18,8 +18,8 @@ extension View {
     
     let renderer = UIGraphicsImageRenderer(size: targetSize)
     
-    return renderer.image { _ in
+    return renderer.jpegData(withCompressionQuality: 1.0, actions: { _ in
       view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-    }
+    })
   }
 }

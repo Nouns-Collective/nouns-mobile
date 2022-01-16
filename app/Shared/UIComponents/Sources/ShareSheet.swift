@@ -9,6 +9,7 @@ import SwiftUI
 import LinkPresentation
 
 public struct ShareSheet: UIViewControllerRepresentable {
+  
   public typealias Callback = (
     _ activityType: UIActivity.ActivityType?,
     _ completed: Bool,
@@ -94,15 +95,15 @@ internal class ShareActivityMetadataSource: NSObject, UIActivityItemSource {
     
     // Temporarily save image locally to retrieve file size and metadata
     // Create a URL in the /tmp directory
-    guard let imageURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(title).png") else {
+    guard let imageURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(title).jpeg") else {
         return linkMetaData
     }
 
-    let pngData = image.pngData()
-    try? pngData?.write(to: imageURL)
+    let jpgData = image.jpegData(compressionQuality: 1.0)
+    try? jpgData?.write(to: imageURL)
 
     // Subtitle with file size
-    let prefix = "PNG Image"
+    let prefix = "JPEG Image"
 
     let fileSizeResourceValue = try? imageURL.resourceValues(forKeys: [.fileSizeKey])
     

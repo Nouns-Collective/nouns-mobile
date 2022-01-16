@@ -66,8 +66,8 @@ struct OffChainNounProfile: View {
     }
     .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
     .sheet(isPresented: $viewModel.isShareSheetPresented) {
-      if let image = viewModel.shareImage {
-        ShareSheet(activityItems: [image], imageMetadata: image, textMetadata: viewModel.noun.name)
+      if let imageData = viewModel.exportImageData, let image = UIImage(data: imageData) {
+        ShareSheet(activityItems: [image], imageMetadata: image, titleMetadata: viewModel.noun.name)
       }
     }
   }
