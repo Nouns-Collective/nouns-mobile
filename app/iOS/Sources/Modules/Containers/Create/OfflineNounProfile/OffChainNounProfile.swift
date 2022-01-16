@@ -81,7 +81,7 @@ struct OffChainNounProfile_Previews: PreviewProvider {
 
 extension OffChainNounProfile {
 
-  struct NounExportImage: View {
+  struct NounExportView: View {
     
     @ObservedObject var viewModel: ViewModel
     

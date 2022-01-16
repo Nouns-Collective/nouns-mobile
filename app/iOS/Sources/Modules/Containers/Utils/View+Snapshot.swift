@@ -8,6 +8,8 @@
 import SwiftUI
 
 extension View {
+  
+  /// Converts a SwiftUI view into image data
   func asImageData() -> Data {
     let controller = UIHostingController(rootView: self)
     let view = controller.view
