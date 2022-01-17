@@ -15,6 +15,7 @@ extension AuctionBidHistory {
     
     @Published var bids = [Bid]()
     @Published var isLoading = false
+    @Published var shouldLoadMore = true
     
     private let pageLimit = 20
     private let service: OnChainNounsService
@@ -42,11 +43,17 @@ extension AuctionBidHistory {
       do {
         isLoading = true
         
-        bids += try await service.fetchBids(
+        let bids = try await service.fetchBids(
           for: auction.noun.id,
              limit: pageLimit,
              after: bids.count
         )
+        
+        if bids.isEmpty {
+          shouldLoadMore = false
+        }
+        
+        self.bids += bids
         
       } catch { }
       

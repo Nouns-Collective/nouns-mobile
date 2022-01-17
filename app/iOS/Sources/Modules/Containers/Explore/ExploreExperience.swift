@@ -22,6 +22,8 @@ struct ExploreExperience: View {
         VStack(spacing: 20) {
           if let auction = viewModel.liveAuction {
             LiveAuctionCard(viewModel: .init(auction: auction))
+          } else {
+            LiveAuctionCardPlaceholder()
           }
           
           SettledAuctionFeed()
