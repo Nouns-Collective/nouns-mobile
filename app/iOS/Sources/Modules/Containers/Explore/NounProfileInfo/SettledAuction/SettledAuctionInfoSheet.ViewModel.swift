@@ -8,7 +8,7 @@
 import Foundation
 import Services
 
-extension SettledAuctionInfoCard {
+extension SettledAuctionInfoSheet {
   
   class ViewModel: ObservableObject {
     @Published private(set) var winner: String
@@ -27,7 +27,7 @@ extension SettledAuctionInfoCard {
       nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
       
       let startDate = Date(timeIntervalSince1970: auction.startTime)
-      birthdate = R.string.nounProfile.birthday(startDate.formatted())
+      birthdate = R.string.nounProfile.birthday(startDate.formatted(dateStyle: .long))
     }
   }
 }

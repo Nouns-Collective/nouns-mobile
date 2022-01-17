@@ -153,7 +153,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 38 images.
+  /// This `R.image` struct is generated, and contains static references to 40 images.
   struct image {
     /// Image `confetti-10`.
     static let confetti10 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-10")
@@ -179,34 +179,38 @@ struct R: Rswift.Validatable {
     static let createNounPizza = Rswift.ImageResource(bundle: R.hostingBundle, name: "create-noun-pizza")
     /// Image `explore-onboarding`.
     static let exploreOnboarding = Rswift.ImageResource(bundle: R.hostingBundle, name: "explore-onboarding")
-    /// Image `eyes-blink-1`.
-    static let eyesBlink1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-1")
-    /// Image `eyes-blink-2`.
-    static let eyesBlink2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-2")
-    /// Image `eyes-blink-3`.
-    static let eyesBlink3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-3")
-    /// Image `eyes-blink-4`.
-    static let eyesBlink4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-4")
-    /// Image `eyes-shift-1`.
-    static let eyesShift1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-1")
-    /// Image `eyes-shift-2`.
-    static let eyesShift2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-2")
-    /// Image `eyes-shift-3`.
-    static let eyesShift3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-3")
-    /// Image `eyes-shift-4`.
-    static let eyesShift4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-4")
-    /// Image `eyes-shift-5`.
-    static let eyesShift5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-5")
-    /// Image `eyes-shift-6`.
-    static let eyesShift6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-6")
-    /// Image `head-ape-mouth-1`.
-    static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
-    /// Image `head-ape-mouth-2`.
-    static let headApeMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-2")
-    /// Image `head-ape-mouth-3`.
-    static let headApeMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-3")
-    /// Image `head-ape-mouth-4`.
-    static let headApeMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-4")
+    /// Image `eyes-blink_1`.
+    static let eyesBlink_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_1")
+    /// Image `eyes-blink_2`.
+    static let eyesBlink_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_2")
+    /// Image `eyes-blink_3`.
+    static let eyesBlink_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_3")
+    /// Image `eyes-blink_4`.
+    static let eyesBlink_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_4")
+    /// Image `eyes-blink_5`.
+    static let eyesBlink_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_5")
+    /// Image `eyes-shift_1`.
+    static let eyesShift_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_1")
+    /// Image `eyes-shift_2`.
+    static let eyesShift_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_2")
+    /// Image `eyes-shift_3`.
+    static let eyesShift_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_3")
+    /// Image `eyes-shift_4`.
+    static let eyesShift_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_4")
+    /// Image `eyes-shift_5`.
+    static let eyesShift_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_5")
+    /// Image `eyes-shift_6`.
+    static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
+    /// Image `head-ape-mouth_1`.
+    static let headApeMouth_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth_1")
+    /// Image `head-ape-mouth_2`.
+    static let headApeMouth_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth_2")
+    /// Image `head-ape-mouth_3`.
+    static let headApeMouth_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth_3")
+    /// Image `head-ape-mouth_4`.
+    static let headApeMouth_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth_4")
+    /// Image `head-ape-mouth_5`.
+    static let headApeMouth_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth_5")
     /// Image `home-slice-chat`.
     static let homeSliceChat = Rswift.ImageResource(bundle: R.hostingBundle, name: "home-slice-chat")
     /// Image `noun-logo`.
@@ -317,100 +321,114 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-1", bundle: ..., traitCollection: ...)`
-    static func eyesBlink1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink1, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-blink_1", bundle: ..., traitCollection: ...)`
+    static func eyesBlink_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink_1, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-2", bundle: ..., traitCollection: ...)`
-    static func eyesBlink2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink2, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-blink_2", bundle: ..., traitCollection: ...)`
+    static func eyesBlink_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink_2, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-3", bundle: ..., traitCollection: ...)`
-    static func eyesBlink3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink3, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-blink_3", bundle: ..., traitCollection: ...)`
+    static func eyesBlink_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink_3, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-4", bundle: ..., traitCollection: ...)`
-    static func eyesBlink4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink4, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-blink_4", bundle: ..., traitCollection: ...)`
+    static func eyesBlink_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink_4, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-1", bundle: ..., traitCollection: ...)`
-    static func eyesShift1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift1, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-blink_5", bundle: ..., traitCollection: ...)`
+    static func eyesBlink_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlink_5, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-2", bundle: ..., traitCollection: ...)`
-    static func eyesShift2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift2, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-shift_1", bundle: ..., traitCollection: ...)`
+    static func eyesShift_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_1, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-3", bundle: ..., traitCollection: ...)`
-    static func eyesShift3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift3, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-shift_2", bundle: ..., traitCollection: ...)`
+    static func eyesShift_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_2, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-4", bundle: ..., traitCollection: ...)`
-    static func eyesShift4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift4, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-shift_3", bundle: ..., traitCollection: ...)`
+    static func eyesShift_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_3, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-5", bundle: ..., traitCollection: ...)`
-    static func eyesShift5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift5, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-shift_4", bundle: ..., traitCollection: ...)`
+    static func eyesShift_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_4, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-6", bundle: ..., traitCollection: ...)`
-    static func eyesShift6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift6, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-shift_5", bundle: ..., traitCollection: ...)`
+    static func eyesShift_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_5, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headApeMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth1, compatibleWith: traitCollection)
+    /// `UIImage(named: "eyes-shift_6", bundle: ..., traitCollection: ...)`
+    static func eyesShift_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_6, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headApeMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth2, compatibleWith: traitCollection)
+    /// `UIImage(named: "head-ape-mouth_1", bundle: ..., traitCollection: ...)`
+    static func headApeMouth_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth_1, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headApeMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth3, compatibleWith: traitCollection)
+    /// `UIImage(named: "head-ape-mouth_2", bundle: ..., traitCollection: ...)`
+    static func headApeMouth_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth_2, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headApeMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth4, compatibleWith: traitCollection)
+    /// `UIImage(named: "head-ape-mouth_3", bundle: ..., traitCollection: ...)`
+    static func headApeMouth_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth_4", bundle: ..., traitCollection: ...)`
+    static func headApeMouth_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "head-ape-mouth_5", bundle: ..., traitCollection: ...)`
+    static func headApeMouth_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.headApeMouth_5, compatibleWith: traitCollection)
     }
     #endif
 

@@ -10,28 +10,12 @@ import Services
 
 extension PlayExperience {
   
-  @MainActor
-  final class ViewModel: ObservableObject {
+  class ViewModel: ObservableObject {
+    @Published var seed: Seed
     
-    /// Boolean value for whether the user has created any offline nouns
-    @Published private(set) var hasCreatedNouns: Bool = false
-    
-    private let offChainNounsService: OffChainNounsService
-    
-    init(offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService) {
-      self.offChainNounsService = offChainNounsService
+    init() {
+      seed = Seed(background: 0, glasses: 8, head: 26, body: 20, accessory: 0)
     }
-        
-    func checkOfflineNouns() async {
-      do {
-        for try await nouns in offChainNounsService.nounsStoreDidChange(ascendingOrder: false) {
-          hasCreatedNouns = nouns.count > 0
-        }
-      } catch {
-        //
-      }
-    }
-    
-    // TODO: - Implement blinking animation logic
   }
+  
 }

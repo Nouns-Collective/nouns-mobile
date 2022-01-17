@@ -8,7 +8,7 @@
 import Foundation
 import Services
 
-extension LiveAuctionInfoCard {
+extension LiveAuctionInfoSheet {
   
   class ViewModel: ObservableObject {
     @Published private(set) var birthdate: String
@@ -27,7 +27,7 @@ extension LiveAuctionInfoCard {
       remainingTime = timeLeft ?? R.string.shared.notApplicable()
       
       let startDate = Date(timeIntervalSince1970: auction.startTime)
-      birthdate = R.string.nounProfile.birthday(startDate.formatted())
+      birthdate = R.string.nounProfile.birthday(startDate.formatted(dateStyle: .long))
     }
     
     private static func formatTimeLeft(_ components: DateComponents) -> String? {

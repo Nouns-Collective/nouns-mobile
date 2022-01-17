@@ -61,7 +61,7 @@ struct LiveAuctionCard: View {
         showNounProfile.toggle()
       }
       .fullScreenCover(isPresented: $showNounProfile) {
-        NounProfileInfoCard(viewModel: .init(auction: viewModel.auction))
+        NounProfileInfo(viewModel: .init(auction: viewModel.auction))
       }
   }
 }

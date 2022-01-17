@@ -11,7 +11,6 @@ import UIComponents
 extension NounPlayground {
   
   struct AudioPermissionDialog: View {
-    
     @ObservedObject var viewModel: ViewModel
     
     @Environment(\.dismiss) private var dismiss
@@ -30,22 +29,7 @@ extension NounPlayground {
           text: R.string.audioPermissionDialog.enable(),
           largeAccessory: { Image.pointRight.standard },
           action: {
-            // Request permission to use microphone
-            viewModel.requestMicrophonePermission { success, error in
-              if success {
-                withAnimation {
-                  viewModel.didEnableAudioPermissions()
-                }
-                
-                viewModel.startListening()
-              } else {
-                dismiss()
-                
-                if let error = error {
-                  print("Error: \(error)")
-                }
-              }
-            }
+            viewModel.requestMicrophonePermission()
           })
           .controlSize(.large)
         

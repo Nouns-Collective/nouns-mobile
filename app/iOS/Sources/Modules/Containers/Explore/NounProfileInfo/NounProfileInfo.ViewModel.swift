@@ -8,7 +8,7 @@
 import Foundation
 import Services
 
-extension NounProfileInfoCard {
+extension NounProfileInfo {
   
   class ViewModel: ObservableObject {
     @Published private(set) var title: String
