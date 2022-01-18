@@ -13,50 +13,28 @@ struct NounPuzzle: View {
   
   @Environment(\.nounComposer) private var nounComposer: NounComposer
   
-  private var headImage: String = ""
-  
-  private var bodyImage: String = ""
-  
-  private var glassesImage: String = ""
-  
-  private var accessoryImage: String = ""
+  private var traits: [String] = []
   
   init(seed: Seed) {
-    self.headImage = nounComposer.heads[seed.head].assetImage
-    self.bodyImage = nounComposer.bodies[seed.body].assetImage
-    self.glassesImage = nounComposer.glasses[seed.glasses].assetImage
-    self.accessoryImage = nounComposer.accessories[seed.accessory].assetImage
+    traits = [
+      nounComposer.heads[seed.head].assetImage,
+      nounComposer.bodies[seed.body].assetImage,
+      nounComposer.glasses[seed.glasses].assetImage,
+      nounComposer.accessories[seed.accessory].assetImage,
+    ]
   }
   
-  init(
-    head: String,
-    body: String,
-    glasses: String,
-    accessory: String
-  ) {
-    self.headImage = head
-    self.bodyImage = body
-    self.glassesImage = glasses
-    self.accessoryImage = accessory
+  init(head: String, body: String, glasses: String, accessory: String) {
+    traits = [head, body, glasses, accessory]
   }
   
   public var body: some View {
     ZStack {
-      Image(nounTraitName: headImage)
-        .interpolation(.none)
-        .resizable()
-      
-      Image(nounTraitName: bodyImage)
-        .interpolation(.none)
-        .resizable()
-      
-      Image(nounTraitName: glassesImage)
-        .interpolation(.none)
-        .resizable()
-      
-      Image(nounTraitName: accessoryImage)
-        .interpolation(.none)
-        .resizable()
+      ForEach(traits, id: \.self) {
+        Image(nounTraitName: $0)
+          .interpolation(.none)
+          .resizable()
+      }
     }
     .scaledToFit()
   }

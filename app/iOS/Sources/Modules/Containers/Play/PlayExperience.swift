@@ -21,11 +21,7 @@ struct PlayExperience: View {
         Text(R.string.play.subheadline())
           .font(.custom(.regular, size: 17))
         
-        NounPuzzle(
-          head: AppCore.shared.nounComposer.heads[26].assetImage,
-          body: AppCore.shared.nounComposer.bodies[20].assetImage,
-          glasses: AppCore.shared.nounComposer.glasses[8].assetImage,
-          accessory: AppCore.shared.nounComposer.accessories[0].assetImage)
+        NounPuzzle(seed: viewModel.seed)
         
         OutlineButton(
           text: R.string.play.proceedTitle(),
@@ -35,24 +31,16 @@ struct PlayExperience: View {
         
         Spacer()
       }
-      .onAppear(perform: {
-        Task {
-          await viewModel.checkOfflineNouns()
-        }
-      })
       .padding(.horizontal, 20)
       .padding(.bottom, tabBarHeight)
-      // Extra padding between the bottom of the last noun card and the top of the tab view
+      // Extra padding between the bottom of the last noun
+      // card and the top of the tab view.
       .padding(.bottom, 20)
       .softNavigationTitle(R.string.play.title())
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
       .fullScreenCover(isPresented: $isPlayPresented) {
-        if viewModel.hasCreatedNouns {
-          AnyView(NounPlayground(isPresented: $isPlayPresented))
-        } else {
-          AnyView(PlayMissingNounView(isPresented: $isPlayPresented))
-        }
+        NounPlayground()
       }
     }
   }

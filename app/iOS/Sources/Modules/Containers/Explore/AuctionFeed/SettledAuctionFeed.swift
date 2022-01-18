@@ -45,7 +45,7 @@ struct SettledAuctionFeed: View {
         selectedAuction = nil
         
       }, content: { auction in
-        NounProfileInfoCard(viewModel: .init(auction: auction))
+        NounProfileInfo(viewModel: .init(auction: auction))
       })
   }
 }
