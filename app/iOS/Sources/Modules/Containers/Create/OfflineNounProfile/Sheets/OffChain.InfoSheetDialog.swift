@@ -42,7 +42,14 @@ extension OffChainNounProfile {
           SoftButton(
             text: R.string.createNounDialog.actionShare(),
             largeAccessory: { Image.share },
-            action: { })
+            action: {
+              // Builds the view and generates the image
+              // before the share sheet is presented
+              // to ensure a blank image is not returned
+              let imageData = NounExportView(viewModel: viewModel).asImageData()
+              viewModel.exportImageData = imageData
+              viewModel.isShareSheetPresented.toggle()
+            })
             .controlSize(.large)
           
           SoftButton(
