@@ -45,7 +45,7 @@ extension NounCreator {
             // Trait selection
             ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
               
-              TraitCollectionSection(items: type.traits) { trait, index in
+              TraitCollectionSection(type: type, items: type.traits) { trait, index in
                 TraitPickerItem(image: trait.assetImage)
                   .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
@@ -55,10 +55,13 @@ extension NounCreator {
                   // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                   .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
               }
+              .onAppear {
+                viewModel.currentModifiableTraitType = type
+              }
             }
             
             // Gradient background selection
-            TraitCollectionSection(items: Gradient.allGradients) { gradient, index in
+            TraitCollectionSection(type: .background, items: Gradient.allGradients) { gradient, index in
               
               GradientPickerItem(colors: gradient)
                 .selected(viewModel.isSelected(index, traitType: .background))
@@ -69,10 +72,13 @@ extension NounCreator {
                 // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
+            .onAppear {
+              viewModel.currentModifiableTraitType = .background
+            }
           }
           .padding(.vertical, 12)
           .padding(.trailing)
-          .onChange(of: viewModel.currentModifiableTraitType, perform: { newTrait in
+          .onReceive(viewModel.tapPublisher, perform: { newTrait in
             withAnimation {
               // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
               proxy.scrollTo(traitFirstIndexID(newTrait), anchor: .leading)

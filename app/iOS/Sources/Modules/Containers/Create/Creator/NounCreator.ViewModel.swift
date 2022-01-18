@@ -7,6 +7,7 @@
 
 import Foundation
 import Services
+import Combine
 
 extension NounCreator {
   
@@ -33,6 +34,12 @@ extension NounCreator {
       case body
       case background
     }
+    
+    var tapPublisher: AnyPublisher<TraitType, Never> {
+        tapSubject.eraseToAnyPublisher()
+    }
+
+    private let tapSubject = PassthroughSubject<TraitType, Never>()
     
     /// The `Seed` in build progress.
     @Published var seed: Seed = {
@@ -181,6 +188,11 @@ extension NounCreator {
       } catch {
         print("Error: \(error)")
       }
+    }
+    
+    func didTap(trait: TraitType) {
+      currentModifiableTraitType = trait
+      tapSubject.send(trait)
     }
   }
 }
