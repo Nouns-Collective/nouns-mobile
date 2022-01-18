@@ -62,5 +62,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To save images of created nouns</string>
 </dict>
 </plist>

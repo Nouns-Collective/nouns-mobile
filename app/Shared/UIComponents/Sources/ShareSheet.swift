@@ -95,12 +95,21 @@ internal class ShareActivityMetadataSource: NSObject, UIActivityItemSource {
     
     // Temporarily save image locally to retrieve file size and metadata
     // Create a URL in the /tmp directory
-    guard let imageURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(title).jpeg") else {
-        return linkMetaData
-    }
+    let filename = UUID().uuidString
+    var imageURL = URL(fileURLWithPath: NSTemporaryDirectory())
+    imageURL.appendPathComponent(filename)
+    imageURL.appendPathExtension("jpeg")
 
-    let jpgData = image.jpegData(compressionQuality: 1.0)
-    try? jpgData?.write(to: imageURL)
+    guard let jpgData = image.jpegData(compressionQuality: 1.0) else {
+      print("🛑 Could not get jpgData from image: \(image)")
+      return linkMetaData
+    }
+    
+    do {
+      try jpgData.write(to: imageURL)
+    } catch {
+      print("🛑 Could not create a temporary file at the directory: \(imageURL.absoluteString)")
+    }
 
     // Subtitle with file size
     let prefix = "JPEG Image"

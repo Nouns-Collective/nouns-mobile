@@ -1,13 +1,13 @@
 //
-//  View+Snapshot.swift
-//  Nouns
+//  File.swift
+//  
 //
-//  Created by Mohammed Ibrahim on 2022-01-15.
+//  Created by Mohammed Ibrahim on 2022-01-17.
 //
 
 import SwiftUI
 
-extension View {
+public extension View {
   
   /// Converts a SwiftUI view into image data
   func asImageData() -> Data {
@@ -25,3 +25,4 @@ extension View {
     })
   }
 }
+
