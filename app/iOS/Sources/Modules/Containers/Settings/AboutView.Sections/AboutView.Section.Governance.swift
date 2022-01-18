@@ -27,7 +27,14 @@ extension GovernanceInfoSection {
       Task {
         do {
           let balance = try await onChainNouns.fetchTreasury()
-          treasury = EtherFormatter.eth(from: balance) ?? "..."
+          
+          guard let ethBalance = EtherFormatter.eth(from: balance),
+                let numericalBalance = Double(ethBalance) else {
+                  treasury = "..."
+                  return
+          }
+          
+          treasury = String(format: "%.0f", round(numericalBalance))
           
         } catch { }
       }

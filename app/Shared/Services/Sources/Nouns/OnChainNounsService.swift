@@ -126,16 +126,18 @@ public class TheGraphNounsProvider: OnChainNounsService {
   
   private func stEthTreasury() async throws -> BigUInt {
     try await withCheckedThrowingContinuation { continuation in
-      ethereumClient.eth_getBalance(
-        address: EthereumAddress(Address.stEthDAOExecutor),
-        block: .Latest
-      ) { error, balance in
+      let function = ERC20Functions.balanceOf(contract: EthereumAddress(Address.stEthDAOExecutor),account: EthereumAddress(Address.ethDAOExecutor))
+      
+      function.call(
+        withClient: ethereumClient,
+        responseType: ERC20Responses.balanceResponse.self
+      ) { error, balanceResponse in
         if let error = error {
           return continuation.resume(throwing: error)
         }
         
-        if let balance = balance {
-          continuation.resume(returning: balance)
+        if let balanceResponse = balanceResponse {
+          continuation.resume(returning: balanceResponse.value)
         }
       }
     }
@@ -145,6 +147,9 @@ public class TheGraphNounsProvider: OnChainNounsService {
     async let eth = ethTreasury()
     async let stEth = stEthTreasury()
     
+    // To match the nouns.wtf website, eth and stEth are compared as a
+    // 1:1 ratio and as such are added together without conversion.
+    // The precise value is slightly different
     let (ethValue, stEthValue) = try await (eth, stEth)
     return String(ethValue + stEthValue)
   }
