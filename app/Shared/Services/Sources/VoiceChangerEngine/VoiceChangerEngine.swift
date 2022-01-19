@@ -75,7 +75,7 @@ public class VoiceChangerEngine: ObservableObject {
     outputFormat = AVAudioFormat(
       commonFormat: .pcmFormatFloat32,
       sampleRate: inputFormat.sampleRate,
-      channels: 1,
+      channels: 2,
       interleaved: true
     )
   }
