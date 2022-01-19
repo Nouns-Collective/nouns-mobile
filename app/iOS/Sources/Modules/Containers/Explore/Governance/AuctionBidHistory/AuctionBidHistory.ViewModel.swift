@@ -49,11 +49,9 @@ extension AuctionBidHistory {
              after: bids.count
         )
         
-        if bids.isEmpty {
-          shouldLoadMore = false
-        }
+        shouldLoadMore = bids.hasNext
         
-        self.bids += bids
+        self.bids += bids.data
         
       } catch { }
       

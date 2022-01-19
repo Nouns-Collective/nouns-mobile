@@ -46,11 +46,9 @@ extension SettledAuctionFeed {
           cursor: auctions.count
         )
         
-        if auctions.isEmpty {
-          shouldLoadMore = false
-        }
-                
-        self.auctions += auctions
+        shouldLoadMore = auctions.hasNext
+                        
+        self.auctions += auctions.data
         
       } catch { }
       

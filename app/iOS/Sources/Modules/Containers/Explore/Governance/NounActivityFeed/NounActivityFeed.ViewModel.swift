@@ -49,11 +49,9 @@ extension NounActivityFeed {
              after: votes.count
         )
         
-        if votes.isEmpty {
-          shouldLoadMore = false
-        }
+        shouldLoadMore = votes.hasNext
         
-        self.votes = votes
+        self.votes = votes.data
         
       } catch { }
       

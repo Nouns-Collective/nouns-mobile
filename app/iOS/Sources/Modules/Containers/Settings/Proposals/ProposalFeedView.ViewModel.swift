@@ -29,7 +29,7 @@ extension ProposalFeedView {
           proposals += try await onChainNounsService.fetchProposals(
             limit: pageLimit,
             after: proposals.count
-          )
+          ).data
           
         } catch { }
         
