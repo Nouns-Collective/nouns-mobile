@@ -40,6 +40,7 @@ struct NounCreator: View {
     }
     .modifier(AccessoryItems(viewModel: viewModel, done: {
       withAnimation {
+        viewModel.toggleConfetti()
         viewModel.setMode(to: .done)
       }
     }, cancel: {
@@ -60,5 +61,13 @@ struct NounCreator: View {
       DiscardNounCreatorSheet(viewModel: viewModel)
     })
     .background(GradientView(GradientColors.allCases[viewModel.seed.background]))
+    .overlay {
+      EmitterView()
+        .zIndex(100)
+        .scaleEffect(viewModel.showConfetti ? 1 : 0, anchor: .top)
+        .opacity(viewModel.showConfetti && !viewModel.finishedConfetti ? 1 : 0)
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
+    }
   }
 }

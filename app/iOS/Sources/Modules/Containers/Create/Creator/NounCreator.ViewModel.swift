@@ -7,6 +7,7 @@
 
 import Foundation
 import Services
+import SwiftUI
 
 extension NounCreator {
   
@@ -56,6 +57,13 @@ extension NounCreator {
     
     /// Inidicates the current state of the user while creating their noun.
     @Published var mode: Mode = .creating
+    
+    /// Indiicates whether or not to show the confetti overlay, triggered after finishing the creation of a noun
+    @Published private(set) var showConfetti: Bool = false
+    
+    /// A seperate boolean for showing/hiding the confetti in order to hide the confetti first before scaling it down
+    @Published private(set) var finishedConfetti: Bool = false
+
     
     private let offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService
     
@@ -180,6 +188,26 @@ extension NounCreator {
         try offChainNounsService.store(noun: Noun(name: nounName, owner: Account(), seed: seed))
       } catch {
         print("Error: \(error)")
+      }
+    }
+    
+    /// Toggles the confetti view
+    func toggleConfetti() {
+      showConfetti = true
+
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        self.hideConfetti()
+      }
+    }
+    
+    private func hideConfetti() {
+      withAnimation(.easeIn(duration: 1.5)) {
+        self.finishedConfetti = true
+      }
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        self.finishedConfetti = false
+        self.showConfetti = false
       }
     }
   }
