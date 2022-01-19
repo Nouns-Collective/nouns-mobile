@@ -17,11 +17,13 @@ struct ProposalStatusChip: View {
   }
   
   private var state: ChipLabel.State {
-    switch proposal.status {
+    switch proposal.detailedStatus {
     case .pending:
       return .pending
-    case .active:
-      return proposal.isDefeated ? .defeated : .succeeded
+    case .defeated:
+      return .defeated
+    case .succeeded:
+      return .succeeded
     case .cancelled:
       return .cancelled
     case .vetoed:

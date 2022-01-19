@@ -123,6 +123,17 @@ public enum ProposalStatus: String, Decodable {
   case executed = "EXECUTED"
 }
 
+public enum ProposalDetailedStatus: String {
+  case pending
+  case cancelled
+  case vetoed
+  case queued
+  case executed
+  
+  case defeated
+  case succeeded
+}
+
 /// The Proposal.
 public struct Proposal: Equatable {
   
@@ -157,6 +168,25 @@ public struct Proposal: Equatable {
   /// A boolean value to determine if this proposal is defeated
   public var isDefeated: Bool {
     quorumVotes > forVotes || againstVotes >= forVotes
+  }
+  
+  /// A more accurate user-facing proposal status, in line with how the Nouns website displays proposal status
+  /// The `active` status is replaced in favour of a specific succeeded or defeated status
+  public var detailedStatus: ProposalDetailedStatus {
+    switch status {
+    case .pending:
+      return .pending
+    case .active:
+      return isDefeated ? .defeated : .succeeded
+    case .cancelled:
+      return .cancelled
+    case .vetoed:
+      return .vetoed
+    case .queued:
+      return .queued
+    case .executed:
+      return .executed
+    }
   }
 }
 
