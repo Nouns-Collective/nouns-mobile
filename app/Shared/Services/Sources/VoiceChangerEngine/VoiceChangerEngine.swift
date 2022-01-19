@@ -161,8 +161,8 @@ public class VoiceChangerEngine: ObservableObject {
   // MARK: - Effects
   
   private func applyEffect(file: AVAudioFile) {
-    
     recordedFilePlayer.scheduleFile(file, at: nil) { [weak self] in
+      // Define a buffer to not record right after the player is stopped.
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
         self?.state = .idle
       }
