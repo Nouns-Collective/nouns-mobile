@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import BigInt
 
 /// Pagination.
 public struct Page<T> where T: Decodable {
@@ -136,6 +137,39 @@ public struct Proposal: Equatable {
   
   /// Status of the proposal.
   public let status: ProposalStatus
+  
+  /// Votes associated with this proposal
+  public let votes: [ProposalVote]
+  
+  /// The required number of votes for quorum at the time of proposal creation
+  public let quorumVotes: Int
+
+  /// The amount of votes in favour of this proposal
+  public var forVotes: Int {
+    votes.filter { $0.support == true }.map { $0.votes }.reduce(0, +)
+  }
+
+  /// The amount of votes against this proposal
+  public var againstVotes: Int {
+    votes.filter { $0.support == false }.map { $0.votes }.reduce(0, +)
+  }
+  
+  /// A boolean value to determine if this proposal is defeated
+  public var isDefeated: Bool {
+    quorumVotes > forVotes || againstVotes >= forVotes
+  }
+}
+
+public struct ProposalVote: Equatable, Identifiable {
+  
+  /// Delegate ID + Proposal ID
+  public let id: String
+  
+  /// Whether the vote is in favour of the proposal
+  public let support: Bool
+  
+  /// Amount of votes in favour or against expressed as a BigInt normalized value for the Nouns ERC721 Token
+  public let votes: Int
 }
 
 /// The Auction

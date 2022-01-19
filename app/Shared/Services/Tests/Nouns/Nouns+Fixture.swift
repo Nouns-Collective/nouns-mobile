@@ -121,7 +121,9 @@ extension Proposal {
       id: "14",
       title: "setProposalThresholdBPS(50)",
       description: "# setProposalThresholdBPS(50)\n\n===thank you for your consideration ",
-      status: .queued
+      status: .queued,
+      votes: [],
+      quorumVotes: 0
     )
   }()
 }
