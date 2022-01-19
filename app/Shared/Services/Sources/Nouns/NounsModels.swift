@@ -123,6 +123,7 @@ public enum ProposalStatus: String, Decodable {
   case executed = "EXECUTED"
 }
 
+/// A proposal status that provides more details and logic to match the website's display status
 public enum ProposalDetailedStatus: String {
   case pending
   case cancelled
@@ -130,8 +131,40 @@ public enum ProposalDetailedStatus: String {
   case queued
   case executed
   
+  case expired
+  
   case defeated
   case succeeded
+  
+  static func status(from proposal: Proposal) -> ProposalDetailedStatus {
+    switch proposal.status {
+    case .pending:
+      return .pending
+    case .active:
+      // Active proposals are displayed as either succeeded or defeated
+      return proposal.isDefeated ? .defeated : .succeeded
+    case .cancelled:
+      return .cancelled
+    case .vetoed:
+      return .vetoed
+    case .queued:
+      // Proposals that are queued are considered expired if two weeks after the executionETA has passed
+      if let executionETA = proposal.executionETA {
+        var dateComponents = DateComponents()
+        dateComponents.weekOfYear = 2 // For removing one day (yesterday): -1
+        if let expiryDate = Calendar.current.date(byAdding: dateComponents, to: Date(timeIntervalSince1970: executionETA)) {
+          let currentDate = Date()
+          
+          if currentDate > expiryDate {
+            return .expired
+          }
+        }
+      }
+      return .queued
+    case .executed:
+      return .executed
+    }
+  }
 }
 
 /// The Proposal.
@@ -154,6 +187,9 @@ public struct Proposal: Equatable {
   
   /// The required number of votes for quorum at the time of proposal creation
   public let quorumVotes: Int
+  
+  /// Once the proposal is queued for execution it will have an ETA of the execution
+  public let executionETA: TimeInterval?
 
   /// The amount of votes in favour of this proposal
   public var forVotes: Int {
@@ -173,20 +209,7 @@ public struct Proposal: Equatable {
   /// A more accurate user-facing proposal status, in line with how the Nouns website displays proposal status
   /// The `active` status is replaced in favour of a specific succeeded or defeated status
   public var detailedStatus: ProposalDetailedStatus {
-    switch status {
-    case .pending:
-      return .pending
-    case .active:
-      return isDefeated ? .defeated : .succeeded
-    case .cancelled:
-      return .cancelled
-    case .vetoed:
-      return .vetoed
-    case .queued:
-      return .queued
-    case .executed:
-      return .executed
-    }
+    ProposalDetailedStatus.status(from: self)
   }
 }
 

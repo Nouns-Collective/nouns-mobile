@@ -19,5 +19,11 @@ extension Proposal: Decodable {
     
     let quorumVotesAsString = try container.decode(String.self, forKey: AnyCodingKey("quorumVotes"))
     quorumVotes = Int(quorumVotesAsString) ?? 0
+    
+    if let executionETAAsString = try container.decodeIfPresent(String.self, forKey: AnyCodingKey("executionETA")) {
+      executionETA = try TimeIntervalDecoder.timeInterval(executionETAAsString, decoder)
+    } else {
+      executionETA = nil
+    }
   }
 }

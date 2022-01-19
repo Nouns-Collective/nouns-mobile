@@ -58,6 +58,7 @@ internal enum NounsSubgraph {
                 support
                 votes
               }
+              executionETA
             }
           }
         }
@@ -121,6 +122,7 @@ internal enum NounsSubgraph {
               support
               votes
             }
+            executionETA
           }
         }
       """

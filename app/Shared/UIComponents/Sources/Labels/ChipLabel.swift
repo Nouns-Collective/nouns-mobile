@@ -18,6 +18,7 @@ public struct ChipLabel: View {
     case vetoed
     case queued
     case executed
+    case expired
     
     /// States that follow a proposal that has not yet progressed past quorum
     case defeated
@@ -72,12 +73,14 @@ extension ChipLabel.State {
       return .xmark
     case .succeeded:
       return .check
+    case .expired:
+      return .queued
     }
   }
   
   fileprivate var foregroundColor: Color {
     switch self {
-    case .queued:
+    case .queued, .expired:
       return .componentNounsBlack.opacity(0.5)
     default:
       return .white
@@ -102,6 +105,8 @@ extension ChipLabel.State {
       return .componentSoftCherry
     case .succeeded:
       return .green
+    case .expired:
+      return .componentNounsBlack.opacity(0.22)
     }
   }
 }
