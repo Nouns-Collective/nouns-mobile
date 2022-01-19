@@ -16,10 +16,10 @@ struct NounPlayground: View {
   
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ViewModel()
-  @Namespace private var typeSelectionNamespace
+  @Namespace private var nsTypeSelection
   
-  var nounPlayScene: PlayScene {
-    let scene = PlayScene(viewModel: viewModel, size: CGSize(width: 320, height: 320))
+  private var playScene: PlayScene {
+    let scene = PlayScene(size: CGSize(width: 320, height: 320))
     scene.scaleMode = .fill
     scene.view?.showsFPS = false
     return scene
@@ -39,16 +39,16 @@ struct NounPlayground: View {
       
       Spacer()
       
-      SpriteView(scene: nounPlayScene, options: [.allowsTransparency])
+      SpriteView(scene: playScene, options: [.allowsTransparency])
         .frame(width: 320, height: 320)
       
       Spacer()
       
       OutlinePicker(selection: selectedEffect) {
-        ForEach(VoiceChangerEffect.allCases, id: \.self) { effect in
-          effect.icon
+        ForEach(viewModel.effects.indices, id: \.self) { index in
+          viewModel.effects[index]
             .frame(width: 40)
-            .pickerItemTag(effect.rawValue, namespace: typeSelectionNamespace)
+            .pickerItemTag(index, namespace: nsTypeSelection)
         }
       }
       .padding(.bottom, 20)
@@ -71,5 +71,9 @@ struct NounPlayground: View {
     .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
       AudioPermissionDialog(viewModel: viewModel)
     })
+    .onChange(of: viewModel.dismissPlayExperience) { newValue in
+      guard newValue else { return }
+      dismiss()
+    }
   }
 }

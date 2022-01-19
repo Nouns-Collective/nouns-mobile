@@ -67,9 +67,3 @@ struct OffChainNounProfile: View {
     .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
   }
 }
-
-struct OffChainNounProfile_Previews: PreviewProvider {
-  static var previews: some View {
-    OffChainNounProfile(viewModel: .init(noun: Noun(name: "Test", owner: Account(), seed: Seed(background: 1, glasses: 2, head: 3, body: 4, accessory: 5))))
-  }
-}

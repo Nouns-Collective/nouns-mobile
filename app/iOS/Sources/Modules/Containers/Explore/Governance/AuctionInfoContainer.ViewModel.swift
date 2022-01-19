@@ -8,7 +8,7 @@
 import Foundation
 import Services
 
-extension AuctionInfoContainer {
+extension AuctionInfo {
   
   /// The type of pages available.
   enum Page: Int, Hashable {

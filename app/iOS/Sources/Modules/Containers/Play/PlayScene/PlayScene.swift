@@ -18,17 +18,6 @@ extension NounPlayground {
       return noun
     }()
     
-    private let viewModel: ViewModel
-    
-    init(viewModel: ViewModel, size: CGSize) {
-      self.viewModel = viewModel
-      super.init(size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
-    }
-    
     override func didMove(to view: SKView) {
       setUpInitialState()
     }

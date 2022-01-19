@@ -153,7 +153,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 40 images.
+  /// This `R.image` struct is generated, and contains static references to 41 images.
   struct image {
     /// Image `confetti-10`.
     static let confetti10 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-10")
@@ -189,6 +189,8 @@ struct R: Rswift.Validatable {
     static let eyesBlink_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_4")
     /// Image `eyes-blink_5`.
     static let eyesBlink_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_5")
+    /// Image `eyes-shift_0`.
+    static let eyesShift_0 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_0")
     /// Image `eyes-shift_1`.
     static let eyesShift_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_1")
     /// Image `eyes-shift_2`.
@@ -352,6 +354,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-blink_5", bundle: ..., traitCollection: ...)`
     static func eyesBlink_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift_0", bundle: ..., traitCollection: ...)`
+    static func eyesShift_0(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_0, compatibleWith: traitCollection)
     }
     #endif
 

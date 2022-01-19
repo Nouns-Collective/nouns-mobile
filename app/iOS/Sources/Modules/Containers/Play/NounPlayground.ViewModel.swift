@@ -29,20 +29,38 @@ extension NounPlayground {
     @Published private(set) var showAudioPermissionDialog = false
     @Published private(set) var selectedEffect: VoiceChangerEffect = .alien
     @Published private(set) var isRecording = false
+    @Published private(set) var isSpeaking = false
     @Published private(set) var state: State = .coachmark
+    @Published private(set) var dismissPlayExperience = false
+    
+    private(set) lazy var effects: [Image] = {
+      [.robot, .alien, .chipmunk, .monster]
+    }()
     
     private let voiceChangerEngine: VoiceChangerEngine
     
     init(voiceChangerEngine: VoiceChangerEngine = AVVoiceChangerEngine()) {
       self.voiceChangerEngine = voiceChangerEngine
       
-      if voiceChangerEngine.recordPermission == .undetermined {
-        showAudioPermissionDialog = true
-      }
+      handleRecordPermission()
     }
     
     deinit {
       stopListening()
+    }
+    
+    private func handleRecordPermission() {
+      switch voiceChangerEngine.recordPermission {
+      case .undetermined:
+        showAudioPermissionDialog = true
+        
+      case .granted:
+        showAudioPermissionDialog = false
+        startListening()
+        
+      case .denied:
+        dismissPlayExperience = true
+      }
     }
     
     /// Requests the user's permission to use the microphone
@@ -50,9 +68,8 @@ extension NounPlayground {
     func requestMicrophonePermission() {
       Task {
         do {
-          let isGranted = try await voiceChangerEngine.requestRecordPermission()
-          
-          showAudioPermissionDialog = false
+          try await voiceChangerEngine.requestRecordPermission()
+          handleRecordPermission()
           
         } catch { }
       }
@@ -60,7 +77,9 @@ extension NounPlayground {
     
     /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
     func startListening() {
-//      voiceChangerEngine.startListening()
+      do {
+        try voiceChangerEngine.startListening()
+      } catch { }
     }
     
     /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
@@ -78,30 +97,9 @@ extension NounPlayground {
       isRecording.toggle()
     }
     
-    /// Updates the setting store with a `true`  value and toggles the bottom sheet presentation boolean value
-    func didEnableAudioPermissions() {
-      showAudioPermissionDialog.toggle()
-    }
-    
     /// Updates the view state to a new state
     func updateState(to newState: State) {
       state = newState
-    }
-  }
-}
-
-extension VoiceChangerEffect {
-  
-  var icon: Image {
-    switch self {
-    case .robot:
-      return Image.robot
-    case .alien:
-      return Image.alien
-    case .chipmunk:
-      return Image.chipmunk
-    case .monster:
-      return Image.monster
     }
   }
 }
