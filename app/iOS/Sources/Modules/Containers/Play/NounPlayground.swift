@@ -27,8 +27,8 @@ struct NounPlayground: View {
   
   var body: some View {
     let selectedEffect = Binding(
-      get: { viewModel.selectedEffect.rawValue },
-      set: { viewModel.updateEffect(to: VoiceChangerEffect(rawValue: $0) ?? .alien) }
+      get: { viewModel.currentEffect.rawValue },
+      set: { viewModel.updateEffect(to: VoiceChangerEngine.Effect(rawValue: $0) ?? .alien) }
     )
     
     VStack(spacing: 50) {

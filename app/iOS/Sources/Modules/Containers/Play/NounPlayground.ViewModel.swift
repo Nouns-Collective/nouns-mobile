@@ -27,9 +27,7 @@ extension NounPlayground {
     }
     
     @Published private(set) var showAudioPermissionDialog = false
-    @Published private(set) var selectedEffect: VoiceChangerEffect = .alien
     @Published private(set) var isRecording = false
-    @Published private(set) var isSpeaking = false
     @Published private(set) var state: State = .coachmark
     @Published private(set) var dismissPlayExperience = false
     
@@ -39,7 +37,11 @@ extension NounPlayground {
     
     private let voiceChangerEngine: VoiceChangerEngine
     
-    init(voiceChangerEngine: VoiceChangerEngine = AVVoiceChangerEngine()) {
+    public var currentEffect: VoiceChangerEngine.Effect {
+      voiceChangerEngine.effect
+    }
+    
+    init(voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine()) {
       self.voiceChangerEngine = voiceChangerEngine
       
       handleRecordPermission()
@@ -78,18 +80,18 @@ extension NounPlayground {
     /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
     func startListening() {
       do {
-        try voiceChangerEngine.startListening()
+        try voiceChangerEngine.prepare()
       } catch { }
     }
     
     /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
     func stopListening() {
-      voiceChangerEngine.stopListening()
+      voiceChangerEngine.stop()
     }
     
     /// Updates the currently selected effect
-    func updateEffect(to effect: VoiceChangerEffect) {
-      selectedEffect = effect
+    func updateEffect(to effect: VoiceChangerEngine.Effect) {
+      voiceChangerEngine.setEffect(to: effect)
     }
     
     /// Toggles the `isRecording` boolean value

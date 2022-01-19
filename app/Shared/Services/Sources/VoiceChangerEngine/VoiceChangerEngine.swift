@@ -87,15 +87,31 @@ public class VoiceChangerEngine: ObservableObject {
   /// Prepares the engine to configure all inputs and outputs for
   /// recording, then apply the selected effect.
   public func prepare() throws {
+    guard recordPermission == .granted else {
+      print("🎤🛑 User hasn't granted microphone recording permissions")
+      return
+    }
+    
     // It's needed to stop and reset the audio engine before
     // creating a new one to avoid crashing & consider the new configuration.
     stop()
+    
+//    configureAudioSession()
     
     try prepareAudioEngineToRecord()
     prepareAudioEngine(forEffect: effect)
     
     audioEngine.prepare()
     try audioEngine.start()
+  }
+  
+  private func configureAudioSession() {
+    do {
+      try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: .defaultToSpeaker)
+      try AVAudioSession.sharedInstance().setActive(true)
+    } catch {
+      print("Error: \(error)")
+    }
   }
   
   /// Stops the engine & removes all inputs.
@@ -160,6 +176,10 @@ public class VoiceChangerEngine: ObservableObject {
   
   // MARK: - Effects
   
+  public func setEffect(to effect: Effect) {
+    self.effect = effect
+  }
+  
   private func applyEffect(file: AVAudioFile) {
     recordedFilePlayer.scheduleFile(file, at: nil) { [weak self] in
       // Define a buffer to not record right after the player is stopped.
@@ -214,4 +234,3 @@ public class VoiceChangerEngine: ObservableObject {
     return fileURL
   }
 }
-
