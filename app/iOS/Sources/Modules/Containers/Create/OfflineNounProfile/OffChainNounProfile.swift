@@ -22,7 +22,7 @@ struct OffChainNounProfile: View {
   }
   
   @State private var sheetState: SheetState = .info
-  
+    
   var body: some View {
     VStack(spacing: 0) {
       // Build & Display the Noun.
@@ -65,11 +65,10 @@ struct OffChainNounProfile: View {
       )
     }
     .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
-  }
-}
-
-struct OffChainNounProfile_Previews: PreviewProvider {
-  static var previews: some View {
-    OffChainNounProfile(viewModel: .init(noun: Noun(name: "Test", owner: Account(), seed: Seed(background: 1, glasses: 2, head: 3, body: 4, accessory: 5))))
+    .sheet(isPresented: $viewModel.isShareSheetPresented) {
+      if let imageData = viewModel.exportImageData, let image = UIImage(data: imageData) {
+        ShareSheet(activityItems: [image], imageMetadata: image, titleMetadata: viewModel.noun.name)
+      }
+    }
   }
 }

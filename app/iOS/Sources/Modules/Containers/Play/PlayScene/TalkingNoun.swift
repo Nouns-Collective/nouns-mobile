@@ -8,11 +8,18 @@
 import Foundation
 import SpriteKit
 
-enum TalkingNounAnimationType: String {
-  case talk
-}
-
 class TalkingNoun: SKSpriteNode {
+  
+  enum State: String {
+    case idle
+    case lipSync
+  }
+  
+  var state: State = .idle {
+    didSet {
+      handleStateChanges()
+    }
+  }
   
   private lazy var eyes: Eyes = {
     let eyes = Eyes()
@@ -35,16 +42,25 @@ class TalkingNoun: SKSpriteNode {
   
   private func setUpInitialState() {
     addChild(eyes)
-    
-    eyes.startBlinking()
   }
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func startTalking() {
-    guard action(forKey: TalkingNounAnimationType.talk.rawValue) == nil else {
+  private func handleStateChanges() {
+    switch state {
+    case .idle:
+      eyes.state = .idle
+      idle()
+    case .lipSync:
+      eyes.state = .active
+      lipSync()
+    }
+  }
+  
+  private func lipSync() {
+    guard action(forKey: State.lipSync.rawValue) == nil else {
       return
     }
     
@@ -56,10 +72,10 @@ class TalkingNoun: SKSpriteNode {
     )
     
     let repeatAction = SKAction.repeatForever(animation)
-    run(repeatAction, withKey: TalkingNounAnimationType.talk.rawValue)
+    run(repeatAction, withKey: State.lipSync.rawValue)
   }
   
-  func stopTalking() {
-    removeAction(forKey: TalkingNounAnimationType.talk.rawValue)
+  private func idle() {
+    removeAction(forKey: State.lipSync.rawValue)
   }
 }

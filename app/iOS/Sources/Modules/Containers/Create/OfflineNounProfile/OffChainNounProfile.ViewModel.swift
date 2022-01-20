@@ -20,6 +20,11 @@ extension OffChainNounProfile {
     
     @Published var isDeletePresented: Bool = false
     
+    @Published var isShareSheetPresented: Bool = false
+    
+    /// The image data of the noun to export and share
+    var exportImageData: Data?
+        
     init(
       noun: Noun,
       service: OffChainNounsService = AppCore.shared.offChainNounsService

@@ -8,7 +8,7 @@
 import SwiftUI
 import UIComponents
 
-struct AuctionInfoContainer: View {
+struct AuctionInfo: View {
   @StateObject var viewModel: ViewModel
   
   @Namespace private var pickerNamespace

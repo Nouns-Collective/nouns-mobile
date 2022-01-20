@@ -153,7 +153,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 40 images.
+  /// This `R.image` struct is generated, and contains static references to 41 images.
   struct image {
     /// Image `confetti-10`.
     static let confetti10 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-10")
@@ -189,6 +189,8 @@ struct R: Rswift.Validatable {
     static let eyesBlink_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_4")
     /// Image `eyes-blink_5`.
     static let eyesBlink_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_5")
+    /// Image `eyes-shift_0`.
+    static let eyesShift_0 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_0")
     /// Image `eyes-shift_1`.
     static let eyesShift_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_1")
     /// Image `eyes-shift_2`.
@@ -352,6 +354,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-blink_5", bundle: ..., traitCollection: ...)`
     static func eyesBlink_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift_0", bundle: ..., traitCollection: ...)`
+    static func eyesShift_0(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShift_0, compatibleWith: traitCollection)
     }
     #endif
 
@@ -1653,7 +1662,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.play` struct is generated, and contains static references to 7 localization keys.
+    /// This `R.string.play` struct is generated, and contains static references to 8 localization keys.
     struct play {
       /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
       static let createNounTitle = Rswift.StringResource(key: "create.noun.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -1669,6 +1678,8 @@ struct R: Rswift.Validatable {
       static let playgroundTitle = Rswift.StringResource(key: "playground.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Swipe to pick a noun
       static let chooseCoachmark = Rswift.StringResource(key: "choose.coachmark", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: sup home slice
+      static let speechBubble = Rswift.StringResource(key: "speech.bubble", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
       static func createNounTitle(preferredLanguages: [String]? = nil) -> String {
@@ -1759,6 +1770,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("choose.coachmark", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: sup home slice
+      static func speechBubble(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("speech.bubble", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "speech.bubble"
+        }
+
+        return NSLocalizedString("speech.bubble", tableName: "Play", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
