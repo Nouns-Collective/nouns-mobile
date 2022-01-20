@@ -21,41 +21,6 @@ public struct Page<T> where T: Decodable {
   public var hasNext: Bool = true
 }
 
-/// A service to run queries, construct a `Page` of the desired return type, as well the `cursor` and `hasNext` properties
-public class PageProvider {
-  
-  private var graphQLClient: GraphQL
-  
-  public init(graphQLClient: GraphQL) {
-    self.graphQLClient = graphQLClient
-  }
-  
-  public func page<Query, T>(_ returnType: T.Type, _ query: Query, cachePolicy: CachePolicy) async throws -> Page<[T]> where Query: GraphQLPaginatingQuery, T: Decodable {
-    
-    // Query intended page
-    var page: Page<[T]> = try await graphQLClient.fetch(
-      query,
-      cachePolicy: .returnCacheDataAndFetch
-    )
-    page.cursor = page.data.count + query.skip
-    
-    // Query next page (just one item is necessary) to see if it has more data
-    var nextPageQuery = query
-    nextPageQuery.skip = page.cursor
-    nextPageQuery.limit = 1
-    
-    let nextPage: Page<[T]> = try await graphQLClient.fetch(
-      nextPageQuery,
-      cachePolicy: .returnCacheDataAndFetch
-    )
-    
-    // Set `hasNext` of previous page based on contents of next page
-    page.hasNext = !nextPage.data.isEmpty
-    
-    return page
-  }
-}
-
 /// The Noun
 public struct Noun: Equatable, Identifiable, Hashable {
   
