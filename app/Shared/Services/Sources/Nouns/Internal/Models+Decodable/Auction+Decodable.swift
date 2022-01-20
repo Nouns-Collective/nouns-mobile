@@ -20,23 +20,7 @@ extension Auction {
     let startTimeAsString = try container.decode(String.self, forKey: AnyCodingKey("startTime"))
     let endTimeAsString = try container.decode(String.self, forKey: AnyCodingKey("endTime"))
     
-    startTime = try Self.timeInterval(startTimeAsString, decoder)
-    endTime = try Self.timeInterval(endTimeAsString, decoder)
-  }
-  
-  private static func timeInterval(
-    _ timeIntervalAsString: String,
-    _ decoder: Decoder
-  ) throws -> TimeInterval {
-    
-    guard let timeInterval = TimeInterval(timeIntervalAsString) else {
-      let context = DecodingError.Context(
-        codingPath: decoder.codingPath,
-        debugDescription: "Encoded payload not convertible to an TimeInterval")
-      
-      throw DecodingError.dataCorrupted(context)
-    }
-    
-    return timeInterval
+    startTime = try TimeIntervalDecoder.timeInterval(startTimeAsString, decoder)
+    endTime = try TimeIntervalDecoder.timeInterval(endTimeAsString, decoder)
   }
 }

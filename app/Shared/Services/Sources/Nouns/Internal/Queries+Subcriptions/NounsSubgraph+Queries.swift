@@ -52,6 +52,13 @@ internal enum NounsSubgraph {
               id
               description
               status
+              quorumVotes
+              votes {
+                id
+                support
+                votes
+              }
+              executionETA
             }
           }
         }
@@ -109,6 +116,13 @@ internal enum NounsSubgraph {
             id
             description
             status
+            quorumVotes
+            votes {
+              id
+              support
+              votes
+            }
+            executionETA
           }
         }
       """

@@ -13,15 +13,17 @@ struct ProposalStatusChip: View {
   let proposal: Proposal
   
   private var title: String {
-    proposal.status.rawValue.capitalized
+    state.rawValue.capitalized
   }
   
   private var state: ChipLabel.State {
-    switch proposal.status {
+    switch proposal.detailedStatus {
     case .pending:
       return .pending
-    case .active:
-      return .active
+    case .defeated:
+      return .defeated
+    case .succeeded:
+      return .succeeded
     case .cancelled:
       return .cancelled
     case .vetoed:
@@ -30,6 +32,8 @@ struct ProposalStatusChip: View {
       return .queued
     case .executed:
       return .executed
+    case .expired:
+      return .expired
     }
   }
   
