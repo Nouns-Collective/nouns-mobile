@@ -176,6 +176,7 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         if let calloutText = calloutText {
           Label(title: {
             Text(calloutText)
+              .lineLimit(1)
               .font(.custom(.medium, relativeTo: .subheadline))
               .truncationMode(.middle)
           }, icon: {
