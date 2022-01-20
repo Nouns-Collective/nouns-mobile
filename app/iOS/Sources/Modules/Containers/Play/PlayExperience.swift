@@ -21,13 +21,23 @@ struct PlayExperience: View {
         Text(R.string.play.subheadline())
           .font(.custom(.regular, size: 17))
         
-        NounPuzzle(seed: viewModel.seed)
+        VStack(spacing: 0) {
+          VStack(spacing: -40) {
+            SpeechBubble(R.string.play.speechBubble())
+            
+            Image(R.image.pizzaNoun.name)
+              .resizable()
+              .scaledToFit()
+          }
         
-        OutlineButton(
-          text: R.string.play.proceedTitle(),
-          largeAccessory: { Image.fingergunsRight },
-          action: { isPlayPresented.toggle() })
-          .controlSize(.large)
+          OutlineButton(
+            text: R.string.play.proceedTitle(),
+            largeAccessory: { Image.fingergunsRight },
+            action: { isPlayPresented.toggle() })
+            .controlSize(.large)
+        }
+        .padding(.top, 40)
+        .padding(.horizontal, 20)
         
         Spacer()
       }

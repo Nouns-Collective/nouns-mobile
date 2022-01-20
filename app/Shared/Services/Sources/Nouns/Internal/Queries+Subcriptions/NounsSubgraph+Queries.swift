@@ -9,15 +9,15 @@ import Foundation
 
 internal enum NounsSubgraph {
   
-  internal struct NounsQuery: GraphQLQuery {
+  internal struct NounsQuery: GraphQLPaginatingQuery {
     internal let url = CloudConfiguration.Nouns.query.url
-    internal let first: Int
-    internal let skip: Int
+    internal var limit: Int
+    internal var skip: Int
     
     internal var operationDefinition: String {
       """
       {
-        nouns(first: \(first), skip: \(skip)) {
+        nouns(first: \(limit), skip: \(skip)) {
           id
           seed {
             background
@@ -35,17 +35,17 @@ internal enum NounsSubgraph {
     }
   }
   
-  internal struct ActivitiesQuery: GraphQLQuery {
+  internal struct ActivitiesQuery: GraphQLPaginatingQuery {
     internal var url = CloudConfiguration.Nouns.query.url
     internal let nounID: String
-    internal let first: Int
-    internal let skip: Int
+    internal var limit: Int
+    internal var skip: Int
     
     internal var operationDefinition: String {
       """
       {
         noun(id: \(nounID)) {
-          votes(first: \(first), skip: \(skip)) {
+          votes(first: \(limit), skip: \(skip)) {
             id
             supportDetailed
             proposal {
@@ -67,16 +67,16 @@ internal enum NounsSubgraph {
     }
   }
   
-  internal struct AutionsQuery: GraphQLQuery {
+  internal struct AutionsQuery: GraphQLPaginatingQuery {
     internal var url = CloudConfiguration.Nouns.query.url
     internal let settled: Bool
-    internal let first: Int
-    internal let skip: Int
+    internal var limit: Int
+    internal var skip: Int
     
     var operationDefinition: String {
       """
       {
-        auctions(first: \(first), skip: \(skip), orderBy: startTime, orderDirection: desc, where: { settled: \(settled) }) {
+        auctions(first: \(limit), skip: \(skip), orderBy: startTime, orderDirection: desc, where: { settled: \(settled) }) {
           id
           amount
           startTime
@@ -104,15 +104,15 @@ internal enum NounsSubgraph {
     }
   }
   
-  internal struct ProposalsQuery: GraphQLQuery {
+  internal struct ProposalsQuery: GraphQLPaginatingQuery {
     internal var url = CloudConfiguration.Nouns.query.url
-    internal let first: Int
-    internal let skip: Int
+    internal var limit: Int
+    internal var skip: Int
     
     internal var operationDefinition: String {
       """
         {
-          proposals(skip: \(skip), first: \(first), orderBy: startBlock, orderDirection: desc) {
+          proposals(skip: \(skip), first: \(limit), orderBy: startBlock, orderDirection: desc) {
             id
             description
             status
@@ -129,16 +129,16 @@ internal enum NounsSubgraph {
     }
   }
   
-  internal struct BidsQuery: GraphQLQuery {
+  internal struct BidsQuery: GraphQLPaginatingQuery {
     internal var url = CloudConfiguration.Nouns.query.url
     internal let nounID: String
-    internal let first: Int
-    internal let skip: Int
+    internal var limit: Int
+    internal var skip: Int
     
     internal var operationDefinition: String {
       """
         {
-          bids(skip: \(skip), first: \(first), orderBy: blockTimestamp, orderDirection: desc, where: { noun: "\(nounID)" }) {
+          bids(skip: \(skip), first: \(limit), orderBy: blockTimestamp, orderDirection: desc, where: { noun: "\(nounID)" }) {
             id
             amount
             blockTimestamp

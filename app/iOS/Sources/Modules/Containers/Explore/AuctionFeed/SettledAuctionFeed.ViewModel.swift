@@ -13,6 +13,11 @@ extension SettledAuctionFeed {
   class ViewModel: ObservableObject {
     @Published var auctions = [Auction]()
     @Published var isFetching = false
+    @Published var shouldLoadMore = true
+    
+    var isInitiallyLoading: Bool {
+      isFetching && auctions.isEmpty
+    }
     
     private let pageLimit = 20
     private var service: OnChainNounsService
@@ -35,11 +40,15 @@ extension SettledAuctionFeed {
       do {
         isFetching = true
         // load next batch of the settled auctions from the network.
-        auctions += try await service.fetchAuctions(
+        let auctions = try await service.fetchAuctions(
           settled: true,
           limit: pageLimit,
           cursor: auctions.count
         )
+        
+        shouldLoadMore = auctions.hasNext
+                        
+        self.auctions += auctions.data
         
       } catch { }
       

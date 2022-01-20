@@ -7,10 +7,10 @@
 
 import SwiftUI
 import UIComponents
+import Services
 
 struct OffChainFeedPlaceholder: View {
   let action: () -> Void
-  @Environment(\.nounComposer) private var nounComposer
 
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
@@ -18,14 +18,9 @@ struct OffChainFeedPlaceholder: View {
         .font(.custom(.regular, size: 17))
       
       Spacer()
-
-      // TODO: OffChainNoun && OnchainNoun conform to Noun
+      
       // TODO: Integrate the NounCreator to randomly generate Traits each time the view appear.
-      NounPuzzle(
-        head: nounComposer.heads[3].assetImage,
-        body: nounComposer.bodies[6].assetImage,
-        glasses: nounComposer.glasses[0].assetImage,
-        accessory: nounComposer.accessories[0].assetImage)
+      NounPuzzle(seed: Seed(background: 0, glasses: 0, head: 3, body: 6, accessory: 0))
 
       OutlineButton(
         text: R.string.create.proceedTitle(),

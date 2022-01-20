@@ -115,6 +115,7 @@ public struct StandardCard<HeaderString: StringProtocol, Media: View, Accessory:
                 HStack {
                     Text(header)
                         .font(headerStyle.font)
+                        .redactable(style: .skeleton)
                     
                     Spacer()
                     

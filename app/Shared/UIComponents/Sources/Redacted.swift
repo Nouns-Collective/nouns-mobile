@@ -62,7 +62,7 @@ public struct Redactable: ViewModifier {
 }
 
 public extension View {
-    func redacted(style: Redactable.Style) -> some View {
+    func redactable(style: Redactable.Style) -> some View {
         modifier(Redactable(style: style))
     }
 }

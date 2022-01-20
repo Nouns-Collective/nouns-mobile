@@ -33,7 +33,7 @@ public protocol OnChainNounsService: AnyObject {
   ///   - cursor: A cursor for use in pagination.
   ///
   /// - Returns: A list of `Noun` type  instance or throw an error.
-  func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> [Noun]
+  func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> Page<[Noun]>
   
   /// Asynchronously fetches the list of auction settled from the chain.
   ///
@@ -43,7 +43,7 @@ public protocol OnChainNounsService: AnyObject {
   ///   - cursor: A cursor for use in pagination.
   ///
   /// - Returns: A list of `Auction` type  instance or throw an error.
-  func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> [Auction]
+  func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]>
   
   /// An asynchronous sequence that  produce the live auction and
   /// react to its properties changes
@@ -64,7 +64,7 @@ public protocol OnChainNounsService: AnyObject {
   ///   - cursor: A cursor for use in pagination.
   ///
   /// - Returns: A list of `Activity` type  instance or throw an error.
-  func fetchActivity(for nounID: String, limit: Int, after cursor: Int) async throws -> [Vote]
+  func fetchActivity(for nounID: String, limit: Int, after cursor: Int) async throws -> Page<[Vote]>
   
   /// Asynchronously fetches the list of Bids of a given Noun from the chain.
   ///
@@ -72,7 +72,7 @@ public protocol OnChainNounsService: AnyObject {
   ///   - nounID: A settled `Noun` identifier.
   ///
   /// - Returns: A list of `Bid` type  instance or throw an error.
-  func fetchBids(for nounID: String, limit: Int, after cursor: Int) async throws -> [Bid]
+  func fetchBids(for nounID: String, limit: Int, after cursor: Int) async throws -> Page<[Bid]>
   
   /// Asynchronously fetches the list of proposals for all type status.
   ///
@@ -81,11 +81,14 @@ public protocol OnChainNounsService: AnyObject {
   ///   - cursor: A cursor for use in pagination.
   ///
   /// - Returns: A list of `Proposal` type  instance or throw an error.
-  func fetchProposals(limit: Int, after cursor: Int) async throws -> [Proposal]
+  func fetchProposals(limit: Int, after cursor: Int) async throws -> Page<[Proposal]>
 }
 
 /// Concrete implementation of the `onChainNounsService` using `TheGraph` Service.
 public class TheGraphNounsProvider: OnChainNounsService {
+  
+  private let pageProvider: PageProvider
+  
   private let graphQLClient: GraphQL
   
   /// The ethereum client layer provided by `web3swift` package
@@ -105,6 +108,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
   
   public init(graphQLClient: GraphQL = GraphQLClient()) {
     self.graphQLClient = graphQLClient
+    self.pageProvider = PageProvider(graphQLClient: graphQLClient)
   }
   
   private func ethTreasury() async throws -> BigUInt {
@@ -154,22 +158,26 @@ public class TheGraphNounsProvider: OnChainNounsService {
     return String(ethValue + stEthValue)
   }
   
-  public func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> [Noun] {
-    let query = NounsSubgraph.NounsQuery(first: limit, skip: cursor)
-    let page: Page<[Noun]> = try await graphQLClient.fetch(
+  public func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> Page<[Noun]> {
+    let query = NounsSubgraph.NounsQuery(limit: limit, skip: cursor)
+    let page = try await pageProvider.page(
+      Noun.self,
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-    return page.data
+    
+    return page
   }
   
-  public func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> [Auction] {
-    let query = NounsSubgraph.AutionsQuery(settled: settled, first: limit, skip: cursor)
-    let page: Page<[Auction]> = try await graphQLClient.fetch(
+  public func fetchAuctions(settled: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]> {
+    let query = NounsSubgraph.AutionsQuery(settled: settled, limit: limit, skip: cursor)
+    let page = try await pageProvider.page(
+      Auction.self,
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-    return page.data
+
+    return page
   }
   
   public func settledAuctionsDidChange() -> AsyncStream<Auction> {
@@ -185,7 +193,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
               settled: true,
               limit: 1,
               cursor: 0
-            ).first else {
+            ).data.first else {
               throw OnChainNounsRequestError.noData
             }
             
@@ -227,30 +235,36 @@ public class TheGraphNounsProvider: OnChainNounsService {
     return auction
   }
   
-  public func fetchActivity(for nounID: String, limit: Int, after cursor: Int) async throws -> [Vote] {
-    let query = NounsSubgraph.ActivitiesQuery(nounID: nounID, first: limit, skip: cursor)
-    let page: Page<[Vote]> = try await graphQLClient.fetch(
+  public func fetchActivity(for nounID: String, limit: Int, after cursor: Int) async throws -> Page<[Vote]> {
+    let query = NounsSubgraph.ActivitiesQuery(nounID: nounID, limit: limit, skip: cursor)
+    let page = try await pageProvider.page(
+      Vote.self,
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-    return page.data
+    
+    return page
   }
   
-  public func fetchProposals(limit: Int, after cursor: Int) async throws -> [Proposal] {
-    let query = NounsSubgraph.ProposalsQuery(first: limit, skip: cursor)
-    let page: Page<[Proposal]> = try await graphQLClient.fetch(
+  public func fetchProposals(limit: Int, after cursor: Int) async throws -> Page<[Proposal]> {
+    let query = NounsSubgraph.ProposalsQuery(limit: limit, skip: cursor)
+    let page = try await pageProvider.page(
+      Proposal.self,
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-    return page.data
+    
+    return page
   }
   
-  public func fetchBids(for nounID: String, limit: Int, after cursor: Int) async throws -> [Bid] {
-    let query = NounsSubgraph.BidsQuery(nounID: nounID, first: limit, skip: cursor)
-    let page: Page<[Bid]> = try await graphQLClient.fetch(
+  public func fetchBids(for nounID: String, limit: Int, after cursor: Int) async throws -> Page<[Bid]> {
+    let query = NounsSubgraph.BidsQuery(nounID: nounID, limit: limit, skip: cursor)
+    let page = try await pageProvider.page(
+      Bid.self,
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-    return page.data
+    
+    return page
   }
 }
