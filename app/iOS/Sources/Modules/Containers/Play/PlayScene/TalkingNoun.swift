@@ -51,8 +51,10 @@ class TalkingNoun: SKSpriteNode {
   private func handleStateChanges() {
     switch state {
     case .idle:
+      eyes.state = .idle
       idle()
     case .lipSync:
+      eyes.state = .active
       lipSync()
     }
   }

@@ -58,7 +58,7 @@ extension VoiceChangerEngine: AudioAuthorization {
   
   @discardableResult
   public func requestRecordPermission() async throws -> Bool {
-    try audioSession.setCategory(.playAndRecord)
+    try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
     return await withCheckedContinuation({ continuation in
       audioSession.requestRecordPermission { granted in
         continuation.resume(returning: granted)

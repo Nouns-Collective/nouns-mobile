@@ -67,17 +67,26 @@ public class VoiceChangerEngine: ObservableObject {
   
   // Set an output format.
   private var outputFormat: AVAudioFormat?
-  
+    
   public init() {
     // Get the native audio format of the engine's input bus.
     inputFormat = audioEngine.inputNode.inputFormat(forBus: 0)
-    
+        
     outputFormat = AVAudioFormat(
       commonFormat: .pcmFormatFloat32,
       sampleRate: inputFormat.sampleRate,
-      channels: 2,
-      interleaved: true
+      channels: 1,
+      interleaved: false
     )
+  }
+  
+  private func configureAudioSession() {
+    do {
+      // Set default output audio to speaker
+      try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: .defaultToSpeaker)
+    } catch {
+      print("🎤🛑 AVAudioSession could not set category with options")
+    }
   }
   
   deinit {
@@ -87,19 +96,39 @@ public class VoiceChangerEngine: ObservableObject {
   /// Prepares the engine to configure all inputs and outputs for
   /// recording, then apply the selected effect.
   public func prepare() throws {
+    guard recordPermission == .granted else {
+      print("🎤🛑 User hasn't granted microphone recording permissions")
+      return
+    }
+        
     // It's needed to stop and reset the audio engine before
     // creating a new one to avoid crashing & consider the new configuration.
     stop()
+    
+    configureAudioSession()
     
     try prepareAudioEngineToRecord()
     prepareAudioEngine(forEffect: effect)
     
     audioEngine.prepare()
+    try start()
+  }
+  
+  public func start() throws {
+    guard !audioEngine.isRunning else { return }
     try audioEngine.start()
   }
   
   /// Stops the engine & removes all inputs.
   public func stop() {
+    
+    // Remove tap on input and mainMixerNode before re-installing tap
+    // This should be done regardless of whether or not the engine is currently running
+    // as installing a tap on the input or mixer node while there are already taps installed
+    // will result in a fatal error
+    audioEngine.inputNode.removeTap(onBus: 0)
+    audioEngine.mainMixerNode.removeTap(onBus: 0)
+    
     guard audioEngine.isRunning else { return }
     
     audioEngine.stop()
@@ -112,19 +141,19 @@ public class VoiceChangerEngine: ObservableObject {
     var outputAudioUnit: AVAudioNode = recordedFilePlayer
     for inputAudioUnit in effect.unit.audioUnits {
       audioEngine.attach(inputAudioUnit)
-      audioEngine.connect(outputAudioUnit, to: inputAudioUnit, format: outputFormat)
+      audioEngine.connect(outputAudioUnit, to: inputAudioUnit, format: nil)
       outputAudioUnit = inputAudioUnit
     }
     
-    audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: outputFormat)
+    audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: nil)
     
     // Process and update the status to state when the mixed audio is `silent` or `loud`.
-    audioEngine.mainMixerNode.installTap(onBus: 0, bufferSize: 256, format: outputFormat) { [weak self] buffer, _ in
+    audioEngine.mainMixerNode.installTap(onBus: 0, bufferSize: 256, format: nil) { [weak self] buffer, _ in
       guard let self = self else { return }
-      
+
       // Optimize to process only while playing the recorded audio.
       guard self.state == .playing else { return }
-      
+
       // Process the current samples to find audio status.
       self.silenceFinder.process(buffer: buffer)
       self.audioProcessingState = self.silenceFinder.status
@@ -136,7 +165,7 @@ public class VoiceChangerEngine: ObservableObject {
     let input = audioEngine.inputNode
     try input.setVoiceProcessingEnabled(true)
     
-    input.installTap(onBus: 0, bufferSize: 256, format: inputFormat) { [weak self] buffer, _ in
+    input.installTap(onBus: 0, bufferSize: 256, format: outputFormat) { [weak self] buffer, _ in
       guard let self = self else { return }
       
       // Stop recording if the previous recording is being played.
@@ -159,6 +188,10 @@ public class VoiceChangerEngine: ObservableObject {
   }
   
   // MARK: - Effects
+  
+  public func setEffect(to effect: Effect) {
+    self.effect = effect
+  }
   
   private func applyEffect(file: AVAudioFile) {
     recordedFilePlayer.scheduleFile(file, at: nil) { [weak self] in
@@ -214,4 +247,3 @@ public class VoiceChangerEngine: ObservableObject {
     return fileURL
   }
 }
-
