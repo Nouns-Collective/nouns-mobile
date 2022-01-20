@@ -31,11 +31,11 @@ extension NounPlayground {
     @Published private(set) var state: State = .coachmark
     @Published private(set) var dismissPlayExperience = false
     
-    private(set) lazy var effects: [Image] = {
-      [.robot, .alien, .chipmunk, .monster]
-    }()
+    public var audioProcessingState: AudioStatus {
+      voiceChangerEngine.audioProcessingState
+    }
     
-    private let voiceChangerEngine: VoiceChangerEngine
+    public let voiceChangerEngine: VoiceChangerEngine
     
     public var currentEffect: VoiceChangerEngine.Effect {
       voiceChangerEngine.effect
@@ -91,7 +91,7 @@ extension NounPlayground {
     
     /// Updates the currently selected effect
     func updateEffect(to effect: VoiceChangerEngine.Effect) {
-//      voiceChangerEngine.setEffect(to: effect)
+      voiceChangerEngine.setEffect(to: effect)
     }
     
     /// Toggles the `isRecording` boolean value
@@ -102,6 +102,22 @@ extension NounPlayground {
     /// Updates the view state to a new state
     func updateState(to newState: State) {
       state = newState
+    }
+  }
+}
+
+extension VoiceChangerEngine.Effect {
+  
+  var image: Image {
+    switch self {
+    case .robot:
+      return Image.robot
+    case .alien:
+      return Image.alien
+    case .chipmunk:
+      return Image.chipmunk
+    case .monster:
+      return Image.monster
     }
   }
 }

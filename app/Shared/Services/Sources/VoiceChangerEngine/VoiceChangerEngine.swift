@@ -67,17 +67,26 @@ public class VoiceChangerEngine: ObservableObject {
   
   // Set an output format.
   private var outputFormat: AVAudioFormat?
-  
+    
   public init() {
     // Get the native audio format of the engine's input bus.
     inputFormat = audioEngine.inputNode.inputFormat(forBus: 0)
-    
+        
     outputFormat = AVAudioFormat(
       commonFormat: .pcmFormatFloat32,
       sampleRate: inputFormat.sampleRate,
       channels: 1,
       interleaved: false
     )
+  }
+  
+  private func configureAudioSession() {
+    do {
+      // Set default output audio to speaker
+      try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: .defaultToSpeaker)
+    } catch {
+      print("🎤🛑 AVAudioSession could not set category with options")
+    }
   }
   
   deinit {
@@ -91,10 +100,12 @@ public class VoiceChangerEngine: ObservableObject {
       print("🎤🛑 User hasn't granted microphone recording permissions")
       return
     }
-    
+        
     // It's needed to stop and reset the audio engine before
     // creating a new one to avoid crashing & consider the new configuration.
     stop()
+    
+    configureAudioSession()
     
     try prepareAudioEngineToRecord()
     prepareAudioEngine(forEffect: effect)
@@ -110,6 +121,14 @@ public class VoiceChangerEngine: ObservableObject {
   
   /// Stops the engine & removes all inputs.
   public func stop() {
+    
+    // Remove tap on input and mainMixerNode before re-installing tap
+    // This should be done regardless of whether or not the engine is currently running
+    // as installing a tap on the input or mixer node while there are already taps installed
+    // will result in a fatal error
+    audioEngine.inputNode.removeTap(onBus: 0)
+    audioEngine.mainMixerNode.removeTap(onBus: 0)
+    
     guard audioEngine.isRunning else { return }
     
     audioEngine.stop()
