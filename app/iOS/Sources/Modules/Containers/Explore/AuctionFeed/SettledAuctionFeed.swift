@@ -21,13 +21,13 @@ struct SettledAuctionFeed: View {
   ]
   
   var body: some View {
-    VPageGrid(viewModel.auctions, columns: gridLayout, loadMoreAction: {
+    VPageGrid(viewModel.auctions, columns: gridLayout, isLoading: viewModel.isFetching, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
       // load next settled auctions batch.
       await viewModel.loadAuctions()
       
     }, placeholder: {
       // An activity indicator while loading auctions from the network.
-      CardPlaceholder(count: 2)
+      CardPlaceholder(count: viewModel.isInitiallyLoading ? 4 : 2)
       
     }, content: { auction in
       SettledAuctionCard(viewModel: .init(auction: auction))

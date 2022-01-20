@@ -72,3 +72,17 @@ struct OffChainNounProfile: View {
     }
   }
 }
+
+extension OffChainNounProfile {
+
+   struct NounExportView: View {
+
+     @ObservedObject var viewModel: ViewModel
+
+     var body: some View {
+       NounPuzzle(seed: viewModel.noun.seed)
+         .frame(width: 512, height: 512, alignment: .center)
+         .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
+     }
+   }
+ }

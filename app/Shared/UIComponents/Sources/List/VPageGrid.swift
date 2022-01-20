@@ -26,11 +26,24 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
   
   /// Spacing of the grid
   private let spacing: CGFloat
+    
+  /// Boolean value to determine if the grid is loading more items
+  private let isLoading: Bool
+  
+  /// Boolean value to determine if more items should continue to be loaded when the user approaches the bottom of the list
+  private let shouldLoadMore: Bool
+  
+  /// Boolean value to deremine if the client wants to load more AND if the client is not already loading
+  public var shouldLoadNow: Bool {
+    shouldLoadMore && !isLoading
+  }
   
   public init(
     _ data: Data,
     columns: [GridItem],
     spacing: CGFloat = 20,
+    isLoading: Bool,
+    shouldLoadMore: Bool = true,
     loadMoreAction: @Sendable @escaping () async -> Void,
     placeholder: @escaping () -> Placeholder,
     @ViewBuilder content: @escaping (_ item: Data.Element) -> Content
@@ -38,28 +51,32 @@ public struct VPageGrid<Data, Content, Placeholder>: View where Data: RandomAcce
     self.data = data
     self.columns = columns
     self.spacing = spacing
+    self.isLoading = isLoading
+    self.shouldLoadMore = shouldLoadMore
     self.content = content
     self.loadMoreAction = loadMoreAction
     self.placeholder = placeholder
   }
-  
-//  private func loadMore() {
-//    loadMoreAction()
-//  }
-  
+
   public var body: some View {
     LazyVGrid(columns: columns, spacing: spacing) {
       Section(content: {
         ForEach(data) { element in
           content(element)
         }
-        
       }, footer: {
-        // Load next batch when footer appears.
-        placeholder()
-          .task {
+        ZStack {
+          if isLoading {
+            placeholder()
+          } else {
+            Color.clear
+          }
+        }
+        .task {
+          if shouldLoadNow {
             await loadMoreAction()
           }
+        }
       })
     }
   }

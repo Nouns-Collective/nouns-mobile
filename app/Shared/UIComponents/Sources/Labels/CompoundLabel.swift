@@ -42,9 +42,11 @@ public struct CompoundLabel<Title>: View where Title: View {
             VStack(alignment: .leading, spacing: 0) {
                 title
                     .font(.custom(.bold, relativeTo: .footnote))
+                    .redactable(style: .skeleton)
                 
                 Text(caption)
                     .font(.custom(.regular, relativeTo: .footnote).monospacedDigit())
+                    .redactable(style: .skeleton)
             }
         }
     }

@@ -49,3 +49,8 @@ extension GraphQLOperation {
     try JSONEncoder().encode(self)
   }
 }
+
+public protocol GraphQLPaginatingQuery: GraphQLQuery {
+  var limit: Int { set get }
+  var skip: Int { set get }
+}

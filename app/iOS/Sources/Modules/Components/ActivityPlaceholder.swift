@@ -18,11 +18,9 @@ struct ActivityPlaceholder: View {
   ]
   
   var body: some View {
-    VStack {
-      ForEach(1...count, id: \.self) { _ in
-        ActivityPlaceholderRow()
-          .loading()
-      }
+    ForEach(1...count, id: \.self) { _ in
+      ActivityPlaceholderRow()
+        .loading()
     }
   }
 }

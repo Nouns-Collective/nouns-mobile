@@ -13,6 +13,12 @@ public struct Page<T> where T: Decodable {
   
   /// Data retrived from the response.
   public let data: T
+  
+  /// The cursor of the current page
+  public var cursor: Int = 0
+  
+  /// Whether there is more data to fetch
+  public var hasNext: Bool = true
 }
 
 /// The Noun
