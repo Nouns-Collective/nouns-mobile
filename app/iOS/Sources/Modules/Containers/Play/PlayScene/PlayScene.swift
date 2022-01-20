@@ -6,10 +6,35 @@
 //
 
 import SpriteKit
+import SwiftUI
+import Combine
 
 extension NounPlayground {
   
   class PlayScene: SKScene {
+    
+    @ObservedObject var viewModel: ViewModel
+    
+    var audioProcessingStateSink: AnyCancellable?
+    
+    init(viewModel: ViewModel, size: CGSize) {
+      self._viewModel = ObservedObject(wrappedValue: viewModel)
+      super.init(size: size)
+      
+      audioProcessingStateSink = viewModel.voiceChangerEngine.$audioProcessingState
+        .sink { status in
+          switch status {
+          case .loud:
+            self.talkingNoun.state = .lipSync
+          case .silent, .undefined:
+            self.talkingNoun.state = .idle
+          }
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+    }
     
     private lazy var talkingNoun: TalkingNoun = {
       let noun = TalkingNoun()
@@ -17,17 +42,6 @@ extension NounPlayground {
       noun.size = CGSize(width: 320, height: 320)
       return noun
     }()
-    
-    private let viewModel: ViewModel
-    
-    init(viewModel: ViewModel, size: CGSize) {
-      self.viewModel = viewModel
-      super.init(size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
-    }
     
     override func didMove(to view: SKView) {
       setUpInitialState()
