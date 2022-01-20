@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ProposalVote+Decodable.swift
 //  
 //
 //  Created by Mohammed Ibrahim on 2022-01-19.
