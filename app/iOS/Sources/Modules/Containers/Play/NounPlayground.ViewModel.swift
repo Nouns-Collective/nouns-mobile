@@ -91,7 +91,7 @@ extension NounPlayground {
     
     /// Updates the currently selected effect
     func updateEffect(to effect: VoiceChangerEngine.Effect) {
-      voiceChangerEngine.setEffect(to: effect)
+//      voiceChangerEngine.setEffect(to: effect)
     }
     
     /// Toggles the `isRecording` boolean value

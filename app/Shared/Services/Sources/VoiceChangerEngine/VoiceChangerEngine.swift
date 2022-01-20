@@ -75,8 +75,8 @@ public class VoiceChangerEngine: ObservableObject {
     outputFormat = AVAudioFormat(
       commonFormat: .pcmFormatFloat32,
       sampleRate: inputFormat.sampleRate,
-      channels: 2,
-      interleaved: true
+      channels: 1,
+      interleaved: false
     )
   }
   
@@ -96,22 +96,16 @@ public class VoiceChangerEngine: ObservableObject {
     // creating a new one to avoid crashing & consider the new configuration.
     stop()
     
-//    configureAudioSession()
-    
     try prepareAudioEngineToRecord()
     prepareAudioEngine(forEffect: effect)
     
     audioEngine.prepare()
-    try audioEngine.start()
+    try start()
   }
   
-  private func configureAudioSession() {
-    do {
-      try AVAudioSession.sharedInstance().setCategory(.playAndRecord, options: .defaultToSpeaker)
-      try AVAudioSession.sharedInstance().setActive(true)
-    } catch {
-      print("Error: \(error)")
-    }
+  public func start() throws {
+    guard !audioEngine.isRunning else { return }
+    try audioEngine.start()
   }
   
   /// Stops the engine & removes all inputs.
@@ -128,19 +122,19 @@ public class VoiceChangerEngine: ObservableObject {
     var outputAudioUnit: AVAudioNode = recordedFilePlayer
     for inputAudioUnit in effect.unit.audioUnits {
       audioEngine.attach(inputAudioUnit)
-      audioEngine.connect(outputAudioUnit, to: inputAudioUnit, format: outputFormat)
+      audioEngine.connect(outputAudioUnit, to: inputAudioUnit, format: nil)
       outputAudioUnit = inputAudioUnit
     }
     
-    audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: outputFormat)
+    audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: nil)
     
     // Process and update the status to state when the mixed audio is `silent` or `loud`.
-    audioEngine.mainMixerNode.installTap(onBus: 0, bufferSize: 256, format: outputFormat) { [weak self] buffer, _ in
+    audioEngine.mainMixerNode.installTap(onBus: 0, bufferSize: 256, format: nil) { [weak self] buffer, _ in
       guard let self = self else { return }
-      
+
       // Optimize to process only while playing the recorded audio.
       guard self.state == .playing else { return }
-      
+
       // Process the current samples to find audio status.
       self.silenceFinder.process(buffer: buffer)
       self.audioProcessingState = self.silenceFinder.status
@@ -152,7 +146,7 @@ public class VoiceChangerEngine: ObservableObject {
     let input = audioEngine.inputNode
     try input.setVoiceProcessingEnabled(true)
     
-    input.installTap(onBus: 0, bufferSize: 256, format: inputFormat) { [weak self] buffer, _ in
+    input.installTap(onBus: 0, bufferSize: 256, format: outputFormat) { [weak self] buffer, _ in
       guard let self = self else { return }
       
       // Stop recording if the previous recording is being played.
