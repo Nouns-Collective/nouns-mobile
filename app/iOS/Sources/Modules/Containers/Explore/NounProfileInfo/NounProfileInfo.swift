@@ -51,6 +51,8 @@ struct NounProfileInfo: View {
         .padding([.bottom, .horizontal])
       }
       .background(Gradient.warmGreydient)
+      .navigationBarTitle("")
+      .navigationBarHidden(true)
     }
     .sheet(isPresented: $isShareSheetPresented) {
       if let url = viewModel.nounProfileURL {
