@@ -21,7 +21,7 @@ struct NounPlayground: View {
   @State private var selection: Int = 0
   
   private var playScene: PlayScene {
-    let scene = PlayScene(size: CGSize(width: 320, height: 320))
+    let scene = PlayScene(viewModel: viewModel, size: CGSize(width: 320, height: 320))
     scene.scaleMode = .fill
     scene.view?.showsFPS = false
     return scene
