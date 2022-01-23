@@ -25,7 +25,7 @@ final class FetchProposalsTests: XCTestCase {
         let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
         
         // then
-        let proposals = try await nounsProvider.fetchProposals(limit: 10, after: 0)
+        let proposals = try await nounsProvider.fetchProposals(limit: 10, after: 0).data
      
         // when
         XCTAssertFalse(proposals.isEmpty)

@@ -123,7 +123,8 @@ extension Proposal {
       description: "# setProposalThresholdBPS(50)\n\n===thank you for your consideration ",
       status: .queued,
       votes: [],
-      quorumVotes: 0
+      quorumVotes: 0,
+      executionETA: nil
     )
   }()
 }
