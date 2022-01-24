@@ -28,13 +28,12 @@ extension GovernanceInfoSection {
         do {
           let balance = try await onChainNouns.fetchTreasury()
           
-          guard let ethBalance = EtherFormatter.eth(from: balance),
-                let numericalBalance = Double(ethBalance) else {
-                  treasury = "..."
-                  return
-          }
+          guard let ethBalance = EtherFormatter.eth(
+            from: balance,
+            minimumFractionDigits: 0
+          ) else { return }
           
-          treasury = String(format: "%.0f", round(numericalBalance))
+          treasury = ethBalance 
           
         } catch { }
       }
