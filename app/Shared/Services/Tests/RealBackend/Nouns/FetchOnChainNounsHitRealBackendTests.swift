@@ -12,7 +12,7 @@ final class FetchOnChainNounsHitRealBackendTests: XCTestCase {
     
     func testFetchOnChainNounsHitRealBackend() async throws {
         // given
-        let query = NounsSubgraph.NounsQuery(first: 10, skip: 0)
+        let query = NounsSubgraph.NounsQuery(limit: 10, skip: 0)
         let networkingClient = URLSessionNetworkClient(urlSession: URLSession.shared)
         let client = GraphQLClient(networkingClient: networkingClient)
         

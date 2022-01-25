@@ -27,7 +27,7 @@ struct NounActivityFeed: View {
           .font(.custom(.bold, size: 36))
           .truncationMode(.middle)
         
-        VPageGrid(viewModel.votes, columns: gridLayout, loadMoreAction: {
+        VPageGrid(viewModel.votes, columns: gridLayout, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
           // load next activities batch.
           await viewModel.fetchActivity()
           
@@ -58,7 +58,7 @@ struct ActivityPlaceholderRow: View {
       VStack(alignment: .leading, spacing: 14) {
         HStack(alignment: .center) {
           ChipLabel("Loading", state: .pending)
-            .redacted(style: .gray)
+            .redactable(style: .gray)
             .clipShape(Capsule())
           
           Spacer()
@@ -67,7 +67,7 @@ struct ActivityPlaceholderRow: View {
             .foregroundColor(Color.componentNounsBlack)
             .font(Font.custom(.medium, relativeTo: .footnote))
             .opacity(0.5)
-            .redacted(style: .skeleton)
+            .redactable(style: .skeleton)
         }
         
         VStack(alignment: .leading, spacing: 8) {
@@ -75,7 +75,7 @@ struct ActivityPlaceholderRow: View {
             Text("Lorem ipsum dolor sit amet, consectetur")
             Text("Lorem ipsum dolor sit amet")
           }
-          .redacted(style: .skeleton)
+          .redactable(style: .skeleton)
         }
         .font(Font.custom(.medium, relativeTo: .body))
         .padding(.top, 8)

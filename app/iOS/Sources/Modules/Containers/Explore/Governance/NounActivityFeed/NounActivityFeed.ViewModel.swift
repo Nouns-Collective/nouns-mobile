@@ -15,6 +15,7 @@ extension NounActivityFeed {
     
     @Published var votes = [Vote]()
     @Published var isLoading = false
+    @Published var shouldLoadMore = true
     
     private let pageLimit = 20
     private let service: OnChainNounsService
@@ -40,13 +41,21 @@ extension NounActivityFeed {
     @MainActor
     func fetchActivity() async {
       do {
-        votes += try await service.fetchActivity(
+        isLoading = true
+        
+        let votes = try await service.fetchActivity(
           for: auction.noun.id,
              limit: pageLimit,
              after: votes.count
         )
         
+        shouldLoadMore = votes.hasNext
+        
+        self.votes = votes.data
+        
       } catch { }
+      
+      isLoading = false
     }
   }
 }

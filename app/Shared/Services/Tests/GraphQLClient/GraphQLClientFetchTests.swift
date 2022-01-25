@@ -23,7 +23,7 @@ final class GraphQLClientFetchTests: XCTestCase {
         let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
         let client = URLSessionNetworkClient(urlSession: urlSession)
         let graphQLClient = GraphQLClient(networkingClient: client)
-        let query = NounsSubgraph.NounsQuery(first: 10, skip: 0)
+        let query = NounsSubgraph.NounsQuery(limit: 10, skip: 0)
         
         // when
         let page: Page<[Noun]> = try await graphQLClient.fetch(query, cachePolicy: .fetchIgnoringCacheData)
@@ -45,7 +45,7 @@ final class GraphQLClientFetchTests: XCTestCase {
         let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
         let client = URLSessionNetworkClient(urlSession: urlSession)
         let graphQLClient = GraphQLClient(networkingClient: client)
-        let query = NounsSubgraph.NounsQuery(first: 10, skip: 0)
+        let query = NounsSubgraph.NounsQuery(limit: 10, skip: 0)
         
         do {
             // when

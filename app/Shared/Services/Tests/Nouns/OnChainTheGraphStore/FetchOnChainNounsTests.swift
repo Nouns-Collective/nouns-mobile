@@ -25,7 +25,7 @@ final class FetchOnChainNounsTests: XCTestCase {
     let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     // when
-    let nouns = try await nounsProvider.fetchSettledNouns(limit: 10, after: 0)
+    let nouns = try await nounsProvider.fetchSettledNouns(limit: 10, after: 0).data
     
     // then
     XCTAssertFalse(nouns.isEmpty)

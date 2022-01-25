@@ -73,22 +73,16 @@ struct OffChainNounProfile: View {
   }
 }
 
-struct OffChainNounProfile_Previews: PreviewProvider {
-  static var previews: some View {
-    OffChainNounProfile(viewModel: .init(noun: Noun(name: "Test", owner: Account(), seed: Seed(background: 1, glasses: 2, head: 3, body: 4, accessory: 5))))
-  }
-}
-
 extension OffChainNounProfile {
 
-  struct NounExportView: View {
-    
-    @ObservedObject var viewModel: ViewModel
-    
-    var body: some View {
-      NounPuzzle(seed: viewModel.noun.seed)
-        .frame(width: 512, height: 512, alignment: .center)
-        .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
-    }
-  }
-}
+   struct NounExportView: View {
+
+     @ObservedObject var viewModel: ViewModel
+
+     var body: some View {
+       NounPuzzle(seed: viewModel.noun.seed)
+         .frame(width: 512, height: 512, alignment: .center)
+         .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
+     }
+   }
+ }

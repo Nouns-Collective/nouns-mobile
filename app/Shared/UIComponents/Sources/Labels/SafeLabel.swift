@@ -23,6 +23,7 @@ public struct SafeLabel: View {
             icon
             Text(title)
                 .font(.custom(.bold, relativeTo: .footnote))
+                .redactable(style: .skeleton)
         }
     }
     

@@ -28,7 +28,7 @@ extension ActivityRow {
     var proposalStatus: String {
       R.string.activity.proposalStatus(
         vote.proposal.id,
-        vote.proposal.status.rawValue.capitalized)
+        vote.proposal.detailedStatus.rawValue.capitalized)
     }
   }
 }

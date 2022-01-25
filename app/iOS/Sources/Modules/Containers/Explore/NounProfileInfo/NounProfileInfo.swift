@@ -41,7 +41,7 @@ struct NounProfileInfo: View {
           // Navigation link showing the noun's bid history & owner activity.
           // TODO: - Build a component to hide the navigation implementation details.
           NavigationLink(
-            destination: AuctionInfoContainer(viewModel: .init(auction: viewModel.auction)),
+            destination: AuctionInfo(viewModel: .init(auction: viewModel.auction)),
             isActive: $isActivityPresented) { EmptyView() }
           
           CardActionsItems(
@@ -51,6 +51,8 @@ struct NounProfileInfo: View {
         .padding([.bottom, .horizontal])
       }
       .background(Gradient.warmGreydient)
+      .navigationBarTitle("")
+      .navigationBarHidden(true)
     }
     .sheet(isPresented: $isShareSheetPresented) {
       if let url = viewModel.nounProfileURL {

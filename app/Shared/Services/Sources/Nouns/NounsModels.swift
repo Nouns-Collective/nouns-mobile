@@ -13,6 +13,12 @@ public struct Page<T> where T: Decodable {
   
   /// Data retrived from the response.
   public let data: T
+  
+  /// The cursor of the current page
+  public var cursor: Int = 0
+  
+  /// Whether there is more data to fetch
+  public var hasNext: Bool = true
 }
 
 /// The Noun
@@ -122,6 +128,50 @@ public enum ProposalStatus: String, Decodable {
   case executed = "EXECUTED"
 }
 
+/// A proposal status that provides more details and logic to match the website's display status
+public enum ProposalDetailedStatus: String {
+  case pending
+  case cancelled
+  case vetoed
+  case queued
+  case executed
+  
+  case expired
+  
+  case defeated
+  case succeeded
+  
+  static func status(from proposal: Proposal) -> ProposalDetailedStatus {
+    switch proposal.status {
+    case .pending:
+      return .pending
+    case .active:
+      // Active proposals are displayed as either succeeded or defeated
+      return proposal.isDefeated ? .defeated : .succeeded
+    case .cancelled:
+      return .cancelled
+    case .vetoed:
+      return .vetoed
+    case .queued:
+      // Proposals that are queued are considered expired if two weeks after the executionETA has passed
+      if let executionETA = proposal.executionETA {
+        var dateComponents = DateComponents()
+        dateComponents.weekOfYear = 2 // For removing one day (yesterday): -1
+        if let expiryDate = Calendar.current.date(byAdding: dateComponents, to: Date(timeIntervalSince1970: executionETA)) {
+          let currentDate = Date()
+          
+          if currentDate > expiryDate {
+            return .expired
+          }
+        }
+      }
+      return .queued
+    case .executed:
+      return .executed
+    }
+  }
+}
+
 /// The Proposal.
 public struct Proposal: Equatable {
   
@@ -136,6 +186,48 @@ public struct Proposal: Equatable {
   
   /// Status of the proposal.
   public let status: ProposalStatus
+  
+  /// Votes associated with this proposal
+  public let votes: [ProposalVote]
+  
+  /// The required number of votes for quorum at the time of proposal creation
+  public let quorumVotes: Int
+  
+  /// Once the proposal is queued for execution it will have an ETA of the execution
+  public let executionETA: TimeInterval?
+
+  /// The amount of votes in favour of this proposal
+  public var forVotes: Int {
+    votes.filter { $0.support == true }.map { $0.votes }.reduce(0, +)
+  }
+
+  /// The amount of votes against this proposal
+  public var againstVotes: Int {
+    votes.filter { $0.support == false }.map { $0.votes }.reduce(0, +)
+  }
+  
+  /// A boolean value to determine if this proposal is defeated
+  public var isDefeated: Bool {
+    quorumVotes > forVotes || againstVotes >= forVotes
+  }
+  
+  /// A more accurate user-facing proposal status, in line with how the Nouns website displays proposal status
+  /// The `active` status is replaced in favour of a specific succeeded or defeated status
+  public var detailedStatus: ProposalDetailedStatus {
+    ProposalDetailedStatus.status(from: self)
+  }
+}
+
+public struct ProposalVote: Equatable, Identifiable {
+  
+  /// Delegate ID + Proposal ID
+  public let id: String
+  
+  /// Whether the vote is in favour of the proposal
+  public let support: Bool
+  
+  /// Amount of votes in favour or against expressed as a BigInt normalized value for the Nouns ERC721 Token
+  public let votes: Int
 }
 
 /// The Auction

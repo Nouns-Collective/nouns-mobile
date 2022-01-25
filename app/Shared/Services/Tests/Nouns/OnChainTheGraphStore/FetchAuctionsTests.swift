@@ -25,7 +25,7 @@ final class FetchAuctionsTests: XCTestCase {
     let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
     
     // when
-    let auctions = try await nounsProvider.fetchAuctions(settled: true, limit: 10, cursor: 0)
+    let auctions = try await nounsProvider.fetchAuctions(settled: true, limit: 10, cursor: 0).data
     
     // then
     XCTAssertFalse(auctions.isEmpty)
