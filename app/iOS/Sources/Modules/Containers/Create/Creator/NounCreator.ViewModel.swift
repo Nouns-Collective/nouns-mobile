@@ -35,11 +35,34 @@ extension NounCreator {
       case background
     }
     
-    var tapPublisher: AnyPublisher<TraitType, Never> {
-        tapSubject.eraseToAnyPublisher()
+    /// An action struct to update the currently edited trait type
+    struct TraitUpdateAction: Equatable {
+      
+      /// The trait type to update the currently selected trait type to
+      var type: TraitType
+      
+      /// The action that resulted in the trait type update
+      var action: Action
+      
+      /// An enum for the possible types of action that resulted in the trait type update
+      enum Action {
+        
+        /// The user has swiped into/by the trait type section
+        case swipe
+        
+        /// The user has tapped the trait type from the segmented control / picker
+        case tap
+      }
     }
+    
+    /// A publisher that publishes trait update actions when receieved to all subscribing views
+    public var tapPublisher: AnyPublisher<TraitUpdateAction, Never>
 
-    private let tapSubject = PassthroughSubject<TraitType, Never>()
+    /// A passthrought subject to send new trait update action values
+    private let tapSubject = PassthroughSubject<TraitUpdateAction, Never>()
+    
+    /// A boolean value for whether or not the `tapSubject` should be paused, with any incoming values and updates being ignored
+    private var tapSubjectPaused: Bool = false
     
     /// The `Seed` in build progress.
     @Published var seed: Seed = {
@@ -65,6 +88,11 @@ extension NounCreator {
     @Published var mode: Mode = .creating
     
     private let offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService
+    
+    init() {
+      tapPublisher = tapSubject
+        .eraseToAnyPublisher()
+    }
     
     /// Recognizes if the drag gesture should be enabled.
     /// - Parameter type: The Noun's `Trait Type` to validate.
@@ -130,6 +158,15 @@ extension NounCreator {
     
     /// Select a trait using the grid view
     func selectTrait(_ index: Int, ofType traitType: TraitType) {
+      // Prevents conflicts with `onAppear` on the trait grid if the trait selected exists on the edges of the section
+      pauseTapPublisher()
+      
+      // Sets currently modifiable trait type to the type of the trait
+      // that was just selected just in case there was a mismatch between the two
+      if currentModifiableTraitType != traitType {
+        self.currentModifiableTraitType = traitType
+      }
+      
       switch traitType {
       case .background:
         seed.background = index
@@ -190,9 +227,30 @@ extension NounCreator {
       }
     }
     
-    func didTap(trait: TraitType) {
-      currentModifiableTraitType = trait
-      tapSubject.send(trait)
+    func didUpdateTraitType(to traitType: TraitType, action: TraitUpdateAction.Action) {
+      guard !tapSubjectPaused else { return }
+      
+      switch action {
+      case .tap:
+        /// Disable the tap publisher when a new trait type is tapped to prevent conflicting values from being published
+        /// as the trait picker grid animates and swipes by intermediate trait types in between the initial trait type
+        /// and the newly tapped trait type
+        self.pauseTapPublisher()
+      default:
+        break
+      }
+      
+      currentModifiableTraitType = traitType
+      
+      let action = TraitUpdateAction(type: traitType, action: action)
+      tapSubject.send(action)
+    }
+    
+    private func pauseTapPublisher(for seconds: TimeInterval = 0.35) {
+      self.tapSubjectPaused = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
+        self?.tapSubjectPaused = false
+      }
     }
   }
 }

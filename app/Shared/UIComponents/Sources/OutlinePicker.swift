@@ -69,6 +69,11 @@ internal struct OutlinePickerItem: ViewModifier {
             .onAppear {
                 isSelected = (selection == tag)
             }
+            .onChange(of: selection, perform: { newValue in
+              withAnimation(.spring(blendDuration: 0.05)) {
+                isSelected = (newValue == tag)
+              }
+            })
     }
     
     private var font: Font {

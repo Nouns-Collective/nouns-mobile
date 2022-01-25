@@ -56,7 +56,7 @@ extension NounCreator {
                   .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
               }
               .onAppear {
-                viewModel.currentModifiableTraitType = type
+                viewModel.didUpdateTraitType(to: type, action: .swipe)
               }
             }
             
@@ -73,15 +73,20 @@ extension NounCreator {
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
             .onAppear {
-              viewModel.currentModifiableTraitType = .background
+              viewModel.didUpdateTraitType(to: .background, action: .swipe)
             }
           }
           .padding(.vertical, 12)
           .padding(.trailing)
-          .onReceive(viewModel.tapPublisher, perform: { newTrait in
-            withAnimation {
-              // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
-              proxy.scrollTo(traitFirstIndexID(newTrait), anchor: .leading)
+          .onReceive(viewModel.tapPublisher, perform: { traitUpdate in
+            switch traitUpdate.action {
+            case .tap:
+              withAnimation {
+                // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
+                proxy.scrollTo(traitFirstIndexID(traitUpdate.type), anchor: .leading)
+              }
+            default:
+              break
             }
           })
           .onChange(of: viewModel.seed, perform: { _ in
