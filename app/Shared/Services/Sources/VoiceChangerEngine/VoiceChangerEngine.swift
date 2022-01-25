@@ -163,7 +163,6 @@ public class VoiceChangerEngine: ObservableObject {
   private func prepareAudioEngineToRecord() throws {
     // Record using the mic.
     let input = audioEngine.inputNode
-    try input.setVoiceProcessingEnabled(true)
     
     input.installTap(onBus: 0, bufferSize: 256, format: outputFormat) { [weak self] buffer, _ in
       guard let self = self else { return }

@@ -68,6 +68,9 @@ struct NounPlayground: View {
     .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
       AudioPermissionDialog(viewModel: viewModel)
     })
+    .onDisappear {
+      viewModel.stopListening()
+    }
     .onChange(of: viewModel.dismissPlayExperience) { newValue in
       guard newValue else { return }
       dismiss()
