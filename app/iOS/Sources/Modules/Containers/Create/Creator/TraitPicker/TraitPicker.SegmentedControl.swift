@@ -32,7 +32,7 @@ extension NounCreator {
                 .simultaneousGesture(
                   TapGesture()
                     .onEnded { _ in
-                      viewModel.didUpdateTraitType(to: .init(rawValue: type.rawValue) ?? .glasses, action: .tap)
+                      viewModel.didTapTraitType(to: .init(rawValue: type.rawValue) ?? .glasses)
                     }
                 )
             }

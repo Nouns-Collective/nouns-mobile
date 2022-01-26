@@ -36,34 +36,17 @@ extension NounCreator {
       case background
     }
     
-    /// An action struct to update the currently edited trait type
-    struct TraitUpdateAction: Equatable {
-      
-      /// The trait type to update the currently selected trait type to
-      var type: TraitType
-      
-      /// The action that resulted in the trait type update
-      var action: Action
-      
-      /// An enum for the possible types of action that resulted in the trait type update
-      enum Action {
-        
-        /// The user has swiped into/by the trait type section
-        case swipe
-        
-        /// The user has tapped the trait type from the segmented control / picker
-        case tap
-      }
-    }
-    
     /// A publisher that publishes trait update actions when receieved to all subscribing views
-    public var tapPublisher: AnyPublisher<TraitUpdateAction, Never>
-
-    /// A passthrought subject to send new trait update action values
-    private let tapSubject = PassthroughSubject<TraitUpdateAction, Never>()
+    public var tapPublisher: AnyPublisher<TraitType, Never>
     
-    /// A boolean value for whether or not the `tapSubject` should be paused, with any incoming values and updates being ignored
-    private var tapSubjectPaused: Bool = false
+    /// A passthrought subject to send new trait update action values
+    private let tapSubject = PassthroughSubject<TraitType, Never>()
+    
+    /// A boolean value for whether or not subsequent trait type selection updates
+    /// should be paused, with any incoming values and updates being ignored
+    private var traitUpdatesPaused: Bool = false
+    
+    private var visibleSections: [TraitType] = []
     
     /// The `Seed` in build progress.
     @Published var seed: Seed = {
@@ -93,7 +76,6 @@ extension NounCreator {
     
     /// A seperate boolean for showing/hiding the confetti in order to hide the confetti first before scaling it down
     @Published private(set) var finishedConfetti: Bool = false
-
     
     private let offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService
     
@@ -167,7 +149,7 @@ extension NounCreator {
     /// Select a trait using the grid view
     func selectTrait(_ index: Int, ofType traitType: TraitType) {
       // Prevents conflicts with `onAppear` on the trait grid if the trait selected exists on the edges of the section
-      pauseTapPublisher()
+      pauseTraitUpdates()
       
       // Sets currently modifiable trait type to the type of the trait
       // that was just selected just in case there was a mismatch between the two
@@ -238,7 +220,7 @@ extension NounCreator {
     /// Toggles the confetti view
     func toggleConfetti() {
       showConfetti = true
-
+      
       DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
         self.hideConfetti()
       }
@@ -252,32 +234,50 @@ extension NounCreator {
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
         self.finishedConfetti = false
         self.showConfetti = false
-	  }
-	}
-
-    func didUpdateTraitType(to traitType: TraitType, action: TraitUpdateAction.Action) {
-      guard !tapSubjectPaused else { return }
-      
-      switch action {
-      case .tap:
-        /// Disable the tap publisher when a new trait type is tapped to prevent conflicting values from being published
-        /// as the trait picker grid animates and swipes by intermediate trait types in between the initial trait type
-        /// and the newly tapped trait type
-        self.pauseTapPublisher()
-      default:
-        break
       }
+    }
+    
+    /// Triggered when a trait type has been selected from the outline picker
+    func didTapTraitType(to traitType: TraitType) {
+      guard !traitUpdatesPaused else { return }
+      
+      // Pauses trait updates for some time as there can be conflicts
+      // when the scroll animation passes by intermediate trait sections, which
+      // would call traitSectionDidAppear or traitSectionDidDisappear
+      self.pauseTraitUpdates()
       
       currentModifiableTraitType = traitType
       
-      let action = TraitUpdateAction(type: traitType, action: action)
-      tapSubject.send(action)
+      tapSubject.send(traitType)
     }
     
-    private func pauseTapPublisher(for seconds: TimeInterval = 0.35) {
-      self.tapSubjectPaused = true
+    /// A method to keep track of when a trait section has disappeared completely from the grid
+    func traitSectionDidDisappear(_ traitType: TraitType) {
+      visibleSections.removeAll { $0 == traitType }
+      
+      guard !traitUpdatesPaused else { return }
+      
+      // When a section disappears, the selected type should be the most recently
+      // appeared section, until traitSectionDidAppear gets called which would then
+      // update the currently selected type again
+      currentModifiableTraitType = visibleSections.last ?? .glasses
+    }
+    
+    /// A method to keep track of when a trait section has first appeared in the grid
+    func traitSectionDidAppear(_ traitType: TraitType) {
+      visibleSections.append(traitType)
+      
+      guard !traitUpdatesPaused else { return }
+      
+      // When a new section appears, the selected type should be that section
+      currentModifiableTraitType = visibleSections.last ?? .glasses
+    }
+    
+    /// Temporarily pauses
+    private func pauseTraitUpdates(for seconds: TimeInterval = 0.35) {
+      self.traitUpdatesPaused = true
       DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
-        self?.tapSubjectPaused = false
+        self?.traitUpdatesPaused = false
       }
     }
   }
@@ -294,7 +294,7 @@ extension NounCreator.ViewModel.TraitType {
     switch self {
     case .background:
       return []
-
+      
     case .body:
       return composer.bodies
       
@@ -314,12 +314,12 @@ extension NounCreator.ViewModel.TraitType {
 }
 
 extension NounCreator.ViewModel.TraitType: CustomStringConvertible {
- 
+  
   var description: String {
     switch self {
     case .background:
       return R.string.shared.background()
-
+      
     case .body:
       return R.string.shared.body()
       

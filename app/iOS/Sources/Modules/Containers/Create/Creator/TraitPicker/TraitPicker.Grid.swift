@@ -9,11 +9,11 @@ import SwiftUI
 import Combine
 
 struct ViewOffsetKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue = CGFloat.zero
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
-    }
+  typealias Value = CGFloat
+  static var defaultValue = CGFloat.zero
+  static func reduce(value: inout Value, nextValue: () -> Value) {
+    value += nextValue()
+  }
 }
 
 extension NounCreator {
@@ -52,11 +52,14 @@ extension NounCreator {
                     viewModel.selectTrait(index, ofType: type)
                   }
                   .id("\(type.rawValue)-\(index)")
-                  // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
+                // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                   .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
               }
               .onAppear {
-                viewModel.didUpdateTraitType(to: type, action: .swipe)
+                viewModel.traitSectionDidAppear(type)
+              }
+              .onDisappear {
+                viewModel.traitSectionDidDisappear(type)
               }
             }
             
@@ -69,24 +72,23 @@ extension NounCreator {
                   viewModel.selectTrait(index, ofType: .background)
                 }
                 .id("\(ViewModel.TraitType.background.rawValue)-\(index)")
-                // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
+                // This applies a padding to only the first column (rowSpec.count)
+                // of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
             .onAppear {
-              viewModel.didUpdateTraitType(to: .background, action: .swipe)
+              viewModel.traitSectionDidAppear(.background)
+            }
+            .onDisappear {
+              viewModel.traitSectionDidDisappear(.background)
             }
           }
           .padding(.vertical, 12)
           .padding(.trailing)
-          .onReceive(viewModel.tapPublisher, perform: { traitUpdate in
-            switch traitUpdate.action {
-            case .tap:
-              withAnimation {
-                // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
-                proxy.scrollTo(traitFirstIndexID(traitUpdate.type), anchor: .leading)
-              }
-            default:
-              break
+          .onReceive(viewModel.tapPublisher, perform: { newTrait in
+            // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
+            withAnimation {
+              proxy.scrollTo(traitFirstIndexID(newTrait), anchor: .leading)
             }
           })
           .onChange(of: viewModel.seed, perform: { _ in
