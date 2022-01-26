@@ -12,7 +12,7 @@ import SwiftUI
 public struct Page<T> where T: Decodable {
   
   /// Data retrived from the response.
-  public let data: T
+  public var data: T
   
   /// The cursor of the current page
   public var cursor: Int = 0

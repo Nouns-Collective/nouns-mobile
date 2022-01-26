@@ -26,6 +26,12 @@ public protocol OnChainNounsService: AnyObject {
   /// - Returns: The total amount stored of `Ether + staked Ether in Lido`.
   func fetchTreasury() async throws -> String
   
+  /// Fetches a single noun given an `id`
+  ///
+  /// - Parameters:
+  ///   - id: The id of the noun to fetch
+  ///
+  /// - Returns: A single, optional, instance of a `Noun` type or throw an error.
   func fetchNoun(withId id: String) async throws -> Noun?
   
   /// Asynchronously fetches the list of the settled Nouns from the chain.
@@ -133,7 +139,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
   
   private func stEthTreasury() async throws -> BigUInt {
     try await withCheckedThrowingContinuation { continuation in
-      let function = ERC20Functions.balanceOf(contract: EthereumAddress(Address.stEthDAOExecutor),account: EthereumAddress(Address.ethDAOExecutor))
+      let function = ERC20Functions.balanceOf(contract: EthereumAddress(Address.stEthDAOExecutor), account: EthereumAddress(Address.ethDAOExecutor))
       
       function.call(
         withClient: ethereumClient,
@@ -171,7 +177,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
   }
   
   public func fetchSettledNouns(limit: Int, after cursor: Int) async throws -> Page<[Noun]> {
-    let query = NounsSubgraph.NounsQuery(first: limit, skip: cursor)
+    let query = NounsSubgraph.NounsQuery(limit: limit, skip: cursor)
     let page: Page<[Noun]> = try await graphQLClient.fetch(
       query,
       cachePolicy: .returnCacheDataAndFetch
@@ -180,38 +186,70 @@ public class TheGraphNounsProvider: OnChainNounsService {
     return page
   }
   
-  public func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int) async throws -> [Auction] {
+  public func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]> {
 
     // Deduct the expected number of nounder owned nouns if `includeNounderOwned` is set to true
     let auctionLimit = limit - (includeNounderOwned ? limit / 10 : 0)
-    let query = NounsSubgraph.AuctionsQuery(settled: settled, first: auctionLimit, skip: cursor)
+    let query = NounsSubgraph.AuctionsQuery(settled: settled, limit: auctionLimit, skip: cursor)
     
-    let page: Page<[Auction]> = try await graphQLClient.fetch(
+    var page: Page<[Auction]> = try await graphQLClient.fetch(
       query,
       cachePolicy: .returnCacheDataAndFetch
     )
-    
-    var auctions = page.data
-    
-    if includeNounderOwned, let lastNoun = auctions.first?.noun, let lastNounId = Int(lastNoun.id) {
-      let nounderOwnedIds = ((lastNounId - limit)...lastNounId).filter { $0 % 10 == 0 }.map { String($0) }
       
-      print("DEBUGGANG (lastNounId - limit): \((lastNounId - limit)) and lastNounId: \(lastNounId)")
-      print("DEBUGGANG nounderOwnedIds: \(nounderOwnedIds)")
-      print("----------------")
-      
-      for id in nounderOwnedIds {
-        guard var noun = try await fetchNoun(withId: id) else {
-          continue
-        }
-        
-        noun.nounderOwned = true
-        let auction = Auction(id: noun.id, noun: noun, amount: "N/A", startTime: .zero, endTime: .zero, settled: true, bidder: noun.owner)
-        auctions.append(auction)
-      }
+    // Fetch nounder owned nouns, if requested
+    if includeNounderOwned {
+      page = try await fetchNounderOwnedNouns(within: page)
     }
     
-    return Array(auctions.sorted { Int($0.noun.id)! > Int($1.noun.id)! })
+    return page
+  }
+  
+  /// An implementation to seperately fetch nounder owned nouns, as the GraphQL
+  /// endpoint for returning auctions does not return nounder-owned nouns by default
+  private func fetchNounderOwnedNouns(within page: Page<[Auction]>) async throws -> Page<[Auction]> {
+    
+    // Temporary modifiable instance of Page
+    var newPage = page
+    
+    /// `lastNoun` is understood as the latest noun created in this page,
+    /// with the highest numerical `nounId`, which would be presented
+    /// first in the array as it is fetched sorted, with latest being first
+    ///
+    /// `firstNoun` is understood as the first noun created in this page,
+    /// with the lowest numerical `nounId`, which would be presented
+    /// last in the array as it is fetched sorted, with oldest being last
+    guard let lastNoun = page.data.first?.noun,
+          let firstNoun = page.data.last?.noun,
+          let lastNounId = Int(lastNoun.id),
+          let firstNounId = Int(firstNoun.id) else {
+            return page
+          }
+    
+    /// Add one two the end of the list in the case of edge cases, where
+    /// the lastNounId ends with a "9", such as 29. The following settled
+    /// auction page would skip the 10th value and go straight to 31.
+    let nounderOwnedIds = (firstNounId...(lastNounId + 1)).filter { $0 % 10 == 0 }.map { String($0) }
+    
+    for id in nounderOwnedIds {
+      guard var noun = try await fetchNoun(withId: id) else {
+        continue
+      }
+      
+      noun.nounderOwned = true
+      let auction = Auction(id: noun.id, noun: noun, amount: "N/A", startTime: .zero, endTime: .zero, settled: true, bidder: noun.owner)
+      newPage.data.append(auction)
+    }
+    
+    // Sort page data
+    newPage.data = newPage.data.sorted(by: { auctionOne, auctionTwo in
+      guard let auctionOneId = Int(auctionOne.noun.id), let auctionTwoId = Int(auctionTwo.noun.id) else {
+        return false
+      }
+      return auctionOneId > auctionTwoId
+    })
+    
+    return newPage
   }
   
   public func settledAuctionsDidChange() -> AsyncStream<Auction> {

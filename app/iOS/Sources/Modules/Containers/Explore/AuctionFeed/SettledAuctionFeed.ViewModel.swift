@@ -43,7 +43,9 @@ extension SettledAuctionFeed {
     func loadAuctions() async {
       do {
         isFetching = true
-        // load next batch of the settled auctions from the network.
+        // Load next batch of the settled auctions from the network.
+        // The cursor should be set to the amount of non-nounder owned
+        // nouns in the view model as nounder owned nouns are not considered "auctions"
         let auctions = try await service.fetchAuctions(
           settled: true,
           includeNounderOwned: true,

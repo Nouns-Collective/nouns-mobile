@@ -9,7 +9,7 @@ import Foundation
 
 internal enum NounsSubgraph {
   
-  internal struct NounQuery: GraphQLPaginatingQuery {
+  internal struct NounQuery: GraphQLQuery {
     internal let url = CloudConfiguration.Nouns.query.url
     internal let id: String
     
@@ -92,7 +92,7 @@ internal enum NounsSubgraph {
     }
   }
   
-  internal struct AutionsQuery: GraphQLPaginatingQuery {
+  internal struct AuctionsQuery: GraphQLPaginatingQuery {
     internal var url = CloudConfiguration.Nouns.query.url
     internal let settled: Bool
     internal var limit: Int
