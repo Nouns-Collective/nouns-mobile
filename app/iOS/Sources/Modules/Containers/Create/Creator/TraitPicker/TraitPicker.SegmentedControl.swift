@@ -38,7 +38,7 @@ extension NounCreator {
             }
           }
           .padding(.horizontal)
-          // TODO: - Fix for this, as it currently creates breaking UI issues
+          // TODO: - This currently creates breaking UI issues (https://github.com/secretmissionsoftware/nouns-ios/issues/288)
           /*
           .onChange(of: selectedTraitType) { newValue in
             withAnimation {
