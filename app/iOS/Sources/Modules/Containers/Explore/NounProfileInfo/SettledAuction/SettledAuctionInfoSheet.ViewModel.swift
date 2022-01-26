@@ -18,6 +18,14 @@ extension SettledAuctionInfoSheet {
     
     private let auction: Auction
     
+    public var isNounderOwned: Bool {
+      auction.noun.nounderOwned
+    }
+    
+    public var nounWinner: String {
+      isNounderOwned ? R.string.nounProfile.noundersEth() : winner
+    }
+    
     init(auction: Auction) {
       self.auction = auction
       

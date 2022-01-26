@@ -22,6 +22,10 @@ extension SettledAuctionFeed {
     private let pageLimit = 20
     private var service: OnChainNounsService
     
+    private var notNounderOwnedCount: Int {
+      auctions.filter { $0.noun.nounderOwned == false }.count
+    }
+    
     init(service: OnChainNounsService = AppCore.shared.onChainNounsService) {
       self.service = service
     }
@@ -39,11 +43,14 @@ extension SettledAuctionFeed {
     func loadAuctions() async {
       do {
         isFetching = true
-        // load next batch of the settled auctions from the network.
+        // Load next batch of the settled auctions from the network.
+        // The cursor should be set to the amount of non-nounder owned
+        // nouns in the view model as nounder owned nouns are not considered "auctions"
         let auctions = try await service.fetchAuctions(
           settled: true,
+          includeNounderOwned: true,
           limit: pageLimit,
-          cursor: auctions.count
+          cursor: notNounderOwnedCount
         )
         
         shouldLoadMore = auctions.hasNext

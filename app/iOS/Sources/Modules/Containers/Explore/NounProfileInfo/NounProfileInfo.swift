@@ -30,7 +30,6 @@ struct NounProfileInfo: View {
               viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
             )
-            
           } else {
             LiveAuctionInfoSheet(
               viewModel: .init(auction: viewModel.auction),
