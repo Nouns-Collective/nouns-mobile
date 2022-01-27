@@ -1370,7 +1370,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounProfile` struct is generated, and contains static references to 8 localization keys.
+    /// This `R.string.nounProfile` struct is generated, and contains static references to 10 localization keys.
     struct nounProfile {
       /// Value: %dh %dm %ds
       static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -1386,8 +1386,12 @@ struct R: Rswift.Validatable {
       static let auctionUnsettledTimeLeftLabel = Rswift.StringResource(key: "auction.unsettled.time-left.label", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Held by
       static let heldBy = Rswift.StringResource(key: "held-by", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Nounders
+      static let nounders = Rswift.StringResource(key: "nounders", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Won for
       static let bidWinner = Rswift.StringResource(key: "bid-winner", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: nounders.eth
+      static let noundersEth = Rswift.StringResource(key: "nounders.eth", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: %dh %dm %ds
       static func auctionUnsettledTimeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
@@ -1484,6 +1488,19 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("held-by", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
+      /// Value: Nounders
+      static func nounders(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("nounders", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "nounders"
+        }
+
+        return NSLocalizedString("nounders", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
       /// Value: Won for
       static func bidWinner(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
@@ -1495,6 +1512,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("bid-winner", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
+      /// Value: nounders.eth
+      static func noundersEth(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("nounders.eth", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "nounders.eth"
+        }
+
+        return NSLocalizedString("nounders.eth", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

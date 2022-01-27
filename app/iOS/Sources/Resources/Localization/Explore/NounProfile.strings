@@ -14,6 +14,10 @@
 
 "held-by" = "Held by";
 
+"nounders" = "Nounders";
+
+"nounders.eth" = "nounders.eth";
+
 // MARK: - Live Auction
 
 "auction.unsettled.governance" = "Bid history";
