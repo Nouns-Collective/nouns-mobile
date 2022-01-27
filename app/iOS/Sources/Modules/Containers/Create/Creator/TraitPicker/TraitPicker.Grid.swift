@@ -9,11 +9,11 @@ import SwiftUI
 import Combine
 
 struct ViewOffsetKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue = CGFloat.zero
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
-    }
+  typealias Value = CGFloat
+  static var defaultValue = CGFloat.zero
+  static func reduce(value: inout Value, nextValue: () -> Value) {
+    value += nextValue()
+  }
 }
 
 extension NounCreator {
@@ -45,20 +45,26 @@ extension NounCreator {
             // Trait selection
             ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
               
-              TraitCollectionSection(items: type.traits) { trait, index in
+              TraitCollectionSection(type: type, items: type.traits) { trait, index in
                 TraitPickerItem(image: trait.assetImage)
                   .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
                     viewModel.selectTrait(index, ofType: type)
                   }
                   .id("\(type.rawValue)-\(index)")
-                  // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
+                // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
                   .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
+              }
+              .onAppear {
+                viewModel.traitSectionDidAppear(type)
+              }
+              .onDisappear {
+                viewModel.traitSectionDidDisappear(type)
               }
             }
             
             // Gradient background selection
-            TraitCollectionSection(items: Gradient.allGradients) { gradient, index in
+            TraitCollectionSection(type: .background, items: Gradient.allGradients) { gradient, index in
               
               GradientPickerItem(colors: gradient)
                 .selected(viewModel.isSelected(index, traitType: .background))
@@ -66,15 +72,22 @@ extension NounCreator {
                   viewModel.selectTrait(index, ofType: .background)
                 }
                 .id("\(ViewModel.TraitType.background.rawValue)-\(index)")
-                // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
+                // This applies a padding to only the first column (rowSpec.count)
+                // of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
+            }
+            .onAppear {
+              viewModel.traitSectionDidAppear(.background)
+            }
+            .onDisappear {
+              viewModel.traitSectionDidDisappear(.background)
             }
           }
           .padding(.vertical, 12)
           .padding(.trailing)
-          .onChange(of: viewModel.currentModifiableTraitType, perform: { newTrait in
+          .onReceive(viewModel.tapPublisher, perform: { newTrait in
+            // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
             withAnimation {
-              // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
               proxy.scrollTo(traitFirstIndexID(newTrait), anchor: .leading)
             }
           })

@@ -16,7 +16,8 @@ extension NounCreator {
     let animation: Namespace.ID
     
     @Binding var isExpanded: Bool
-    @Namespace private var typeSelectionNamespace
+    
+    @State private var selectedTraitType: Int = ViewModel.TraitType.glasses.rawValue
     
     private let rowSpec = [
       GridItem(.flexible()),
@@ -25,12 +26,6 @@ extension NounCreator {
     ]
     
     var body: some View {
-      // TODO: - Delete once Picker accepts types that conform to `Hashable`.
-      let selectionTraitType = Binding(
-        get: { viewModel.currentModifiableTraitType.rawValue },
-        set: { viewModel.currentModifiableTraitType = ViewModel.TraitType(rawValue: $0) ?? .head }
-      )
-      
       return PlainCell(
         background: isExpanded ? Color.white : nil,
         borderColor: isExpanded ? Color.black : nil
@@ -46,18 +41,7 @@ extension NounCreator {
             }
             .padding(.vertical, 4)
           
-          ScrollView(.horizontal, showsIndicators: false) {
-            
-            // Displays all Noun's trait types in a segement control.
-            OutlinePicker(selection: selectionTraitType) {
-              ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
-                Text(type.description)
-                  .id(type.rawValue)
-                  .pickerItemTag(type.rawValue, namespace: typeSelectionNamespace)
-              }
-            }
-            .padding(.horizontal)
-          }
+          TraitTypeSegmentedControl(viewModel: viewModel, selectedTraitType: $selectedTraitType)
           
           // Expand or Fold the collection of Noun's Traits.
           if isExpanded {
@@ -67,6 +51,12 @@ extension NounCreator {
         .padding(.bottom, 4)
       }
       .padding([.leading, .bottom, .trailing], isExpanded ? 12 : 0)
+      .onChange(of: viewModel.currentModifiableTraitType) { newValue in
+        // causing an infinite cycle
+        if newValue.rawValue != selectedTraitType {
+          selectedTraitType = newValue.rawValue
+        }
+      }
     }
   }
 }
