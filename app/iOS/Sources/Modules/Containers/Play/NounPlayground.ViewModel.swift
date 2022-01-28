@@ -27,9 +27,17 @@ extension NounPlayground {
     }
     
     @Published private(set) var showAudioPermissionDialog = false
-    @Published private(set) var isRecording = false
+    @Published public var isRecording = false
     @Published private(set) var state: State = .coachmark
     @Published private(set) var dismissPlayExperience = false
+    @Published public var isShareSheetPresented: Bool = false
+    @Published private(set) var videoURL: URL? {
+      didSet {
+        isShareSheetPresented = (videoURL != nil)
+      }
+    }
+    
+    public let screenRecorder: ScreenRecorder
     
     public var audioProcessingState: AudioStatus {
       voiceChangerEngine.audioProcessingState
@@ -41,8 +49,9 @@ extension NounPlayground {
       voiceChangerEngine.effect
     }
     
-    init(voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine()) {
+    init(voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine(), screenRecorder: ScreenRecorder = CAScreenRecorder()) {
       self.voiceChangerEngine = voiceChangerEngine
+      self.screenRecorder = screenRecorder
       
       handleRecordPermission()
     }
@@ -94,14 +103,21 @@ extension NounPlayground {
       voiceChangerEngine.setEffect(to: effect)
     }
     
-    /// Toggles the `isRecording` boolean value
-    func toggleRecording() {
-      isRecording.toggle()
-    }
-    
     /// Updates the view state to a new state
     func updateState(to newState: State) {
       state = newState
+    }
+    
+    @MainActor
+    func stopRecording() {
+      Task {
+        do {
+          let url = try await screenRecorder.stopRecording()
+          self.videoURL = url
+        } catch {
+          print("Error: \(error)")
+        }
+      }
     }
   }
 }

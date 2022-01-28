@@ -12,7 +12,6 @@ import Combine
 import SpriteKit
 
 struct NounPlayground: View {
-  @State var isRecording = false
   
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ViewModel()
@@ -27,6 +26,11 @@ struct NounPlayground: View {
     return scene
   }
   
+  private var spriteView: some View {
+    SpriteView(scene: playScene, options: [.allowsTransparency])
+      .frame(width: 320, height: 320)
+  }
+  
   var body: some View {
     VStack(spacing: 50) {
       Text(R.string.play.playgroundTitle())
@@ -36,10 +40,11 @@ struct NounPlayground: View {
       
       Spacer()
       
-      SpriteView(scene: playScene, options: [.allowsTransparency])
-        .frame(width: 320, height: 320)
+      spriteView
       
       Spacer()
+      
+      RecordButton(isRecording: $viewModel.isRecording)
       
       OutlinePicker(selection: $selection) {
         ForEach(VoiceChangerEngine.Effect.allCases, id: \.rawValue) { effect in
@@ -77,6 +82,19 @@ struct NounPlayground: View {
     }
     .onChange(of: selection) { newValue in
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
+    }
+    .onChange(of: viewModel.isRecording) { recording in
+      switch recording {
+      case true:
+        viewModel.screenRecorder.startRecording(spriteView)
+      case false:
+        viewModel.stopRecording()
+      }
+    }
+    .sheet(isPresented: $viewModel.isShareSheetPresented) {
+      if let videoURL = viewModel.videoURL {
+        ShareSheet(activityItems: [videoURL])
+      }
     }
   }
 }
