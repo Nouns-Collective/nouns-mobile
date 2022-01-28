@@ -6,13 +6,22 @@
 //
 
 import Foundation
-import AVFAudio
+import AVFoundation
 
-/// The record permission status.
+/// The permission status for recording the audio media type.
 public enum RecordPermission {
+  
+  /// The user has not yet granted or denied the audio capture permission.
   case undetermined
-  case denied
+  
+  /// The user has explicitly granted permission for audio capture.
   case granted
+  
+  /// The user has explicitly denied permission for audio capture.
+  case denied
+  
+  /// The user is not allowed to access audio capture device.
+  case restricted
 }
 
 /// Authorization for audio hardware.
@@ -33,37 +42,3 @@ public protocol AudioAuthorization {
   @discardableResult
   func requestRecordPermission() async throws -> Bool
 }
-
-extension VoiceChangerEngine: AudioAuthorization {
-  
-  private var audioSession: AVAudioSession {
-    AVAudioSession.sharedInstance()
-  }
-  
-  public var recordPermission: RecordPermission {
-    switch audioSession.recordPermission {
-    case .granted:
-      return .granted
-      
-    case .undetermined:
-      return .undetermined
-      
-    case .denied:
-      return .denied
-      
-    @unknown default:
-      fatalError("Unprocessed record authorization case.")
-    }
-  }
-  
-  @discardableResult
-  public func requestRecordPermission() async throws -> Bool {
-    try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
-    return await withCheckedContinuation({ continuation in
-      audioSession.requestRecordPermission { granted in
-        continuation.resume(returning: granted)
-      }
-    })
-  }
-}
-
