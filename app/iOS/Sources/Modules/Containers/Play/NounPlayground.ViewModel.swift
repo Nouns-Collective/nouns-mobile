@@ -115,7 +115,7 @@ extension NounPlayground {
           let url = try await screenRecorder.stopRecording()
           self.videoURL = url
         } catch {
-          print("Error: \(error)")
+          print("An error has occured while creating video: \(error)")
         }
       }
     }
