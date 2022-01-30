@@ -44,7 +44,7 @@ struct NounPlayground: View {
       
       Spacer()
       
-      RecordButton(isRecording: $viewModel.isRecording)
+      // Record button should go here
       
       OutlinePicker(selection: $selection) {
         ForEach(VoiceChangerEngine.Effect.allCases, id: \.rawValue) { effect in
@@ -54,13 +54,13 @@ struct NounPlayground: View {
         }
       }
       .padding(.bottom, 20)
-//      .emptyPlaceholder(when: viewModel.state == .coachmark) {
-//        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
-//          Image.pointRight.white
-//            .rotationEffect(.degrees(-75))
-//        })
-//          .padding(.bottom, 60)
-//      }
+      //      .emptyPlaceholder(when: viewModel.state == .coachmark) {
+      //        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
+      //          Image.pointRight.white
+      //            .rotationEffect(.degrees(-75))
+      //        })
+      //          .padding(.bottom, 60)
+      //      }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .softNavigationItems(leftAccessory: {
@@ -86,14 +86,10 @@ struct NounPlayground: View {
     .onChange(of: viewModel.isRecording) { recording in
       switch recording {
       case true:
-        viewModel.screenRecorder.startRecording(spriteView)
+        // viewModel.screenRecorder.startRecording(viewToRecord)
+        break
       case false:
         viewModel.stopRecording()
-      }
-    }
-    .sheet(isPresented: $viewModel.isShareSheetPresented) {
-      if let videoURL = viewModel.videoURL {
-        ShareSheet(activityItems: [videoURL])
       }
     }
   }

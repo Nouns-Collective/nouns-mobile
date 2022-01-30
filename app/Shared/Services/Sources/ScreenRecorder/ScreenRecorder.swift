@@ -16,13 +16,15 @@ public protocol ScreenRecorder: AnyObject {
   ///
   /// - Parameters:
   ///    - view: A SwiftUI view to start recording
-  func startRecording<ContentView: View>(_ view: ContentView)
+  ///    - backgroundView: An optional background view to place behind the main recorded view
+  func startRecording<ContentView: View, BackgroundView: View>(_ view: ContentView, backgroundView: BackgroundView?)
   
   /// Starts recording a UIKit view (UIView)
   ///
   /// - Parameters:
-  ///    - view: A UIView to start recording
-  func startRecording(_ view: UIView)
+  ///    - view: A UIView to start
+  ///    - backgroundView: An optional background view to place behind the main recorded view
+  func startRecording(_ view: UIView, backgroundView: UIView?)
   
   /// Stops recording the view
   ///
@@ -46,7 +48,7 @@ public enum ScreenRecorderError: Error {
 }
 
 public class CAScreenRecorder: ScreenRecorder {
-  
+
   /// A reference to all the recorded frames of the recorded view
   private var frames = [UIImage]()
   
@@ -85,13 +87,20 @@ public class CAScreenRecorder: ScreenRecorder {
     self.framesPerSecond = framesPerSecond
   }
   
-  public func startRecording<ContentView>(_ view: ContentView) where ContentView: View {
+  public func startRecording<ContentView, BackgroundView>(_ view: ContentView, backgroundView: BackgroundView?) where ContentView: View, BackgroundView: View {
+    
     guard let uiView = viewToUIView(view) else { return }
-    startRecording(uiView)
+    
+    var backgroundUIView: UIView?
+    if let backgroundView = backgroundView {
+      backgroundUIView = viewToUIView(backgroundView)
+    }
+    
+    startRecording(uiView, backgroundView: backgroundUIView)
   }
   
-  public func startRecording(_ view: UIView) {
-    self.sourceView = view
+  public func startRecording(_ view: UIView, backgroundView: UIView?) {
+    self.sourceView = constructView(view, backgroundView: backgroundView)
     displayLink = CADisplayLink(target: self, selector: #selector(tick))
     displayLink?.add(to: RunLoop.main, forMode: .common)
   }
@@ -116,16 +125,20 @@ public class CAScreenRecorder: ScreenRecorder {
   private func tick(_ displayLink: CADisplayLink) {
     guard let sourceView = sourceView else { return }
 
-    let renderer = UIGraphicsImageRenderer(size: sourceView.intrinsicContentSize)
-
+    let renderer = UIGraphicsImageRenderer(size: sourceView.frame.size)
+    
     let frame = renderer.image(actions: { _ in
-      sourceView.drawHierarchy(in: CGRect(origin: .zero, size: sourceView.intrinsicContentSize), afterScreenUpdates: true)
+      sourceView.drawHierarchy(in: CGRect(origin: .zero, size: sourceView.frame.size), afterScreenUpdates: true)
     })
     
     frames.append(frame)
   }
   
   /// Accumulates all frames and transforms them into an exportable video
+  ///
+  /// - Parameters:
+  ///   - fps: The frames per second at which the video should be created
+  ///   - codecType: A video codec type, of type `AVVideoCodecType`. Default is `.h264`
   private func writeToVideo(fps: Double, codecType: AVVideoCodecType = .h264) async throws -> URL {
     
     guard self.frames.count > 0 else {
@@ -147,7 +160,7 @@ public class CAScreenRecorder: ScreenRecorder {
     
     let input = AVAssetWriterInput(mediaType: .video,
                                    outputSettings: self.videoSettings(codecType: codecType))
-    
+
     if writer.canAdd(input) {
       writer.add(input)
     } else {
@@ -186,6 +199,7 @@ public class CAScreenRecorder: ScreenRecorder {
     }
   }
   
+  /// Generates a random file URL to temporarily store the recorded video
   private func generateUniqueFileURL() -> URL {
     var fileURL = URL(fileURLWithPath: NSTemporaryDirectory())
     fileURL.appendPathComponent(UUID().uuidString)
@@ -194,14 +208,37 @@ public class CAScreenRecorder: ScreenRecorder {
   }
   
   /// Converts a SwiftUI view to a UIView in order to record
+  ///
+  /// - Parameters:
+  ///    - view: A SwiftUI `View` instance to convert into a `UIVIew`
+  ///
+  /// - Returns: An optional instance of a `UIView`
   private func viewToUIView<ContentView: View>(_ view: ContentView) -> UIView? {
-    let controller = UIHostingController(rootView: view)
+    let controller = UIHostingController(rootView: view.edgesIgnoringSafeArea(.all))
     let view = controller.view
     
     let targetSize = controller.view.intrinsicContentSize
-    view?.bounds = CGRect(origin: .zero, size: targetSize)
-    view?.backgroundColor = .white
+    
+    view?.frame = CGRect(origin: .zero, size: targetSize)
+    view?.backgroundColor = .clear
     
     return view
+  }
+  
+  /// Combines the main view as well as an optional `backgroundView` into one layered `UIView`
+  ///
+  /// - Parameters:
+  ///    - sourceView: The primary view to record
+  ///    - backgroundView: An optional view to place behind the primary view
+  ///
+  /// - Returns: A layered `UIView` with the `backgroundView` and `sourceView`
+  private func constructView(_ sourceView: UIView, backgroundView: UIView?) -> UIView {
+    guard let backgroundView = backgroundView else {
+      return sourceView
+    }
+
+    let recordingView = RecordingView(sourceView: sourceView, backgroundView: backgroundView)
+
+    return recordingView
   }
 }

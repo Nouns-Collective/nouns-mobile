@@ -11,7 +11,7 @@ public extension View {
   
   /// Converts a SwiftUI view into image data
   func asImageData() -> Data {
-    let controller = UIHostingController(rootView: self)
+    let controller = UIHostingController(rootView: self.edgesIgnoringSafeArea(.all))
     let view = controller.view
     
     let targetSize = controller.view.intrinsicContentSize

@@ -52,7 +52,9 @@ extension NounPlayground {
       view?.allowsTransparency = true
       view?.backgroundColor = .clear
       
-      addChild(talkingNoun)
+      if talkingNoun.parent == nil {
+        addChild(talkingNoun)
+      }
     }
   }
 }
