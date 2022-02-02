@@ -8,7 +8,6 @@
 import UIKit
 import SwiftUI
 import AVFoundation
-import Combine
 
 public protocol ScreenRecorder: AnyObject {
   
@@ -40,6 +39,15 @@ public enum ScreenRecorderError: Error {
   /// The FPS is a negative amount
   case invalidFPS
   
+  /// Failure to add video input to AVAssetWriter
+  case unableToAddVideoInput
+  
+  /// Failure to create sample buffer from image frame
+  case unableToCreateSampleBuffer
+  
+  /// Failure to append buffer to pixel adaptor
+  case unableToAppendBuffer
+  
   /// A fatal error has occured
   case failure(error: Error)
   
@@ -48,7 +56,7 @@ public enum ScreenRecorderError: Error {
 }
 
 public class CAScreenRecorder: ScreenRecorder {
-
+  
   /// A reference to all the recorded frames of the recorded view
   private var frames = [UIImage]()
   
@@ -87,8 +95,10 @@ public class CAScreenRecorder: ScreenRecorder {
     self.framesPerSecond = framesPerSecond
   }
   
-  public func startRecording<ContentView, BackgroundView>(_ view: ContentView, backgroundView: BackgroundView?) where ContentView: View, BackgroundView: View {
-    
+  public func startRecording<ContentView, BackgroundView>(
+    _ view: ContentView,
+    backgroundView: BackgroundView?
+  ) where ContentView: View, BackgroundView: View {
     guard let uiView = viewToUIView(view) else { return }
     
     var backgroundUIView: UIView?
@@ -112,19 +122,15 @@ public class CAScreenRecorder: ScreenRecorder {
     // Remove first frame, which is often a grey transisionary frame as the view gets added
     _ = frames.popLast()
     
-    do {
-      let videoURL = try await writeToVideo(fps: 60)
-      return videoURL
-    } catch {
-      throw error
-    }
+    let videoURL = try await writeToVideo()
+    return videoURL
   }
   
   /// A method called every screen refresh to capture current visual state of the view
   @objc
   private func tick(_ displayLink: CADisplayLink) {
     guard let sourceView = sourceView else { return }
-
+    
     let renderer = UIGraphicsImageRenderer(size: sourceView.frame.size)
     
     let frame = renderer.image(actions: { _ in
@@ -137,15 +143,14 @@ public class CAScreenRecorder: ScreenRecorder {
   /// Accumulates all frames and transforms them into an exportable video
   ///
   /// - Parameters:
-  ///   - fps: The frames per second at which the video should be created
   ///   - codecType: A video codec type, of type `AVVideoCodecType`. Default is `.h264`
-  private func writeToVideo(fps: Double, codecType: AVVideoCodecType = .h264) async throws -> URL {
+  private func writeToVideo(codecType: AVVideoCodecType = .h264) async throws -> URL {
     
-    guard self.frames.count > 0 else {
+    guard !frames.isEmpty else {
       throw ScreenRecorderError.noFrames
     }
     
-    guard fps > 0 else {
+    guard framesPerSecond > 0 else {
       throw ScreenRecorderError.invalidFPS
     }
     
@@ -160,11 +165,11 @@ public class CAScreenRecorder: ScreenRecorder {
     
     let input = AVAssetWriterInput(mediaType: .video,
                                    outputSettings: self.videoSettings(codecType: codecType))
-
+    
     if writer.canAdd(input) {
       writer.add(input)
     } else {
-      throw ScreenRecorderError.internalError
+      throw ScreenRecorderError.unableToAddVideoInput
     }
     
     let pixelAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input,
@@ -176,10 +181,13 @@ public class CAScreenRecorder: ScreenRecorder {
     var frameIndex: Int = 0
     while frameIndex < self.frames.count {
       if input.isReadyForMoreMediaData {
-        if let buffer = self.frames[frameIndex].toSampleBuffer(frameIndex: frameIndex,
-                                                               framesPerSecond: fps) {
-          pixelAdaptor.append(CMSampleBufferGetImageBuffer(buffer)!,
-                              withPresentationTime: CMSampleBufferGetOutputPresentationTimeStamp(buffer))
+        guard let buffer = self.frames[frameIndex].toSampleBuffer(frameIndex: frameIndex, framesPerSecond: framesPerSecond),
+              let imageBuffer = CMSampleBufferGetImageBuffer(buffer) else {
+                throw ScreenRecorderError.unableToCreateSampleBuffer
+              }
+        
+        guard pixelAdaptor.append(imageBuffer, withPresentationTime: CMSampleBufferGetOutputPresentationTimeStamp(buffer)) else {
+          throw ScreenRecorderError.unableToAppendBuffer
         }
         
         frameIndex += 1
@@ -236,9 +244,9 @@ public class CAScreenRecorder: ScreenRecorder {
     guard let backgroundView = backgroundView else {
       return sourceView
     }
-
+    
     let recordingView = RecordingView(sourceView: sourceView, backgroundView: backgroundView)
-
+    
     return recordingView
   }
 }
