@@ -11,7 +11,7 @@ import SoundAnalysis
 import Combine
 
 /// Various audio states.
-public enum AudioStatus {
+public enum AudioStatus: String {
   case undefined
   case speech
   case silence
@@ -31,16 +31,13 @@ final class MLAudioStateDetector: AudioStateDetector {
   
   private(set) var status: AudioStatus = .undefined
   
-  /// A dispatch queue to asynchronously perform analysis on.
-  private let analysisQueue = DispatchQueue(label: "wtf.nouns.ios.classifying-sounds.AnalysisQueue")
-  
   /// An analyzer that performs sound classification.
   private var analyzer: SNAudioStreamAnalyzer
   
   private static let speechClassificationLabel = "speech"
   
   /// Indicates the amount of audio, in seconds, that informs a prediction.
-  private let inferenceWindowSize = Double(1.5)
+  private let inferenceWindowSize = Double(1.0)
   
   ///
   private let subject = PassthroughSubject<SNClassificationResult, Error>()
@@ -54,7 +51,7 @@ final class MLAudioStateDetector: AudioStateDetector {
   /// registered, the analyzer claims a strong reference on the request and not on the observer. It's the
   /// responsibility of the caller to handle the observer's lifetime. When sound classification isn't active,
   /// the variable is `nil`, freeing the observers from memory.
-  private var observer: SNResultsObserving?
+  private var resultsObserver: SNResultsObserving?
   
   /// The last detected
   private var lastSpeechState: AudioDetectionState?
@@ -75,19 +72,19 @@ final class MLAudioStateDetector: AudioStateDetector {
   
   deinit {
     analyzer.removeAllRequests()
-    observer = nil
+    resultsObserver = nil
   }
   
   private func prepare() throws {
     let request = try SNClassifySoundRequest(classifierIdentifier: .version1)
-    request.windowDuration = CMTimeMakeWithSeconds(inferenceWindowSize, preferredTimescale: 48_000)
+    request.windowDuration = CMTimeMakeWithSeconds(inferenceWindowSize, preferredTimescale: 100_000)
     request.overlapFactor = overlapFactor
     
-    let observer = ClassificationResults(subject: subject)
-    try analyzer.add(request, withObserver: observer)
-    self.observer = observer
+    let resultsObserver = ClassificationResults(subject: subject)
+    try analyzer.add(request, withObserver: resultsObserver)
+    self.resultsObserver = resultsObserver
     
-    lastSpeechState = AudioDetectionState(presenceThreshold: 0.3,
+    lastSpeechState = AudioDetectionState(presenceThreshold: 0.4,
                                           absenceThreshold: 0.3,
                                           presenceMeasurementsToStartDetection: 1,
                                           absenceMeasurementsToEndDetection: 2)
@@ -95,35 +92,31 @@ final class MLAudioStateDetector: AudioStateDetector {
     detectionCancellable = subject.sink { completion in
       switch completion {
       case .finished:
-        print("Sound detection is stopped")
+        print("🎙 Sound detection is stopped")
       case .failure(let error):
-        print("⚠️ Sound detection is stopped due to \(error)")
+        print("⚠️ 🎙 Sound detection is stopped due to \(error)")
       }
     } receiveValue: { [weak self] result in
       guard let self = self else { return }
       guard let lastSpeechState = self.lastSpeechState else {
-        print("⚠️ Couldn't analyse the sound as no initial speech state was found.")
+        print("⚠️ 🎙 Couldn't analyse the sound as no initial speech state was found.")
         return
       }
-
+      
       self.lastSpeechState = Self.advanceDetectionStates(
         lastSpeechState,
         soundLabel: Self.speechClassificationLabel,
         givenClassificationResult: result
       )
       
-      if lastSpeechState.isDetected {
-        self.status = .speech
-      } else {
-        self.status = .silence
-      }
+      self.status = lastSpeechState.isDetected ? .speech : .silence
     }
   }
   
   /// Updates the detection states according to the latest classification result.
   ///
   /// - Parameters:
-  ///   - oldStates: The previous detection states to update with a new observation from an ongoing
+  ///   - oldState: The previous detection states to update with a new observation from an ongoing
   ///   sound classification.
   ///   - result: The latest observation the app emits from an ongoing sound classification.
   ///
@@ -140,14 +133,17 @@ final class MLAudioStateDetector: AudioStateDetector {
       } else {
         confidence = 0
       }
+      
       return confidence
     }
-    return AudioDetectionState(advancedFrom: oldState, currentConfidence: confidenceForLabel(soundLabel))
+    
+    return AudioDetectionState(
+      advancedFrom: oldState,
+      currentConfidence: confidenceForLabel(soundLabel)
+    )
   }
   
-  func process(buffer: AVAudioPCMBuffer, sampleTime: AVAudioFramePosition)  {
-    analysisQueue.async {
-      self.analyzer.analyze(buffer, atAudioFramePosition: sampleTime)
-    }
+  func process(buffer: AVAudioPCMBuffer, sampleTime: AVAudioFramePosition) {
+    analyzer.analyze(buffer, atAudioFramePosition: sampleTime)
   }
 }

@@ -66,7 +66,7 @@ class TalkingNoun: SKSpriteNode {
     
     let animation = SKAction.animate(
       with: talkTextures,
-      timePerFrame: 0.05,
+      timePerFrame: 0.08,
       resize: false,
       restore: true
     )

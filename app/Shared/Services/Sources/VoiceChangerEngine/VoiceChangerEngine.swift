@@ -1,8 +1,8 @@
 //
 //  VoiceChangerEngine.swift
-//  
+//  Nouns
 //
-//  Created by Ziad Tamim on 19.01.22.
+//  Created by Ziad Tamim on 16.01.22.
 //
 
 import Foundation
@@ -30,18 +30,22 @@ public class VoiceChangerEngine: ObservableObject {
   @Published public private(set) var state: State = .idle {
     didSet {
       if oldValue != state {
-        print("🎙 Audio Engine is", state.rawValue)
+        print("🏁🎙 Audio Engine is", state.rawValue)
       }
     }
   }
   
   /// Effect currently applied to the audio recorded.
-  @Published public private(set) var effect: VoiceChangerEngine.Effect = .alien {
+  @Published public var effect: VoiceChangerEngine.Effect = .alien {
     didSet { try? prepare() }
   }
   
   /// Determines the state of the audio being processed.
-  @Published public private(set) var audioProcessingState: AudioStatus = .undefined
+  @Published public private(set) var audioProcessingState: AudioStatus = .undefined {
+    didSet {
+      print("🔊 Audio is processed as", audioProcessingState.rawValue)
+    }
+  }
  
   /// Audio nodes, controls playback, and configures real-time rendering.
   private let audioEngine = AVAudioEngine()
@@ -55,11 +59,13 @@ public class VoiceChangerEngine: ObservableObject {
   /// Calculates the recorded audio powers to determine the status if `loud` or `silent`.
   private var audioStateDetector: AudioStateDetector?
   
+  private var outputBus: AVAudioNodeBus = 0
+  
   /// Set an output format.
   private var outputFormat: AVAudioFormat
   
   public init() {
-    outputFormat = audioEngine.inputNode.outputFormat(forBus: 0)
+    outputFormat = audioEngine.inputNode.outputFormat(forBus: outputBus)
   }
   
   deinit {
@@ -73,6 +79,7 @@ public class VoiceChangerEngine: ObservableObject {
     // creating a new one to avoid crashing & consider the new configuration.
     stop()
     
+    audioStateDetector = try MLAudioStateDetector(audioFormat: outputFormat)
     try prepareAudioEngineToRecordSpeech()
     prepareAudioEngine(forEffect: effect)
     
@@ -107,32 +114,17 @@ public class VoiceChangerEngine: ObservableObject {
     }
     
     audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: outputFormat)
-    
-    // Process and update the status to state when the mixed audio is `silent` or `loud`.
-    audioEngine.mainMixerNode.installTap(onBus: 0, bufferSize: 256, format: outputFormat) { [weak self] buffer, when in
-      guard let self = self, let audioStateDetector = self.audioStateDetector else {
-        return
-      }
-      
-      guard self.state == .playing else { return }
-      
-      // Process the current samples to find audio status.
-      audioStateDetector.process(buffer: buffer, sampleTime: when.sampleTime)
-      self.audioProcessingState = audioStateDetector.status
-    }
   }
   
   private func prepareAudioEngineToRecordSpeech() throws {
-    audioStateDetector = try MLAudioStateDetector(audioFormat: outputFormat)
     
     // Record using the mic.
     let input = audioEngine.inputNode
     try input.setVoiceProcessingEnabled(true)
-    let busIndex = 0
-    let bufferSize = AVAudioFrameCount(8192)
+    let bufferSize = AVAudioFrameCount(4096)
     
     input.installTap(
-      onBus: busIndex,
+      onBus: outputBus,
       bufferSize: bufferSize,
       format: outputFormat
     ) { [weak self] buffer, when in
@@ -164,12 +156,14 @@ public class VoiceChangerEngine: ObservableObject {
   
   private func applyEffect(file: AVAudioFile) {
     recordedFilePlayer.scheduleFile(file, at: nil) { [weak self] in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
         self?.state = .idle
+        self?.audioProcessingState = .silence
       }
     }
     
     state = .playing
+    audioProcessingState = .speech
     recordedFilePlayer.play()
   }
   
@@ -192,8 +186,8 @@ public class VoiceChangerEngine: ObservableObject {
     guard let recordedFile = recordedFile else {
       return
     }
-    print("====", recordedFile.url.absoluteURL)
-//    applyEffect(file: recordedFile)
+    
+    applyEffect(file: recordedFile)
     self.recordedFile = nil
   }
   
@@ -251,7 +245,8 @@ extension VoiceChangerEngine: AudioAuthorization {
     stopAudioSession()
     do {
       let audioSession = AVAudioSession.sharedInstance()
-      try audioSession.setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
+      try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
+      try audioSession.setMode(.measurement)
       try audioSession.setActive(true)
     } catch {
       stopAudioSession()
@@ -267,4 +262,3 @@ extension VoiceChangerEngine: AudioAuthorization {
     }
   }
 }
-
