@@ -25,6 +25,15 @@ public protocol ScreenRecorder: AnyObject {
   ///    - backgroundView: An optional background view to place behind the main recorded view
   func startRecording(_ view: UIView, backgroundView: UIView?)
   
+  /// Adds a watermark to the bottom left corner of the recording view
+  ///
+  /// - Parameters:
+  ///   - image: An image to add as a watermark
+  func addWatermark(_ image: UIImage)
+  
+  /// Removes the watermark from the recording view
+  func removeWatermark()
+  
   /// Stops recording the view
   ///
   /// - Returns: A file URL where the video file was temporarily saved
@@ -67,7 +76,10 @@ public class CAScreenRecorder: ScreenRecorder {
   private var completion: ((URL?) -> Void)?
   
   /// The view we're actively recording
-  private var sourceView: UIView?
+  private var recordingView: RecordingView?
+  
+  /// The watermark for the screen recorder
+  private var watermark: UIImage = UIImage()
   
   /// Target frames per second to record the video at
   private var framesPerSecond: Double
@@ -110,7 +122,7 @@ public class CAScreenRecorder: ScreenRecorder {
   }
   
   public func startRecording(_ view: UIView, backgroundView: UIView?) {
-    self.sourceView = constructView(view, backgroundView: backgroundView)
+    self.recordingView = constructView(view, backgroundView: backgroundView)
     displayLink = CADisplayLink(target: self, selector: #selector(tick))
     displayLink?.add(to: RunLoop.main, forMode: .common)
   }
@@ -126,20 +138,29 @@ public class CAScreenRecorder: ScreenRecorder {
     return videoURL
   }
   
+  // TODO: - add after the `recordingView` was added
+  public func addWatermark(_ image: UIImage) {
+    recordingView?.setWatermark(to: image)
+    watermark = image
+  }
+  
+  public func removeWatermark() {
+    recordingView?.removeWatermark()
+    watermark = UIImage()
+  }
+  
   /// A method called every screen refresh to capture current visual state of the view
   @objc
   private func tick(_ displayLink: CADisplayLink) {
-    guard let sourceView = sourceView else { return }
+    guard let recordingView = recordingView else { return }
     
-    let renderer = UIGraphicsImageRenderer(size: sourceView.frame.size)
+    let renderer = UIGraphicsImageRenderer(size: recordingView.frame.size)
     
     let frame = renderer.image(actions: { _ in
-      sourceView.drawHierarchy(in: CGRect(origin: .zero, size: sourceView.frame.size), afterScreenUpdates: true)
+      recordingView.drawHierarchy(in: CGRect(origin: .zero, size: recordingView.frame.size), afterScreenUpdates: true)
     })
     
     frames.append(frame)
-    
-    print("Frames count: \(frames.count)")
   }
   
   /// Accumulates all frames and transforms them into an exportable video
@@ -242,13 +263,9 @@ public class CAScreenRecorder: ScreenRecorder {
   ///    - backgroundView: An optional view to place behind the primary view
   ///
   /// - Returns: A layered `UIView` with the `backgroundView` and `sourceView`
-  private func constructView(_ sourceView: UIView, backgroundView: UIView?) -> UIView {
-    guard let backgroundView = backgroundView else {
-      return sourceView
-    }
-    
+  private func constructView(_ sourceView: UIView, backgroundView: UIView?) -> RecordingView {
     let recordingView = RecordingView(sourceView: sourceView, backgroundView: backgroundView)
-    
+    recordingView.setWatermark(to: watermark)
     return recordingView
   }
 }

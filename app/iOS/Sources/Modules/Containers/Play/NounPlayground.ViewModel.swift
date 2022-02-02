@@ -30,6 +30,12 @@ extension NounPlayground {
     @Published private(set) var isRecording = false
     @Published private(set) var state: State = .coachmark
     @Published private(set) var dismissPlayExperience = false
+    @Published public var showShareSheet: Bool = false
+    @Published private(set) var videoURL: URL? {
+      didSet {
+        showShareSheet = (videoURL != nil)
+      }
+    }
     
     public let screenRecorder: ScreenRecorder
     
@@ -107,6 +113,7 @@ extension NounPlayground {
       Task {
         do {
           let url = try await screenRecorder.stopRecording()
+          self.videoURL = url
         } catch {
           print("An error has occured while creating video: \(error)")
         }
