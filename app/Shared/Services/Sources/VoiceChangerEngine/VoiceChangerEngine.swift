@@ -79,6 +79,8 @@ public class VoiceChangerEngine: ObservableObject {
     // creating a new one to avoid crashing & consider the new configuration.
     stop()
     
+    try startAudioSession()
+    
     audioStateDetector = try MLAudioStateDetector(audioFormat: outputFormat)
     try prepareAudioEngineToRecordSpeech()
     prepareAudioEngine(forEffect: effect)
@@ -109,11 +111,11 @@ public class VoiceChangerEngine: ObservableObject {
     var outputAudioUnit: AVAudioNode = recordedFilePlayer
     for inputAudioUnit in effect.unit.audioUnits {
       audioEngine.attach(inputAudioUnit)
-      audioEngine.connect(outputAudioUnit, to: inputAudioUnit, format: outputFormat)
+      audioEngine.connect(outputAudioUnit, to: inputAudioUnit, format: nil)
       outputAudioUnit = inputAudioUnit
     }
     
-    audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: outputFormat)
+    audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: nil)
   }
   
   private func prepareAudioEngineToRecordSpeech() throws {
@@ -234,7 +236,6 @@ extension VoiceChangerEngine: AudioAuthorization {
   
   @discardableResult
   public func requestRecordPermission() async throws -> Bool {
-    try startAudioSession()
     return await AVCaptureDevice.requestAccess(for: .audio)
   }
   
@@ -242,11 +243,10 @@ extension VoiceChangerEngine: AudioAuthorization {
   ///
   /// If this method throws an error, it calls `stopAudioSession` to reverse its effects.
   private func startAudioSession() throws {
-    stopAudioSession()
     do {
       let audioSession = AVAudioSession.sharedInstance()
       try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
-      try audioSession.setMode(.measurement)
+      try audioSession.setMode(.default)
       try audioSession.setActive(true)
     } catch {
       stopAudioSession()
