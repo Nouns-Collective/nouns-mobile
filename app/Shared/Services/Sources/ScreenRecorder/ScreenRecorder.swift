@@ -36,7 +36,7 @@ public protocol ScreenRecorder: AnyObject {
   
   /// Stops recording the view
   ///
-  /// - Returns: A file URL where the video file was temporarily saved
+  /// - Returns: A preview video URL for the video without a watermark and the share video URL for the video with the watermark
   func stopRecording() async throws -> (previewVideoURL: URL, shareVideoURL: URL)
 }
 
@@ -134,13 +134,15 @@ public class CAScreenRecorder: ScreenRecorder {
     displayLink?.invalidate()
     displayLink = nil
     
-    guard framesWithoutWatermark.count > 0 else {
+    guard framesWithoutWatermark.count > 0,
+          framesWithWatermark.count > 0 else {
       throw ScreenRecorderError.noFrames
     }
     
     // Remove first frame, which is often a grey transisionary frame as the view gets added
     _ = framesWithoutWatermark.removeFirst()
-    
+    _ = framesWithWatermark.removeFirst()
+
     async let videoWithoutWatermarkURL = writeToVideo(withWatermark: false)
     async let videoWithWatermarkURL = writeToVideo(withWatermark: true)
     
