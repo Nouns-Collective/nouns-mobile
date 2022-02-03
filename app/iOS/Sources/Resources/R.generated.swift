@@ -1370,10 +1370,12 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounProfile` struct is generated, and contains static references to 10 localization keys.
+    /// This `R.string.nounProfile` struct is generated, and contains static references to 11 localization keys.
     struct nounProfile {
       /// Value: %dh %dm %ds
       static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Activity
+      static let auctionSettledGovernanceNounder = Rswift.StringResource(key: "auction.settled.governance.nounder", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Bid history
       static let auctionUnsettledGovernance = Rswift.StringResource(key: "auction.unsettled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Bid history & activity
@@ -1406,6 +1408,19 @@ struct R: Rswift.Validatable {
 
         let format = NSLocalizedString("auction.unsettled.time-left", tableName: "NounProfile", bundle: bundle, comment: "")
         return String(format: format, locale: locale, value1, value2, value3)
+      }
+
+      /// Value: Activity
+      static func auctionSettledGovernanceNounder(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.settled.governance.nounder"
+        }
+
+        return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
       /// Value: Bid history

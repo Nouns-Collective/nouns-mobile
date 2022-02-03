@@ -21,6 +21,6 @@ extension Noun: Decodable {
     
     createdAt = Date()
     updatedAt = Date()
-    nounderOwned = false
+    isNounderOwned = false
   }
 }
