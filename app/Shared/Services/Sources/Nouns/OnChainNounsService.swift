@@ -236,7 +236,7 @@ public class TheGraphNounsProvider: OnChainNounsService {
         continue
       }
       
-      noun.nounderOwned = true
+      noun.isNounderOwned = true
       let auction = Auction(id: noun.id, noun: noun, amount: "N/A", startTime: .zero, endTime: .zero, settled: true, bidder: noun.owner)
       newPage.data.append(auction)
     }

@@ -15,11 +15,15 @@ extension SettledAuctionInfoSheet {
     @Published private(set) var birthdate: String
     @Published private(set) var winningBid: String
     @Published private(set) var nounProfileURL: URL?
+    @Published private(set) var showWinningBid: Bool
+    @Published private(set) var showBirthdate: Bool
+    @Published private(set) var governanceTitle: String
     
+    private let localize = R.string.nounProfile.self
     private let auction: Auction
     
     public var isNounderOwned: Bool {
-      auction.noun.nounderOwned
+      auction.noun.isNounderOwned
     }
     
     public var nounWinner: String {
@@ -36,6 +40,20 @@ extension SettledAuctionInfoSheet {
       
       let startDate = Date(timeIntervalSince1970: auction.startTime)
       birthdate = R.string.nounProfile.birthday(startDate.formatted(dateStyle: .long))
+      
+      // Hide the winning bid on the nounders noun.
+      showWinningBid = !auction.noun.isNounderOwned
+      
+      // TODO: Modify the nounders nouns retrieval logic to infer the birthday from the previously auctioned noun.
+      // Hide the birthday on the nounders noun as it isn't provided.
+      showBirthdate = !auction.noun.isNounderOwned
+      
+      // On nounder noun, display activity as the only option.
+      if auction.noun.isNounderOwned {
+        governanceTitle = localize.auctionSettledGovernanceNounder()
+      } else {
+        governanceTitle = localize.auctionSettledGovernance()
+      }
     }
   }
 }

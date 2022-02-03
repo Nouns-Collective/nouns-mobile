@@ -42,7 +42,7 @@ public struct Noun: Equatable, Identifiable, Hashable {
   /// The date when the noun was updated.
   public var updatedAt: Date
   
-  public var nounderOwned: Bool
+  public var isNounderOwned: Bool
   
   public init(
     id: String = UUID().uuidString,
@@ -59,7 +59,7 @@ public struct Noun: Equatable, Identifiable, Hashable {
     self.seed = seed
     self.createdAt = createdAt
     self.updatedAt = updatedAt
-    self.nounderOwned = nounderOwned
+    self.isNounderOwned = nounderOwned
   }
 }
 

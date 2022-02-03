@@ -28,6 +28,10 @@ extension AuctionInfo {
       auction.settled
     }
     
+    var isBidHistoryAvailable: Bool {
+      !auction.noun.isNounderOwned
+    }
+    
     /// The initial visible page to display. If the auction is not settled, the auction history takes place.
     var initialVisiblePage: Page {
       isActivityAvailable ? .activity : .bidHitory
