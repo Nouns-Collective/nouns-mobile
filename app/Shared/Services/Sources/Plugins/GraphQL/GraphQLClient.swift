@@ -9,22 +9,22 @@ import Foundation
 import Combine
 
 /// GraphQL query error.
-public enum QueryError: Error {
+enum QueryError: Error {
   
-  public struct Reason: Equatable {
+  struct Reason: Equatable {
     /// The error message associated with the line and column number
-    public let message: String?
+    let message: String?
     
     /// A list of locations in the requested GraphQL document associated with the error.
-    public let locations: [Location]?
+    let locations: [Location]?
   }
   
-  public struct Location: Equatable {
+  struct Location: Equatable {
     /// Line on which the error occurred
-    public let line: Int?
+    let line: Int?
     
     /// The column at which the error occurred
-    public let column: Int?
+    let column: Int?
   }
   
   /// The response contains no data
@@ -59,7 +59,7 @@ public enum CachePolicy {
 }
 
 /// `GraphQL`
-public protocol GraphQL: AnyObject {
+protocol GraphQL: AnyObject {
   
   /// Fetches a query from the server or from the local cache, depending on
   /// the current contents of the cache and the specified cache policy.
@@ -83,14 +83,14 @@ public protocol GraphQL: AnyObject {
   func subscription<Subscription, T>(_ subscription: Subscription) async throws -> T where T: Decodable, Subscription: GraphQLSubscription
 }
 
-public class GraphQLClient: GraphQL {
+class GraphQLClient: GraphQL {
   private let networkingClient: NetworkingClient
   
-  public init(networkingClient: NetworkingClient = URLSessionNetworkClient()) {
+  init(networkingClient: NetworkingClient = URLSessionNetworkClient()) {
     self.networkingClient = networkingClient
   }
   
-  public func fetch<Query, T>(
+  func fetch<Query, T>(
     _ query: Query,
     cachePolicy: CachePolicy
   ) async throws -> T where Query: GraphQLQuery, T: Decodable {
@@ -109,7 +109,7 @@ public class GraphQLClient: GraphQL {
     return try JSONDecoder().decode(T.self, from: data)
   }
   
-  public func subscription<Subscription, T>(
+  func subscription<Subscription, T>(
     _ subscription: Subscription
   ) async throws -> T where Subscription: GraphQLSubscription, T: Decodable {
     fatalError("Implementaiton for \(#function) missing")

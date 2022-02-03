@@ -7,20 +7,20 @@
 
 import Foundation
 
-public enum HTTPMethod {
+enum HTTPMethod {
   case get
   case post(contentType: ContentType)
   case put
   case delete
   
-  public enum ContentType {
+  enum ContentType {
     case json
     case undefined
   }
 }
 
 extension HTTPMethod: CustomStringConvertible {
-  public var description: String {
+  var description: String {
     switch self {
     case .get:
       return "GET"

@@ -36,7 +36,7 @@ public protocol Messaging: AnyObject {
   func unsubscribe(fromTopic topic: String) async throws
 }
 
-public class FirebaseMessagingProvider: NSObject {
+public class FirebaseMessaging: NSObject {
   
   public var setTokenHandler: (() async throws -> Void)?
   
@@ -53,7 +53,7 @@ public class FirebaseMessagingProvider: NSObject {
   
 }
 
-extension FirebaseMessagingProvider: Messaging {
+extension FirebaseMessaging: Messaging {
   
   @MainActor
   public func appAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool {
@@ -81,7 +81,7 @@ extension FirebaseMessagingProvider: Messaging {
   }
 }
 
-extension FirebaseMessagingProvider: UNUserNotificationCenterDelegate {
+extension FirebaseMessaging: UNUserNotificationCenterDelegate {
   
   // Receive displayed notifications for iOS 10 devices.
   public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -98,10 +98,10 @@ extension FirebaseMessagingProvider: UNUserNotificationCenterDelegate {
 
 // MARK: - Firebase.MessagingDelegate
 
-extension FirebaseMessagingProvider: Firebase.MessagingDelegate {
+extension FirebaseMessaging: Firebase.MessagingDelegate {
   
   public func messaging(_ messaging: Firebase.Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    print("Firebase registration token: ", String(describing: fcmToken))
+    print("🏁 🆔 Firebase registration token: ", fcmToken ?? "⚠️ Unavailable")
     
     Task { try await setTokenHandler?() }
   }

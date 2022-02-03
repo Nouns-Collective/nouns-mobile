@@ -94,7 +94,7 @@ public protocol OnChainNounsService: AnyObject {
 }
 
 /// Concrete implementation of the `onChainNounsService` using `TheGraph` Service.
-public class TheGraphNounsProvider: OnChainNounsService {
+public class TheGraphOnChainNouns: OnChainNounsService {
   
   private let pageProvider: PageProvider
   
@@ -115,7 +115,11 @@ public class TheGraphNounsProvider: OnChainNounsService {
     static let stEthDAOExecutor = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
   }
   
-  public init(graphQLClient: GraphQL = GraphQLClient()) {
+  public convenience init() {
+    self.init(graphQLClient: GraphQLClient())
+  }
+  
+  init(graphQLClient: GraphQL) {
     self.graphQLClient = graphQLClient
     self.pageProvider = PageProvider(graphQLClient: graphQLClient)
   }

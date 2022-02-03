@@ -40,7 +40,7 @@ public protocol OffChainNounsService {
 }
 
 /// Concrete implementation of the `LocalNounsService` using `CoreData`.
-public class CoreDataNounsProvider: OffChainNounsService {
+public class CoreDataOffChainNouns: OffChainNounsService {
   
   /// The name of the data model.
   private static let modelName = "Nouns"

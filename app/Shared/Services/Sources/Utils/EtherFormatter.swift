@@ -10,7 +10,7 @@ import Foundation
 /// A formatter that converts between different Ether units, such as wei and eth.
 public class EtherFormatter: Formatter {
     
-    static let ethToWeiFactor: NSDecimalNumber = 1000000000000000000
+    static let ethToWeiFactor: NSDecimalNumber = 1_000_000_000_000_000_000
     
     public enum Unit {
         case wei

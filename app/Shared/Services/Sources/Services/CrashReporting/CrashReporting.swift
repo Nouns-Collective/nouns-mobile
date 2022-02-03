@@ -18,7 +18,7 @@ public protocol CrashReporting {
   func record(error: Error)
 }
 
-public class CrashlyticsProvider: CrashReporting {
+public class Crashlytics: CrashReporting {
  
   public init() {
     if FirebaseApp.app() == nil {
@@ -27,6 +27,6 @@ public class CrashlyticsProvider: CrashReporting {
   }
   
   public func record(error: Error) {
-    Crashlytics.crashlytics().record(error: error)
+    Firebase.Crashlytics.crashlytics().record(error: error)
   }
 }

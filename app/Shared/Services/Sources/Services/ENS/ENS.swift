@@ -58,7 +58,20 @@ public actor Web3ENSProvider: ENS {
     case failed
   }
   
-  public init(ethereumClient: EthereumClient) {
+  public convenience init() {
+    do {
+      /// The web3Client is abstracted out to a private property as it is re-used in both the Ethereum and ENS front-layer clients below.
+      /// Views should only use `ethClient` and `ensNameService` to communicate with each respective part,
+      /// as those protocols are not subject to change
+      let web3Client = try Web3Client()
+      self.init(ethereumClient: web3Client.client)
+      
+    } catch {
+      fatalError("💥 Couldn't instantiate the web3Client: \(error)")
+    }
+  }
+  
+  init(ethereumClient: EthereumClient) {
     self.ethereumClient = ethereumClient
     self.nameService = EthereumNameService(client: ethereumClient)
   }

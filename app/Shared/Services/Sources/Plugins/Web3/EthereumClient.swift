@@ -8,18 +8,18 @@
 import Foundation
 import web3
 
-public enum EthereumError: Error {
+enum EthereumError: Error {
     
     case badMainnetURL
 }
 
-public protocol Ethereum {}
+protocol Ethereum {}
 
-public class Web3Client: Ethereum {
+class Web3Client: Ethereum {
     /// The client layer provided by the `web3swift` package
-    public let client: EthereumClient
+    let client: EthereumClient
     
-    public init() throws {
+    init() throws {
         guard let url = CloudConfiguration.Infura.mainnet.url else {
             throw EthereumError.badMainnetURL
         }

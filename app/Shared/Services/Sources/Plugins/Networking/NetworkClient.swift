@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-public enum RequestError: Error {
+enum RequestError: Error {
   /// The response is empty
   case noData
   
@@ -19,7 +19,7 @@ public enum RequestError: Error {
   case unknown
 }
 
-public protocol NetworkingClient: AnyObject {
+protocol NetworkingClient: AnyObject {
   
   /// Returns a publisher that wraps a URL data task for a given URL request.
   ///
@@ -38,14 +38,14 @@ public protocol NetworkingClient: AnyObject {
   func receive(for request: NetworkRequest) -> AnyPublisher<Data, Error>
 }
 
-public class URLSessionNetworkClient: NetworkingClient {
+class URLSessionNetworkClient: NetworkingClient {
   private var urlSession: URLSession
   
   public init(urlSession: URLSession = URLSession.shared) {
     self.urlSession = urlSession
   }
   
-  public func data(for request: NetworkRequest) async throws -> Data {
+  func data(for request: NetworkRequest) async throws -> Data {
     let (data, response) = try await urlSession.data(for: URLRequest(for: request))
     try processResponse(from: response)
     return data
@@ -64,7 +64,7 @@ public class URLSessionNetworkClient: NetworkingClient {
     }
   }
   
-  public func receive(for request: NetworkRequest) -> AnyPublisher<Data, Error> {
+  func receive(for request: NetworkRequest) -> AnyPublisher<Data, Error> {
     let subject = PassthroughSubject<Data, Error>()
     let websocketTask = urlSession.webSocketTask(with: URLRequest(for: request))
     let webSocketTransport = WebSocketTransport(task: websocketTask)

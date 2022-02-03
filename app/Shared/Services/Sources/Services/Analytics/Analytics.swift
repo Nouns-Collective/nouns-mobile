@@ -33,7 +33,7 @@ public protocol Analytics {
   func setUserPropertyString(_ value: String?, forName name: String)
 }
 
-public class FirebaseAnalyticsProvider: Analytics {
+public class FirebaseAnalytics: Analytics {
   
   public init() {
     if FirebaseApp.app() == nil {
@@ -41,11 +41,11 @@ public class FirebaseAnalyticsProvider: Analytics {
     }
   }
   
-  public func logEvent(withName name: String, parameters: [String : Any]?) {
-    FirebaseAnalytics.Analytics.logEvent(name, parameters: parameters)
+  public func logEvent(withName name: String, parameters: [String: Any]?) {
+    Firebase.Analytics.logEvent(name, parameters: parameters)
   }
   
   public func setUserPropertyString(_ value: String?, forName name: String) {
-    FirebaseAnalytics.Analytics.setUserProperty(value, forName: name)
+    Firebase.Analytics.setUserProperty(value, forName: name)
   }
 }

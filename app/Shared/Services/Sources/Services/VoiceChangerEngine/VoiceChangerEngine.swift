@@ -249,7 +249,7 @@ extension VoiceChangerEngine: AudioAuthorization {
       try audioSession.setMode(.default)
       try audioSession.setActive(true)
     } catch {
-      stopAudioSession()
+      stopAudioSession() 
       throw error
     }
   }

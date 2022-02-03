@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum GraphQLOperationType: String, CodingKey {
+enum GraphQLOperationType: String, CodingKey {
   
   /// Sstandard HTTP methods.
   case query
@@ -16,7 +16,7 @@ public enum GraphQLOperationType: String, CodingKey {
   case subscription
 }
 
-public protocol GraphQLOperation: Encodable {
+protocol GraphQLOperation: Encodable {
   
   /// Define the operation entry-points for the API.
   var operationType: GraphQLOperationType { get }
@@ -28,19 +28,19 @@ public protocol GraphQLOperation: Encodable {
   var url: URL? { get }
 }
 
-public protocol GraphQLQuery: GraphQLOperation {}
+protocol GraphQLQuery: GraphQLOperation {}
 extension GraphQLQuery {
-  public var operationType: GraphQLOperationType { .query }
+  var operationType: GraphQLOperationType { .query }
 }
 
-public protocol GraphQLSubscription: GraphQLOperation {}
+protocol GraphQLSubscription: GraphQLOperation {}
 extension GraphQLSubscription {
-  public var operationType: GraphQLOperationType { .subscription }
+  var operationType: GraphQLOperationType { .subscription }
 }
 
 extension GraphQLOperation {
   
-  public func encode(to encoder: Encoder) throws {
+  func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: GraphQLOperationType.self)
     try container.encode(operationDefinition, forKey: operationType)
   }
@@ -50,7 +50,7 @@ extension GraphQLOperation {
   }
 }
 
-public protocol GraphQLPaginatingQuery: GraphQLQuery {
-  var limit: Int { set get }
-  var skip: Int { set get }
+protocol GraphQLPaginatingQuery: GraphQLQuery {
+  var limit: Int { get set }
+  var skip: Int { get set }
 }

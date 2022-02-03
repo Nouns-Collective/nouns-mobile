@@ -8,7 +8,7 @@
 import Foundation
 
 /// A service to run queries, construct a `Page` of the desired return type, as well the `cursor` and `hasNext` properties
-public class PageProvider {
+class PageProvider {
   
   enum PageProviderError: Error {
     
@@ -18,7 +18,7 @@ public class PageProvider {
   
   private weak var graphQLClient: GraphQL?
   
-  public init(graphQLClient: GraphQL) {
+  init(graphQLClient: GraphQL) {
     self.graphQLClient = graphQLClient
   }
   
@@ -27,7 +27,7 @@ public class PageProvider {
   ///
   /// This implemention was built as noun subgraph queries do not return `cursor`
   /// or `hasNext` information, as some GraphQL endpoints do
-  public func page<Query, T>(_ returnType: T.Type, _ query: Query, cachePolicy: CachePolicy) async throws -> Page<[T]> where Query: GraphQLPaginatingQuery, T: Decodable {
+  func page<Query, T>(_ returnType: T.Type, _ query: Query, cachePolicy: CachePolicy) async throws -> Page<[T]> where Query: GraphQLPaginatingQuery, T: Decodable {
     
     guard let graphQLClient = graphQLClient else {
       throw PageProviderError.missingClient
@@ -56,4 +56,3 @@ public class PageProvider {
     return page
   }
 }
-

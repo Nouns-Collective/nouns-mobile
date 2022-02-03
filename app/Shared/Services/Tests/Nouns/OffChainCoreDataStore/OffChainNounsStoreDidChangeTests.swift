@@ -15,7 +15,7 @@ final class OffChainNounsStoreDidChangeTests: XCTestCase {
   func testOffChainNounsStoreDidChangeInAscendingOrder() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     let fakeNoun1 = Noun.fixture(id: "1", name: "FakeNoun1", createdAt: .now)
     let fakeNoun2 = Noun.fixture(id: "2", name: "FakeNoun2", createdAt: .now + 1)
@@ -46,7 +46,7 @@ final class OffChainNounsStoreDidChangeTests: XCTestCase {
   func testOffChainNounsStoreDidChangeInDescendingOrder() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     let fakeNoun1 = Noun.fixture(id: "1", name: "FakeNoun1", createdAt: .now)
     let fakeNoun2 = Noun.fixture(id: "2", name: "FakeNoun2", createdAt: .now + 1)
@@ -77,7 +77,7 @@ final class OffChainNounsStoreDidChangeTests: XCTestCase {
   func testOffChainNounsStoreDidChangeDelayedInsertion() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     let fakeNoun1 = Noun.fixture(id: "1", name: "FakeNoun1", createdAt: .now)
     let fakeNoun2 = Noun.fixture(id: "2", name: "FakeNoun2", createdAt: .now + 1)

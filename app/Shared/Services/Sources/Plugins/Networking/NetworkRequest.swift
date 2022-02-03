@@ -7,14 +7,14 @@
 
 import Foundation
 
-public protocol NetworkRequest {
+protocol NetworkRequest {
   var url: URL { get }
 }
 
-public struct NetworkDataRequest: NetworkRequest {
-  public var url: URL
-  public var httpMethod: HTTPMethod
-  public var httpBody: Data?
+struct NetworkDataRequest: NetworkRequest {
+  var url: URL
+  var httpMethod: HTTPMethod
+  var httpBody: Data?
   
   init(url: URL, httpMethod: HTTPMethod = .get, httpBody: Data? = nil) {
     self.url = url
@@ -25,7 +25,7 @@ public struct NetworkDataRequest: NetworkRequest {
 
 extension URLRequest {
   
-  public init(for request: NetworkRequest) {
+  init(for request: NetworkRequest) {
     var urlRequest = URLRequest(url: request.url)
     if let dataRequest = request as? NetworkDataRequest {
       if case .post(let contentType) = dataRequest.httpMethod, contentType == .json {

@@ -22,7 +22,7 @@ final class FetchNounActivitiesTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
     let graphQLClient = GraphQLClient(networkingClient: client)
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     let votes = try await nounsProvider.fetchActivity(for: "0", limit: 20, after: 0).data
     
@@ -50,7 +50,7 @@ final class FetchNounActivitiesTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
     let graphQLClient = GraphQLClient(networkingClient: client)
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     do {
       // when
