@@ -60,7 +60,7 @@ extension NounPlayground {
         showAudioPermissionDialog = false
         startListening()
         
-      case .denied:
+      case .denied, .restricted:
         dismissPlayExperience = true
       }
     }
@@ -91,7 +91,7 @@ extension NounPlayground {
     
     /// Updates the currently selected effect
     func updateEffect(to effect: VoiceChangerEngine.Effect) {
-      voiceChangerEngine.setEffect(to: effect)
+      voiceChangerEngine.effect = effect
     }
     
     /// Toggles the `isRecording` boolean value
