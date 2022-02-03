@@ -92,7 +92,7 @@ public class VoiceChangerEngine: ObservableObject {
     autoreleasepool {
       if audioEngine.isRunning {
         audioEngine.stop()
-        try? audioEngine.inputNode.setVoiceProcessingEnabled(false)
+//        try? audioEngine.inputNode.setVoiceProcessingEnabled(false)
         audioEngine.inputNode.removeTap(onBus: 0)
         audioEngine.mainMixerNode.removeTap(onBus: 0)
       }
@@ -120,7 +120,7 @@ public class VoiceChangerEngine: ObservableObject {
     
     // Record using the mic.
     let input = audioEngine.inputNode
-    try input.setVoiceProcessingEnabled(true)
+//    try input.setVoiceProcessingEnabled(true)
     let bufferSize = AVAudioFrameCount(4096)
     
     input.installTap(
