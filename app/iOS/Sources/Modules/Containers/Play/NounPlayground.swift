@@ -73,17 +73,6 @@ struct NounPlayground: View {
     .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
       AudioPermissionDialog(viewModel: viewModel)
     })
-    .onAppear(perform: {
-      viewModel.screenRecorder.addWatermark(UIImage(named: R.image.nounsWatermark.name)!)
-      
-      DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-        viewModel.screenRecorder.startRecording(spriteView, backgroundView: Gradient.bubbleGum)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-          viewModel.stopRecording()
-        }
-      }
-    })
     .onDisappear {
       viewModel.stopListening()
     }
@@ -101,11 +90,6 @@ struct NounPlayground: View {
         break
       case false:
         viewModel.stopRecording()
-      }
-    }
-    .sheet(isPresented: $viewModel.showShareSheet) {
-      if let videoURL = viewModel.videoURL {
-        ShareSheet(activityItems: [videoURL])
       }
     }
   }

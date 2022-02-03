@@ -67,12 +67,15 @@ internal class RecordingView: UIView {
   }
   
   func setWatermark(to watermarkImage: UIImage) {
-    print("Did set watermark")
     watermarkImageView.image = watermarkImage
   }
   
   func removeWatermark() {
     watermarkImageView.image = UIImage()
+  }
+  
+  func setWatermarkDisplay(hidden: Bool) {
+    watermarkImageView.isHidden = hidden
   }
   
   override var intrinsicContentSize: CGSize {

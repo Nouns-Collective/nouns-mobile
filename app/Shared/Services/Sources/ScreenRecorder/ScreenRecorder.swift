@@ -37,7 +37,7 @@ public protocol ScreenRecorder: AnyObject {
   /// Stops recording the view
   ///
   /// - Returns: A file URL where the video file was temporarily saved
-  func stopRecording() async throws -> URL
+  func stopRecording() async throws -> (previewVideoURL: URL, shareVideoURL: URL)
 }
 
 public enum ScreenRecorderError: Error {
@@ -66,9 +66,12 @@ public enum ScreenRecorderError: Error {
 
 public class CAScreenRecorder: ScreenRecorder {
   
-  /// A reference to all the recorded frames of the recorded view
-  private var frames = [UIImage]()
+  /// A reference to all the recorded frames of the recorded view, without the watermark
+  private var framesWithoutWatermark = [UIImage]()
   
+  /// A reference to all the recorded frames of the recorded view, including the watermark
+  private var framesWithWatermark = [UIImage]()
+
   /// Link to the display refresh rate to monitor and save each frame
   private var displayLink: CADisplayLink?
   
@@ -85,8 +88,8 @@ public class CAScreenRecorder: ScreenRecorder {
   private var framesPerSecond: Double
   
   private var frameSize: CGSize {
-    CGSize(width: (frames.first?.size.width ?? 0) * UIScreen.main.scale,
-           height: (frames.first?.size.height ?? 0) * UIScreen.main.scale)
+    CGSize(width: (framesWithoutWatermark.first?.size.width ?? 0) * UIScreen.main.scale,
+           height: (framesWithoutWatermark.first?.size.height ?? 0) * UIScreen.main.scale)
   }
   
   private func videoSettings(codecType: AVVideoCodecType) -> [String: Any] {
@@ -127,18 +130,23 @@ public class CAScreenRecorder: ScreenRecorder {
     displayLink?.add(to: RunLoop.main, forMode: .common)
   }
   
-  public func stopRecording() async throws -> URL {
+  public func stopRecording() async throws -> (previewVideoURL: URL, shareVideoURL: URL) {
     displayLink?.invalidate()
     displayLink = nil
     
-    // Remove first frame, which is often a grey transisionary frame as the view gets added
-    _ = frames.popLast()
+    guard framesWithoutWatermark.count > 0 else {
+      throw ScreenRecorderError.noFrames
+    }
     
-    let videoURL = try await writeToVideo()
-    return videoURL
+    // Remove first frame, which is often a grey transisionary frame as the view gets added
+    _ = framesWithoutWatermark.removeFirst()
+    
+    async let videoWithoutWatermarkURL = writeToVideo(withWatermark: false)
+    async let videoWithWatermarkURL = writeToVideo(withWatermark: true)
+    
+    return try await (videoWithoutWatermarkURL, videoWithWatermarkURL)
   }
   
-  // TODO: - add after the `recordingView` was added
   public func addWatermark(_ image: UIImage) {
     recordingView?.setWatermark(to: image)
     watermark = image
@@ -156,18 +164,30 @@ public class CAScreenRecorder: ScreenRecorder {
     
     let renderer = UIGraphicsImageRenderer(size: recordingView.frame.size)
     
-    let frame = renderer.image(actions: { _ in
+    // Save a frame without the watermark (to display in-app)
+    recordingView.setWatermarkDisplay(hidden: true)
+    
+    let frameWithoutWatermark = renderer.image(actions: { _ in
       recordingView.drawHierarchy(in: CGRect(origin: .zero, size: recordingView.frame.size), afterScreenUpdates: true)
     })
     
-    frames.append(frame)
+    // Save a frame with the watermark (to share outside of the ap)
+    recordingView.setWatermarkDisplay(hidden: false)
+    
+    let frameWithWatermark = renderer.image(actions: { _ in
+      recordingView.drawHierarchy(in: CGRect(origin: .zero, size: recordingView.frame.size), afterScreenUpdates: true)
+    })
+    
+    framesWithoutWatermark.append(frameWithoutWatermark)
+    framesWithWatermark.append(frameWithWatermark)
   }
   
   /// Accumulates all frames and transforms them into an exportable video
   ///
   /// - Parameters:
   ///   - codecType: A video codec type, of type `AVVideoCodecType`. Default is `.h264`
-  private func writeToVideo(codecType: AVVideoCodecType = .h264) async throws -> URL {
+  private func writeToVideo(withWatermark: Bool, codecType: AVVideoCodecType = .h264) async throws -> URL {
+    let frames = withWatermark ? framesWithWatermark : framesWithoutWatermark
     
     guard !frames.isEmpty else {
       throw ScreenRecorderError.noFrames
@@ -202,9 +222,9 @@ public class CAScreenRecorder: ScreenRecorder {
     writer.startSession(atSourceTime: CMTime.zero)
     
     var frameIndex: Int = 0
-    while frameIndex < self.frames.count {
+    while frameIndex < frames.count {
       if input.isReadyForMoreMediaData {
-        guard let buffer = self.frames[frameIndex].toSampleBuffer(frameIndex: frameIndex, framesPerSecond: framesPerSecond),
+        guard let buffer = frames[frameIndex].toSampleBuffer(frameIndex: frameIndex, framesPerSecond: framesPerSecond),
               let imageBuffer = CMSampleBufferGetImageBuffer(buffer) else {
                 throw ScreenRecorderError.unableToCreateSampleBuffer
               }
