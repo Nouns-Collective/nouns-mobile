@@ -41,7 +41,7 @@ internal class RecordingView: UIView {
   
   private func setupContent() {
     
-    // Add background if if provided
+    // Add background if provided
     if let backgroundView = backgroundView {
       addSubview(backgroundView)
 
