@@ -29,7 +29,7 @@ extension NounPlayground {
     @Published private(set) var showAudioPermissionDialog = false
     @Published private(set) var isRecording = false
     @Published private(set) var state: State = .coachmark
-    @Published private(set) var dismissPlayExperience = false
+    @Published private(set) var showAudioSettingsSheet = false
     
     public let screenRecorder: ScreenRecorder
     
@@ -64,7 +64,7 @@ extension NounPlayground {
         startListening()
         
       case .denied, .restricted:
-        dismissPlayExperience = true
+        showAudioSettingsSheet = true
       }
     }
     
