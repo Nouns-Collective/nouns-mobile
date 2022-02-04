@@ -52,6 +52,9 @@ extension NounPlayground {
       view?.allowsTransparency = true
       view?.backgroundColor = .clear
       
+      // Adding the same instance of talkingNoun multiple times results in a fatal error
+      // This would happen when using `ScreenRecorder` to record this scene as
+      // a `RecordingView` wrapper is created.
       if talkingNoun.parent == nil {
         addChild(talkingNoun)
       }
