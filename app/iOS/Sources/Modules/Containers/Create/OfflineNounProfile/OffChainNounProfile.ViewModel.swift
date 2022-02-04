@@ -45,7 +45,7 @@ extension OffChainNounProfile {
       }
     }
     
-    func renameNoun() {
+    func saveChanges() {
       do {
         try service.store(noun: noun)
       } catch {
