@@ -31,6 +31,8 @@ extension NounPlayground {
     @Published private(set) var state: State = .coachmark
     @Published private(set) var dismissPlayExperience = false
     
+    public let screenRecorder: ScreenRecorder
+    
     public var audioProcessingState: AudioStatus {
       voiceChangerEngine.audioProcessingState
     }
@@ -41,8 +43,9 @@ extension NounPlayground {
       voiceChangerEngine.effect
     }
     
-    init(voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine()) {
+    init(voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine(), screenRecorder: ScreenRecorder = CAScreenRecorder()) {
       self.voiceChangerEngine = voiceChangerEngine
+      self.screenRecorder = screenRecorder
       
       handleRecordPermission()
     }
@@ -94,14 +97,20 @@ extension NounPlayground {
       voiceChangerEngine.effect = effect
     }
     
-    /// Toggles the `isRecording` boolean value
-    func toggleRecording() {
-      isRecording.toggle()
-    }
-    
     /// Updates the view state to a new state
     func updateState(to newState: State) {
       state = newState
+    }
+    
+    @MainActor
+    func stopRecording() {
+      Task {
+        do {
+          let url = try await screenRecorder.stopRecording()
+        } catch {
+          print("An error has occured while creating video: \(error)")
+        }
+      }
     }
   }
 }
