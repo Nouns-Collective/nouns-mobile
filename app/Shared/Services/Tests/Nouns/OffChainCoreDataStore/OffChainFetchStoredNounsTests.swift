@@ -15,7 +15,7 @@ final class OffChainFetchStoredNounsTests: XCTestCase {
   func testOffChainFecthNounsInAscendingOrder() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     let fakeNoun1 = Noun.fixture(id: "1", name: "FakeNoun1", createdAt: .now)
     let fakeNoun2 = Noun.fixture(id: "2", name: "FakeNoun2", createdAt: .now + 1)
@@ -36,7 +36,7 @@ final class OffChainFetchStoredNounsTests: XCTestCase {
   func testOffChainFecthNounsInDescendingOrder() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     let fakeNoun1 = Noun.fixture(id: "1", name: "FakeNoun1", createdAt: .now)
     let fakeNoun2 = Noun.fixture(id: "2", name: "FakeNoun2", createdAt: .now + 1)

@@ -22,7 +22,7 @@ final class FetchProposalsTests: XCTestCase {
         let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
         let client = URLSessionNetworkClient(urlSession: urlSession)
         let graphQLClient = GraphQLClient(networkingClient: client)
-        let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+        let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
         
         // then
         let proposals = try await nounsProvider.fetchProposals(limit: 10, after: 0).data
@@ -50,7 +50,7 @@ final class FetchProposalsTests: XCTestCase {
         let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
         let client = URLSessionNetworkClient(urlSession: urlSession)
         let graphQLClient = GraphQLClient(networkingClient: client)
-        let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+        let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
         
         do {
             // when

@@ -41,7 +41,7 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
     let graphQLClient = GraphQLClient(networkingClient: client)
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     let expectation = expectation(description: #function)
     
@@ -96,7 +96,7 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
     let networkClient = URLSessionNetworkClient(urlSession: urlSession)
     let graphQLClient = GraphQLClient(networkingClient: networkClient)
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     let expectation = expectation(description: #function)
     

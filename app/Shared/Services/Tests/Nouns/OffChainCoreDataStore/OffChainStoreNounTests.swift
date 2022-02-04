@@ -15,7 +15,7 @@ final class OffChainStoreNounTests: XCTestCase {
   func testOffChainStoreNounSuccessfully() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     // when
     let fakeNoun = Noun.fixture()
@@ -34,7 +34,7 @@ final class OffChainStoreNounTests: XCTestCase {
   func testOffChainStoreMultipleNounsSuccessfully() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     let fakeNoun1 = Noun.fixture(id: "1", name: "fakeNoun1")
     let fakeNoun2 = Noun.fixture(id: "2", name: "fakeNoun2", createdAt: .now + 5.0)
@@ -53,7 +53,7 @@ final class OffChainStoreNounTests: XCTestCase {
   func testOffChainStoreUpdateNounSuccessfully() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     var fakeNoun1 = Noun.fixture(id: "1", name: "fakeNoun1")
     
@@ -71,7 +71,7 @@ final class OffChainStoreNounTests: XCTestCase {
   func testOffChainStoreUpdateUpdateNounsSuccessfully() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     var fakeNoun1 = Noun.fixture(id: "1", name: "fakeNoun1")
     var fakeNoun2 = Noun.fixture(id: "2", name: "fakeNoun2", createdAt: .now + 5.0)

@@ -24,9 +24,9 @@ extension NounPlayground {
       audioProcessingStateSink = viewModel.voiceChangerEngine.$audioProcessingState
         .sink { status in
           switch status {
-          case .loud:
+          case .speech:
             self.talkingNoun.state = .lipSync
-          case .silent, .undefined:
+          case .silence, .undefined:
             self.talkingNoun.state = .idle
           }
         }

@@ -22,7 +22,7 @@ final class FetchAuctionsTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
     let graphQLClient = GraphQLClient(networkingClient: client)
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     // when
     let auctions = try await nounsProvider.fetchAuctions(settled: true, includeNounderOwned: false, limit: 10, cursor: 0).data
@@ -56,7 +56,7 @@ final class FetchAuctionsTests: XCTestCase {
     let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
     let client = URLSessionNetworkClient(urlSession: urlSession)
     let graphQLClient = GraphQLClient(networkingClient: client)
-    let nounsProvider = TheGraphNounsProvider(graphQLClient: graphQLClient)
+    let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     do {
       _ = try await nounsProvider.fetchAuctions(settled: true, includeNounderOwned: false, limit: 10, cursor: 0)

@@ -65,10 +65,20 @@ struct SettledAuctionCard: View {
           .background(Color(hex: viewModel.nounBackground))
       },
       content: {
-        SafeLabel(
-          viewModel.winnerBid,
-          icon: Image.eth)
-          .padding(.top, 8)
+        // Displays the domain if it is a nounder noun.
+        if viewModel.showENS {
+          ENSText(token: viewModel.nounderToken)
+            .padding(.top, 8)
+            .hidden(!viewModel.showENS)
+          
+        } else {
+          // Displays the winning bid on auction.
+          SafeLabel(
+            viewModel.winnerBid,
+            icon: Image.eth)
+            .padding(.top, 8)
+            .hidden(viewModel.showENS)
+        }
       })
       .headerStyle(.small)
   }

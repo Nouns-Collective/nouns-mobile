@@ -13,7 +13,7 @@ final class FetchTreasuryRealBackendTests: XCTestCase {
   
   func testFetchTreasuryRealBackendTests() async throws {
     // given
-    let service = TheGraphNounsProvider()
+    let service = TheGraphOnChainNouns()
     
     // when
     let treasury = try await service.fetchTreasury()
