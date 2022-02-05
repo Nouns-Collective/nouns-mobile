@@ -26,10 +26,10 @@ extension NounPlayground {
       case share
     }
     
-    @Published private(set) var showAudioPermissionDialog = false
     @Published private(set) var isRecording = false
     @Published private(set) var state: State = .coachmark
-    @Published private(set) var dismissPlayExperience = false
+    @Published private(set) var showAudioPermissionDialog = false
+    @Published private(set) var showAudioSettingsSheet = false
     
     public let screenRecorder: ScreenRecorder
     
@@ -41,6 +41,10 @@ extension NounPlayground {
     
     public var currentEffect: VoiceChangerEngine.Effect {
       voiceChangerEngine.effect
+    }
+    
+    public var isRequestingAudioPermission: Bool {
+      showAudioSettingsSheet || showAudioPermissionDialog
     }
     
     init(voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine(), screenRecorder: ScreenRecorder = CAScreenRecorder()) {
@@ -64,7 +68,7 @@ extension NounPlayground {
         startListening()
         
       case .denied, .restricted:
-        dismissPlayExperience = true
+        showAudioSettingsSheet = true
       }
     }
     

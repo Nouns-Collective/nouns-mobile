@@ -540,7 +540,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 22 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 23 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -854,6 +854,72 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.audioSettingsDialog` struct is generated, and contains static references to 4 localization keys.
+    struct audioSettingsDialog {
+      /// Value: Do it later
+      static let ignore = Rswift.StringResource(key: "ignore", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Enable Audio in Settings
+      static let title = Rswift.StringResource(key: "title", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Open Settings
+      static let enable = Rswift.StringResource(key: "enable", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: To access the play experience, you'll need to enable audio permissions through the Settings app.
+      static let body = Rswift.StringResource(key: "body", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Do it later
+      static func ignore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("ignore", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "ignore"
+        }
+
+        return NSLocalizedString("ignore", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Enable Audio in Settings
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Open Settings
+      static func enable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("enable", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "enable"
+        }
+
+        return NSLocalizedString("enable", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: To access the play experience, you'll need to enable audio permissions through the Settings app.
+      static func body(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("body", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "body"
+        }
+
+        return NSLocalizedString("body", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

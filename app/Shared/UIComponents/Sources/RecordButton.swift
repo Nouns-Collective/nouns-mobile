@@ -55,7 +55,7 @@ public struct RecordButton: View {
     self.maximumRecordDuration = maximumRecordDuration
   }
   
-  var body: some View {
+  public var body: some View {
     ZStack {
       Circle()
         .strokeBorder(Color.componentNounsBlack, lineWidth: strokeWidth)
