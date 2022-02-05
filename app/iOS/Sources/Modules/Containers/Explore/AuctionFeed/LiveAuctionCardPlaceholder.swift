@@ -47,7 +47,7 @@ struct LiveAuctionCardPlaceholder: View {
 }
 
 struct LiveAuctionCardPlaceholder_Previews: PreviewProvider {
-    static var previews: some View {
-        LiveAuctionCardPlaceholder()
-    }
+  static var previews: some View {
+    LiveAuctionCardPlaceholder()
+  }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-/// GraphQL query error.
+/// GraphQL query error. 
 enum QueryError: Error {
   
   struct Reason: Equatable {
@@ -80,7 +80,7 @@ protocol GraphQL: AnyObject {
   /// - Parameters:
   ///
   /// - Returns: A publisher emitting a `Decodable` type  instance. The publisher will emit on the *main* thread.
-  func subscription<Subscription, T>(_ subscription: Subscription) async throws -> T where T: Decodable, Subscription: GraphQLSubscription
+  func subscription<Subscription, T>(_ subscription: Subscription) -> AsyncThrowingStream<T, Error> where T: Decodable, Subscription: GraphQLSubscription
 }
 
 class GraphQLClient: GraphQL {
@@ -111,7 +111,38 @@ class GraphQLClient: GraphQL {
   
   func subscription<Subscription, T>(
     _ subscription: Subscription
-  ) async throws -> T where Subscription: GraphQLSubscription, T: Decodable {
-    fatalError("Implementaiton for \(#function) missing")
+  ) -> AsyncThrowingStream<T, Error> where Subscription: GraphQLSubscription, T: Decodable {
+    
+    AsyncThrowingStream { [weak self] continuation in
+      guard let self = self else {
+        return
+      }
+      
+      guard let url = subscription.url else {
+        continuation.finish(throwing: URLError(.badURL))
+        return
+      }
+      
+      let listener = ShortPolling<T> {
+        let request = NetworkDataRequest(
+          url: url,
+          httpMethod: .post(contentType: .json),
+          httpBody: try subscription.encode()
+        )
+        
+        let data = try await self.networkingClient.data(for: request)
+        return try JSONDecoder().decode(T.self, from: data)
+      }
+      
+      listener.setEventHandler = { element in
+        continuation.yield(element)
+      }
+      
+      continuation.onTermination = { @Sendable _  in
+        listener.stopPolling()
+      }
+      
+      listener.startPolling()
+    }
   }
 }
