@@ -38,7 +38,7 @@ struct NounPlayground: View {
         .offset(y: -80)
         .foregroundColor(Color.componentNounsBlack)
       
-      Spacer()
+      ConditionalSpacer(!viewModel.isRequestingAudioPermission)
       
       spriteView
       
@@ -54,6 +54,7 @@ struct NounPlayground: View {
         }
       }
       .padding(.bottom, 20)
+      .hidden(viewModel.isRequestingAudioPermission)
       //      .emptyPlaceholder(when: viewModel.state == .coachmark) {
       //        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
       //          Image.pointRight.white
