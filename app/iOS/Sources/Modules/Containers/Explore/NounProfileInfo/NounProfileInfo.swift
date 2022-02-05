@@ -1,5 +1,5 @@
 //
-//  NounProfileInfoCard.swift
+//  NounProfileView.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 02.12.21.
@@ -38,14 +38,13 @@ struct NounProfileInfo: View {
           }
           
           // Navigation link showing the noun's bid history & owner activity.
-          // TODO: - Build a component to hide the navigation implementation details.
-          NavigationLink(
-            destination: AuctionInfo(viewModel: .init(auction: viewModel.auction)),
-            isActive: $isActivityPresented) { EmptyView() }
-          
-          CardActionsItems(
-            isShareSheetPresented: $isShareSheetPresented
-          )
+          Link(isActive: $isActivityPresented, content: {
+            CardActionsItems(isShareSheetPresented: $isShareSheetPresented)
+            
+          }, destination: {
+            AuctionInfo(viewModel: .init(auction: viewModel.auction))
+          })
+
         }
         .padding([.bottom, .horizontal])
       }

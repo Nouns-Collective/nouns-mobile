@@ -39,7 +39,7 @@ extension SettledAuctionInfoSheet {
       nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
       
       let startDate = Date(timeIntervalSince1970: auction.startTime)
-      birthdate = R.string.nounProfile.birthday(startDate.formatted(dateStyle: .long))
+      birthdate = localize.birthday(startDate.formatted(dateStyle: .long))
       
       // Hide the winning bid on the nounders noun.
       showWinningBid = !auction.noun.isNounderOwned

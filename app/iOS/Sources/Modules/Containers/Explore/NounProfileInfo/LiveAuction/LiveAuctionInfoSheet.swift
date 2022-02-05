@@ -1,5 +1,5 @@
 //
-//  LiveAuctionDetailDialog.swift
+//  LiveAuctionInfoSheet.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 02.12.21.

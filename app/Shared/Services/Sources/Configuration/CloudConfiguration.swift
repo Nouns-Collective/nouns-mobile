@@ -36,7 +36,7 @@ extension CloudConfiguration.Nouns {
             
         case .subscription:
             var components = URLComponents()
-            components.scheme = "wss"
+            components.scheme = "https"
             components.host = "api.thegraph.com"
             components.path = "/subgraphs/name/nounsdao/nouns-subgraph"
             return components.url
