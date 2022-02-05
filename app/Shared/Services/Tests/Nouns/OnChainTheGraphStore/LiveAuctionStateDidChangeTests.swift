@@ -43,25 +43,20 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
     let graphQLClient = GraphQLClient(networkingClient: client)
     let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
+    let _: [Auction] = [.fixture(), .fixtureLiveNewBid, .fixtureLiveNew]
     let expectation = expectation(description: #function)
+    expectation.expectedFulfillmentCount = MockDataURLResponder.auctionFilenames.count
     
-    Task {
-      var auctions = [Auction]()
-      for try await auction in nounsProvider.liveAuctionStateDidChange() {
-        auctions.append(auction)
+    let task = Task {
+      for try await auctions in nounsProvider.liveAuctionStateDidChange() {
+        print("===", auctions)
+        expectation.fulfill()
       }
-      
-      XCTAssertEqual(auctions, [
-        .fixture(),
-          .fixtureLiveNewBid,
-          .fixtureLiveSettled,
-          .fixtureLiveNew
-      ])
-      
-      expectation.fulfill()
     }
     
     wait(for: [expectation], timeout: 3.0)
+    
+    task.cancel()
   }
   
   /// Asserts whether the short-poll mechanism is not stopped after
@@ -98,24 +93,18 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
     let graphQLClient = GraphQLClient(networkingClient: networkClient)
     let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
+    let _: [Auction] = [.fixture(), .fixtureLiveNewBid, .fixtureLiveNew]
     let expectation = expectation(description: #function)
+    expectation.expectedFulfillmentCount = 3
     
-    Task {
-      var auctions = [Auction]()
-      for try await auction in nounsProvider.liveAuctionStateDidChange() {
-        auctions.append(auction)
+    let task = Task {
+      for try await _ in nounsProvider.liveAuctionStateDidChange() {
+        expectation.fulfill()
       }
-      
-      XCTAssertEqual(auctions, [
-        .fixture(),
-          .fixtureLiveNewBid,
-          .fixtureLiveSettled,
-          .fixtureLiveNew
-      ])
-      
-      expectation.fulfill()
     }
     
     wait(for: [expectation], timeout: 4.0)
+    
+    task.cancel()
   }
 }

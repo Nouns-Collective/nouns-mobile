@@ -103,12 +103,6 @@ public class TheGraphOnChainNouns: OnChainNounsService {
   /// The ethereum client layer provided by `web3swift` package
   private let ethereumClient = EthereumClient(url: CloudConfiguration.Infura.mainnet.url!)
   
-  /// Live auction watcher for all properties changes.
-  private var liveAuctionListener: ShortPolling<Auction>?
-  
-  /// Watcher for newly added settled auctions.
-  private var settledAuctionsListener: ShortPolling<Auction>?
-  
   /// NounsDAOExecutor contract address.
   private enum Address {
     static let ethDAOExecutor = "0x0BC3807Ec262cB779b38D65b38158acC3bfedE10"
@@ -257,29 +251,27 @@ public class TheGraphOnChainNouns: OnChainNounsService {
   }
   
   public func settledAuctionsDidChange() -> AsyncStream<Auction> {
-    AsyncStream { [weak self] continuation in
-      guard let self = self else { return }
-      
-      if self.settledAuctionsListener == nil {
-        self.settledAuctionsListener = ShortPolling(
-          continuation: continuation,
-          action: {
-            
-            guard let auction = try await self.fetchAuctions(
-              settled: true,
-              includeNounderOwned: false,
-              limit: 1,
-              cursor: 0
-            ).data.first else {
-              throw OnChainNounsRequestError.noData
-            }
-            
-            return auction
-          }
-        )
+    AsyncStream { continuation in
+      let listener = ShortPolling { () -> Auction in
+        // Fetches the unsettled auction from the network.
+        let auctionPage = try await self.fetchAuctions(settled: true, includeNounderOwned: true, limit: 1, cursor: 0)
+        
+        guard let auction = auctionPage.data.first else {
+          throw OnChainNounsRequestError.noData
+        }
+        
+        return auction
       }
       
-      self.settledAuctionsListener?.startPolling()
+      listener.setEventHandler = { auction in
+        continuation.yield(auction)
+      }
+      
+      continuation.onTermination = { @Sendable _  in
+        listener.stopPolling()
+      }
+      
+      listener.startPolling()
     }
   }
   
@@ -287,17 +279,25 @@ public class TheGraphOnChainNouns: OnChainNounsService {
     AsyncStream { [weak self] continuation in
       guard let self = self else { return }
       
-      if self.liveAuctionListener == nil {
-        self.liveAuctionListener = ShortPolling(
-          continuation: continuation,
-          action: { try await self.fetchLiveAuction() }
-        )
+      let listener = ShortPolling {
+        try await self.fetchLiveAuction()
       }
       
-      self.liveAuctionListener?.startPolling()
+      listener.setEventHandler = { auction in
+        continuation.yield(auction)
+      }
+      
+      continuation.onTermination = { @Sendable _  in
+        listener.stopPolling()
+      }
+      
+      listener.startPolling()
     }
   }
   
+  /// # A helper for the short-poll mechanism to listen to the live auction changes. #
+  ///
+  /// **Note:** Should be deleted once the changes are watched using a websocket.
   private func fetchLiveAuction() async throws -> Auction {
     let query = NounsSubgraph.LiveAuctionSubscription()
     let page: Page<[Auction]>? = try await graphQLClient.fetch(

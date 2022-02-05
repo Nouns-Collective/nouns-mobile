@@ -1,5 +1,5 @@
 //
-//  LiveAuctionInfoCard.ViewModel.swift
+//  LiveAuctionInfoSheet.ViewModel.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 16.12.21.

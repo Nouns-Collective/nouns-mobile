@@ -23,8 +23,9 @@ public enum GradientColors: CaseIterable {
     case grapeAttack
     case magnoliaGarden
     case bubbleGum
-        
-    var colors: [Color] {
+    case recordButtonStroke
+  
+    public var colors: [Color] {
         switch self {
         case .coolGreydient:
             return [.componentCoolGrey, .componentCanadianSky]
@@ -54,6 +55,8 @@ public enum GradientColors: CaseIterable {
             return [.componentSmoothie, .componentEggplant]
         case .bubbleGum:
             return [.componentPeachy, .componentRaspberry]
+        case .recordButtonStroke:
+            return [.componentTurquoise, .componentAngularPurple, .componentAngularPink, .componentAngularYellow, .componentTurquoise]
         }
     }
 }

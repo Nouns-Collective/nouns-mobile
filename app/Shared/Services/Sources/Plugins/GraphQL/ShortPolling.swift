@@ -9,14 +9,11 @@ import Foundation
 
 /// `Short-Poll` implementation to handle non-settled auction changes.
 class ShortPolling<T> {
-  /// Stream continuation type.
-  typealias ListenerContinuation = AsyncStream<T>.Continuation
-  
-  /// Stream continuation to populate auction changes.
-  private var continuation: ListenerContinuation?
   
   /// Action to perform on each event.
   private let action: @Sendable () async throws -> T
+  
+  var setEventHandler: ((T) -> Void)?
   
   /// `Short-Poll` interval.
   private let pollingInterval = 1
@@ -32,20 +29,12 @@ class ShortPolling<T> {
     return timer
   }()
   
-  init(
-    continuation: ListenerContinuation,
-    action: @Sendable @escaping () async throws -> T
-  ) {
-    self.continuation = continuation
+  init(action: @Sendable @escaping () async throws -> T) {
     self.action = action
   }
   
   func startPolling() {
     handlePollingEvent()
-    
-    continuation?.onTermination = { @Sendable [weak self] _ in
-      self?.stopPolling()
-    }
   }
   
   func stopPolling() {
@@ -65,9 +54,10 @@ class ShortPolling<T> {
           guard !self.timer.isCancelled else {
             return
           }
-          
+
           let auction = try await self.action()
-          self.continuation?.yield(auction)
+          self.setEventHandler?(auction)
+          
         } catch { }
       }
     }
