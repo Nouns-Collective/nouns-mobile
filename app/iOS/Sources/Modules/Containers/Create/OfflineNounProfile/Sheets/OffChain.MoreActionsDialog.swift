@@ -14,9 +14,7 @@ extension OffChainNounProfile {
   struct MoreActionsDialog: View {
     
     @ObservedObject var viewModel: ViewModel
-    
-    @State private var shouldShowNounCreator: Bool = false
-    
+        
     var body: some View {
       VStack(alignment: .leading, spacing: 10) {
         // Switches to the play experience using the built Noun.
@@ -31,7 +29,7 @@ extension OffChainNounProfile {
           text: R.string.offchainNounActions.edit(),
           largeAccessory: { Image.createOutline },
           action: {
-            shouldShowNounCreator = true
+            viewModel.shouldShowNounCreator.toggle()
           })
           .controlSize(.large)
         
@@ -58,14 +56,15 @@ extension OffChainNounProfile {
           })
           .controlSize(.large)
       }
-      .fullScreenCover(isPresented: $shouldShowNounCreator) {
+      .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
         NounCreator(
-          initialSeed: viewModel.noun.seed,
-          isEditing: true
-        ) { seed in
-          viewModel.noun.seed = seed
-          viewModel.saveChanges()
-        }
+          viewModel: .init(
+            initialSeed: viewModel.noun.seed,
+            isEditing: true,
+            didEditNoun: { seed in
+              viewModel.didEdit(seed: seed)
+            }
+          ))
       }
     }
   }

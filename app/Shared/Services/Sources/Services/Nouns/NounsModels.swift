@@ -90,6 +90,10 @@ public struct Seed: Equatable, Hashable {
   }
 }
 
+public extension Seed {
+  static let `default` = Seed(background: 0, glasses: 0, head: 0, body: 0, accessory: 0)
+}
+
 /// The owner of the Noun
 public struct Account: Equatable, Decodable, Hashable {
   

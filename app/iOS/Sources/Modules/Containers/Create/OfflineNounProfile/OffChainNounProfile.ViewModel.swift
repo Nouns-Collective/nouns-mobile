@@ -22,6 +22,8 @@ extension OffChainNounProfile {
     
     @Published var isShareSheetPresented: Bool = false
     
+    @Published var shouldShowNounCreator: Bool = false
+    
     /// The image data of the noun to export and share
     var exportImageData: Data?
         
@@ -51,6 +53,11 @@ extension OffChainNounProfile {
       } catch {
         print("Error: \(error)")
       }
+    }
+    
+    func didEdit(seed: Seed) {
+      noun.seed = seed
+      saveChanges()
     }
   }
 }
