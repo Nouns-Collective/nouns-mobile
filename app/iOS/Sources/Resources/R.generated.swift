@@ -540,7 +540,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 22 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 23 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -1365,6 +1365,72 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("noun.delete.action", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.nounDiscardEditDialog` struct is generated, and contains static references to 4 localization keys.
+    struct nounDiscardEditDialog {
+      /// Value: Are you sure you want to get rid of this edit and lose the awesomeness?
+      static let message = Rswift.StringResource(key: "message", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Leavin'?
+      static let title = Rswift.StringResource(key: "title", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: No, I want to keep editing
+      static let nounCancelAction = Rswift.StringResource(key: "noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Yeah, get rid of the edit
+      static let nounDeleteAction = Rswift.StringResource(key: "noun.delete.action", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Are you sure you want to get rid of this edit and lose the awesomeness?
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Leavin'?
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: No, I want to keep editing
+      static func nounCancelAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "noun.cancel.action"
+        }
+
+        return NSLocalizedString("noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Yeah, get rid of the edit
+      static func nounDeleteAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("noun.delete.action", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "noun.delete.action"
+        }
+
+        return NSLocalizedString("noun.delete.action", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

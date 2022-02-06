@@ -64,7 +64,7 @@ struct NounCreator: View {
     })
     // Sheet presented when the user wants to cancel the noun creation process and go to the previous screen
     .bottomSheet(isPresented: mode == .cancel, showDimmingView: true, allowDrag: false, content: {
-      DiscardNounCreatorSheet(viewModel: viewModel)
+      DiscardNounSheet(viewModel: viewModel)
     })
     .background(GradientView(GradientColors.allCases[viewModel.seed.background]))
     .overlay {
