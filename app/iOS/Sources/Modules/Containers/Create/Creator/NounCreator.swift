@@ -10,6 +10,7 @@ import UIComponents
 import Services
 
 struct NounCreator: View {
+  
   @StateObject var viewModel = ViewModel()
     
   @Namespace private var namespace

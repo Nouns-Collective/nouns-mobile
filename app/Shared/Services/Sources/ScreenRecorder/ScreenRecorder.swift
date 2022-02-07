@@ -134,8 +134,8 @@ public class CAScreenRecorder: ScreenRecorder {
     displayLink?.invalidate()
     displayLink = nil
     
-    guard framesWithoutWatermark.count > 0,
-          framesWithWatermark.count > 0 else {
+    guard !framesWithoutWatermark.isEmpty,
+          !framesWithWatermark.isEmpty else {
       throw ScreenRecorderError.noFrames
     }
     
@@ -150,12 +150,12 @@ public class CAScreenRecorder: ScreenRecorder {
   }
   
   public func addWatermark(_ image: UIImage) {
-    recordingView?.setWatermark(to: image)
+    recordingView?.watermark = image
     watermark = image
   }
   
   public func removeWatermark() {
-    recordingView?.removeWatermark()
+    recordingView?.watermark = nil
     watermark = UIImage()
   }
   
@@ -287,7 +287,7 @@ public class CAScreenRecorder: ScreenRecorder {
   /// - Returns: A layered `UIView` with the `backgroundView` and `sourceView`
   private func constructView(_ sourceView: UIView, backgroundView: UIView?) -> RecordingView {
     let recordingView = RecordingView(sourceView: sourceView, backgroundView: backgroundView)
-    recordingView.setWatermark(to: watermark)
+    recordingView.watermark = watermark
     return recordingView
   }
 }

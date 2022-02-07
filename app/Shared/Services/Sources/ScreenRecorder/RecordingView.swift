@@ -21,7 +21,10 @@ internal class RecordingView: UIView {
   
   private var watermarkImageView: UIImageView = UIImageView()
   
-  private var watermark: UIImage = UIImage()
+  public var watermark: UIImage? {
+    get { watermarkImageView.image }
+    set { watermarkImageView.image = newValue }
+  }
   
   private var frameSize: CGSize
   
@@ -64,14 +67,6 @@ internal class RecordingView: UIView {
       watermarkImageView.heightAnchor.constraint(equalToConstant: 44),
       watermarkImageView.widthAnchor.constraint(equalToConstant: 44)
     ])
-  }
-  
-  func setWatermark(to watermarkImage: UIImage) {
-    watermarkImageView.image = watermarkImage
-  }
-  
-  func removeWatermark() {
-    watermarkImageView.image = UIImage()
   }
   
   func setWatermarkDisplay(hidden: Bool) {
