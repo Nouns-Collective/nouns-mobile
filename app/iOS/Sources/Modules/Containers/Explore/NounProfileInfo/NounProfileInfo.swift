@@ -39,7 +39,7 @@ struct NounProfileInfo: View {
           
           // Navigation link showing the noun's bid history & owner activity.
           Link(isActive: $isActivityPresented, content: {
-            CardActionsItems(isShareSheetPresented: $isShareSheetPresented)
+            CardActionsItems(viewModel: viewModel, isShareSheetPresented: $isShareSheetPresented)
             
           }, destination: {
             AuctionInfo(viewModel: .init(auction: viewModel.auction))
@@ -56,6 +56,9 @@ struct NounProfileInfo: View {
       if let url = viewModel.nounProfileURL {
         ShareSheet(activityItems: [url])
       }
+    }
+    .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
+      NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
     }
   }
 }
@@ -84,6 +87,8 @@ extension NounProfileInfo {
 extension NounProfileInfo {
   
   struct CardActionsItems: View {
+    
+    @ObservedObject var viewModel: ViewModel
     @Binding var isShareSheetPresented: Bool
     
     var body: some View {
@@ -100,7 +105,9 @@ extension NounProfileInfo {
         SoftButton(
           text: R.string.shared.remix(),
           largeAccessory: { Image.splice },
-          action: { })
+          action: {
+            viewModel.shouldShowNounCreator.toggle()
+          })
           .controlSize(.large)
       }
     }
