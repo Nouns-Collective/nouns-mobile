@@ -18,12 +18,12 @@ struct PlayExperience: View {
   var body: some View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
-        Text(R.string.play.subheadline())
+        Text(R.string.playExperience.subheadline())
           .font(.custom(.regular, size: 17))
         
         VStack(spacing: 0) {
           VStack(spacing: -40) {
-            SpeechBubble(R.string.play.speechBubble())
+            SpeechBubble(R.string.playExperience.speechBubble())
             
             Image(R.image.pizzaNoun.name)
               .resizable()
@@ -31,7 +31,7 @@ struct PlayExperience: View {
           }
         
           OutlineButton(
-            text: R.string.play.proceedTitle(),
+            text: R.string.playExperience.proceedTitle(),
             largeAccessory: { Image.fingergunsRight },
             action: { isPlayPresented.toggle() })
             .controlSize(.large)
@@ -46,7 +46,7 @@ struct PlayExperience: View {
       // Extra padding between the bottom of the last noun
       // card and the top of the tab view.
       .padding(.bottom, 20)
-      .softNavigationTitle(R.string.play.title())
+      .softNavigationTitle(R.string.playExperience.title())
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
       .fullScreenCover(isPresented: $isPlayPresented) {

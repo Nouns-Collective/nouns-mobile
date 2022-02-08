@@ -21,15 +21,15 @@ extension NounPlayground {
       self._viewModel = ObservedObject(wrappedValue: viewModel)
       super.init(size: size)
       
-      audioProcessingStateSink = viewModel.voiceChangerEngine.$audioProcessingState
-        .sink { status in
-          switch status {
-          case .speech:
-            self.talkingNoun.state = .lipSync
-          case .silence, .undefined:
-            self.talkingNoun.state = .idle
-          }
-        }
+//      audioProcessingStateSink = viewModel.voiceChangerEngine.$audioProcessingState
+//        .sink { status in
+//          switch status {
+//          case .speech:
+//            self.talkingNoun.state = .lipSync
+//          case .silence, .undefined:
+//            self.talkingNoun.state = .idle
+//          }
+//        }
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -12,12 +12,14 @@ import Combine
 import SpriteKit
 
 struct NounPlayground: View {
-  
-  @Environment(\.dismiss) private var dismiss
-  @StateObject private var viewModel = ViewModel()
-  @Namespace private var nsTypeSelection
+  @StateObject var viewModel = ViewModel()
   
   @State private var selection: Int = 0
+  @Environment(\.dismiss) private var dismiss
+  @Namespace private var nsTypeSelection
+  
+  /// Holds a reference to the localized text.
+  private let localize = R.string.nounPlayground.self
   
   private var playScene: PlayScene {
     let scene = PlayScene(viewModel: viewModel, size: CGSize(width: 320, height: 320))
@@ -26,25 +28,24 @@ struct NounPlayground: View {
     return scene
   }
   
-  private var spriteView: some View {
-    SpriteView(scene: playScene, options: [.allowsTransparency])
-      .frame(width: 320, height: 320)
-  }
-  
   var body: some View {
-    VStack(spacing: 50) {
-      Text(R.string.play.playgroundTitle())
+    VStack(spacing: 0) {
+      // Displays the current recoding state.
+      Text(R.string.playExperience.playgroundTitle())
         .font(.custom(.bold, size: 19))
         .offset(y: -80)
         .foregroundColor(Color.componentNounsBlack)
       
       ConditionalSpacer(!viewModel.isRequestingAudioPermission)
       
-      spriteView
+      SpriteView(scene: playScene, options: [.allowsTransparency])
+        .frame(width: 320, height: 320)
       
       Spacer()
       
-      // Record button should go here
+      // The maximum record duration is set to 20 seconds by default.
+      RecordButton($viewModel.isRecording, coachmark: localize.holdToRecordCoachmark())
+        .padding(.bottom, 60)
       
       OutlinePicker(selection: $selection) {
         ForEach(VoiceChangerEngine.Effect.allCases, id: \.rawValue) { effect in
@@ -55,21 +56,13 @@ struct NounPlayground: View {
       }
       .padding(.bottom, 20)
       .hidden(viewModel.isRequestingAudioPermission)
-      //      .emptyPlaceholder(when: viewModel.state == .coachmark) {
-      //        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
-      //          Image.pointRight.white
-      //            .rotationEffect(.degrees(-75))
-      //        })
-      //          .padding(.bottom, 60)
-      //      }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-    .softNavigationItems(leftAccessory: {
+    .softNavigationTitle(leftAccessory: {
       SoftButton(
         icon: { Image.xmark },
         action: { dismiss() })
-      
-    }, rightAccessory: { EmptyView() })
+    })
     .background(Gradient.bubbleGum)
     .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
       AudioPermissionDialog(viewModel: viewModel)
@@ -83,14 +76,14 @@ struct NounPlayground: View {
     .onChange(of: selection) { newValue in
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
     }
-    .onChange(of: viewModel.isRecording) { recording in
-      switch recording {
-      case true:
-        // viewModel.screenRecorder.startRecording(viewToRecord)
-        break
-      case false:
-        viewModel.stopRecording()
-      }
-    }
+    //    .onChange(of: viewModel.isRecording) { recording in
+    //      switch recording {
+    //      case true:
+    //        // viewModel.screenRecorder.startRecording(viewToRecord)
+    //        break
+    //      case false:
+    //        viewModel.stopRecording()
+    //      }
+    //    }
   }
 }
