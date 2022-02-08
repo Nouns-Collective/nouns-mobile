@@ -13,11 +13,22 @@ import Combine
 /// depends on the `maximumRecordDuration` when initializing this button.
 public struct RecordButton: View {
   
-  /// Gesture state that would be `true` when the user is holding the button
-  @GestureState private var isTapped: Bool = false
+  /// Specify whether the record button is held down.
+  @Binding var isRecording: Bool
   
   /// The maximum duration a user can hold on the button (to record), in seconds
-  let maximumRecordDuration: CGFloat
+  public let maximumRecordDuration: CGFloat
+  
+  /// Coachmark showing the current record state.
+  public let coachmark: String
+  
+  /// Gesture state that would be `true` when the user is holding the button
+  @GestureState private var isTapped: Bool = false {
+    didSet {
+      // Updates the current state when the user hold up and down on the button.
+      isRecording = isTapped
+    }
+  }
   
   /// A progress indicator, ranging from 0.0 (not started) to the value of `maximumRecordDuration` (complete)
   @State private var elapsedTime: CGFloat = 0.0
@@ -31,7 +42,7 @@ public struct RecordButton: View {
   private let progressTimer = Timer.publish(every: 0.01, on: .main, in: .common).autoconnect()
   
   private let gradient = AngularGradient(
-    gradient: Gradient(colors: GradientColors.recordButtonStroke.colors),
+    gradient: SwiftUI.Gradient(colors: GradientColors.recordButtonStroke.colors),
     center: .center,
     startAngle: .degrees(360),
     endAngle: .degrees(0))
@@ -51,24 +62,37 @@ public struct RecordButton: View {
     isTapped ? 0 : 2
   }
   
-  public init(maximumRecordDuration: CGFloat = 30.0) {
+  public init(
+    _ isRecording: Binding<Bool>,
+    maximumRecordDuration: CGFloat = 20.0,
+    coachmark: String
+  ) {
+    self._isRecording = isRecording
     self.maximumRecordDuration = maximumRecordDuration
+    self.coachmark = coachmark
   }
   
   public var body: some View {
-    ZStack {
-      Circle()
-        .strokeBorder(Color.componentNounsBlack, lineWidth: strokeWidth)
-        .background(Circle().fill(foregroundColor))
-        .frame(width: 72, height: 72, alignment: .center)
-        .animation(.spring(), value: isTapped)
-        .gesture(dragGesture)
+    VStack {
+      ZStack {
+        Circle()
+          .strokeBorder(Color.componentNounsBlack, lineWidth: strokeWidth)
+          .background(Circle().fill(foregroundColor))
+          .frame(width: 72, height: 72, alignment: .center)
+          .animation(.spring(), value: isTapped)
+          .gesture(dragGesture)
+        
+        Circle()
+          .trim(from: 0, to: progressValue)
+          .stroke(gradient, style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
+          .rotationEffect(.degrees(-90))
+          .frame(width: 100, height: 100)
+      }
       
-      Circle()
-        .trim(from: 0, to: progressValue)
-        .stroke(gradient, style: StrokeStyle(lineWidth: 8, lineCap: .round, lineJoin: .round))
-        .rotationEffect(.degrees(-90))
-        .frame(width: 100, height: 100)
+      Text(coachmark)
+        .font(.custom(.medium, size: 17))
+        .foregroundColor(Color.componentNounsBlack)
+        .hidden(isTapped)
     }
     .onChange(of: isTapped, perform: { _ in
       self.elapsedTime = 0.0
@@ -82,7 +106,16 @@ public struct RecordButton: View {
 }
 
 struct RecordButton_Previews: PreviewProvider {
+  
+  init() {
+    UIComponents.configure()
+  }
+  
   static var previews: some View {
-    RecordButton()
+    VStack {
+      RecordButton(.constant(false), coachmark: "Hold to record")
+    }
+    .ignoresSafeArea()
+    .background(Gradient.bubbleGum)
   }
 }

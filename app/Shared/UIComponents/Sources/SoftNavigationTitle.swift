@@ -44,7 +44,7 @@ private struct SoftNavigationTitle<LeftAccessory, RightAccessory>: ViewModifier 
     
     /// Initializes a custom navigation title with a left accessory view.
     init(
-        _ title: String,
+        _ title: String? = nil,
         @ViewBuilder leftAccessory: () -> LeftAccessory
     ) where RightAccessory == EmptyView {
         self.title = title
@@ -54,7 +54,7 @@ private struct SoftNavigationTitle<LeftAccessory, RightAccessory>: ViewModifier 
     
     /// Initializes a custom navigation title with a right accessory view.
     init(
-        _ title: String,
+        _ title: String? = nil,
         @ViewBuilder rightAccessory: () -> RightAccessory
     ) where LeftAccessory == EmptyView {
         self.title = title
@@ -132,7 +132,7 @@ public extension View {
     
     /// Initializes a custom navigation title with a right accessory view.
     func softNavigationTitle<RightAccessory: View>(
-        _ title: String,
+        _ title: String? = nil,
         @ViewBuilder rightAccessory: () -> RightAccessory
     ) -> some View {
         modifier(SoftNavigationTitle(title, rightAccessory: rightAccessory))
@@ -140,7 +140,7 @@ public extension View {
     
     /// Initializes a custom navigation title with a left accessory view.
     func softNavigationTitle<LeftAccessory: View>(
-        _ title: String,
+        _ title: String? = nil,
         @ViewBuilder leftAccessory: () -> LeftAccessory
     ) -> some View {
         modifier(SoftNavigationTitle(title, leftAccessory: leftAccessory))
