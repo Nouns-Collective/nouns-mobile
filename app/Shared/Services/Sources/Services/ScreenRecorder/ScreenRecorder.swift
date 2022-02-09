@@ -16,14 +16,20 @@ public protocol ScreenRecorder: AnyObject {
   /// - Parameters:
   ///    - view: A SwiftUI view to start recording
   ///    - backgroundView: An optional background view to place behind the main recorded view
-  func startRecording<ContentView: View, BackgroundView: View>(_ view: ContentView, backgroundView: BackgroundView?)
+  ///    - audioFileURL: The audio to play while recording the video.
+  func startRecording<ContentView, BackgroundView>(
+    _ view: ContentView,
+    backgroundView: BackgroundView?,
+    audioFileURL: URL
+  ) where ContentView: View, BackgroundView: View
   
   /// Starts recording a UIKit view (UIView)
   ///
   /// - Parameters:
   ///    - view: A UIView to start
   ///    - backgroundView: An optional background view to place behind the main recorded view
-  func startRecording(_ view: UIView, backgroundView: UIView?)
+  ///    - audioFileURL: The audio to play while recording the video.
+  func startRecording(_ view: UIView, backgroundView: UIView?, audioFileURL: URL)
   
   /// Stops recording the view
   ///
@@ -69,6 +75,9 @@ public class CAScreenRecorder: ScreenRecorder {
   /// The view we're actively recording
   private var sourceView: UIView?
   
+  /// The audio to play while recording the video.
+  private var audioFileURL: URL?
+  
   /// Target frames per second to record the video at
   private var framesPerSecond: Double
   
@@ -97,7 +106,8 @@ public class CAScreenRecorder: ScreenRecorder {
   
   public func startRecording<ContentView, BackgroundView>(
     _ view: ContentView,
-    backgroundView: BackgroundView?
+    backgroundView: BackgroundView?,
+    audioFileURL: URL
   ) where ContentView: View, BackgroundView: View {
     guard let uiView = viewToUIView(view) else { return }
     
@@ -106,11 +116,12 @@ public class CAScreenRecorder: ScreenRecorder {
       backgroundUIView = viewToUIView(backgroundView)
     }
     
-    startRecording(uiView, backgroundView: backgroundUIView)
+    startRecording(uiView, backgroundView: backgroundUIView, audioFileURL: audioFileURL)
   }
   
-  public func startRecording(_ view: UIView, backgroundView: UIView?) {
-    self.sourceView = constructView(view, backgroundView: backgroundView)
+  public func startRecording(_ view: UIView, backgroundView: UIView?, audioFileURL: URL) {
+    self.audioFileURL = audioFileURL
+    sourceView = constructView(view, backgroundView: backgroundView)
     displayLink = CADisplayLink(target: self, selector: #selector(tick))
     displayLink?.add(to: RunLoop.main, forMode: .common)
   }
@@ -118,6 +129,7 @@ public class CAScreenRecorder: ScreenRecorder {
   public func stopRecording() async throws -> URL {
     displayLink?.invalidate()
     displayLink = nil
+    audioFileURL = nil
     
     // Remove first frame, which is often a grey transisionary frame as the view gets added
     _ = frames.popLast()
@@ -154,34 +166,41 @@ public class CAScreenRecorder: ScreenRecorder {
       throw ScreenRecorderError.invalidFPS
     }
     
-    let url = self.generateUniqueFileURL()
+    // Generate a location for the video (asset) output.
+    let url = generateUniqueFileURL()
     
-    let writer: AVAssetWriter
-    do {
-      writer = try AVAssetWriter(outputURL: url, fileType: .mov)
-    } catch {
-      throw ScreenRecorderError.failure(error: error)
-    }
+    let writer = try AVAssetWriter(outputURL: url, fileType: .mov)
     
-    let input = AVAssetWriterInput(mediaType: .video,
-                                   outputSettings: self.videoSettings(codecType: codecType))
+    /*
+     *******************
+     * Video input
+     *******************
+     */
     
-    if writer.canAdd(input) {
-      writer.add(input)
-    } else {
+    // Defines the input of the asset writer to consume the captured frames of the source view.
+    let videoSettings = videoSettings(codecType: codecType)
+    let videoWriterInput = AVAssetWriterInput(mediaType: .video,
+                                        outputSettings: videoSettings)
+    
+    guard writer.canAdd(videoWriterInput) else {
       throw ScreenRecorderError.unableToAddVideoInput
     }
     
-    let pixelAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input,
-                                                            sourcePixelBufferAttributes: self.pixelAdaptorAttributes)
+    writer.add(videoWriterInput)
+    
+    // Performance optimization on the captured frame of
+    // the source view into pixel buffer.
+    let pixelAdaptor = AVAssetWriterInputPixelBufferAdaptor(
+      assetWriterInput: videoWriterInput,
+      sourcePixelBufferAttributes: pixelAdaptorAttributes)
     
     writer.startWriting()
     writer.startSession(atSourceTime: CMTime.zero)
     
     var frameIndex: Int = 0
-    while frameIndex < self.frames.count {
-      if input.isReadyForMoreMediaData {
-        guard let buffer = self.frames[frameIndex].toSampleBuffer(frameIndex: frameIndex, framesPerSecond: framesPerSecond),
+    while frameIndex < frames.count {
+      if videoWriterInput.isReadyForMoreMediaData {
+        guard let buffer = frames[frameIndex].toSampleBuffer(frameIndex: frameIndex, framesPerSecond: framesPerSecond),
               let imageBuffer = CMSampleBufferGetImageBuffer(buffer) else {
                 throw ScreenRecorderError.unableToCreateSampleBuffer
               }
@@ -194,15 +213,70 @@ public class CAScreenRecorder: ScreenRecorder {
       }
     }
     
+    /*
+     *******************
+     * Audio input
+     *******************
+     */
+    
+    guard let audioFileURL = audioFileURL else {
+      throw "⚠️ 📺 Couldn't continue the screen recording! No audio file found."
+    }
+
+    let audioTrackOutput = try await loadAudioSample(at: URL(string: "")!)
+    
+    let outputAudioSettings: [String : Any] = [
+      AVFormatIDKey: kAudioFormatLinearPCM,
+      AVLinearPCMIsBigEndianKey: false,
+      AVLinearPCMIsFloatKey: false,
+      AVLinearPCMBitDepthKey: 16,
+    ]
+    
+    let audioWriterInput = AVAssetWriterInput(
+      mediaType: .audio,
+      outputSettings: outputAudioSettings
+    )
+    
+    guard writer.canAdd(audioWriterInput) else {
+      throw "⚠️ 📺 Unable to add the audio input to the asset writer"
+    }
+    
+    writer.add(audioWriterInput)
+    
+    let queue = DispatchQueue(label: "wtf.nouns.ios.screen-recorder.audio-write")
+  requestMediaStream: for await _ in audioWriterInput.requestMediaDataWhenReady(on: queue) {
+    
+    // while the input is ready for more data, it copies
+    // the available samples from the track output
+    // and appends them to the input.
+    while audioWriterInput.isReadyForMoreMediaData {
+      guard let sampleBuffer = audioTrackOutput.copyNextSampleBuffer() else {
+        audioWriterInput.markAsFinished()
+        break requestMediaStream
+      }
+      
+      guard audioWriterInput.append(sampleBuffer) else {
+        throw "⚠️ 📺 Couldn't append the audio sample buffer to the input"
+      }
+    }
+  }
+    
+    /*
+     *******************
+     * Completion
+     *******************
+     */
+    
     await writer.finishWriting()
     
     switch writer.status {
     case .completed:
-      print("Successfully finished writing video \(url)")
+      print("✅ 📺 Successfully finished writing video \(url)")
       return url
+      
     default:
       let error = writer.error ?? ScreenRecorderError.internalError
-      print("Finished writing video without success \(error)")
+      print("⚠️ 📺 Finished writing video without success \(error)")
       throw error
     }
   }
@@ -248,5 +322,46 @@ public class CAScreenRecorder: ScreenRecorder {
     let recordingView = RecordingView(sourceView: sourceView, backgroundView: backgroundView)
     
     return recordingView
+  }
+  
+  // MARK: - Audio Sample
+  
+  private func loadAudioSample(at url: URL) async throws -> AVAssetReaderTrackOutput {
+    let asset = AVAsset(url: url)
+    _ = try await asset.loadTracks(withMediaType: .audio)
+    return try readAudioSamples(from: asset)
+  }
+  
+  private func readAudioSamples(from asset: AVAsset) throws -> AVAssetReaderTrackOutput {
+    let assetReader = try AVAssetReader(asset: asset)
+    defer { assetReader.startReading() }
+    
+    guard let track = asset.tracks(withMediaType: .audio).first else {
+      throw "⚠️ 📺 Couldn't find tracks that contain media of audio type."
+    }
+    
+    let outputSettings: [String : Any] = [
+      AVFormatIDKey: kAudioFormatLinearPCM,
+      AVLinearPCMIsBigEndianKey: false,
+      AVLinearPCMIsFloatKey: false,
+      AVLinearPCMBitDepthKey: 16,
+    ]
+    
+    // Decompress to track to the PCM format.
+    let trackOutput = AVAssetReaderTrackOutput(track: track, outputSettings: outputSettings)
+    assetReader.add(trackOutput)
+    
+    return trackOutput
+  }
+}
+
+extension AVAssetWriterInput {
+  
+  func requestMediaDataWhenReady(on queue: DispatchQueue) -> AsyncStream<Void> {
+    AsyncStream { continuation in
+      requestMediaDataWhenReady(on: queue) {
+        continuation.yield()
+      }
+    }
   }
 }

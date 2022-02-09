@@ -15,8 +15,7 @@ internal extension UIImage {
   ///
   /// - Returns: `CVPixelBuffer` or `nil`, if unable to convert data
   func toPixelBuffer() -> CVPixelBuffer? {
-    guard let cgImage = self.cgImage
-    else { return nil }
+    guard let cgImage = self.cgImage else { return nil }
     
     let frameSize = CGSize(width: cgImage.width,
                            height: cgImage.height)
