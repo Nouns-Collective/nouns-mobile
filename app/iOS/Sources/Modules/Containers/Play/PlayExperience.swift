@@ -11,10 +11,10 @@ import Services
 
 struct PlayExperience: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
-  @State private var isPlayPresented = false
+  @State private var isNounSelectionPresented = false
   
   @StateObject private var viewModel = ViewModel()
-  
+    
   var body: some View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
@@ -30,11 +30,17 @@ struct PlayExperience: View {
               .scaledToFit()
           }
         
-          OutlineButton(
-            text: R.string.play.proceedTitle(),
-            largeAccessory: { Image.fingergunsRight },
-            action: { isPlayPresented.toggle() })
-            .controlSize(.large)
+          // Navigation link showing the noun selection to choose from
+          Link(isActive: $isNounSelectionPresented, content: {
+            OutlineButton(
+              text: R.string.play.proceedTitle(),
+              largeAccessory: { Image.fingergunsRight },
+              action: { isNounSelectionPresented.toggle() })
+              .controlSize(.large)
+            
+          }, destination: {
+            PlayChooseNoun()
+          })
         }
         .padding(.top, 40)
         .padding(.horizontal, 20)
@@ -49,9 +55,6 @@ struct PlayExperience: View {
       .softNavigationTitle(R.string.play.title())
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
-      .fullScreenCover(isPresented: $isPlayPresented) {
-        NounPlayground()
-      }
     }
   }
 }

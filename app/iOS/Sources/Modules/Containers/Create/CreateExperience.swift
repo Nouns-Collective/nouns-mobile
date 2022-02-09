@@ -15,11 +15,17 @@ struct CreateExperience: View {
   @State private var isCreatorPresented = false
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
   
+  @State private var selectedNoun: Noun?
+  
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 20) {
-          OffChainNounsFeed(isCreatorPresented: $isCreatorPresented)
+          OffChainNounsFeed(selection: $selectedNoun) {
+            CreateNounPlaceholder {
+              isCreatorPresented.toggle()
+            }
+          }
         }
         .fullScreenCover(isPresented: $isCreatorPresented) {
           NounCreator(viewModel: .init())
@@ -36,6 +42,12 @@ struct CreateExperience: View {
       }
       .background(Gradient.freshMint)
       .ignoresSafeArea(edges: .top)
+      // Presents more details about the settled auction.
+      .fullScreenCover(item: $selectedNoun, onDismiss: {
+        selectedNoun = nil
+      }, content: {
+        OffChainNounProfile(viewModel: .init(noun: $0))
+      })
     }
   }
 }

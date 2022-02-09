@@ -1,5 +1,5 @@
 //
-//  OffChainFeedPlaceholder.swift
+//  CreateNounPlaceholder.swift
 //  Nouns
 //
 //  Created by Mohammed Ibrahim on 2021-12-26.
@@ -9,7 +9,8 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct OffChainFeedPlaceholder: View {
+struct CreateNounPlaceholder: View {
+  
   let action: () -> Void
 
   var body: some View {
@@ -27,6 +28,7 @@ struct OffChainFeedPlaceholder: View {
         largeAccessory: { Image.fingergunsRight },
         action: action)
         .controlSize(.large)
+        .padding(.horizontal)
 
       Spacer()
     }
