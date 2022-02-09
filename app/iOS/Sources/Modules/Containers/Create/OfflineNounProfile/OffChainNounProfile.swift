@@ -64,7 +64,7 @@ struct OffChainNounProfile: View {
         viewModel: viewModel
       )
     }
-    .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
+    .background(Gradient(GradientColors.allCases[viewModel.noun.seed.background]))
     .sheet(isPresented: $viewModel.isShareSheetPresented) {
       if let imageData = viewModel.exportImageData, let image = UIImage(data: imageData) {
         ShareSheet(activityItems: [image], imageMetadata: image, titleMetadata: viewModel.noun.name)
@@ -82,7 +82,7 @@ extension OffChainNounProfile {
      var body: some View {
        NounPuzzle(seed: viewModel.noun.seed)
          .frame(width: 512, height: 512, alignment: .center)
-         .background(GradientView(GradientColors.allCases[viewModel.noun.seed.background]))
+         .background(Gradient(.allCases[viewModel.noun.seed.background]))
      }
    }
  }

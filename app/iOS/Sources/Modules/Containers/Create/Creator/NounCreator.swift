@@ -66,7 +66,7 @@ struct NounCreator: View {
     .bottomSheet(isPresented: mode == .cancel, showDimmingView: true, allowDrag: false, content: {
       DiscardNounSheet(viewModel: viewModel)
     })
-    .background(GradientView(GradientColors.allCases[viewModel.seed.background]))
+    .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
       EmitterView()
         .zIndex(100)

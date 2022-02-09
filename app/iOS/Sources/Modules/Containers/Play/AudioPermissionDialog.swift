@@ -30,7 +30,7 @@ extension NounPlayground {
         
         SoftButton(
           text: R.string.audioPermissionDialog.enable(),
-          largeAccessory: { Image.pointRight.standard },
+          largeAccessory: { Image.PointRight.standard },
           action: {
             viewModel.requestMicrophonePermission()
           })
@@ -72,7 +72,7 @@ extension NounPlayground {
         
         SoftButton(
           text: R.string.audioSettingsDialog.enable(),
-          largeAccessory: { Image.pointRight.standard },
+          largeAccessory: { Image.PointRight.standard },
           action: {
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
               openURL(settingsURL)
