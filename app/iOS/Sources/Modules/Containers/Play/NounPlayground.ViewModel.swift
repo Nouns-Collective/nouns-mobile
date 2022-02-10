@@ -51,6 +51,9 @@ extension NounPlayground {
     /// Shows the audio settings sheet when the voice capture permission has been denied or restricted.
     @Published private(set) var showAudioSettingsSheet = false
     
+    /// A Boolean value indicates whether the noun is talking.
+    @Published private(set) var isTalking = false
+    
     public var audioProcessingState: AudioStatus {
       voiceChangerEngine.audioProcessingState
     }
@@ -65,7 +68,7 @@ extension NounPlayground {
     
     private let screenRecorder: ScreenRecorder
     private let voiceChangerEngine: VoiceChangerEngine
-    private var voiceChangerOutputCancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
     private let logger = Logger(
       subsystem: "wtf.nouns.ios",
       category: "Noun Playground"
@@ -81,15 +84,21 @@ extension NounPlayground {
       handleVoiceCapturePermission()
       
       // Observes the location of voice with the effect applied, then display the share experience.
-      voiceChangerOutputCancellable = voiceChangerEngine.outputFileURL.publisher
+      voiceChangerEngine.outputFileURL.publisher
         .sink { [weak self] audioFileURLWithEffect in
           
-          guard let self = self else { return }
+          self?.state = .share
           
-          self.state = .share
-          
-          self.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
+          self?.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
         }
+        .store(in: &cancellables)
+      
+      voiceChangerEngine.$audioProcessingState
+        .sink { [weak self] status in
+          
+          self?.isTalking = status == .speech
+        }
+        .store(in: &cancellables)
     }
     
     deinit {

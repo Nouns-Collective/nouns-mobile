@@ -15,21 +15,17 @@ extension NounPlayground {
     
     @ObservedObject var viewModel: ViewModel
     
-    var audioProcessingStateSink: AnyCancellable?
+    var isNounTalkingCancellable: AnyCancellable?
     
     init(viewModel: ViewModel, size: CGSize) {
       self._viewModel = ObservedObject(wrappedValue: viewModel)
       super.init(size: size)
       
-//      audioProcessingStateSink = viewModel.voiceChangerEngine.$audioProcessingState
-//        .sink { status in
-//          switch status {
-//          case .speech:
-//            self.talkingNoun.state = .lipSync
-//          case .silence, .undefined:
-//            self.talkingNoun.state = .idle
-//          }
-//        }
+      isNounTalkingCancellable = viewModel.$isTalking
+        .sink { [weak self] status in
+          
+          self?.talkingNoun.state = status ? .lipSync : .idle
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

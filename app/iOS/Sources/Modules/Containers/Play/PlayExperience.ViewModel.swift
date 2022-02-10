@@ -17,5 +17,4 @@ extension PlayExperience {
       seed = Seed(background: 0, glasses: 8, head: 26, body: 20, accessory: 0)
     }
   }
-  
 }
