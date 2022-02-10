@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import os
 
 /// Auto-Listening & record  & applies pre-built effects.
 public class VoiceChangerEngine: ObservableObject {
@@ -33,7 +34,7 @@ public class VoiceChangerEngine: ObservableObject {
   @Published public private(set) var state: State = .idle {
     didSet {
       if oldValue != state {
-        print("🏁🎙 Audio Engine is", state.rawValue)
+        logger.debug("🏁🎙 Audio Engine is \(self.state.rawValue, privacy: .public)")
       }
     }
   }
@@ -46,7 +47,7 @@ public class VoiceChangerEngine: ObservableObject {
   /// Determines the state of the audio being processed.
   @Published public private(set) var audioProcessingState: AudioStatus = .undefined {
     didSet {
-      print("🔊 Audio is processed as", audioProcessingState.rawValue)
+      logger.debug("🔊 Audio is processed as \(self.audioProcessingState.rawValue)")
     }
   }
  
@@ -73,6 +74,11 @@ public class VoiceChangerEngine: ObservableObject {
   
   /// A number of audio sample frames.
   private let bufferSize = AVAudioFrameCount(4096)
+  
+  private let logger = Logger(
+    subsystem: "wtf.nouns.ios.services",
+    category: "VoiceChangerEngine"
+  )
   
   public init() {
     outputFormat = audioEngine.inputNode.outputFormat(forBus: outputBus)
@@ -132,6 +138,7 @@ public class VoiceChangerEngine: ObservableObject {
       bufferSize: bufferSize,
       format: nil
     ) { [weak self] buffer, _ in
+      
       guard let self = self, self.state == .playing else { return }
 
       self.persistStreamingAudioBuffer(
@@ -189,8 +196,10 @@ public class VoiceChangerEngine: ObservableObject {
       // Deletes the audio with no effect after the playback.
       self.deleteFile(at: file.url)
       
-      // Publish the location of the audio recorded with the chosen effect.
-      self.outputFileURL = self.recordedFileWithEffect?.url
+      DispatchQueue.main.async {
+        // Publish the location of the audio recorded with the chosen effect.
+        self.outputFileURL = self.recordedFileWithEffect?.url
+      }
       
       // Resets the voice capture & effect applied to the listening state.
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -215,7 +224,7 @@ public class VoiceChangerEngine: ObservableObject {
       try audioFile?.write(from: buffer)
       
     } catch {
-      print("⚠️ 🔊 Could not write buffer: \(error)")
+      logger.error("⚠️ 🔊 Could not write buffer: \(error.localizedDescription, privacy: .public )")
     }
   }
   
@@ -225,7 +234,7 @@ public class VoiceChangerEngine: ObservableObject {
     }
     
     applyEffect(file: recordedFile)
-    self.recordedFileWithNoEffect = nil
+    recordedFileWithNoEffect = nil
   }
   
   /// Generates a new `AVAudioFile` if it does not exist.
@@ -253,7 +262,7 @@ public class VoiceChangerEngine: ObservableObject {
     do {
       try FileManager.default.removeItem(at: fileURL)
     } catch {
-      print("⚠️ 🔊 Couldn't delete audio file:", error)
+      logger.error("⚠️ 🔊 Couldn't delete audio file: \(error.localizedDescription, privacy: .public)")
     }
   }
 }

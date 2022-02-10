@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import AVFoundation
+import os
 
 public protocol ScreenRecorder: AnyObject {
   
@@ -86,19 +87,10 @@ public class CAScreenRecorder: ScreenRecorder {
            height: (frames.first?.size.height ?? 0) * UIScreen.main.scale)
   }
   
-  private func videoSettings(codecType: AVVideoCodecType) -> [String: Any] {
-    return [
-      AVVideoCodecKey: codecType,
-      AVVideoWidthKey: frameSize.width,
-      AVVideoHeightKey: frameSize.height
-    ]
-  }
-  
-  private var pixelAdaptorAttributes: [String: Any] {
-    [
-      kCVPixelBufferPixelFormatTypeKey as String: Int(kCMPixelFormat_32BGRA)
-    ]
-  }
+  private let logger = Logger(
+    subsystem: "wtf.nouns.ios.services",
+    category: "Screen Recorder"
+  )
   
   public init(framesPerSecond: Double = 60) {
     self.framesPerSecond = framesPerSecond
@@ -123,7 +115,7 @@ public class CAScreenRecorder: ScreenRecorder {
     self.audioFileURL = audioFileURL
     sourceView = constructView(view, backgroundView: backgroundView)
     displayLink = CADisplayLink(target: self, selector: #selector(tick))
-    displayLink?.add(to: RunLoop.main, forMode: .common)
+    displayLink?.add(to: .main, forMode: .common)
   }
   
   public func stopRecording() async throws -> URL {
@@ -178,15 +170,27 @@ public class CAScreenRecorder: ScreenRecorder {
      */
     
     // Defines the input of the asset writer to consume the captured frames of the source view.
-    let videoSettings = videoSettings(codecType: codecType)
-    let videoWriterInput = AVAssetWriterInput(mediaType: .video,
-                                        outputSettings: videoSettings)
+    let videoSettings: [String: Any] = [
+      AVVideoCodecKey: codecType,
+      AVVideoWidthKey: frameSize.width,
+      AVVideoHeightKey: frameSize.height,
+    ]
+      
+    let videoWriterInput = AVAssetWriterInput(
+      mediaType: .video,
+      outputSettings: videoSettings
+    )
     
     guard writer.canAdd(videoWriterInput) else {
       throw ScreenRecorderError.unableToAddVideoInput
     }
     
     writer.add(videoWriterInput)
+    
+    let pixelAdaptorAttributes =
+    [
+      kCVPixelBufferPixelFormatTypeKey as String: Int(kCMPixelFormat_32BGRA),
+    ]
     
     // Performance optimization on the captured frame of
     // the source view into pixel buffer.
@@ -223,9 +227,9 @@ public class CAScreenRecorder: ScreenRecorder {
       throw "⚠️ 📺 Couldn't continue the screen recording! No audio file found."
     }
 
-    let audioTrackOutput = try await loadAudioSample(at: URL(string: "")!)
+    let audioTrackOutput = try await loadAudioSample(at: audioFileURL)
     
-    let outputAudioSettings: [String : Any] = [
+    let outputAudioSettings: [String: Any] = [
       AVFormatIDKey: kAudioFormatLinearPCM,
       AVLinearPCMIsBigEndianKey: false,
       AVLinearPCMIsFloatKey: false,
@@ -271,12 +275,12 @@ public class CAScreenRecorder: ScreenRecorder {
     
     switch writer.status {
     case .completed:
-      print("✅ 📺 Successfully finished writing video \(url)")
+      logger.debug("✅ 📺 Successfully finished writing video \(url.absoluteString)")
       return url
       
     default:
       let error = writer.error ?? ScreenRecorderError.internalError
-      print("⚠️ 📺 Finished writing video without success \(error)")
+      logger.error("⚠️ 📺 Finished writing video without success \(error.localizedDescription, privacy: .public)")
       throw error
     }
   }
@@ -340,7 +344,7 @@ public class CAScreenRecorder: ScreenRecorder {
       throw "⚠️ 📺 Couldn't find tracks that contain media of audio type."
     }
     
-    let outputSettings: [String : Any] = [
+    let outputSettings: [String: Any] = [
       AVFormatIDKey: kAudioFormatLinearPCM,
       AVLinearPCMIsBigEndianKey: false,
       AVLinearPCMIsFloatKey: false,

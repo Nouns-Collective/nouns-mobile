@@ -8,6 +8,7 @@
 import SwiftUI
 import Services
 import Combine
+import os
 
 extension NounPlayground {
   
@@ -65,6 +66,10 @@ extension NounPlayground {
     private let screenRecorder: ScreenRecorder
     private let voiceChangerEngine: VoiceChangerEngine
     private var voiceChangerOutputCancellable: AnyCancellable?
+    private let logger = Logger(
+      subsystem: "wtf.nouns.ios",
+      category: "Noun Playground"
+    )
     
     init(
       voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine(),
@@ -76,11 +81,15 @@ extension NounPlayground {
       handleVoiceCapturePermission()
       
       // Observes the location of voice with the effect applied, then display the share experience.
-      voiceChangerOutputCancellable = voiceChangerEngine.$outputFileURL.sink { [weak self] audioFileURLWithEffect in
-        guard let self = self else { return }
-        
-        self.state = .share
-      }
+      voiceChangerOutputCancellable = voiceChangerEngine.outputFileURL.publisher
+        .sink { [weak self] audioFileURLWithEffect in
+          
+          guard let self = self else { return }
+          
+          self.state = .share
+          
+          self.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
+        }
     }
     
     deinit {
@@ -117,7 +126,7 @@ extension NounPlayground {
       do {
         try voiceChangerEngine.prepare()
       } catch {
-        print("💥 🎙 Unable to prepare the voice changer engine:", error)
+        logger.error("💥 🎙 Unable to prepare the voice changer engine: \(error.localizedDescription, privacy: .public)")
       }
     }
     
@@ -145,8 +154,9 @@ extension NounPlayground {
       Task {
         do {
           let url = try await screenRecorder.stopRecording()
+          
         } catch {
-          print("💥 An error has occured while creating video: \(error)")
+          logger.error("💥 An error occurred while stopping screen recording: \(error.localizedDescription, privacy: .public)")
         }
       }
     }
