@@ -110,7 +110,7 @@ extension NounPlayground {
     func stopRecording() {
       Task {
         do {
-          let url = try await screenRecorder.stopRecording()
+          let videos = try await screenRecorder.stopRecording()
         } catch {
           print("An error has occured while creating video: \(error)")
         }

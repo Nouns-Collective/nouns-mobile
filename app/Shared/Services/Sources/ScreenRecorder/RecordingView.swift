@@ -17,11 +17,18 @@ internal class RecordingView: UIView {
   
   private var sourceView: UIView
   
-  private var backgroundView: UIView
+  private var backgroundView: UIView?
+  
+  private var watermarkImageView: UIImageView = UIImageView()
+  
+  public var watermark: UIImage? {
+    get { watermarkImageView.image }
+    set { watermarkImageView.image = newValue }
+  }
   
   private var frameSize: CGSize
   
-  init(sourceView: UIView, backgroundView: UIView) {
+  init(sourceView: UIView, backgroundView: UIView?) {
     self.sourceView = sourceView
     self.backgroundView = backgroundView
     self.frameSize = sourceView.intrinsicContentSize
@@ -36,12 +43,34 @@ internal class RecordingView: UIView {
   }
   
   private func setupContent() {
-    addSubview(backgroundView)
+    
+    // Add background if provided
+    if let backgroundView = backgroundView {
+      addSubview(backgroundView)
 
-    backgroundView.frame = CGRect(origin: .zero, size: intrinsicContentSize)
-    backgroundView.addSubview(sourceView)
-
+      backgroundView.frame = CGRect(origin: .zero, size: intrinsicContentSize)
+      backgroundView.addSubview(sourceView)
+    } else {
+      addSubview(sourceView)
+    }
+    
     sourceView.frame = CGRect(origin: .zero, size: intrinsicContentSize)
+    
+    // Add watermark image view above all other content
+    addSubview(watermarkImageView)
+    watermarkImageView.translatesAutoresizingMaskIntoConstraints = false
+    watermarkImageView.contentMode = .scaleAspectFit
+    
+    NSLayoutConstraint.activate([
+      watermarkImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 12),
+      watermarkImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+      watermarkImageView.heightAnchor.constraint(equalToConstant: 44),
+      watermarkImageView.widthAnchor.constraint(equalToConstant: 44)
+    ])
+  }
+  
+  func setWatermarkDisplay(hidden: Bool) {
+    watermarkImageView.isHidden = hidden
   }
   
   override var intrinsicContentSize: CGSize {
