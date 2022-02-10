@@ -126,7 +126,7 @@ extension NounPlayground {
       voiceChangerEngine.stop()
     }
     
-    // MARK: - Effects
+    // MARK: - Audio Effects
     
     /// Updates the currently selected effect
     func updateEffect(to effect: VoiceChangerEngine.Effect) {
@@ -138,16 +138,18 @@ extension NounPlayground {
       state = newState
     }
     
-//    @MainActor
-//    func stopRecording() {
-//      Task {
-//        do {
-//          let url = try await screenRecorder.stopRecording()
-//        } catch {
-//          print("💥 An error has occured while creating video: \(error)")
-//        }
-//      }
-//    }
+    // MARK: - Screen Recorder / Audio Effect
+    
+    @MainActor
+    func stopRecording() {
+      Task {
+        do {
+          let url = try await screenRecorder.stopRecording()
+        } catch {
+          print("💥 An error has occured while creating video: \(error)")
+        }
+      }
+    }
   }
 }
 

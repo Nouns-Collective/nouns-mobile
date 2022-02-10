@@ -44,8 +44,10 @@ struct NounPlayground: View {
       Spacer()
       
       // The maximum record duration is set to 20 seconds by default.
-      RecordButton($viewModel.isRecording, coachmark: localize.holdToRecordCoachmark())
-        .padding(.bottom, 60)
+      RecordButton(
+        $viewModel.isRecording,
+        coachmark: localize.holdToRecordCoachmark()
+      ).padding(.bottom, 60)
       
       OutlinePicker(selection: $selection) {
         ForEach(VoiceChangerEngine.Effect.allCases, id: \.rawValue) { effect in
@@ -76,14 +78,5 @@ struct NounPlayground: View {
     .onChange(of: selection) { newValue in
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
     }
-    //    .onChange(of: viewModel.isRecording) { recording in
-    //      switch recording {
-    //      case true:
-    //        // viewModel.screenRecorder.startRecording(viewToRecord)
-    //        break
-    //      case false:
-    //        viewModel.stopRecording()
-    //      }
-    //    }
   }
 }

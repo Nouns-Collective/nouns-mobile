@@ -133,7 +133,7 @@ public class VoiceChangerEngine: ObservableObject {
       format: nil
     ) { [weak self] buffer, _ in
       guard let self = self, self.state == .playing else { return }
-      
+
       self.persistStreamingAudioBuffer(
         buffer,
         audioFile: &self.recordedFileWithEffect
@@ -212,7 +212,7 @@ public class VoiceChangerEngine: ObservableObject {
   ) {
     do {
       audioFile = try newAudioFile(audioFile)
-      try recordedFileWithNoEffect?.write(from: buffer)
+      try audioFile?.write(from: buffer)
       
     } catch {
       print("⚠️ 🔊 Could not write buffer: \(error)")
