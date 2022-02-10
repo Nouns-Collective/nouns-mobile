@@ -87,16 +87,21 @@ public class CAScreenRecorder: ScreenRecorder {
   /// Target frames per second to record the video at
   private var framesPerSecond: Double
   
-  private var frameSize: CGSize {
-    CGSize(width: (framesWithoutWatermark.first?.size.width ?? 0) * UIScreen.main.scale,
-           height: (framesWithoutWatermark.first?.size.height ?? 0) * UIScreen.main.scale)
+  private var frameSize: CGSize? {
+    guard let firstFrameSize = framesWithoutWatermark.first?.size else {
+      print("🎥 No frames to calculate frame size from")
+      return nil
+    }
+    
+    return CGSize(width: firstFrameSize.width * UIScreen.main.scale,
+           height: firstFrameSize.height * UIScreen.main.scale)
   }
   
   private func videoSettings(codecType: AVVideoCodecType) -> [String: Any] {
     return [
       AVVideoCodecKey: codecType,
-      AVVideoWidthKey: frameSize.width,
-      AVVideoHeightKey: frameSize.height
+      AVVideoWidthKey: frameSize?.width as Any,
+      AVVideoHeightKey: frameSize?.height as Any
     ]
   }
   
