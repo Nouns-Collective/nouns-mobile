@@ -9,6 +9,7 @@ import SwiftUI
 import UIComponents
 import Services
 
+/// A placeholder view for the Create tab for when the user has no created nouns
 struct CreateNounPlaceholder: View {
   
   let action: () -> Void

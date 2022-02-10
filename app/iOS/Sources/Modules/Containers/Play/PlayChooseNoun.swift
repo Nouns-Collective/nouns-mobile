@@ -13,9 +13,7 @@ struct PlayChooseNoun: View {
   @Namespace private var namespace
   @Environment(\.outlineTabViewHeight) var tabBarHeight
   @Environment(\.dismiss) private var dismiss
-  
-  @StateObject private var viewModel: ViewModel = ViewModel()
-  
+    
   @State private var selectedNoun: Noun?
   @State private var isCreatorPresented: Bool = false
   
@@ -31,6 +29,7 @@ struct PlayChooseNoun: View {
       }
       .padding(.horizontal, 20)
       .padding(.bottom, 20)
+      .padding(.bottom, tabBarHeight)
       .softNavigationItems(leftAccessory: {
         SoftButton(
           icon: { Image.back },
@@ -45,9 +44,6 @@ struct PlayChooseNoun: View {
       })
     }
     .background(Gradient.blueberryJam)
-    .task {
-      await viewModel.fetchOffChainNouns()
-    }
     .fullScreenCover(isPresented: $isCreatorPresented) {
       NounCreator(viewModel: .init())
     }
@@ -55,32 +51,6 @@ struct PlayChooseNoun: View {
       selectedNoun = nil
     } content: { noun in
       NounPlayground(noun: noun)
-    }
-  }
-}
-
-extension PlayChooseNoun {
-  
-  @MainActor
-  final class ViewModel: ObservableObject {
-    @Published var nouns = [Noun]()
-    @Published var isFetching = false
-    
-    private let offChainNounsService: OffChainNounsService
-    
-    init(offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService) {
-      self.offChainNounsService = offChainNounsService
-    }
-    
-    func fetchOffChainNouns() async {
-      // when
-      do {
-        for try await nouns in offChainNounsService.nounsStoreDidChange(ascendingOrder: false) {
-          self.nouns = nouns
-        }
-      } catch {
-        print("Error: \(error)")
-      }
     }
   }
 }

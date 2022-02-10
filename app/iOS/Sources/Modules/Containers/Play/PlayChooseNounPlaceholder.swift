@@ -9,6 +9,7 @@ import SwiftUI
 import UIComponents
 import Services
 
+/// A placeholder view for when there are no nouns to choose from in the Play (`NounPlayground`) experience.
 struct PlayChooseNounPlaceholder: View {
   
   let action: () -> Void

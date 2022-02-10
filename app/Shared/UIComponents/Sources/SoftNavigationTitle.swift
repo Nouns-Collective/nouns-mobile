@@ -81,9 +81,7 @@ private struct SoftNavigationTitle<LeftAccessory, RightAccessory>: ViewModifier 
             }
             
             content
-              .navigationBarTitle("")
               .navigationBarHidden(true)
-              .navigationBarBackButtonHidden(true)
         }
     }
     
