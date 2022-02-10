@@ -15,6 +15,7 @@ extension NounProfileInfo {
     @Published private(set) var nounTraits: Seed
     @Published private(set) var isAuctionSettled: Bool
     @Published private(set) var nounProfileURL: URL?
+    @Published public var shouldShowNounCreator: Bool = false
     
     /// Indicate whether the auction time is over.
     @Published private(set) var isWinnerAnounced = false
