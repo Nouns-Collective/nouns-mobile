@@ -77,9 +77,27 @@ extension NounCreator {
     /// A seperate boolean for showing/hiding the confetti in order to hide the confetti first before scaling it down
     @Published private(set) var finishedConfetti: Bool = false
     
+    /// The initial seed of the noun creator, reflecting which traits are selected and displayed initially
+    private let initialSeed: Seed
+    
+    /// An action to be carried out when `isEditing` is set to `true` and the user has completed editing their noun
+    public var didEditNoun: (_ seed: Seed) -> Void = { _ in }
+    
+    /// Boolean value to determine if the current noun is being editing (pre-existing) or if it's a new noun being created
+    public let isEditing: Bool
+    
     private let offChainNounsService: OffChainNounsService = AppCore.shared.offChainNounsService
     
-    init() {
+    init(
+      initialSeed: Seed = Seed.default,
+      isEditing: Bool = false,
+      didEditNoun: @escaping (_ seed: Seed) -> Void = { _ in }
+    ) {
+      self.initialSeed = initialSeed
+      self.isEditing = isEditing
+      self.didEditNoun = didEditNoun
+      self.seed = initialSeed
+      
       tapPublisher = tapSubject
         .eraseToAnyPublisher()
     }
@@ -206,6 +224,20 @@ extension NounCreator {
     /// Sets the view state of the creator view
     func setMode(to mode: Mode) {
       self.mode = mode
+    }
+    
+    /// Action when the user has pressed the `Done` button on the top right
+    func didFinish() {
+      // If the user is editing an existing noun, only the designated
+      // action should be executed and the created should then be dismissed.
+      // Otherwise, confetti appears and a dialog prompting more details is presented
+      // before actually saving the new noun
+      if isEditing {
+        didEditNoun(seed)
+      } else {
+        toggleConfetti()
+        setMode(to: .done)
+      }
     }
     
     /// Saves the current created noun

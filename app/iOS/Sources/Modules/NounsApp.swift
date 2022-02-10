@@ -47,39 +47,36 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   ) -> Bool {
     
     // Set up remote notifications.
-    Task { await setUpMessaging() }
+    setUpMessaging()
     
     return true
   }
   
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }
+  
+  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) { }
 }
 
 // MARK: - Messaging
 
 extension AppDelegate {
   
-  @MainActor
-  func setUpMessaging() async {
-    do {
-      let messaging = AppCore.shared.messaging
-      let settingsStore = AppCore.shared.settingsStore
-      // Subscribe to topics on APNs registration.
-      messaging.setTokenHandler = {
-        settingsStore.syncMessagingTopicsSubscription()
-      }
-      
+  func setUpMessaging() {
+    
+    let messaging = AppCore.shared.messaging
+    let settingsStore = AppCore.shared.settingsStore
+    // Subscribe to topics on APNs registration.
+    messaging.setTokenHandler = {
+      settingsStore.syncMessagingTopicsSubscription()
+    }
+    
+    Task {
       // Requests APNs authorization.
       _ = try await messaging.appAuthorization(
         UIApplication.shared,
         authorizationOptions: [.alert, .badge, .sound]
       )
-      
-    } catch {
-      print("Couldn't grant authorization: ", error)
     }
   }
   
-  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }
-  
-  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) { }
 }

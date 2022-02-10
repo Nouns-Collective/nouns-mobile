@@ -94,7 +94,7 @@ public class CAScreenRecorder: ScreenRecorder {
     }
     
     return CGSize(width: firstFrameSize.width * UIScreen.main.scale,
-           height: firstFrameSize.height * UIScreen.main.scale)
+                  height: firstFrameSize.height * UIScreen.main.scale)
   }
   
   private func videoSettings(codecType: AVVideoCodecType) -> [String: Any] {

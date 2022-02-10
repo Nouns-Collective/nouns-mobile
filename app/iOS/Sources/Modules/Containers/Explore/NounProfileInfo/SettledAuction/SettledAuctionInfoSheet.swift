@@ -1,5 +1,5 @@
 //
-//  SettledAuctionDetailDialog.swift
+//  SettledAuctionInfoSheet.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 02.12.21.
@@ -18,16 +18,20 @@ struct SettledAuctionInfoSheet: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       // The date when the auction was created.
-      InfoCell(
-        text: viewModel.birthdate,
-        icon: { Image.birthday })
+      if viewModel.showBirthdate {
+        InfoCell(
+          text: viewModel.birthdate,
+          icon: { Image.birthday })
+      }
       
       // Displays the wining bid amount.
-      InfoCell(
-        text: R.string.nounProfile.bidWinner(),
-        calloutText: viewModel.winningBid,
-        icon: { Image.wonPrice },
-        calloutIcon: { Image.eth })
+      if viewModel.showWinningBid {
+        InfoCell(
+          text: R.string.nounProfile.bidWinner(),
+          calloutText: viewModel.winningBid,
+          icon: { Image.wonPrice },
+          calloutIcon: { Image.eth })
+      }
       
       // Displays the winner of the auction using `ENS` or `Token`.
       InfoCell(
@@ -39,7 +43,7 @@ struct SettledAuctionInfoSheet: View {
       
       // Action to display the governance details of the auction.
       InfoCell(
-        text: R.string.nounProfile.auctionSettledGovernance(),
+        text: viewModel.governanceTitle,
         icon: { Image.history },
         accessory: { Image.mdArrowRight },
         action: { isActivityPresented.toggle() })

@@ -1,5 +1,5 @@
 //
-//  NounProfileInfoCard.ViewModel.swift
+//  NounProfileView.ViewModel.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 16.12.21.
@@ -15,6 +15,7 @@ extension NounProfileInfo {
     @Published private(set) var nounTraits: Seed
     @Published private(set) var isAuctionSettled: Bool
     @Published private(set) var nounProfileURL: URL?
+    @Published public var shouldShowNounCreator: Bool = false
     
     /// Indicate whether the auction time is over.
     @Published private(set) var isWinnerAnounced = false

@@ -1,5 +1,5 @@
 //
-//  NounProfileInfoCard.swift
+//  NounProfileView.swift
 //  Nouns
 //
 //  Created by Ziad Tamim on 02.12.21.
@@ -38,14 +38,13 @@ struct NounProfileInfo: View {
           }
           
           // Navigation link showing the noun's bid history & owner activity.
-          // TODO: - Build a component to hide the navigation implementation details.
-          NavigationLink(
-            destination: AuctionInfo(viewModel: .init(auction: viewModel.auction)),
-            isActive: $isActivityPresented) { EmptyView() }
-          
-          CardActionsItems(
-            isShareSheetPresented: $isShareSheetPresented
-          )
+          Link(isActive: $isActivityPresented, content: {
+            CardActionsItems(viewModel: viewModel, isShareSheetPresented: $isShareSheetPresented)
+            
+          }, destination: {
+            AuctionInfo(viewModel: .init(auction: viewModel.auction))
+          })
+
         }
         .padding([.bottom, .horizontal])
       }
@@ -57,6 +56,9 @@ struct NounProfileInfo: View {
       if let url = viewModel.nounProfileURL {
         ShareSheet(activityItems: [url])
       }
+    }
+    .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
+      NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
     }
   }
 }
@@ -85,6 +87,8 @@ extension NounProfileInfo {
 extension NounProfileInfo {
   
   struct CardActionsItems: View {
+    
+    @ObservedObject var viewModel: ViewModel
     @Binding var isShareSheetPresented: Bool
     
     var body: some View {
@@ -101,7 +105,9 @@ extension NounProfileInfo {
         SoftButton(
           text: R.string.shared.remix(),
           largeAccessory: { Image.splice },
-          action: { })
+          action: {
+            viewModel.shouldShowNounCreator.toggle()
+          })
           .controlSize(.large)
       }
     }

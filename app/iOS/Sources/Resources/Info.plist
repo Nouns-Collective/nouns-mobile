@@ -33,6 +33,8 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Nouns needs microphone access in order to hear you and repeat after you.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To save images of created nouns</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -66,7 +68,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>To save images of created nouns</string>
 </dict>
 </plist>

@@ -38,11 +38,13 @@ struct AuctionInfo: View {
           )
       }
       
-      AuctionBidHistory(viewModel: .init(auction: viewModel.auction))
-        .pickerTabItem(
-          R.string.bidHistory.menuTitle(),
-          tag: Page.bidHitory.rawValue
-        )
+      if viewModel.isBidHistoryAvailable {
+        AuctionBidHistory(viewModel: .init(auction: viewModel.auction))
+          .pickerTabItem(
+            R.string.bidHistory.menuTitle(),
+            tag: Page.bidHitory.rawValue
+          )
+      }
     }
     // TODO: NavigationBar should support the translucent mode.
     .offset(y: -44)

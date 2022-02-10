@@ -1,0 +1,15 @@
+/* 
+  AudioSettingsDialog.strings
+  Nouns
+
+  Created by Mohammed Ibrahim on 2022-02-04.
+  
+*/
+
+"title" = "Enable Audio in Settings";
+
+"body" = "To access the play experience, you'll need to enable audio permissions through the Settings app.";
+
+"enable" = "Open Settings";
+
+"ignore" = "Do it later";

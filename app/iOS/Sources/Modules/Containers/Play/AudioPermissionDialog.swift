@@ -10,6 +10,9 @@ import UIComponents
 
 extension NounPlayground {
   
+  /// An audio permission dialog for the initial `undetermined` state when asking for audio permission
+  /// With this sheet, users can choose to enable audio permissions (which then presents a standardized iOS audio permission dialog)
+  /// or choose to do it later, which dismisses the entire playground experience
   struct AudioPermissionDialog: View {
     @ObservedObject var viewModel: ViewModel
     
@@ -35,6 +38,50 @@ extension NounPlayground {
         
         SoftButton(
           text: R.string.audioPermissionDialog.ignore(),
+          largeAccessory: { Image.later },
+          action: {
+            withAnimation {
+              // Dismisses the entire noun playground as it needs microphone access
+              dismiss()
+            }
+          })
+          .controlSize(.large)
+      }
+      .padding(.bottom, 4)
+    }
+  }
+  
+  /// An audio permission dialog for the `denied` and `restricted` state when asking for audio permission
+  /// With this sheet, users will be directed to enable audio permissions by accessing the apps settings page in the Settings app
+  /// or choose to do it later, which dismisses the entire playground experience
+  struct AudioSettingsDialog: View {
+    @ObservedObject var viewModel: ViewModel
+    
+    @Environment(\.openURL) var openURL
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+      ActionSheet(
+        title: R.string.audioSettingsDialog.title(),
+        borderColor: nil
+      ) {
+        Text(R.string.audioSettingsDialog.body())
+          .font(.custom(.regular, size: 17))
+          .lineSpacing(6)
+          .padding(.bottom, 20)
+        
+        SoftButton(
+          text: R.string.audioSettingsDialog.enable(),
+          largeAccessory: { Image.pointRight.standard },
+          action: {
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+              openURL(settingsURL)
+            }
+          })
+          .controlSize(.large)
+        
+        SoftButton(
+          text: R.string.audioSettingsDialog.ignore(),
           largeAccessory: { Image.later },
           action: {
             withAnimation {

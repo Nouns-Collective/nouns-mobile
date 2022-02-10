@@ -15,7 +15,7 @@ final class OffChainDeleteNounTests: XCTestCase {
   func testOffChainDeleteNounSuccessfully() throws {
     // given
     let persistentContainer = PersistentContainer(name: Self.dataModelName, inMemory: true)
-    let service = CoreDataNounsProvider(persistentContainer: persistentContainer)
+    let service = CoreDataOffChainNouns(persistentContainer: persistentContainer)
     
     let fakeNoun = Noun.fixture()
     try service.store(noun: fakeNoun)

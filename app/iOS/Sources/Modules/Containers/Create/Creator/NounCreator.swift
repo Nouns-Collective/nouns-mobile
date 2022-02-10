@@ -10,11 +10,12 @@ import UIComponents
 import Services
 
 struct NounCreator: View {
-  
-  @StateObject var viewModel = ViewModel()
-    
   @Namespace private var namespace
   
+  @StateObject var viewModel: ViewModel
+  @Environment(\.dismiss) private var dismiss
+  
+  /// Boolean value to determine if the trait picker grid is expanded
   @State private var isExpanded: Bool = false
   
   private var mode: ViewModel.Mode {
@@ -41,8 +42,12 @@ struct NounCreator: View {
     }
     .modifier(AccessoryItems(viewModel: viewModel, done: {
       withAnimation {
-        viewModel.toggleConfetti()
-        viewModel.setMode(to: .done)
+        viewModel.didFinish()
+        
+        // Dismiss the view automatically when finished editing
+        if viewModel.isEditing {
+          dismiss()
+        }
       }
     }, cancel: {
       withAnimation {
@@ -59,7 +64,7 @@ struct NounCreator: View {
     })
     // Sheet presented when the user wants to cancel the noun creation process and go to the previous screen
     .bottomSheet(isPresented: mode == .cancel, showDimmingView: true, allowDrag: false, content: {
-      DiscardNounCreatorSheet(viewModel: viewModel)
+      DiscardNounSheet(viewModel: viewModel)
     })
     .background(GradientView(GradientColors.allCases[viewModel.seed.background]))
     .overlay {

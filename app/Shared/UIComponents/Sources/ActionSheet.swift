@@ -59,7 +59,7 @@ public struct ActionSheetLargeTitleView: View {
             HStack(alignment: .center) {
                 Text(title)
                     .font(.custom(.bold, size: 36))
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                     .edit(isActive: isEditing, text: $text, placeholder: placeholder)
                 
                 Spacer()

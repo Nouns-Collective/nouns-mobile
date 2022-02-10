@@ -549,7 +549,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 22 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 23 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -863,6 +863,72 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.audioSettingsDialog` struct is generated, and contains static references to 4 localization keys.
+    struct audioSettingsDialog {
+      /// Value: Do it later
+      static let ignore = Rswift.StringResource(key: "ignore", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Enable Audio in Settings
+      static let title = Rswift.StringResource(key: "title", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Open Settings
+      static let enable = Rswift.StringResource(key: "enable", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: To access the play experience, you'll need to enable audio permissions through the Settings app.
+      static let body = Rswift.StringResource(key: "body", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Do it later
+      static func ignore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("ignore", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "ignore"
+        }
+
+        return NSLocalizedString("ignore", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Enable Audio in Settings
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Open Settings
+      static func enable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("enable", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "enable"
+        }
+
+        return NSLocalizedString("enable", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: To access the play experience, you'll need to enable audio permissions through the Settings app.
+      static func body(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("body", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
+          return "body"
+        }
+
+        return NSLocalizedString("body", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
@@ -1379,10 +1445,78 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounProfile` struct is generated, and contains static references to 10 localization keys.
+    /// This `R.string.nounDiscardEditDialog` struct is generated, and contains static references to 4 localization keys.
+    struct nounDiscardEditDialog {
+      /// Value: Are you sure you want to get rid of this edit and lose the awesomeness?
+      static let message = Rswift.StringResource(key: "message", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Leavin'?
+      static let title = Rswift.StringResource(key: "title", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: No, I want to keep editing
+      static let nounCancelAction = Rswift.StringResource(key: "noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Yeah, get rid of the edit
+      static let nounDeleteAction = Rswift.StringResource(key: "noun.delete.action", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Are you sure you want to get rid of this edit and lose the awesomeness?
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Leavin'?
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: No, I want to keep editing
+      static func nounCancelAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "noun.cancel.action"
+        }
+
+        return NSLocalizedString("noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
+      }
+
+      /// Value: Yeah, get rid of the edit
+      static func nounDeleteAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("noun.delete.action", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
+          return "noun.delete.action"
+        }
+
+        return NSLocalizedString("noun.delete.action", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.nounProfile` struct is generated, and contains static references to 11 localization keys.
     struct nounProfile {
       /// Value: %dh %dm %ds
       static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Activity
+      static let auctionSettledGovernanceNounder = Rswift.StringResource(key: "auction.settled.governance.nounder", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Bid history
       static let auctionUnsettledGovernance = Rswift.StringResource(key: "auction.unsettled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Bid history & activity
@@ -1415,6 +1549,19 @@ struct R: Rswift.Validatable {
 
         let format = NSLocalizedString("auction.unsettled.time-left", tableName: "NounProfile", bundle: bundle, comment: "")
         return String(format: format, locale: locale, value1, value2, value3)
+      }
+
+      /// Value: Activity
+      static func auctionSettledGovernanceNounder(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.settled.governance.nounder"
+        }
+
+        return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
       /// Value: Bid history

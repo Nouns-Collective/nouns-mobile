@@ -22,7 +22,7 @@ struct CreateExperience: View {
           OffChainNounsFeed(isCreatorPresented: $isCreatorPresented)
         }
         .fullScreenCover(isPresented: $isCreatorPresented) {
-          NounCreator()
+          NounCreator(viewModel: .init())
         }
         .padding(.horizontal, 20)
         .padding(.bottom, tabBarHeight)

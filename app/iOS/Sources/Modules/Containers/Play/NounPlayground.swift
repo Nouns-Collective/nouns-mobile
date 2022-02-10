@@ -38,7 +38,7 @@ struct NounPlayground: View {
         .offset(y: -80)
         .foregroundColor(Color.componentNounsBlack)
       
-      Spacer()
+      ConditionalSpacer(!viewModel.isRequestingAudioPermission)
       
       spriteView
       
@@ -54,6 +54,7 @@ struct NounPlayground: View {
         }
       }
       .padding(.bottom, 20)
+      .hidden(viewModel.isRequestingAudioPermission)
       //      .emptyPlaceholder(when: viewModel.state == .coachmark) {
       //        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
       //          Image.pointRight.white
@@ -73,12 +74,11 @@ struct NounPlayground: View {
     .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
       AudioPermissionDialog(viewModel: viewModel)
     })
+    .bottomSheet(isPresented: viewModel.showAudioSettingsSheet, content: {
+      AudioSettingsDialog(viewModel: viewModel)
+    })
     .onDisappear {
       viewModel.stopListening()
-    }
-    .onChange(of: viewModel.dismissPlayExperience) { newValue in
-      guard newValue else { return }
-      dismiss()
     }
     .onChange(of: selection) { newValue in
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
