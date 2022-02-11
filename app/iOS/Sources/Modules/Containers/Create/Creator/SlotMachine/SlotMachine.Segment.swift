@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-extension NounCreator.SlotMachine {
+extension SlotMachine {
 
   struct Segment: View {
-    @ObservedObject var viewModel: NounCreator.ViewModel
-    let type: NounCreator.ViewModel.TraitType
+    @ObservedObject var viewModel: ViewModel
+    let type: ViewModel.TraitType
     
     @GestureState private var offset: CGFloat = 0
     

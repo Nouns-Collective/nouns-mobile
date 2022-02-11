@@ -28,7 +28,7 @@ extension NounCreator {
     ]
     
     /// Returns the `id` of the very first trait in a given trait type
-    private func traitFirstIndexID(_ trait: ViewModel.TraitType) -> String {
+    private func traitFirstIndexID(_ trait: TraitType) -> String {
       return "\(trait.rawValue)-0"
     }
     
@@ -43,7 +43,7 @@ extension NounCreator {
           LazyHGrid(rows: rowSpec, spacing: 4) {
             
             // Trait selection
-            ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
+            ForEach(TraitType.allCases, id: \.rawValue) { type in
               
               TraitCollectionSection(type: type, items: type.traits) { trait, index in
                 TraitPickerItem(image: trait.assetImage)
@@ -71,7 +71,7 @@ extension NounCreator {
                 .onTapGesture {
                   viewModel.selectTrait(index, ofType: .background)
                 }
-                .id("\(ViewModel.TraitType.background.rawValue)-\(index)")
+                .id("\(TraitType.background.rawValue)-\(index)")
                 // This applies a padding to only the first column (rowSpec.count)
                 // of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
