@@ -549,7 +549,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 23 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 24 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -1848,39 +1848,30 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.play` struct is generated, and contains static references to 8 localization keys.
+    /// This `R.string.play` struct is generated, and contains static references to 10 localization keys.
     struct play {
-      /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
-      static let createNounTitle = Rswift.StringResource(key: "create.noun.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Create noun
+      /// Value: Create a noun
       static let createNoun = Rswift.StringResource(key: "create.noun", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Get going
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Give your noun something to say!
       static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Pick a noun, yo
+      static let chooseNoun = Rswift.StringResource(key: "choose.noun", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Play
       static let title = Rswift.StringResource(key: "title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Say something
       static let playgroundTitle = Rswift.StringResource(key: "playground.title", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Swipe to pick a noun
       static let chooseCoachmark = Rswift.StringResource(key: "choose.coachmark", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Yo, you don't have any nouns. Create one and give it something to say!
+      static let createNounSpeechBubble = Rswift.StringResource(key: "create.noun.speech.bubble", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: You need a noun!
+      static let noNouns = Rswift.StringResource(key: "no.nouns", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: sup home slice
       static let speechBubble = Rswift.StringResource(key: "speech.bubble", tableName: "Play", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Bruh, you don’t have any nouns. Create one and give it something to say!
-      static func createNounTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("create.noun.title", tableName: "Play", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
-          return "create.noun.title"
-        }
-
-        return NSLocalizedString("create.noun.title", tableName: "Play", bundle: bundle, comment: "")
-      }
-
-      /// Value: Create noun
+      /// Value: Create a noun
       static func createNoun(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("create.noun", tableName: "Play", bundle: hostingBundle, comment: "")
@@ -1917,6 +1908,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("subheadline", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Pick a noun, yo
+      static func chooseNoun(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("choose.noun", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "choose.noun"
+        }
+
+        return NSLocalizedString("choose.noun", tableName: "Play", bundle: bundle, comment: "")
       }
 
       /// Value: Play
@@ -1956,6 +1960,32 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("choose.coachmark", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: Yo, you don't have any nouns. Create one and give it something to say!
+      static func createNounSpeechBubble(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("create.noun.speech.bubble", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "create.noun.speech.bubble"
+        }
+
+        return NSLocalizedString("create.noun.speech.bubble", tableName: "Play", bundle: bundle, comment: "")
+      }
+
+      /// Value: You need a noun!
+      static func noNouns(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("no.nouns", tableName: "Play", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Play", preferredLanguages: preferredLanguages) else {
+          return "no.nouns"
+        }
+
+        return NSLocalizedString("no.nouns", tableName: "Play", bundle: bundle, comment: "")
       }
 
       /// Value: sup home slice

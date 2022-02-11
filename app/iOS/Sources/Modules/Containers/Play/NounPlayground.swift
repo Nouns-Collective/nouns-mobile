@@ -17,6 +17,8 @@ struct NounPlayground: View {
   @StateObject private var viewModel = ViewModel()
   @Namespace private var nsTypeSelection
   
+  public let noun: Noun
+  
   @State private var selection: Int = 0
   
   private var playScene: PlayScene {
