@@ -49,7 +49,9 @@ extension NounCreator {
                 TraitPickerItem(image: trait.assetImage)
                   .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
-                    viewModel.selectTrait(index, ofType: type)
+                    withAnimation {
+                      viewModel.selectTrait(index, ofType: type)
+                    }
                   }
                   .id("\(type.rawValue)-\(index)")
                 // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
@@ -69,7 +71,9 @@ extension NounCreator {
               GradientPickerItem(colors: gradient)
                 .selected(viewModel.isSelected(index, traitType: .background))
                 .onTapGesture {
-                  viewModel.selectTrait(index, ofType: .background)
+                  withAnimation {
+                    viewModel.selectTrait(index, ofType: .background)
+                  }
                 }
                 .id("\(TraitType.background.rawValue)-\(index)")
                 // This applies a padding to only the first column (rowSpec.count)
