@@ -48,7 +48,7 @@ struct RouterView: View {
         .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
       
       AboutView()
-        .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
+        .outlineTabItem(normal: "about-outline", selected: "about-fill", tag: 3)
     }
     .onboarding()
   }
