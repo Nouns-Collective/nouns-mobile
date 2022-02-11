@@ -9,30 +9,33 @@ import SwiftUI
 import UIComponents
 import Services
 
-/// A placeholder view for when there are no nouns to choose from in the Play (`NounPlayground`) experience.
-struct PlayChooseNounPlaceholder: View {
+extension PlayNounPicker {
   
-  let action: () -> Void
+  /// A placeholder view for when there are no nouns to choose from in the Play (`NounPlayground`) experience.
+  struct EmptyNounsView: View {
+    
+    let action: () -> Void
 
-  var body: some View {
-    VStack(alignment: .leading, spacing: 10) {
-      Text(R.string.play.noNouns())
-        .font(.custom(.bold, size: 36))
-      
-      Spacer()
-      
-      VStack(spacing: 0) {
-        NounSpeechBubble(R.string.play.createNounSpeechBubble(), noun: "un-noun", spacing: -60)
+    var body: some View {
+      VStack(alignment: .leading, spacing: 10) {
+        Text(R.string.play.noNouns())
+          .font(.custom(.bold, size: 36))
         
-        OutlineButton(
-          text: R.string.play.createNoun(),
-          largeAccessory: { Image.new },
-          action: action)
-          .controlSize(.large)
-          .padding(.horizontal)
-      }
+        Spacer()
+        
+        VStack(spacing: 0) {
+          NounSpeechBubble(R.string.play.createNounSpeechBubble(), noun: "un-noun", spacing: -60)
+          
+          OutlineButton(
+            text: R.string.play.createNoun(),
+            largeAccessory: { Image.new },
+            action: action)
+            .controlSize(.large)
+            .padding(.horizontal)
+        }
 
-      Spacer()
+        Spacer()
+      }
     }
   }
 }

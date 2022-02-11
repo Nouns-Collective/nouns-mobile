@@ -18,7 +18,7 @@ struct OffChainNounsFeed<PlaceholderView: View>: View {
   
   private let title: String?
 
-  private let emptyPlaceholder: () -> PlaceholderView
+  private let emptyListPlaceholderView: () -> PlaceholderView
   
   init(
     title: String? = nil,
@@ -27,7 +27,7 @@ struct OffChainNounsFeed<PlaceholderView: View>: View {
   ) {
     self.title = title
     self._selection = selection
-    self.emptyPlaceholder = emptyPlaceholder
+    self.emptyListPlaceholderView = emptyPlaceholder
   }
   
   var body: some View {
@@ -46,12 +46,10 @@ struct OffChainNounsFeed<PlaceholderView: View>: View {
       }
     }
     .emptyPlaceholder(when: viewModel.nouns.isEmpty) {
-      emptyPlaceholder()
+      emptyListPlaceholderView()
     }
-    .onAppear {
-      Task {
-        await viewModel.fetchOffChainNouns()
-      }
+    .task {
+      await viewModel.fetchOffChainNouns()
     }
   }
 }

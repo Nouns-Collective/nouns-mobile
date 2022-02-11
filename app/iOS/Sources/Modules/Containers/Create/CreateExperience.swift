@@ -22,7 +22,7 @@ struct CreateExperience: View {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 20) {
           OffChainNounsFeed(selection: $selectedNoun) {
-            CreateNounPlaceholder {
+            EmptyNounsView {
               isCreatorPresented.toggle()
             }
           }

@@ -9,9 +9,9 @@ import SwiftUI
 import UIComponents
 import Services
 
-struct PlayChooseNoun: View {
+struct PlayNounPicker: View {
   @Namespace private var namespace
-  @Environment(\.outlineTabViewHeight) var tabBarHeight
+  @Environment(\.outlineTabViewHeight) private var tabBarHeight
   @Environment(\.dismiss) private var dismiss
     
   @State private var selectedNoun: Noun?
@@ -23,7 +23,7 @@ struct PlayChooseNoun: View {
         title: R.string.play.chooseNoun(),
         selection: $selectedNoun
       ) {
-        PlayChooseNounPlaceholder {
+        EmptyNounsView {
           isCreatorPresented.toggle()
         }
       }

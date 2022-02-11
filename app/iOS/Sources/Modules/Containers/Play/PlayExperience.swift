@@ -11,7 +11,7 @@ import Services
 
 struct PlayExperience: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
-  @State private var isNounSelectionPresented = false
+  @State private var isNounPickerPresented = false
   
   @StateObject private var viewModel = ViewModel()
     
@@ -31,15 +31,15 @@ struct PlayExperience: View {
           }
         
           // Navigation link showing the noun selection to choose from
-          Link(isActive: $isNounSelectionPresented, content: {
+          Link(isActive: $isNounPickerPresented, content: {
             OutlineButton(
               text: R.string.play.proceedTitle(),
               largeAccessory: { Image.fingergunsRight },
-              action: { isNounSelectionPresented.toggle() })
+              action: { isNounPickerPresented.toggle() })
               .controlSize(.large)
             
           }, destination: {
-            PlayChooseNoun()
+            PlayNounPicker()
           })
         }
         .padding(.top, 40)
