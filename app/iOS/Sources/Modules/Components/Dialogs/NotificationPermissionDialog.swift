@@ -12,9 +12,9 @@ import UIComponents
 /// With this sheet, users can choose to enable audio permissions (which then presents a standardized iOS audio permission dialog)
 /// or choose to do it later, which dismisses the entire playground experience
 struct NotificationPermissionDialog: View {
-  var action: (_ isEnabled: Bool) -> Void
   
-  @Environment(\.dismiss) private var dismiss
+  /// A closure to handle user action when it comes to enabling or disabling notification permission.
+  var action: (_ shouldAuthorize: Bool) -> Void
   
   var body: some View {
     ActionSheet(
@@ -57,9 +57,7 @@ struct NotificationPermissionDialog_previews: PreviewProvider {
   static var previews: some View {
     Text("Notifications")
       .bottomSheet(isPresented: .constant(true), content: {
-        NotificationPermissionDialog { _ in
-          
-        }
+        NotificationPermissionDialog { _ in }
       })
   }
 }
