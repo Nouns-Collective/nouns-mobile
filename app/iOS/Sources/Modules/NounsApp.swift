@@ -54,7 +54,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }
   
-  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) { }
+  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    
+  }
 }
 
 // MARK: - Messaging
@@ -66,13 +68,13 @@ extension AppDelegate {
     let messaging = AppCore.shared.messaging
     let settingsStore = AppCore.shared.settingsStore
     // Subscribe to topics on APNs registration.
-    messaging.setTokenHandler = {
+    messaging.onRegistrationCompletion = {
       settingsStore.syncMessagingTopicsSubscription()
     }
     
     Task {
       // Requests APNs authorization.
-      _ = try await messaging.appAuthorization(
+      _ = try await messaging.requestAuthorization(
         UIApplication.shared,
         authorizationOptions: [.alert, .badge, .sound]
       )

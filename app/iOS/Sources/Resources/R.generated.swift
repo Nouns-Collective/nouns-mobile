@@ -153,8 +153,10 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 41 images.
+  /// This `R.image` struct is generated, and contains static references to 42 images.
   struct image {
+    /// Image `bell-noun`.
+    static let bellNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "bell-noun")
     /// Image `confetti-10`.
     static let confetti10 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-10")
     /// Image `confetti-1`.
@@ -237,6 +239,13 @@ struct R: Rswift.Validatable {
     static let shadow = Rswift.ImageResource(bundle: R.hostingBundle, name: "shadow")
     /// Image `shark-noun`.
     static let sharkNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "shark-noun")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "bell-noun", bundle: ..., traitCollection: ...)`
+    static func bellNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.bellNoun, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "confetti-1", bundle: ..., traitCollection: ...)`
@@ -540,7 +549,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 25 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 26 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -1331,6 +1340,72 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.localizable` struct is generated, and contains static references to 0 localization keys.
     struct localizable {
+      fileprivate init() {}
+    }
+
+    /// This `R.string.notificationPermission` struct is generated, and contains static references to 4 localization keys.
+    struct notificationPermission {
+      /// Value: Do it later
+      static let ignore = Rswift.StringResource(key: "ignore", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Every day a new Noun is randomly created as the previous Noun is auctioned off. Get notified when this glorious hour approaches!
+      static let body = Rswift.StringResource(key: "body", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Turn on notifications
+      static let enable = Rswift.StringResource(key: "enable", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Wanna know when it’s noun o’clock?
+      static let title = Rswift.StringResource(key: "title", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Do it later
+      static func ignore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("ignore", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
+          return "ignore"
+        }
+
+        return NSLocalizedString("ignore", tableName: "NotificationPermission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Every day a new Noun is randomly created as the previous Noun is auctioned off. Get notified when this glorious hour approaches!
+      static func body(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("body", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
+          return "body"
+        }
+
+        return NSLocalizedString("body", tableName: "NotificationPermission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Turn on notifications
+      static func enable(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("enable", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
+          return "enable"
+        }
+
+        return NSLocalizedString("enable", tableName: "NotificationPermission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Wanna know when it’s noun o’clock?
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "NotificationPermission", bundle: bundle, comment: "")
+      }
+
       fileprivate init() {}
     }
 

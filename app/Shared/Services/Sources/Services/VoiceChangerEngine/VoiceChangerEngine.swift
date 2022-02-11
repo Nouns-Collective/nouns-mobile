@@ -138,13 +138,18 @@ public class VoiceChangerEngine: ObservableObject {
       bufferSize: bufferSize,
       format: nil
     ) { [weak self] buffer, _ in
-      
+
       guard let self = self, self.state == .playing else { return }
 
-      self.persistStreamingAudioBuffer(
-        buffer,
-        audioFile: &self.recordedFileWithEffect
-      )
+      do {
+        try self.persistStreamingAudioBuffer(
+          buffer,
+          audioFile: &self.recordedFileWithEffect
+        )
+
+      } catch {
+        self.logger.error("⚠️ 🔊 Could not persist buffer with effect:  \(error.localizedDescription, privacy: .public)")
+      }
     }
   }
   
@@ -173,10 +178,16 @@ public class VoiceChangerEngine: ObservableObject {
       case .speech:
         // Update the state to in the recording state.
         self.state = .recording
-        self.persistStreamingAudioBuffer(
-          buffer,
-          audioFile: &self.recordedFileWithNoEffect
-        )
+        
+        do {
+          try self.persistStreamingAudioBuffer(
+            buffer,
+            audioFile: &self.recordedFileWithNoEffect
+          )
+          
+        } catch {
+          self.logger.error("⚠️ 🔊 Could not persist buffer without effect:  \(error.localizedDescription, privacy: .public)")
+        }
 
       case .silence:
         self.processVoiceCaptureSilence()
@@ -208,8 +219,11 @@ public class VoiceChangerEngine: ObservableObject {
       }
     }
     
-    state = .playing
-    audioProcessingState = .speech
+    DispatchQueue.main.async {
+      self.state = .playing
+      self.audioProcessingState = .speech
+    }
+    
     recordedFilePlayer.play()
   }
   
@@ -218,14 +232,9 @@ public class VoiceChangerEngine: ObservableObject {
   private func persistStreamingAudioBuffer(
     _ buffer: AVAudioPCMBuffer,
     audioFile: inout AVAudioFile?
-  ) {
-    do {
+  ) throws {
       audioFile = try newAudioFile(audioFile)
       try audioFile?.write(from: buffer)
-      
-    } catch {
-      logger.error("⚠️ 🔊 Could not write buffer: \(error.localizedDescription, privacy: .public )")
-    }
   }
   
   private func processVoiceCaptureSilence() {

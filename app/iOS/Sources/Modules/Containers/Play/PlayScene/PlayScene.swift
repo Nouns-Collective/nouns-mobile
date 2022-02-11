@@ -21,7 +21,7 @@ extension NounPlayground {
       self._viewModel = ObservedObject(wrappedValue: viewModel)
       super.init(size: size)
       
-      isNounTalkingCancellable = viewModel.$isTalking
+      isNounTalkingCancellable = viewModel.$isNounTalking
         .sink { [weak self] status in
           
           self?.talkingNoun.state = status ? .lipSync : .idle

@@ -52,7 +52,7 @@ extension NounPlayground {
     @Published private(set) var showAudioSettingsSheet = false
     
     /// A Boolean value indicates whether the noun is talking.
-    @Published private(set) var isTalking = false
+    @Published private(set) var isNounTalking = false
     
     public var audioProcessingState: AudioStatus {
       voiceChangerEngine.audioProcessingState
@@ -96,7 +96,7 @@ extension NounPlayground {
       voiceChangerEngine.$audioProcessingState
         .sink { [weak self] status in
           
-          self?.isTalking = status == .speech
+          self?.isNounTalking = status == .speech
         }
         .store(in: &cancellables)
     }

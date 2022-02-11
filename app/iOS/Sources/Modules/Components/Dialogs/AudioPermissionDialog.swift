@@ -2,7 +2,7 @@
 //  AudioPermissionDialog.swift
 //  Nouns
 //
-//  Created by Mohammed Ibrahim on 2022-01-08.
+//  Created by Ziad Tamim on 11.02.22.
 //
 
 import SwiftUI
