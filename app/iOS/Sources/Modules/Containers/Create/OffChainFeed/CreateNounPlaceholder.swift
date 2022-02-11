@@ -14,7 +14,17 @@ extension CreateExperience {
   /// A placeholder view for the Create tab for when the user has no created nouns
   struct EmptyNounsView: View {
     
-    let action: () -> Void
+    private let action: () -> Void
+    
+    private let initialSeed: Seed
+    
+    init(
+      initialSeed: Seed,
+      action: @escaping () -> Void
+    ) {
+      self.initialSeed = initialSeed
+      self.action = action
+    }
 
     var body: some View {
       VStack(alignment: .leading, spacing: 0) {
@@ -24,7 +34,7 @@ extension CreateExperience {
         Spacer()
         
         // TODO: Integrate the NounCreator to randomly generate Traits each time the view appear.
-        NounPuzzle(seed: Seed(background: 0, glasses: 0, head: 3, body: 6, accessory: 0))
+        NounPuzzle(seed: initialSeed)
 
         OutlineButton(
           text: R.string.create.proceedTitle(),

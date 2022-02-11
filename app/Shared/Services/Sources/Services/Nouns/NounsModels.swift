@@ -88,6 +88,22 @@ public struct Seed: Equatable, Hashable {
     self.body = body
     self.accessory = accessory
   }
+  
+  public init?(background: String, glasses: String, head: String, body: String, accessory: String) {
+    guard let backgroundInt = Int(background),
+          let glassesInt = Int(glasses),
+          let headInt = Int(head),
+          let bodyInt = Int(body),
+          let accessoryInt = Int(accessory) else {
+            return nil
+          }
+    
+    self.background = backgroundInt
+    self.glasses = glassesInt
+    self.head = headInt
+    self.body = bodyInt
+    self.accessory = accessoryInt
+  }
 }
 
 public extension Seed {

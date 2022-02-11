@@ -41,6 +41,19 @@ public protocol NounComposer {
   /// Array containing all the glasses mapped from the RLE data
   /// to the shapes to draw Noun's parts.
   var glasses: [Trait] { get }
+  
+  /// Generates a random seed, given the number of each trait type
+  func randomSeed() -> Seed
+  
+}
+
+extension NounComposer {
+  
+  func randomSeed() -> Seed {
+    
+    // Default implementation
+    return Seed(background: 0, glasses: 0, head: 0, body: 0, accessory: 0)
+  }
 }
 
 /// A Flavour of the NounComposer to load local Nouns' trait.
@@ -95,6 +108,19 @@ public class OfflineNounComposer: NounComposer {
       fatalError("💥 Failed to create the offline nouns composer \(error)")
     }
   }
+  
+  /// Generates a random seed, given the number of each trait type
+  public func randomSeed() -> Seed {
+    guard let background = backgroundColors.randomIndex(),
+          let body = bodies.randomIndex(),
+          let accessory = accessories.randomIndex(),
+          let head = heads.randomIndex(),
+          let glasses = glasses.randomIndex() else {
+            return Seed(background: 0, glasses: 0, head: 0, body: 0, accessory: 0)
+          }
+    
+    return Seed(background: background, glasses: glasses, head: head, body: body, accessory: accessory)
+  }
 }
 
 extension Trait: Decodable {
@@ -108,5 +134,17 @@ extension Trait: Decodable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     rleData = try container.decode(String.self, forKey: .rleData)
     assetImage = try container.decode(String.self, forKey: .assetImage)
+  }
+}
+
+fileprivate extension Array {
+  
+  func randomIndex() -> Int? {
+    guard self.count > 0 else { return nil }
+    
+    let minIndex = 0
+    let maxIndex = self.count - 1
+    
+    return Int.random(in: minIndex...maxIndex)
   }
 }

@@ -17,18 +17,24 @@ struct CreateExperience: View {
   
   @State private var selectedNoun: Noun?
   
+  private let initialSeed: Seed
+  
+  init() {
+    self.initialSeed = AppCore.shared.nounComposer.randomSeed()
+  }
+  
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 20) {
           OffChainNounsFeed(selection: $selectedNoun) {
-            EmptyNounsView {
+            EmptyNounsView(initialSeed: initialSeed) {
               isCreatorPresented.toggle()
             }
           }
         }
         .fullScreenCover(isPresented: $isCreatorPresented) {
-          NounCreator(viewModel: .init())
+          NounCreator(viewModel: .init(initialSeed: initialSeed))
         }
         .padding(.horizontal, 20)
         .padding(.bottom, tabBarHeight)
