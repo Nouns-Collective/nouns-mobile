@@ -35,7 +35,7 @@ struct ExploreExperience: View {
       }
       // Disable scrolling when data is initially loading.
       .disabled(viewModel.isLoading)
-      .background(Gradient.lemonDrop)
+      .background(Gradient.cherrySunset)
       .ignoresSafeArea(edges: .top)
       .task {
         await viewModel.listenLiveAuctionChanges()
