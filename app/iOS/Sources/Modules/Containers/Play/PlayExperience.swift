@@ -7,13 +7,18 @@
 
 import SwiftUI
 import UIComponents
-import Services
+import SpriteKit
 
 struct PlayExperience: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
   @State private var isPlayPresented = false
   
   @StateObject private var viewModel = ViewModel()
+  
+  /// A view that displays the talking noun scene below the speech bubble.
+  ///
+  /// - Returns: This view contains the play scene to animate the eyes and mouth.
+  let talkingNoun = TalkingNoun()
   
   var body: some View {
     NavigationView {
@@ -25,11 +30,10 @@ struct PlayExperience: View {
           VStack(spacing: -40) {
             SpeechBubble(R.string.playExperience.speechBubble())
             
-            Image(R.image.pizzaNoun.name)
-              .resizable()
-              .scaledToFit()
+            SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+              .frame(width: 320, height: 320)
           }
-        
+          
           OutlineButton(
             text: R.string.playExperience.proceedTitle(),
             largeAccessory: { Image.fingergunsRight },
