@@ -10,7 +10,7 @@ import SpriteKit
 
 extension TalkingNoun {
   
-  class Eyes: SKSpriteNode {
+  final class Eyes: SKSpriteNode {
     
     /// Various eyes states.
     enum State: String {

@@ -58,7 +58,7 @@ extension NounPlayground {
       voiceChangerEngine.audioProcessingState
     }
     
-    public var currentEffect: VoiceChangerEngine.Effect {
+    public var currentVoiceEffect: VoiceChangerEngine.Effect {
       voiceChangerEngine.effect
     }
     
@@ -81,22 +81,29 @@ extension NounPlayground {
       self.voiceChangerEngine = voiceChangerEngine
       self.screenRecorder = screenRecorder
       
-      handleVoiceCapturePermission()
+      // Gives 0.3 seconds buffer before presenting the audio capture permission dialog.
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        self.handleVoiceCapturePermission()
+      }
       
-      // Observes the location of voice with the effect applied, then display the share experience.
+      // Observes the location of voice with the effect
+      // applied, then display the share experience.
       voiceChangerEngine.outputFileURL.publisher
         .sink { [weak self] audioFileURLWithEffect in
           
+          // Changing the status to "share" presents a dialog
+          // to ask the user to share or reject the recorded spoken name.
           self?.state = .share
           
           self?.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
         }
         .store(in: &cancellables)
       
+      // Updates the state on whether the audio contains `speech` or `silence`.
       voiceChangerEngine.$audioProcessingState
         .sink { [weak self] status in
           
-          self?.isNounTalking = status == .speech
+          self?.isNounTalking = (status == .speech)
         }
         .store(in: &cancellables)
     }

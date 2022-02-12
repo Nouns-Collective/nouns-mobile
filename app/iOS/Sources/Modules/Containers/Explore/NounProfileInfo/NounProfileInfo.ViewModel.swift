@@ -54,6 +54,10 @@ extension NounProfileInfo {
           return
         }
         
+        // Gives a buffer of 0.5 seconds before presenting
+        // the notification permission dialog.
+        try await Task.sleep(nanoseconds: 500_000_000)
+        
         await MainActor.run {
           isNotificationPermissionDialogPresented = true
         }

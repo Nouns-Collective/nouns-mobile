@@ -21,12 +21,10 @@ struct NounPlayground: View {
   /// Holds a reference to the localized text.
   private let localize = R.string.nounPlayground.self
   
-  private var playScene: PlayScene {
-    let scene = PlayScene(viewModel: viewModel, size: CGSize(width: 320, height: 320))
-    scene.scaleMode = .fill
-    scene.view?.showsFPS = false
-    return scene
-  }
+  /// A view that displays the noun scene above the various list of audio effect.
+  ///
+  /// - Returns: This view contains the play scene to animate the eyes and mouth.
+  let talkingNoun = TalkingNoun()
   
   var body: some View {
     VStack(spacing: 0) {
@@ -38,7 +36,7 @@ struct NounPlayground: View {
       
       ConditionalSpacer(!viewModel.isRequestingAudioPermission)
       
-      SpriteView(scene: playScene, options: [.allowsTransparency])
+      SpriteView(scene: talkingNoun, options: [.allowsTransparency])
         .frame(width: 320, height: 320)
       
       Spacer()
@@ -66,17 +64,26 @@ struct NounPlayground: View {
         action: { dismiss() })
     })
     .background(Gradient.bubbleGum)
-    .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
+    .bottomSheet(isPresented: viewModel.showAudioPermissionDialog) {
+      // Presents the audio permission dialog on not determined
+      // state of audio capture permission.
       AudioPermissionDialog(viewModel: viewModel)
-    })
-    .bottomSheet(isPresented: viewModel.showAudioSettingsSheet, content: {
+    }
+    .bottomSheet(isPresented: viewModel.showAudioSettingsSheet) {
+      // Presents the audio settings dialog on denied
+      // of the audio capture permission.
       AudioSettingsDialog(viewModel: viewModel)
-    })
+    }
     .onDisappear {
       viewModel.stopListening()
     }
     .onChange(of: selection) { newValue in
+      // Updates the recording on audio effect changes.
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
+    }
+    .onChange(of: viewModel.isNounTalking) { isNounTalking in
+      // Moves up & down the mouth while playing back the audio recorded.
+      talkingNoun.isTalking = isNounTalking
     }
   }
 }
