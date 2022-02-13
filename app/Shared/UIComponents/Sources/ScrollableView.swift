@@ -18,6 +18,7 @@ internal struct ScrollableView: ViewModifier {
 
 public extension View {
   
+  /// A view extension that makes the content of the view scrollable given a specified condition is `true`
   func scrollable(_ condition: Bool) -> some View {
     if condition {
       return AnyView(modifier(ScrollableView()))
