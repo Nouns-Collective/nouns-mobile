@@ -10,23 +10,50 @@ import UIComponents
 import Services
 
 /// A reusable view to display a list of all the nouns that the user has created.
-struct OffChainNounsFeed<PlaceholderView: View>: View {
+struct OffChainNounsFeed<PlaceholderView: View, RightBarItem: View>: View {
   @Namespace private var namespace
+  @Environment(\.outlineTabViewHeight) private var tabBarHeight
 
   @StateObject var viewModel = ViewModel()
   @Binding var selection: Noun?
-  
+    
   private let title: String?
 
   private let emptyListPlaceholderView: () -> PlaceholderView
   
+  private let navigationTitle: String
+  
+  private let rightBarItem: () -> RightBarItem
+  
+  private let isScrollable: Bool
+  
   init(
     title: String? = nil,
     selection: Binding<Noun?>,
+    isScrollable: Bool = false,
+    navigationTitle: String,
+    @ViewBuilder navigationRightBarItem: @escaping () -> RightBarItem,
     @ViewBuilder emptyPlaceholder: @escaping () -> PlaceholderView
   ) {
     self.title = title
+    self.isScrollable = isScrollable
     self._selection = selection
+    self.navigationTitle = navigationTitle
+    self.rightBarItem = navigationRightBarItem
+    self.emptyListPlaceholderView = emptyPlaceholder
+  }
+  
+  init(
+    title: String? = nil,
+    selection: Binding<Noun?>,
+    isScrollable: Bool = false,
+    @ViewBuilder emptyPlaceholder: @escaping () -> PlaceholderView
+  ) where RightBarItem == EmptyView {
+    self.title = title
+    self.isScrollable = isScrollable
+    self._selection = selection
+    self.navigationTitle = ""
+    self.rightBarItem = { EmptyView() }
     self.emptyListPlaceholderView = emptyPlaceholder
   }
   
@@ -45,6 +72,17 @@ struct OffChainNounsFeed<PlaceholderView: View>: View {
           }
       }
     }
+    .padding(.horizontal, 20)
+    .padding(.bottom, tabBarHeight)
+    // Extra padding between the bottom of the last noun card and the top of the tab view
+    .padding(.bottom, 20)
+    .if(!navigationTitle.isEmpty, transform: { view in
+      view
+        .softNavigationTitle(navigationTitle, rightAccessory: {
+          rightBarItem()
+        })
+    })
+    .scrollable(isScrollable)
     .emptyPlaceholder(when: viewModel.nouns.isEmpty) {
       emptyListPlaceholderView()
     }
@@ -52,4 +90,39 @@ struct OffChainNounsFeed<PlaceholderView: View>: View {
       await viewModel.fetchOffChainNouns()
     }
   }
+}
+
+struct ScrollableView: ViewModifier {
+  
+  func body(content: Content) -> some View {
+    ScrollView(.vertical, showsIndicators: false) {
+      content
+    }
+  }
+}
+
+extension View {
+  
+  func scrollable(_ condition: Bool) -> some View {
+    if condition {
+      return AnyView(modifier(ScrollableView()))
+    } else {
+      return AnyView(self)
+    }
+  }
+}
+
+extension View {
+    /// Applies the given transform if the given condition evaluates to `true`.
+    /// - Parameters:
+    ///   - condition: The condition to evaluate.
+    ///   - transform: The transform to apply to the source `View`.
+    /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
 }

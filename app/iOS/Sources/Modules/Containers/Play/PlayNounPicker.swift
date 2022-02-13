@@ -1,5 +1,5 @@
 //
-//  PlayChooseNoun.swift
+//  PlayNounPicker.swift
 //  Nouns
 //
 //  Created by Mohammed Ibrahim on 2022-02-08.
@@ -27,9 +27,6 @@ struct PlayNounPicker: View {
           isCreatorPresented.toggle()
         }
       }
-      .padding(.horizontal, 20)
-      .padding(.bottom, 20)
-      .padding(.bottom, tabBarHeight)
       .softNavigationItems(leftAccessory: {
         SoftButton(
           icon: { Image.back },

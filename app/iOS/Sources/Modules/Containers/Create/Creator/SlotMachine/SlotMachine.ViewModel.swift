@@ -46,7 +46,20 @@ extension SlotMachine {
     }
     
     /// The initial seed of the noun creator, reflecting which traits are selected and displayed initially
-    private let initialSeed: Seed
+    public let initialSeed: Seed
+    
+    /// A boolean to determine if the shadow should be visible below the noun
+    public let showShadow: Bool
+    
+    /// A boolean to determine if the noun's `initialSeed` should animate into place
+    public let animateEntrance: Bool
+    
+    @Published public var showAllTraits: Bool = false
+    
+    private let nounComposer: NounComposer = AppCore.shared.nounComposer
+    
+    /// `Noun's Trait` image size.
+    let imageSize: Double = 320
     
     /// The current `Seed` in the slot machine
     @Published var seed: Seed = {
@@ -64,13 +77,21 @@ extension SlotMachine {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(initialSeed: Seed = Seed.default) {
+    init(
+      initialSeed: Seed = Seed.default,
+      showShadow: Bool = true,
+      animateEntrance: Bool = false
+    ) {
       self.initialSeed = initialSeed
       self.seed = initialSeed
+      self.showShadow = showShadow
+      self.animateEntrance = animateEntrance
       
       setupNotifications()
     }
     
+    /// Setups notifications to update the slot machine when the seed and current
+    /// modifiable trait type has been updated in other related views
     private func setupNotifications() {
       NotificationCenter.default
         .publisher(for: Notification.Name.slotMachineShouldUpdateSeed)
@@ -91,8 +112,15 @@ extension SlotMachine {
         .store(in: &cancellables)
     }
     
-    /// `Noun's Trait` image size.
-    let imageSize: Double = 320
+    /// Sets the seed to a new randomly generated seed
+    func randomizeSeed() {
+      seed = nounComposer.randomSeed()
+    }
+    
+    /// Resets the seed to the `initialSeed`
+    func resetToInitialSeed() {
+      seed = initialSeed
+    }
     
     /// Moves the currently selected `Noun's Trait` by the given offset.
     func traitOffset(for type: TraitType, by offsetX: Double = 0) -> Double {

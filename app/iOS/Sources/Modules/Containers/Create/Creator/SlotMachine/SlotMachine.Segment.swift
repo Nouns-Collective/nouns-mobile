@@ -19,6 +19,8 @@ extension SlotMachine {
     /// If the type is currently selected (e.g. head) then all traits should be shown which may include images on the left or right of the main centered trait.
     /// If the type is NOT selected, then it should only show the trait that is currently selected in the centre and none on the sides.
     private func opacity(forIndex index: Int) -> Double {
+      guard !viewModel.showAllTraits else { return 1 }
+      
       if viewModel.currentModifiableTraitType == type {
         return 1
       } else {

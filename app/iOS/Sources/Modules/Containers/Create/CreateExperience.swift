@@ -25,26 +25,27 @@ struct CreateExperience: View {
   
   var body: some View {
     NavigationView {
-      ScrollView(.vertical, showsIndicators: false) {
-        VStack(spacing: 20) {
-          OffChainNounsFeed(selection: $selectedNoun) {
-            EmptyNounsView(initialSeed: initialSeed) {
+      VStack(spacing: 20) {
+        OffChainNounsFeed(
+          selection: $selectedNoun,
+          isScrollable: true,
+          navigationTitle: R.string.create.title(),
+          navigationRightBarItem: {
+            SoftButton(
+              text: "New",
+              largeAccessory: { Image.new },
+              action: { isCreatorPresented.toggle() })
+          }, emptyPlaceholder: {
+            EmptyNounsView(
+              initialSeed: initialSeed,
+              isCreatorPresented: $isCreatorPresented
+            ) {
               isCreatorPresented.toggle()
             }
-          }
-        }
-        .fullScreenCover(isPresented: $isCreatorPresented) {
-          NounCreator(viewModel: .init(initialSeed: initialSeed))
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, tabBarHeight)
-        .padding(.bottom, 20) // Extra padding between the bottom of the last noun card and the top of the tab view
-        .softNavigationTitle(R.string.create.title(), rightAccessory: {
-          SoftButton(
-            text: "New",
-            largeAccessory: { Image.new },
-            action: { isCreatorPresented.toggle() })
-        })
+          })
+      }
+      .fullScreenCover(isPresented: $isCreatorPresented) {
+        NounCreator(viewModel: .init(initialSeed: initialSeed))
       }
       .background(Gradient.freshMint)
       .ignoresSafeArea(edges: .top)
@@ -54,6 +55,9 @@ struct CreateExperience: View {
       }, content: {
         OffChainNounProfile(viewModel: .init(noun: $0))
       })
+      .fullScreenCover(isPresented: $isCreatorPresented) {
+        NounCreator(viewModel: .init(initialSeed: initialSeed))
+      }
     }
   }
 }
