@@ -21,3 +21,7 @@
 "settled.error.empty" = "Failed to load settled auctions";
 
 "settled.error.loadMore" = "Failed to load more auctions";
+
+// MARK: - Live Auction Errors
+
+"live.error" = "Dude, something’s wrong with the auction";

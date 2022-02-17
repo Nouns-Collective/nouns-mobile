@@ -14,6 +14,7 @@ extension ExploreExperience {
   class ViewModel: ObservableObject {
     @Published var liveAuction: Auction?
     @Published var isLoading = false
+    @Published var failedToLoadAuction: Bool = false
     
     private let service: OnChainNounsService
     
@@ -22,9 +23,15 @@ extension ExploreExperience {
     }
     
     @MainActor
-    func listenLiveAuctionChanges() async {      
-      for await auction in service.liveAuctionStateDidChange() {
-        self.liveAuction = auction
+    func listenLiveAuctionChanges() async {
+      failedToLoadAuction = false
+      
+      do {
+        for try await auction in service.liveAuctionStateDidChange() {
+          self.liveAuction = auction
+        }
+      } catch {
+        failedToLoadAuction = true
       }
     }
   }

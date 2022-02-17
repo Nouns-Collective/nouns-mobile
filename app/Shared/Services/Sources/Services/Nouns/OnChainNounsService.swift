@@ -58,7 +58,7 @@ public protocol OnChainNounsService: AnyObject {
   /// react to its properties changes
   ///
   /// - Returns: A `Auction` instance or throw an error.
-  func liveAuctionStateDidChange() -> AsyncStream<Auction>
+  func liveAuctionStateDidChange() -> AsyncThrowingStream<Auction, Error>
   
   /// An asynchronous sequence that  produce the last settled auction added.
   ///
@@ -275,8 +275,8 @@ public class TheGraphOnChainNouns: OnChainNounsService {
     }
   }
   
-  public func liveAuctionStateDidChange() -> AsyncStream<Auction> {
-    AsyncStream { [weak self] continuation in
+  public func liveAuctionStateDidChange() -> AsyncThrowingStream<Auction, Error> {
+    AsyncThrowingStream { [weak self] continuation in
       guard let self = self else { return }
       
       let listener = ShortPolling {
@@ -285,6 +285,10 @@ public class TheGraphOnChainNouns: OnChainNounsService {
       
       listener.setEventHandler = { auction in
         continuation.yield(auction)
+      }
+      
+      listener.setErrorHandler = { error in
+        continuation.finish(throwing: error)
       }
       
       continuation.onTermination = { @Sendable _  in

@@ -22,6 +22,8 @@ struct ExploreExperience: View {
         VStack(spacing: 20) {
           if let auction = viewModel.liveAuction {
             LiveAuctionCard(viewModel: .init(auction: auction))
+          } else if viewModel.failedToLoadAuction {
+            LiveAuctionCardErrorPlaceholder(viewModel: viewModel)
           } else {
             LiveAuctionCardPlaceholder()
           }
@@ -33,7 +35,6 @@ struct ExploreExperience: View {
         .padding(.horizontal, 20)
         .softNavigationTitle(R.string.explore.title())
       }
-      // Disable scrolling when data is initially loading.
       .disabled(viewModel.isLoading)
       .background(Gradient.cherrySunset)
       .ignoresSafeArea(edges: .top)

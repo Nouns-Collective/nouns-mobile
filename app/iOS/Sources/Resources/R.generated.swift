@@ -153,7 +153,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 42 images.
+  /// This `R.image` struct is generated, and contains static references to 43 images.
   struct image {
     /// Image `NounsWatermark`.
     static let nounsWatermark = Rswift.ImageResource(bundle: R.hostingBundle, name: "NounsWatermark")
@@ -179,6 +179,8 @@ struct R: Rswift.Validatable {
     static let confetti9 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-9")
     /// Image `create-noun-pizza`.
     static let createNounPizza = Rswift.ImageResource(bundle: R.hostingBundle, name: "create-noun-pizza")
+    /// Image `dead-noun`.
+    static let deadNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "dead-noun")
     /// Image `explore-onboarding`.
     static let exploreOnboarding = Rswift.ImageResource(bundle: R.hostingBundle, name: "explore-onboarding")
     /// Image `eyes-blink_1`.
@@ -321,6 +323,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "create-noun-pizza", bundle: ..., traitCollection: ...)`
     static func createNounPizza(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.createNounPizza, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "dead-noun", bundle: ..., traitCollection: ...)`
+    static func deadNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.deadNoun, compatibleWith: traitCollection)
     }
     #endif
 
@@ -1262,10 +1271,12 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.explore` struct is generated, and contains static references to 5 localization keys.
+    /// This `R.string.explore` struct is generated, and contains static references to 6 localization keys.
     struct explore {
       /// Value: About
       static let about = Rswift.StringResource(key: "about", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Dude, something’s wrong with the auction
+      static let liveError = Rswift.StringResource(key: "live.error", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Explore
       static let title = Rswift.StringResource(key: "title", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Failed to load more auctions
@@ -1286,6 +1297,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("about", tableName: "Explore", bundle: bundle, comment: "")
+      }
+
+      /// Value: Dude, something’s wrong with the auction
+      static func liveError(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("live.error", tableName: "Explore", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
+          return "live.error"
+        }
+
+        return NSLocalizedString("live.error", tableName: "Explore", bundle: bundle, comment: "")
       }
 
       /// Value: Explore
