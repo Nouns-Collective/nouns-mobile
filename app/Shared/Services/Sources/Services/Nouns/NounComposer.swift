@@ -15,6 +15,9 @@ public struct Trait: Equatable, Hashable {
   
   /// Asset image of the Noun's trait stored locally.
   public let assetImage: String
+  
+  /// Textures to animate different parts of the traits.
+  public let textures: [String: [String]]
 }
 
 /// This provider class allows interacting with local Nouns' placed in disk.
@@ -83,7 +86,7 @@ public class OfflineNounComposer: NounComposer {
   public static func `default`() -> NounComposer {
     do {
       guard let url = Bundle.module.url(
-        forResource: "encoded-layers",
+        forResource: "nouns-traits-layers",
         withExtension: "json"
       ) else {
         throw URLError(.badURL)
@@ -102,11 +105,13 @@ extension Trait: Decodable {
   private enum CodingKeys: String, CodingKey {
     case assetImage = "name"
     case rleData = "data"
+    case textures
   }
   
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     rleData = try container.decode(String.self, forKey: .rleData)
     assetImage = try container.decode(String.self, forKey: .assetImage)
+    textures = try container.decode([String: [String]].self, forKey: .textures)
   }
 }
