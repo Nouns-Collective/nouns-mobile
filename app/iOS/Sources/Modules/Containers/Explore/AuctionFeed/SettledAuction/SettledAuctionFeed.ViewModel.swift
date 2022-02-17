@@ -14,6 +14,7 @@ extension SettledAuctionFeed {
     @Published var auctions = [Auction]()
     @Published var isFetching = false
     @Published var shouldLoadMore = true
+    @Published var failedToLoadMore = false
     
     var isInitiallyLoading: Bool {
       isFetching && auctions.isEmpty
@@ -41,6 +42,8 @@ extension SettledAuctionFeed {
     
     @MainActor
     func loadAuctions() async {
+      failedToLoadMore = false
+      
       do {
         isFetching = true
         // Load next batch of the settled auctions from the network.
@@ -57,7 +60,9 @@ extension SettledAuctionFeed {
                         
         self.auctions += auctions.data
         
-      } catch { }
+      } catch {
+        failedToLoadMore = true
+      }
       
       isFetching = false
     }

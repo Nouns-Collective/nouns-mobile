@@ -22,7 +22,7 @@ extension ExploreExperience {
     }
     
     @MainActor
-    func listenLiveAuctionChanges() async {
+    func listenLiveAuctionChanges() async {      
       for await auction in service.liveAuctionStateDidChange() {
         self.liveAuction = auction
       }

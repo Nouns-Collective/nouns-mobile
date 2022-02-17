@@ -15,3 +15,9 @@
 // MARK: - Common
 
 "noun" = "Noun %s";
+
+// MARK: - Settled Auctions Errors
+
+"settled.error.empty" = "Failed to load settled auctions";
+
+"settled.error.loadMore" = "Failed to load more auctions";

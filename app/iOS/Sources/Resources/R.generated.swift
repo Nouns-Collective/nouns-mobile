@@ -1262,12 +1262,16 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.explore` struct is generated, and contains static references to 3 localization keys.
+    /// This `R.string.explore` struct is generated, and contains static references to 5 localization keys.
     struct explore {
       /// Value: About
       static let about = Rswift.StringResource(key: "about", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Explore
       static let title = Rswift.StringResource(key: "title", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Failed to load more auctions
+      static let settledErrorLoadMore = Rswift.StringResource(key: "settled.error.loadMore", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Failed to load settled auctions
+      static let settledErrorEmpty = Rswift.StringResource(key: "settled.error.empty", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Noun %s
       static let noun = Rswift.StringResource(key: "noun", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
 
@@ -1295,6 +1299,32 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("title", tableName: "Explore", bundle: bundle, comment: "")
+      }
+
+      /// Value: Failed to load more auctions
+      static func settledErrorLoadMore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("settled.error.loadMore", tableName: "Explore", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
+          return "settled.error.loadMore"
+        }
+
+        return NSLocalizedString("settled.error.loadMore", tableName: "Explore", bundle: bundle, comment: "")
+      }
+
+      /// Value: Failed to load settled auctions
+      static func settledErrorEmpty(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("settled.error.empty", tableName: "Explore", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
+          return "settled.error.empty"
+        }
+
+        return NSLocalizedString("settled.error.empty", tableName: "Explore", bundle: bundle, comment: "")
       }
 
       /// Value: Noun %s
