@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import Services
 import UIComponents
-import Combine
 import SpriteKit
+import Services
 
 struct NounPlayground: View {
   @StateObject var viewModel = ViewModel()
@@ -24,7 +23,13 @@ struct NounPlayground: View {
   /// A view that displays the noun scene above the various list of audio effect.
   ///
   /// - Returns: This view contains the play scene to animate the eyes and mouth.
-  let talkingNoun = TalkingNoun()
+  private let talkingNoun = TalkingNoun()
+  
+  /// A SwiftUI view that renders the `TalkingNoun` scene.
+  private var spriteView: some View {
+    SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+      .frame(width: 320, height: 320)
+  }
   
   var body: some View {
     VStack(spacing: 0) {
@@ -36,8 +41,7 @@ struct NounPlayground: View {
       
       ConditionalSpacer(!viewModel.isRequestingAudioPermission)
       
-      SpriteView(scene: talkingNoun, options: [.allowsTransparency])
-        .frame(width: 320, height: 320)
+      spriteView
       
       Spacer()
       
@@ -84,6 +88,18 @@ struct NounPlayground: View {
     .onChange(of: viewModel.isNounTalking) { isNounTalking in
       // Moves up & down the mouth while playing back the audio recorded.
       talkingNoun.isTalking = isNounTalking
+    }
+    .onChange(of: viewModel.state == .share) { _ in
+      viewModel.startVideoRecording(
+        source: spriteView,
+        background: Gradient.bubbleGum
+      )
+    }
+    .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
+      ShareTalkingNounDialog(
+        videoURL: viewModel.recordedTalkingNounVideoURL,
+        progressValue: viewModel.talkingNounRecordProgress
+      )
     }
   }
 }

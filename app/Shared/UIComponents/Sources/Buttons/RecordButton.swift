@@ -23,12 +23,7 @@ public struct RecordButton: View {
   public let coachmark: String
   
   /// Gesture state that would be `true` when the user is holding the button
-  @GestureState private var isTapped: Bool = false {
-    didSet {
-      // Updates the current state when the user hold up and down on the button.
-      isRecording = isTapped
-    }
-  }
+  @GestureState private var isTapped: Bool = false
   
   /// A progress indicator, ranging from 0.0 (not started) to the value of `maximumRecordDuration` (complete)
   @State private var elapsedTime: CGFloat = 0.0
@@ -51,6 +46,15 @@ public struct RecordButton: View {
     DragGesture(minimumDistance: 0)
       .updating($isTapped) { (_, isTapped, _) in
         isTapped = true
+        
+        if isTapped != isRecording {
+          // Updates the current state when the user starts pressing the button.
+          isRecording = true
+        }
+      }
+      .onEnded { _ in
+        // Updates the current state when the user stops pressing the button.
+        isRecording = false
       }
   }
   
@@ -94,12 +98,18 @@ public struct RecordButton: View {
         .foregroundColor(Color.componentNounsBlack)
         .hidden(isTapped)
     }
-    .onChange(of: isTapped, perform: { _ in
-      self.elapsedTime = 0.0
-    })
+    .onChange(of: isTapped) { _ in
+      elapsedTime = 0.0
+    }
     .onReceive(progressTimer) { _ in
       // Only progress the `elapsedTime` when holding the button
       guard isTapped else { return }
+      
+      guard progressValue < 1.0 else {
+        isRecording = false
+        return
+      }
+      
       elapsedTime += 0.01
     }
   }

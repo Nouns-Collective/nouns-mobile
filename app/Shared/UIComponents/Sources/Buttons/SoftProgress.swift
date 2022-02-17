@@ -37,6 +37,11 @@ public struct SoftProgress: View {
   /// A label describing the task represented by the progress view.
   public let text: String
   
+  public init(value: Double?, text: String) {
+    self.value = value
+    self.text = text
+  }
+  
   public var body: some View {
     SoftButton(label: {
       HStack {

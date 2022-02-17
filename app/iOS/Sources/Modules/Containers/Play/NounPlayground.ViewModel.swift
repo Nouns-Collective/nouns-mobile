@@ -9,6 +9,7 @@ import SwiftUI
 import Services
 import Combine
 import os
+import AVFAudio
 
 extension NounPlayground {
   
@@ -33,17 +34,23 @@ extension NounPlayground {
       didSet {
         switch state {
         case .freestyle:
-          break
+          startListening()
+          
         case .recording:
           break
+          
         case .share:
-          break
+          stopListening()
         }
       }
     }
     
     /// Determines whether the user request to record and store audio on disk for sharing.
-    @Published var isRecording = false
+    @Published var isRecording = false {
+      didSet {
+        voiceChangerEngine.captureMode = .manual(isRecording)
+      }
+    }
     
     /// Shows the audio permission sheet to request voice capture permission.
     @Published private(set) var showAudioPermissionDialog = false
@@ -54,20 +61,30 @@ extension NounPlayground {
     /// A Boolean value indicates whether the noun is talking.
     @Published private(set) var isNounTalking = false
     
+    ///
+    @Published private(set) var recordedTalkingNounVideoURL: URL?
+    
+    ///
+    @Published private(set) var talkingNounRecordProgress: Double = 0.0
+    
+    ///
     public var audioProcessingState: AudioStatus {
       voiceChangerEngine.audioProcessingState
     }
     
+    ///
     public var currentVoiceEffect: VoiceChangerEngine.Effect {
       voiceChangerEngine.effect
     }
     
+    ///
     public var isRequestingAudioPermission: Bool {
       showAudioSettingsSheet || showAudioPermissionDialog
     }
     
-    private let screenRecorder: ScreenRecorder
     private let voiceChangerEngine: VoiceChangerEngine
+    private let screenRecorder: ScreenRecorder
+    
     private var cancellables = Set<AnyCancellable>()
     private let logger = Logger(
       subsystem: "wtf.nouns.ios",
@@ -88,21 +105,29 @@ extension NounPlayground {
       
       // Observes the location of voice with the effect
       // applied, then display the share experience.
-      voiceChangerEngine.outputFileURL.publisher
+      voiceChangerEngine.$outputFileURL
+        .compactMap { $0 }
         .sink { [weak self] audioFileURLWithEffect in
+          
+          guard let self = self else { return }
+          
+          guard case .manual = self.voiceChangerEngine.captureMode else { return }
           
           // Changing the status to "share" presents a dialog
           // to ask the user to share or reject the recorded spoken name.
-          self?.state = .share
+          self.state = .share
           
-          self?.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
+          // Reset the capture voice using the sound analysis.
+          self.voiceChangerEngine.captureMode = .auto
+          
+          self.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
         }
         .store(in: &cancellables)
       
       // Updates the state on whether the audio contains `speech` or `silence`.
       voiceChangerEngine.$audioProcessingState
         .sink { [weak self] status in
-          
+          // On speech, the noun will move the mouth up & down.
           self?.isNounTalking = (status == .speech)
         }
         .store(in: &cancellables)
@@ -158,18 +183,27 @@ extension NounPlayground {
       voiceChangerEngine.effect = effect
     }
     
-    /// Updates the view state to a new state
-    func updateState(to newState: State) {
-      state = newState
-    }
-    
     // MARK: - Screen Recorder / Audio Effect
     
+    func startVideoRecording<V, B>(source: V, background: B) where V: View, B: View {
+      guard let recordedVoiceFileURL = voiceChangerEngine.outputFileURL else {
+        return
+      }
+      
+      screenRecorder.startRecording(
+        source,
+        backgroundView: background,
+        audioFileURL: recordedVoiceFileURL
+      )
+    }
+    
     @MainActor
-    func stopRecording() {
+    func stopVideoRecording() {
       Task {
         do {
-          let url = try await screenRecorder.stopRecording()
+          // The publisher will trigger the activity sharing sheet
+          // with the url as an attachment.
+          recordedTalkingNounVideoURL = try await screenRecorder.stopRecording()
           
         } catch {
           logger.error("💥 An error occurred while stopping screen recording: \(error.localizedDescription, privacy: .public)")
