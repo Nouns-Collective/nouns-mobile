@@ -38,12 +38,29 @@ struct NounActivityFeed: View {
         }, content: {
           ActivityRow(viewModel: .init(vote: $0))
         })
+        
+        if viewModel.failedToLoadMore {
+          TryAgain(
+            message: R.string.activity.errorLoadMoreTitle(),
+            buttonText: R.string.shared.tryAgain(),
+            retryAction: {
+              Task {
+                await viewModel.fetchActivity()
+              }
+            }
+          )
+          .frame(maxWidth: .infinity, alignment: .center)
+          .padding(.bottom, 80)
+        }
       }
       .padding()
     }
     .frame(maxWidth: .infinity)
-    .emptyPlaceholder(when: viewModel.isEmpty, view: {
+    .emptyPlaceholder(when: viewModel.isEmpty && !viewModel.failedToLoadMore, view: {
       ActivityFeedEmptyView(viewModel: viewModel)
+    })
+    .emptyPlaceholder(when: viewModel.isEmpty && viewModel.failedToLoadMore, view: {
+      ActivityFeedErrorView(viewModel: viewModel)
     })
     .task {
       await viewModel.fetchActivity()
@@ -108,6 +125,39 @@ extension NounActivityFeed {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .padding()
             .opacity(0.6)
+        
+        Spacer()
+      }
+      .padding()
+    }
+  }
+  
+  /// A view to display when there was an error while retrieving a noun's activity feed, resulting in 0 activities in the view model
+  struct ActivityFeedErrorView: View {
+    
+    @ObservedObject var viewModel: ViewModel
+    
+    var body: some View {
+      VStack(alignment: .leading, spacing: 10) {
+        
+        // Displays the owner token.
+        Text(viewModel.title)
+          .lineLimit(1)
+          .font(.custom(.bold, size: 36))
+          .truncationMode(.middle)
+        
+        Spacer()
+        
+        TryAgain(
+          message: R.string.activity.errorEmptyTitle(),
+          buttonText: R.string.shared.tryAgain(),
+          retryAction: {
+            Task {
+              await viewModel.fetchActivity()
+            }
+          }
+        )
+        .frame(maxWidth: .infinity, alignment: .center)
         
         Spacer()
       }

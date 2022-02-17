@@ -668,12 +668,16 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.activity` struct is generated, and contains static references to 7 localization keys.
+    /// This `R.string.activity` struct is generated, and contains static references to 9 localization keys.
     struct activity {
       /// Value: Absent for
       static let absent = Rswift.StringResource(key: "absent", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Activity
       static let menuTitle = Rswift.StringResource(key: "menu.title", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Failed to load activity feed
+      static let errorEmptyTitle = Rswift.StringResource(key: "error.empty.title", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Failed to load more activities
+      static let errorLoadMoreTitle = Rswift.StringResource(key: "error.loadMore.title", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: No activity
       static let emptyState = Rswift.StringResource(key: "empty-state", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Proposal %s • %s
@@ -709,6 +713,32 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("menu.title", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      /// Value: Failed to load activity feed
+      static func errorEmptyTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("error.empty.title", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "error.empty.title"
+        }
+
+        return NSLocalizedString("error.empty.title", tableName: "Activity", bundle: bundle, comment: "")
+      }
+
+      /// Value: Failed to load more activities
+      static func errorLoadMoreTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("error.loadMore.title", tableName: "Activity", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
+          return "error.loadMore.title"
+        }
+
+        return NSLocalizedString("error.loadMore.title", tableName: "Activity", bundle: bundle, comment: "")
       }
 
       /// Value: No activity
@@ -934,12 +964,16 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.bidHistory` struct is generated, and contains static references to 4 localization keys.
+    /// This `R.string.bidHistory` struct is generated, and contains static references to 6 localization keys.
     struct bidHistory {
       /// Value: %s at %s
       static let blockDate = Rswift.StringResource(key: "block.date", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Bid history
       static let menuTitle = Rswift.StringResource(key: "menu.title", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Failed to load bid history
+      static let errorEmptyTitle = Rswift.StringResource(key: "error.empty.title", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Failed to load more bids
+      static let errorLoadMoreTitle = Rswift.StringResource(key: "error.loadMore.title", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: No bid history registered.
       static let emptyState = Rswift.StringResource(key: "empty-state", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Unavailable
@@ -971,6 +1005,32 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("menu.title", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      /// Value: Failed to load bid history
+      static func errorEmptyTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("error.empty.title", tableName: "BidHistory", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
+          return "error.empty.title"
+        }
+
+        return NSLocalizedString("error.empty.title", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      /// Value: Failed to load more bids
+      static func errorLoadMoreTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("error.loadMore.title", tableName: "BidHistory", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
+          return "error.loadMore.title"
+        }
+
+        return NSLocalizedString("error.loadMore.title", tableName: "BidHistory", bundle: bundle, comment: "")
       }
 
       /// Value: No bid history registered.
@@ -2213,7 +2273,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.shared` struct is generated, and contains static references to 13 localization keys.
+    /// This `R.string.shared` struct is generated, and contains static references to 14 localization keys.
     struct shared {
       /// Value: Accessory
       static let accessory = Rswift.StringResource(key: "accessory", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -2235,6 +2295,8 @@ struct R: Rswift.Validatable {
       static let remix = Rswift.StringResource(key: "remix", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Share
       static let share = Rswift.StringResource(key: "share", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Try Again
+      static let tryAgain = Rswift.StringResource(key: "try.again", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Unavailable
       static let unavailable = Rswift.StringResource(key: "unavailable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Untitled
@@ -2370,6 +2432,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("share", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: Try Again
+      static func tryAgain(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("try.again", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "try.again"
+        }
+
+        return NSLocalizedString("try.again", tableName: "Shared", bundle: bundle, comment: "")
       }
 
       /// Value: Unavailable
