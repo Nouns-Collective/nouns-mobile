@@ -22,20 +22,24 @@ struct ExploreExperience: View {
         VStack(spacing: 20) {
           if let auction = viewModel.liveAuction {
             LiveAuctionCard(viewModel: .init(auction: auction))
-          } else if viewModel.failedToLoadAuction {
+          } else if viewModel.failedToLoadLiveAuction {
             LiveAuctionCardErrorPlaceholder(viewModel: viewModel)
           } else {
             LiveAuctionCardPlaceholder()
           }
           
-          SettledAuctionFeed()
+          SettledAuctionFeed(viewModel: viewModel)
         }
         .padding(.bottom, tabBarHeight)
         .padding(.bottom, 20) // Extra padding between the bottom of the last noun card and the top of the tab view
         .padding(.horizontal, 20)
+        .emptyPlaceholder(when: viewModel.failedToLoadExplore) {
+          EmptyErrorView(viewModel: viewModel)
+            .padding()
+        }
         .softNavigationTitle(R.string.explore.title())
       }
-      .disabled(viewModel.isLoading)
+      .disabled(viewModel.isLoadingSettledAuctions)
       .background(Gradient.cherrySunset)
       .ignoresSafeArea(edges: .top)
       .task {

@@ -1271,7 +1271,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.explore` struct is generated, and contains static references to 6 localization keys.
+    /// This `R.string.explore` struct is generated, and contains static references to 7 localization keys.
     struct explore {
       /// Value: About
       static let about = Rswift.StringResource(key: "about", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -1283,6 +1283,8 @@ struct R: Rswift.Validatable {
       static let settledErrorLoadMore = Rswift.StringResource(key: "settled.error.loadMore", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Failed to load settled auctions
       static let settledErrorEmpty = Rswift.StringResource(key: "settled.error.empty", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Lame. Looks like wifi or cellular data is totally borked. Check your connection and try again.
+      static let allErrorEmpty = Rswift.StringResource(key: "all.error.empty", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Noun %s
       static let noun = Rswift.StringResource(key: "noun", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
 
@@ -1349,6 +1351,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("settled.error.empty", tableName: "Explore", bundle: bundle, comment: "")
+      }
+
+      /// Value: Lame. Looks like wifi or cellular data is totally borked. Check your connection and try again.
+      static func allErrorEmpty(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("all.error.empty", tableName: "Explore", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
+          return "all.error.empty"
+        }
+
+        return NSLocalizedString("all.error.empty", tableName: "Explore", bundle: bundle, comment: "")
       }
 
       /// Value: Noun %s

@@ -25,3 +25,7 @@
 // MARK: - Live Auction Errors
 
 "live.error" = "Dude, something’s wrong with the auction";
+
+// MARK: - Settled Auction & Live Auction Error
+
+"all.error.empty" = "Lame. Looks like wifi or cellular data is totally borked. Check your connection and try again.";
