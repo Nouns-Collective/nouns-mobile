@@ -13,3 +13,7 @@
 "block.date" = "%s at %s";
 
 "block.unavailable" = "Unavailable";
+
+"error.empty.title" = "Failed to load bid history";
+
+"error.loadMore.title" = "Failed to load more bids";

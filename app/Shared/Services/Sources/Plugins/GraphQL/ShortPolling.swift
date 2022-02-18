@@ -15,6 +15,8 @@ class ShortPolling<T> {
   
   var setEventHandler: ((T) -> Void)?
   
+  var setErrorHandler: ((Error) -> Void)?
+
   /// `Short-Poll` interval.
   private let pollingInterval = 1
   
@@ -58,7 +60,9 @@ class ShortPolling<T> {
           let auction = try await self.action()
           self.setEventHandler?(auction)
           
-        } catch { }
+        } catch {
+          self.setErrorHandler?(error)
+        }
       }
     }
     

@@ -14,6 +14,8 @@
 
 "done" = "Done";
 
+"try.again" = "Try Again";
+
 // MARK: - States
 
 "unavailable" = "Unavailable";
@@ -37,4 +39,3 @@
 // MARK: - Links
 
 "nouns.website" = "https://nouns.wtf";
-
