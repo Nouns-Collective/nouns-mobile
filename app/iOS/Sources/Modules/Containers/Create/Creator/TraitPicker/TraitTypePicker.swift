@@ -17,7 +17,7 @@ extension NounCreator {
     
     @Binding var isExpanded: Bool
     
-    @State private var selectedTraitType: Int = ViewModel.TraitType.glasses.rawValue
+    @State private var selectedTraitType: Int = TraitType.glasses.rawValue
     
     private let rowSpec = [
       GridItem(.flexible()),

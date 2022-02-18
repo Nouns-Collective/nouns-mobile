@@ -14,7 +14,23 @@ extension CreateExperience {
   /// A placeholder view for the Create tab for when the user has no created nouns
   struct EmptyNounsView: View {
     
-    let action: () -> Void
+    @Environment(\.outlineTabViewHeight) private var tabBarHeight
+    
+    private let action: () -> Void
+    
+    private let initialSeed: Seed
+    
+    @Binding var isCreatorPresented: Bool
+        
+    init(
+      initialSeed: Seed,
+      isCreatorPresented: Binding<Bool>,
+      action: @escaping () -> Void
+    ) {
+      self.initialSeed = initialSeed
+      self.action = action
+      self._isCreatorPresented = isCreatorPresented
+    }
 
     var body: some View {
       VStack(alignment: .leading, spacing: 0) {
@@ -22,9 +38,10 @@ extension CreateExperience {
           .font(.custom(.regular, size: 17))
         
         Spacer()
-        
-        // TODO: Integrate the NounCreator to randomly generate Traits each time the view appear.
-        NounPuzzle(seed: Seed(background: 0, glasses: 0, head: 3, body: 6, accessory: 0))
+                  
+        SlotMachine(viewModel: .init(initialSeed: initialSeed, showShadow: false, animateEntrance: true))
+          .padding(.horizontal, -20)
+          .disabled(true)
 
         OutlineButton(
           text: R.string.create.proceedTitle(),
@@ -32,9 +49,19 @@ extension CreateExperience {
           action: action)
           .controlSize(.large)
           .padding(.horizontal)
-
+        
         Spacer()
       }
+      .padding(.horizontal, 20)
+      .padding(.bottom, tabBarHeight)
+      // Extra padding between the bottom of the last noun card and the top of the tab view
+      .padding(.bottom, 20)
+      .softNavigationTitle(R.string.create.title(), rightAccessory: {
+        SoftButton(
+          text: "New",
+          largeAccessory: { Image.new },
+          action: { isCreatorPresented.toggle() })
+      })
     }
   }
 }

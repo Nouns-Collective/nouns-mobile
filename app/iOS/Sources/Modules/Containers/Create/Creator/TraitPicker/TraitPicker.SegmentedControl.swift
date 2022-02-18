@@ -25,7 +25,7 @@ extension NounCreator {
           
           // Displays all Noun's trait types in a segement control.
           OutlinePicker(selection: $selectedTraitType) {
-            ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
+            ForEach(TraitType.allCases, id: \.rawValue) { type in
               Text(type.description)
                 .id(type.rawValue)
                 .pickerItemTag(type.rawValue, namespace: typeSelectionNamespace)

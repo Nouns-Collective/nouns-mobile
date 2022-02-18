@@ -10,9 +10,11 @@ import UIComponents
 import Services
 
 extension PlayNounPicker {
-  
+    
   /// A placeholder view for when there are no nouns to choose from in the Play (`NounPlayground`) experience.
   struct EmptyNounsView: View {
+    
+    @Environment(\.outlineTabViewHeight) private var tabBarHeight
     
     let action: () -> Void
 
@@ -36,6 +38,10 @@ extension PlayNounPicker {
 
         Spacer()
       }
+      .padding(.horizontal, 20)
+      .padding(.bottom, tabBarHeight)
+      // Extra padding between the bottom of the last noun card and the top of the tab view
+      .padding(.bottom, 20)
     }
   }
 }
