@@ -39,11 +39,28 @@ struct AuctionBidHistory: View {
       }
       .padding()
       .ignoresSafeArea()
+      
+      if viewModel.failedToLoadMore {
+        TryAgain(
+          message: R.string.bidHistory.errorLoadMoreTitle(),
+          buttonText: R.string.shared.tryAgain(),
+          retryAction: {
+            Task {
+              await viewModel.fetchBidHistory()
+            }
+          }
+        )
+        .padding(.bottom, 80)
+        .frame(maxWidth: .infinity, alignment: .center)
+      }
     }
     .frame(maxWidth: .infinity)
     .ignoresSafeArea()
-    .emptyPlaceholder(when: viewModel.isEmpty, view: {
+    .emptyPlaceholder(when: viewModel.isEmpty && !viewModel.failedToLoadMore, view: {
       BidHistoryEmptyView(viewModel: viewModel)
+    })
+    .emptyPlaceholder(when: viewModel.isEmpty && viewModel.failedToLoadMore, view: {
+      BidHistoryErrorView(viewModel: viewModel)
     })
     .task {
       await viewModel.fetchBidHistory()
@@ -74,6 +91,39 @@ extension AuctionBidHistory {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .padding()
             .opacity(0.6)
+        
+        Spacer()
+      }
+      .padding()
+    }
+  }
+  
+  /// A view to display when there was an error while retrieving a noun's bid history, resulting in 0 bids in the view model
+  struct BidHistoryErrorView: View {
+    
+    @ObservedObject var viewModel: ViewModel
+    
+    var body: some View {
+      VStack(alignment: .leading, spacing: 10) {
+        
+        // Displays the owner token.
+        Text(viewModel.title)
+          .lineLimit(1)
+          .font(.custom(.bold, size: 36))
+          .truncationMode(.middle)
+        
+        Spacer()
+        
+        TryAgain(
+          message: R.string.bidHistory.errorEmptyTitle(),
+          buttonText: R.string.shared.tryAgain(),
+          retryAction: {
+            Task {
+              await viewModel.fetchBidHistory()
+            }
+          }
+        )
+        .frame(maxWidth: .infinity, alignment: .center)
         
         Spacer()
       }

@@ -19,3 +19,7 @@
 "proposal.untitled" = "Untitled";
 
 "proposal.status" = "Proposal %s • %s";
+
+"error.empty.title" = "Failed to load activity feed";
+
+"error.loadMore.title" = "Failed to load more activities";

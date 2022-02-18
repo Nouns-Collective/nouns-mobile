@@ -76,7 +76,7 @@ struct NounProfileInfo: View {
           
           // Navigation link showing the noun's bid history & owner activity.
           Link(isActive: $isActivityPresented, content: {
-            actionsContent
+            CardActionsItems(viewModel: viewModel, isShareSheetPresented: $isShareSheetPresented)
             
           }, destination: {
             AuctionInfo(viewModel: .init(auction: viewModel.auction))
@@ -94,9 +94,58 @@ struct NounProfileInfo: View {
         ShareSheet(activityItems: [url])
       }
     }
-    .bottomSheet(isPresented: viewModel.isNotificationPermissionDialogPresented) {
-      NotificationPermissionDialog { shouldAuthorize in
-        viewModel.isNotificationPermissionEnabled = shouldAuthorize
+    .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
+      NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
+    }
+  }
+}
+
+extension NounProfileInfo {
+  
+  struct CardToolBar: View {
+    @ObservedObject var viewModel: ViewModel
+    let dismiss: DismissAction
+    
+    var body: some View {
+      HStack {
+        Text(viewModel.title)
+          .font(.custom(.bold, relativeTo: .title2))
+        
+        Spacer()
+        
+        SoftButton(
+          icon: { Image.xmark },
+          action: { dismiss() })
+      }
+    }
+  }
+}
+
+extension NounProfileInfo {
+  
+  struct CardActionsItems: View {
+    
+    @ObservedObject var viewModel: ViewModel
+    @Binding var isShareSheetPresented: Bool
+    
+    var body: some View {
+      // Various available actions.
+      HStack {
+        // Shares the live auction link.
+        SoftButton(
+          text: R.string.shared.share(),
+          largeAccessory: { Image.share },
+          action: { isShareSheetPresented.toggle() })
+          .controlSize(.large)
+        
+        // Switch context to the creator exprience using the current Noun's seed.
+        SoftButton(
+          text: R.string.shared.remix(),
+          largeAccessory: { Image.splice },
+          action: {
+            viewModel.shouldShowNounCreator.toggle()
+          })
+          .controlSize(.large)
       }
     }
   }

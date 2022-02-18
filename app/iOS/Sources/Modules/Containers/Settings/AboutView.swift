@@ -38,7 +38,7 @@ struct AboutView: View {
         })
       }
       .ignoresSafeArea(edges: .top)
-      .background(Gradient.bubbleGum)
+      .background(Gradient.lemonDrop)
       .bottomSheet(isPresented: $isAboutNounsPresented) {
         AboutNounsView(isPresented: $isAboutNounsPresented)
       }

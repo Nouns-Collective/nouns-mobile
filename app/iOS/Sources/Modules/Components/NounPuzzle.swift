@@ -17,15 +17,15 @@ struct NounPuzzle: View {
   
   init(seed: Seed) {
     traits = [
-      nounComposer.heads[seed.head].assetImage,
       nounComposer.bodies[seed.body].assetImage,
-      nounComposer.glasses[seed.glasses].assetImage,
       nounComposer.accessories[seed.accessory].assetImage,
+      nounComposer.heads[seed.head].assetImage,
+      nounComposer.glasses[seed.glasses].assetImage
     ]
   }
   
   init(head: String, body: String, glasses: String, accessory: String) {
-    traits = [head, body, glasses, accessory]
+    traits = [body, accessory, head, glasses]
   }
   
   public var body: some View {

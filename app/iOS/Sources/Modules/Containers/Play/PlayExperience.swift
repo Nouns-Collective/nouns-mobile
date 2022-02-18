@@ -38,12 +38,18 @@ struct PlayExperience: View {
             SpriteView(scene: talkingNoun, options: [.allowsTransparency])
               .frame(width: 320, height: 320)
           }
-          
-          OutlineButton(
-            text: R.string.playExperience.proceedTitle(),
-            largeAccessory: { Image.fingergunsRight },
-            action: { isPlayPresented.toggle() })
-            .controlSize(.large)
+        
+          // Navigation link showing the noun selection to choose from
+          Link(isActive: $isNounPickerPresented, content: {
+            OutlineButton(
+              text: R.string.play.proceedTitle(),
+              largeAccessory: { Image.fingergunsRight },
+              action: { isNounPickerPresented.toggle() })
+              .controlSize(.large)
+            
+          }, destination: {
+            PlayNounPicker()
+          })
         }
         .padding(.top, 40)
         .padding(.horizontal, 20)
@@ -58,9 +64,6 @@ struct PlayExperience: View {
       .softNavigationTitle(R.string.playExperience.title())
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
-      .fullScreenCover(isPresented: $isPlayPresented) {
-        NounPlayground()
-      }
     }
   }
 }

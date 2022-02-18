@@ -16,6 +16,7 @@ extension AuctionBidHistory {
     @Published var bids = [Bid]()
     @Published var isLoading = false
     @Published var shouldLoadMore = true
+    @Published var failedToLoadMore = false
     
     private let pageLimit = 20
     private let service: OnChainNounsService
@@ -40,6 +41,8 @@ extension AuctionBidHistory {
     
     @MainActor
     func fetchBidHistory() async {
+      failedToLoadMore = false
+      
       do {
         isLoading = true
         
@@ -53,7 +56,9 @@ extension AuctionBidHistory {
         
         self.bids += bids.data
         
-      } catch { }
+      } catch {
+        failedToLoadMore = true
+      }
       
       isLoading = false
     }

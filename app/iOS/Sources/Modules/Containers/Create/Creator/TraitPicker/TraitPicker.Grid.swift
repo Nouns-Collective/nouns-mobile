@@ -29,7 +29,7 @@ extension NounCreator {
     ]
     
     /// Returns the `id` of the very first trait in a given trait type
-    private func traitFirstIndexID(_ trait: ViewModel.TraitType) -> String {
+    private func traitFirstIndexID(_ trait: TraitType) -> String {
       return "\(trait.rawValue)-0"
     }
     
@@ -44,13 +44,15 @@ extension NounCreator {
           LazyHGrid(rows: rowSpec, spacing: 4) {
             
             // Trait selection
-            ForEach(ViewModel.TraitType.allCases, id: \.rawValue) { type in
+            ForEach(TraitType.allCases, id: \.rawValue) { type in
               
               TraitCollectionSection(type: type, items: type.traits) { trait, index in
                 TraitPickerItem(image: trait.assetImage)
                   .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
-                    viewModel.selectTrait(index, ofType: type)
+                    withAnimation {
+                      viewModel.selectTrait(index, ofType: type)
+                    }
                   }
                   .id("\(type.rawValue)-\(index)")
                 // This applies a padding to only the first column (rowSpec.count) of items to distinguish the different trait sections
@@ -70,9 +72,11 @@ extension NounCreator {
               GradientPickerItem(colors: gradient)
                 .selected(viewModel.isSelected(index, traitType: .background))
                 .onTapGesture {
-                  viewModel.selectTrait(index, ofType: .background)
+                  withAnimation {
+                    viewModel.selectTrait(index, ofType: .background)
+                  }
                 }
-                .id("\(ViewModel.TraitType.background.rawValue)-\(index)")
+                .id("\(TraitType.background.rawValue)-\(index)")
                 // This applies a padding to only the first column (rowSpec.count)
                 // of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
