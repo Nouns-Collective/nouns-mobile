@@ -7,6 +7,7 @@
 
 import Foundation
 import SpriteKit
+import Services
 
 extension TalkingNoun {
   
@@ -23,19 +24,31 @@ extension TalkingNoun {
       }
     }
     
+    private class var nounComposer: NounComposer {
+      AppCore.shared.nounComposer
+    }
+    
     private lazy var eyes: TalkingNoun.Eyes = {
       let eyes = Eyes()
-      eyes.position = CGPoint(x: frame.midX - 5, y: frame.midY + 4)
+      eyes.position = CGPoint(x: frame.midX, y: frame.midY)
       eyes.size = CGSize(width: 320, height: 320)
       return eyes
     }()
     
-    private lazy var talkTextures: [SKTexture] = {
-      loadTextures(atlas: "head-ape-mouth", prefix: "head-ape-mouth_", from: 1, to: 5)
-    }()
+    private let mouthTextures: [SKTexture]
     
-    init() {
-      let texture = SKTexture(imageNamed: R.image.headApeMouth_1.name)
+    init(seed: Seed) {
+      guard let mouthTextures = Self.nounComposer.heads[seed.head].textures["mouth"] else {
+        fatalError("Couldn't load mouth textures.")
+      }
+      
+      self.mouthTextures = Self.loadTextures(atlases: mouthTextures)
+      
+      guard let mouth = mouthTextures.first else {
+        fatalError("Mouth texture not found.")
+      }
+      
+      let texture = SKTexture(imageNamed: mouth)
       texture.filteringMode = .nearest
       
       super.init(texture: texture, color: SKColor.clear, size: texture.size())
@@ -67,7 +80,7 @@ extension TalkingNoun {
       }
       
       let animation = SKAction.animate(
-        with: talkTextures,
+        with: mouthTextures,
         timePerFrame: 0.07,
         resize: false,
         restore: true

@@ -11,7 +11,7 @@ import Services
 
 ///
 struct ShareTalkingNounDialog: View {
-
+  
   ///
   let videoURL: URL?
   

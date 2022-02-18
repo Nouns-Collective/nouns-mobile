@@ -23,7 +23,7 @@ struct NounPlayground: View {
   /// A view that displays the noun scene above the various list of audio effect.
   ///
   /// - Returns: This view contains the play scene to animate the eyes and mouth.
-  private let talkingNoun = TalkingNoun()
+  private let talkingNoun = TalkingNoun(seed: Seed.default)
   
   /// A SwiftUI view that renders the `TalkingNoun` scene.
   private var spriteView: some View {

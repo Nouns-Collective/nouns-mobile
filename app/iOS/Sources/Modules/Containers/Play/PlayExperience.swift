@@ -10,15 +10,20 @@ import UIComponents
 import SpriteKit
 
 struct PlayExperience: View {
-  @Environment(\.outlineTabViewHeight) var tabBarHeight
-  @State private var isPlayPresented = false
+  @StateObject var viewModel: ViewModel 
   
-  @StateObject private var viewModel = ViewModel()
+  @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @State private var isPlayPresented = false
   
   /// A view that displays the talking noun scene below the speech bubble.
   ///
   /// - Returns: This view contains the play scene to animate the eyes and mouth.
-  let talkingNoun = TalkingNoun()
+  private let talkingNoun: TalkingNoun
+  
+  init(viewModel: ViewModel = ViewModel()) {
+    _viewModel = StateObject(wrappedValue: viewModel)
+    talkingNoun = TalkingNoun(seed: viewModel.seed)
+  }
   
   var body: some View {
     NavigationView {
