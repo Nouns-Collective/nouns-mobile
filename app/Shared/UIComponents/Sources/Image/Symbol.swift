@@ -141,4 +141,8 @@ extension Image {
     
     public static let pause = Image("pause", bundle: .module)
   }
+  
+  public static let aboutFill = Image("about-fill", bundle: .module)
+  
+  public static let aboutOutline = Image("about-outline", bundle: .module)
 }

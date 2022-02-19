@@ -46,9 +46,9 @@ struct PlayNounPicker: View {
     }
     .background(Gradient.blueberryJam)
     // Gives the ability to create a new noun offline by driving
-    // the user to the creation experience.
+    // the user to the create experience.
     .fullScreenCover(isPresented: $isCreatorPresented) {
-      NounCreator(viewModel: .init())
+      NounCreator()
     }
     // Displays the playground to play with the selected noun.
     .fullScreenCover(item: $selectedNoun, onDismiss: {

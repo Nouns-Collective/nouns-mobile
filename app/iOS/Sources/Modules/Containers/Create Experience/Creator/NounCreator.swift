@@ -7,34 +7,29 @@
 
 import SwiftUI
 import UIComponents
-import Services
 
 struct NounCreator: View {
-  @Namespace private var namespace
+  @StateObject var viewModel = ViewModel()
   
-  @StateObject var viewModel: ViewModel
+  @Namespace private var nsTraitPicker
   @Environment(\.dismiss) private var dismiss
   
   /// Boolean value to determine if the trait picker grid is expanded
   @State private var isExpanded: Bool = false
   
-  private var mode: ViewModel.Mode {
-    viewModel.mode
-  }
-  
   var body: some View {
     ZStack {
       VStack(spacing: 0) {
-        ConditionalSpacer(mode == .creating)
+        ConditionalSpacer(viewModel.mode == .creating)
         
         SlotMachine(viewModel: .init(initialSeed: viewModel.initialSeed))
         
-        ConditionalSpacer(!isExpanded || mode != .creating)
+        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
         
-        if mode != .done {
+        if viewModel.mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
-            animation: namespace,
+            animation: nsTraitPicker,
             isExpanded: $isExpanded
           )
         }
@@ -51,21 +46,22 @@ struct NounCreator: View {
       }
     }, cancel: {
       withAnimation {
-        if mode == .done {
+        if viewModel.mode == .done {
           viewModel.setMode(to: .creating)
         } else {
           viewModel.setMode(to: .cancel)
         }
       }
     }))
-    // Sheet presented when the user is finished creating their noun and is ready to name/save their noun
-    .bottomSheet(isPresented: mode == .done, showDimmingView: false, allowDrag: false, content: {
+    // Sheet presented when the user is finished creating their
+    // noun and is ready to name/save their noun
+    .bottomSheet(isPresented: viewModel.mode == .done, showDimmingView: false, allowDrag: false) {
       NounMetadataDialog(viewModel: viewModel)
-    })
+    }
     // Sheet presented when the user wants to cancel the noun creation process and go to the previous screen
-    .bottomSheet(isPresented: mode == .cancel, showDimmingView: true, allowDrag: false, content: {
+    .bottomSheet(isPresented: viewModel.mode == .cancel, showDimmingView: true, allowDrag: false) {
       DiscardNounSheet(viewModel: viewModel)
-    })
+    }
     .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
       EmitterView()
