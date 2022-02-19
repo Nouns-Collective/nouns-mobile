@@ -5711,12 +5711,14 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounPlayground` struct is generated, and contains static references to 2 localization keys.
+    /// This `R.string.nounPlayground` struct is generated, and contains static references to 3 localization keys.
     struct nounPlayground {
       /// Value: Hold to record
       static let holdToRecordCoachmark = Rswift.StringResource(key: "hold-to-record.coachmark", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Say something
-      static let title = Rswift.StringResource(key: "title", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: I’m recording…
+      static let voiceStateRecording = Rswift.StringResource(key: "voice.state.recording", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Say something!
+      static let voiceStateNotRecording = Rswift.StringResource(key: "voice.state.not-recording", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Hold to record
       static func holdToRecordCoachmark(preferredLanguages: [String]? = nil) -> String {
@@ -5731,17 +5733,30 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("hold-to-record.coachmark", tableName: "NounPlayground", bundle: bundle, comment: "")
       }
 
-      /// Value: Say something
-      static func title(preferredLanguages: [String]? = nil) -> String {
+      /// Value: I’m recording…
+      static func voiceStateRecording(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "NounPlayground", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("voice.state.recording", tableName: "NounPlayground", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "NounPlayground", preferredLanguages: preferredLanguages) else {
-          return "title"
+          return "voice.state.recording"
         }
 
-        return NSLocalizedString("title", tableName: "NounPlayground", bundle: bundle, comment: "")
+        return NSLocalizedString("voice.state.recording", tableName: "NounPlayground", bundle: bundle, comment: "")
+      }
+
+      /// Value: Say something!
+      static func voiceStateNotRecording(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("voice.state.not-recording", tableName: "NounPlayground", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounPlayground", preferredLanguages: preferredLanguages) else {
+          return "voice.state.not-recording"
+        }
+
+        return NSLocalizedString("voice.state.not-recording", tableName: "NounPlayground", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

@@ -42,7 +42,7 @@ final class MLAudioStateDetector: AudioStateDetector {
   ///
   private let subject = PassthroughSubject<SNClassificationResult, Error>()
   
-  
+  ///
   private var detectionCancellable: AnyCancellable?
   
   /// An array of sound analysis observers that the class stores to control their lifetimes.

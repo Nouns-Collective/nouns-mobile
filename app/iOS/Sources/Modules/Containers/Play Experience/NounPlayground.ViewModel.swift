@@ -9,7 +9,6 @@ import SwiftUI
 import Services
 import Combine
 import os
-import AVFAudio
 
 extension NounPlayground {
   
@@ -51,6 +50,8 @@ extension NounPlayground {
         voiceChangerEngine.captureMode = .manual(isRecording)
       }
     }
+    
+    @Published private(set) var voiceRecordStateCoachmark: String
     
     /// Shows the audio permission sheet to request voice capture permission.
     @Published private(set) var showAudioCapturePermissionDialog = false
@@ -94,6 +95,9 @@ extension NounPlayground {
     /// Stores this type-erasing cancellable instance in the specified set.
     private var cancellables = Set<AnyCancellable>()
     
+    /// Holds a reference to the localized text.
+    private let localize = R.string.nounPlayground.self
+    
     /// An object for writing interpolated string messages to the unified logging system.
     private let logger = Logger(
       subsystem: "wtf.nouns.ios",
@@ -108,6 +112,8 @@ extension NounPlayground {
       self.currentNoun = noun
       self.voiceChangerEngine = voiceChangerEngine
       self.screenRecorder = screenRecorder
+      
+      voiceRecordStateCoachmark = localize.voiceStateNotRecording()
       
       // Gives 0.3 seconds buffer before presenting the audio capture permission dialog.
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -124,7 +130,7 @@ extension NounPlayground {
           
           guard case .manual = self.voiceChangerEngine.captureMode else { return }
           
-          // Changing the status to "share" presents a dialog
+          // Changing the status to `share` presents a dialog
           // to ask the user to share or reject the recorded spoken name.
           self.state = .share
           
@@ -138,8 +144,20 @@ extension NounPlayground {
       // Updates the state on whether the audio contains `speech` or `silence`.
       voiceChangerEngine.$audioProcessingState
         .sink { [weak self] status in
-          // On speech, the noun will move the mouth up & down.
-          self?.isNounTalking = (status == .speech)
+          guard let self = self else { return }
+          
+          switch status {
+          case .speech:
+            // On speech, the noun will move the mouth up & down.
+            self.isNounTalking = (status == .speech)
+            
+            // Update the coachmark on top to indicate the noun is talking.
+            self.voiceRecordStateCoachmark = self.localize.voiceStateRecording()
+            
+          case .silence, .undefined:
+            // Update the coachmark on top to indicate the noun is not talking.
+            self.voiceRecordStateCoachmark = self.localize.voiceStateNotRecording()
+          }
         }
         .store(in: &cancellables)
     }

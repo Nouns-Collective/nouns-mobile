@@ -8,4 +8,6 @@
 
 "hold-to-record.coachmark" = "Hold to record";
 
-"title" = "Say something";
+"voice.state.not-recording" = "Say something!";
+
+"voice.state.recording" = "I’m recording…";

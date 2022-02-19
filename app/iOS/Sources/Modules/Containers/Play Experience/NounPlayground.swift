@@ -39,8 +39,8 @@ struct NounPlayground: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      // Displays the current recoding state.
-      Text(localize.title())
+      // Displays the current voice recoding state.
+      Text(viewModel.voiceRecordStateCoachmark)
         .font(.custom(.bold, size: 19))
         .offset(y: -80)
         .foregroundColor(.componentNounsBlack)
