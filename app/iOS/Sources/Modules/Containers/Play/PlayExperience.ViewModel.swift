@@ -12,7 +12,7 @@ extension PlayExperience {
   
   class ViewModel: ObservableObject {
     
-    /// 
+    /// An initial random `seed` to be presented.
     @Published var seed = Seed.default
   }
 }

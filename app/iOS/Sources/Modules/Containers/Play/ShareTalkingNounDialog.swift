@@ -12,12 +12,13 @@ import Services
 ///
 struct ShareTalkingNounDialog: View {
   
-  ///
+  /// A value that identifies the location of the video to be shared.
   let videoURL: URL?
   
-  ///
+  /// The completed fraction of the video preparation task represented by the progress view.
   let progressValue: Double
   
+  /// A boolean indicates whether the activity sharing sheet is presented.
   @State private var isShareSheetPresented = false
   
   var body: some View {

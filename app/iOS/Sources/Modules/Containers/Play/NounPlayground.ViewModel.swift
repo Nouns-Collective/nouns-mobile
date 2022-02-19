@@ -85,10 +85,10 @@ extension NounPlayground {
     /// The current displayed noun.
     let currentNoun: Noun
     
-    ///
+    /// A service to record and play captured voice with an effect applied.
     private let voiceChangerEngine: VoiceChangerEngine
     
-    ///
+    /// A service to record the spoken noun while playing to the captured voice.
     private let screenRecorder: ScreenRecorder
     
     /// Stores this type-erasing cancellable instance in the specified set.

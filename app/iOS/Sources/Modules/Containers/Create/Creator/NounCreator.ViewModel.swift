@@ -50,15 +50,7 @@ extension NounCreator {
     private var visibleSections: [TraitType] = []
     
     /// The `Seed` in build progress.
-    @Published var seed: Seed = {
-      Seed(
-        background: 0,
-        glasses: 0,
-        head: 0,
-        body: 0,
-        accessory: 0
-      )
-    }()
+    @Published var seed: Seed = .default
     
     /// Indicates the current modifiable trait type selected in the slot machine.
     @Published var currentModifiableTraitType: TraitType = .glasses {

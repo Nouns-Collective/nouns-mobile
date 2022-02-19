@@ -39,16 +39,28 @@ struct RouterView: View {
     // TODO: Enhancing OutlineTabView API by prodviding a view modifier to construct the tab items
     OutlineTabView(selection: $selectedTab) {
       ExploreExperience()
-        .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
+        .outlineTabItem(
+          normal: .exploreOutline,
+          selected: .exploreFill,
+          tag: 0)
       
       CreateExperience()
-        .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
+        .outlineTabItem(
+          normal: .createOutline,
+          selected: .createFill,
+          tag: 1)
       
       PlayExperience()
-        .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
+        .outlineTabItem(
+          normal: .playOutline,
+          selected: .playFill,
+          tag: 2)
       
       AboutView()
-        .outlineTabItem(normal: "about-outline", selected: "about-fill", tag: 3)
+        .outlineTabItem(
+          normal: .settingsOutline,
+          selected: .settingsFill,
+          tag: 3)
     }
     .onboarding()
   }

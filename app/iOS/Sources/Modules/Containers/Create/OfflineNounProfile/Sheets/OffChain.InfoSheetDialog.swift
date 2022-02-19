@@ -14,7 +14,7 @@ extension OffChainNounProfile {
   struct InfoSheetDialog: View {
     
     let viewModel: OffChainNounProfile.ViewModel
-    let showMoreActions: () -> Void
+    private let showMoreActions: () -> Void
     
     init(
       viewModel: OffChainNounProfile.ViewModel,
@@ -22,6 +22,15 @@ extension OffChainNounProfile {
     ) {
       self.viewModel = viewModel
       self.showMoreActions = showMoreActions
+    }
+    
+    /// A view that displays the created name to be exported and shared.
+    ///
+    /// - Returns: This view contains the created noun with background.
+    private var nounExportView: some View {
+      NounPuzzle(seed: viewModel.noun.seed)
+        .frame(width: 512, height: 512, alignment: .center)
+        .background(Gradient(.allCases[viewModel.noun.seed.background]))
     }
     
     var body: some View {
@@ -46,7 +55,7 @@ extension OffChainNounProfile {
               // Builds the view and generates the image
               // before the share sheet is presented
               // to ensure a blank image is not returned
-              let imageData = NounExportView(viewModel: viewModel).asImageData()
+              let imageData = nounExportView.asImageData()
               viewModel.exportImageData = imageData
               viewModel.isShareSheetPresented.toggle()
             })

@@ -75,9 +75,13 @@ extension EnvironmentValues {
 private struct OutlineTabItem: Hashable, Identifiable {
   let id = UUID()
   // TODO: Icons should be type safe and conform to `View`.
-  let normalStateIcon: String
-  let selectedStateIcon: String
+  let normalStateIcon: Image
+  let selectedStateIcon: Image
   let tag: Int
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
 }
 
 private struct OutlineTabBar: View {
@@ -109,7 +113,7 @@ private struct OutlineTabBar: View {
     let isSelected = selectedItemTag == item.tag
     let icon = isSelected ? item.selectedStateIcon : item.normalStateIcon
     
-    return Image(icon, bundle: .module)
+    return icon
       .background(Group {
         if isSelected {
           Color.clear
@@ -157,7 +161,7 @@ extension View {
   ///   - normal: Sets the icon for normal state.
   ///   - selected: Sets the icon for selected state.
   ///   - tag: Sets the unique tag value of this view.
-  public func outlineTabItem(normal: String, selected: String, tag: Int) -> some View {
+  public func outlineTabItem(normal: Image, selected: Image, tag: Int) -> some View {
     modifier(OutlineTabContent(tag))
       .preference(
         key: OutlineTabItems.self,
@@ -248,16 +252,32 @@ struct OutlineTabView_preview: PreviewProvider {
   static var previews: some View {
     OutlineTabView(selection: .constant(0)) {
       Gradient.cherrySunset
-        .outlineTabItem(normal: "explore-outline", selected: "explore-fill", tag: 0)
+        .outlineTabItem(
+          normal: .exploreOutline,
+          selected: .exploreFill,
+          tag: 0
+        )
       
       Gradient.bubbleGum
-        .outlineTabItem(normal: "create-outline", selected: "create-fill", tag: 1)
+        .outlineTabItem(
+          normal: .createOutline,
+          selected: .createFill,
+          tag: 1
+        )
       
       Gradient.lemonDrop
-        .outlineTabItem(normal: "play-outline", selected: "play-fill", tag: 2)
+        .outlineTabItem(
+          normal: .playOutline,
+          selected: .playFill,
+          tag: 2
+        )
       
       Gradient.orangesicle
-        .outlineTabItem(normal: "settings-outline", selected: "settings-fill", tag: 3)
+        .outlineTabItem(
+          normal: .settingsOutline,
+          selected: .settingsFill,
+          tag: 3
+        )
     }
   }
 }

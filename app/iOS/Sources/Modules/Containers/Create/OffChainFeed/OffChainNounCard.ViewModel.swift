@@ -12,14 +12,14 @@ extension OffChainNounCard {
   
   @MainActor
   class ViewModel: ObservableObject {
+    @Published private(set) var nounBirthday: String
+    
     let noun: Noun
     
     init(noun: Noun) {
       self.noun = noun
-    }
-    
-    var nounBirthday: String {
-      noun.createdAt.formatted()
+      
+      nounBirthday = noun.createdAt.formatted(dateStyle: .long)
     }
   }
 }

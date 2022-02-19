@@ -12,17 +12,19 @@ import Services
 /// A view to present the user's created noun, it's infromation, and edit options
 struct OffChainNounProfile: View {
   
-  @StateObject var viewModel: ViewModel
-
-  @Environment(\.dismiss) private var dismiss
-  
-  private enum SheetState: Int {
+  private enum SheetMode: Int {
     case info
     case moreActions
   }
   
-  @State private var sheetState: SheetState = .info
-    
+  @StateObject var viewModel: ViewModel
+  
+  /// A reference to dismiss the current presentation.
+  @Environment(\.dismiss) private var dismiss
+  
+  /// Displays the current sheet mode with related options.
+  @State private var sheetState: SheetMode = .info
+  
   var body: some View {
     VStack(spacing: 0) {
       // Build & Display the Noun.
@@ -37,34 +39,32 @@ struct OffChainNounProfile: View {
             sheetState = .moreActions
           })
           .actionSheetStackItem(
-            tag: SheetState.info,
-            title: viewModel.noun.name
-          ) {
-            dismiss()
-          }
+            tag: SheetMode.info,
+            title: viewModel.noun.name,
+            exit: {
+              dismiss()
+            })
         
         // Displays various options to amend the built Noun.
         MoreActionsDialog(viewModel: viewModel)
           .actionSheetStackItem(
-            tag: SheetState.moreActions,
+            tag: SheetMode.moreActions,
             title: R.string.offchainNounActions.title()
           )
       }
       .padding(.bottom, 40)
       .padding(.horizontal, 20)
     }
+    .background(Gradient(.allCases[viewModel.noun.seed.background]))
+    // Option to delete the current build progress.
     .bottomSheet(isPresented: $viewModel.isDeletePresented) {
-      DeleteSheet(
-        viewModel: viewModel
-      )
+      DeleteSheet(viewModel: viewModel)
     }
-    // Sheet to rename the Noun.
+    // Option to rename the noun.
     .bottomSheet(isPresented: $viewModel.isRenamePresented) {
-      RenameActionSheet(
-        viewModel: viewModel
-      )
+      RenameActionSheet(viewModel: viewModel)
     }
-    .background(Gradient(GradientColors.allCases[viewModel.noun.seed.background]))
+    // Option to share the built noun.
     .sheet(isPresented: $viewModel.isShareSheetPresented) {
       if let imageData = viewModel.exportImageData, let image = UIImage(data: imageData) {
         ShareSheet(activityItems: [image], imageMetadata: image, titleMetadata: viewModel.noun.name)
@@ -72,17 +72,3 @@ struct OffChainNounProfile: View {
     }
   }
 }
-
-extension OffChainNounProfile {
-
-   struct NounExportView: View {
-
-     @ObservedObject var viewModel: ViewModel
-
-     var body: some View {
-       NounPuzzle(seed: viewModel.noun.seed)
-         .frame(width: 512, height: 512, alignment: .center)
-         .background(Gradient(.allCases[viewModel.noun.seed.background]))
-     }
-   }
- }
