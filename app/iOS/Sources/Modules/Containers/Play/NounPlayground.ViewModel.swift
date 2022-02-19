@@ -7,112 +7,219 @@
 
 import SwiftUI
 import Services
+import Combine
+import os
+import AVFAudio
 
 extension NounPlayground {
   
   final class ViewModel: ObservableObject {
     
     enum State {
-      /// An initial state of showing a coachmark to guide the user
-      case coachmark
       
       /// The user is not recording but is talking and the noun is repeating
       case freestyle
       
-      /// The user is recording their speech along with their noun's reptition
+      /// The user is recording their speech along with their noun's reptition, then persisted to the disk.
       case recording
       
       /// The user has completed recording and is ready to share, save, or start over
       case share
     }
     
-    @Published private(set) var isRecording = false
-    @Published private(set) var state: State = .coachmark
-    @Published private(set) var showAudioPermissionDialog = false
-    @Published private(set) var showAudioSettingsSheet = false
+    /// The current state of the playground where it switches between simply playing
+    /// the voice with effect `freestyle`, adding the audio persistence
+    /// option `recording`, or allowing the user to share it `share`.
+    @Published private(set) var state: State = .freestyle {
+      didSet {
+        switch state {
+        case .freestyle:
+          startListening()
+          
+        case .recording:
+          break
+          
+        case .share:
+          stopListening()
+        }
+      }
+    }
     
-    public let screenRecorder: ScreenRecorder
+    /// Determines whether the user request to record and store audio on disk for sharing.
+    @Published var isRecording = false {
+      didSet {
+        voiceChangerEngine.captureMode = .manual(isRecording)
+      }
+    }
     
-    public var audioProcessingState: AudioStatus {
+    /// Shows the audio permission sheet to request voice capture permission.
+    @Published private(set) var showAudioCapturePermissionDialog = false
+    
+    /// Shows the audio settings sheet when the voice capture permission has been denied or restricted.
+    @Published private(set) var showAudioCaptureSettingsSheet = false
+    
+    /// A Boolean value indicates whether the noun is talking.
+    @Published private(set) var isNounTalking = false
+    
+    /// Represents recorded videos of the talking noun with version with and without watermark.
+    @Published private(set) var recordedVideo: (preview: URL, share: URL)?
+    
+    ///
+    @Published private(set) var talkingNounRecordProgress: Double = 0.0
+    
+    /// Represents the recorded voice playback status if on `speech` or `silent` mode.
+    var audioProcessingState: AudioStatus {
       voiceChangerEngine.audioProcessingState
     }
     
-    public let voiceChangerEngine: VoiceChangerEngine
-    
-    public var currentEffect: VoiceChangerEngine.Effect {
+    /// Represents the effect currently applied to the recorded voice.
+    var currentVoiceEffect: VoiceChangerEngine.Effect {
       voiceChangerEngine.effect
     }
     
-    public var isRequestingAudioPermission: Bool {
-      showAudioSettingsSheet || showAudioPermissionDialog
+    /// A boolean to indicate audio capture permission dialog is presented.
+    var isRequestingAudioCapturePermission: Bool {
+      showAudioCaptureSettingsSheet || showAudioCapturePermissionDialog
     }
     
-    init(voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine(), screenRecorder: ScreenRecorder = CAScreenRecorder()) {
+    /// The current displayed noun.
+    let currentNoun: Noun
+    
+    ///
+    private let voiceChangerEngine: VoiceChangerEngine
+    
+    ///
+    private let screenRecorder: ScreenRecorder
+    
+    /// Stores this type-erasing cancellable instance in the specified set.
+    private var cancellables = Set<AnyCancellable>()
+    
+    /// An object for writing interpolated string messages to the unified logging system.
+    private let logger = Logger(
+      subsystem: "wtf.nouns.ios",
+      category: "Noun Playground"
+    )
+    
+    init(
+      noun: Noun,
+      voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine(),
+      screenRecorder: ScreenRecorder = CAScreenRecorder()
+    ) {
+      self.currentNoun = noun
       self.voiceChangerEngine = voiceChangerEngine
       self.screenRecorder = screenRecorder
       
-      handleRecordPermission()
+      // Gives 0.3 seconds buffer before presenting the audio capture permission dialog.
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        self.handleVoiceCapturePermission()
+      }
+      
+      // Observes the location of voice with the effect
+      // applied, then display the share experience.
+      voiceChangerEngine.$outputFileURL
+        .compactMap { $0 }
+        .sink { [weak self] audioFileURLWithEffect in
+          
+          guard let self = self else { return }
+          
+          guard case .manual = self.voiceChangerEngine.captureMode else { return }
+          
+          // Changing the status to "share" presents a dialog
+          // to ask the user to share or reject the recorded spoken name.
+          self.state = .share
+          
+          // Reset the capture voice using the sound analysis.
+          self.voiceChangerEngine.captureMode = .auto
+          
+          self.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
+        }
+        .store(in: &cancellables)
+      
+      // Updates the state on whether the audio contains `speech` or `silence`.
+      voiceChangerEngine.$audioProcessingState
+        .sink { [weak self] status in
+          // On speech, the noun will move the mouth up & down.
+          self?.isNounTalking = (status == .speech)
+        }
+        .store(in: &cancellables)
     }
     
     deinit {
       stopListening()
     }
     
-    private func handleRecordPermission() {
-      switch voiceChangerEngine.recordPermission {
-      case .undetermined:
-        showAudioPermissionDialog = true
-        
-      case .granted:
-        showAudioPermissionDialog = false
-        startListening()
-        
-      case .denied, .restricted:
-        showAudioSettingsSheet = true
-      }
-    }
+    // MARK: - Voice Capture
     
     /// Requests the user's permission to use the microphone
     @MainActor
     func requestMicrophonePermission() {
       Task {
-        do {
-          try await voiceChangerEngine.requestRecordPermission()
-          handleRecordPermission()
-          
-        } catch { }
+        await voiceChangerEngine.requestRecordPermission()
+        handleVoiceCapturePermission()
       }
     }
     
-    /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
+    private func handleVoiceCapturePermission() {
+      switch voiceChangerEngine.recordPermission {
+      case .undetermined:
+        showAudioCapturePermissionDialog = true
+        
+      case .granted:
+        showAudioCapturePermissionDialog = false
+        startListening()
+        
+      case .denied, .restricted:
+        showAudioCaptureSettingsSheet = true
+      }
+    }
+    
+    /// Asks the `VoiceChangerEngine` to start listening to audio using the microphone input.
+    /// Recording is triggered depending on the selected `manual` or `auto` mode
+    /// where the latter uses sound analysis to detect `speech` or `silence`.
     func startListening() {
       do {
         try voiceChangerEngine.prepare()
-      } catch { }
+      } catch {
+        logger.error("💥 🎙 Unable to prepare the voice changer engine: \(error.localizedDescription, privacy: .public)")
+      }
     }
     
-    /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
+    /// Asks the `VoiceChangerEngine` to stop capturing audio.
     func stopListening() {
       voiceChangerEngine.stop()
     }
+    
+    // MARK: - Audio Effects
     
     /// Updates the currently selected effect
     func updateEffect(to effect: VoiceChangerEngine.Effect) {
       voiceChangerEngine.effect = effect
     }
     
-    /// Updates the view state to a new state
-    func updateState(to newState: State) {
-      state = newState
+    // MARK: - Screen Recorder / Audio Effect
+    
+    func startVideoRecording<V, B>(source: V, background: B) where V: View, B: View {
+      guard let recordedVoiceFileURL = voiceChangerEngine.outputFileURL else {
+        return
+      }
+      
+      screenRecorder.startRecording(
+        source,
+        backgroundView: background,
+        audioFileURL: recordedVoiceFileURL
+      )
     }
     
     @MainActor
-    func stopRecording() {
+    func stopVideoRecording() {
       Task {
         do {
-          let videos = try await screenRecorder.stopRecording()
+          // The publisher will trigger the activity sharing sheet
+          // with the url as an attachment.
+          recordedVideo = try await screenRecorder.stopRecording()
+          
         } catch {
-          print("An error has occured while creating video: \(error)")
+          logger.error("💥 An error occurred while stopping screen recording: \(error.localizedDescription, privacy: .public)")
         }
       }
     }

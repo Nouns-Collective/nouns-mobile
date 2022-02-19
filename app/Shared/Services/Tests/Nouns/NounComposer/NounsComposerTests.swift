@@ -11,7 +11,7 @@ import XCTest
 final class NounsComposerTests: XCTestCase {
   
     func testDefaultInitilizerLoadTraits() throws {
-        let composer = try OfflineNounComposer.default()
+        let composer = OfflineNounComposer.default()
         
         XCTAssertFalse(composer.backgroundColors.isEmpty)
         XCTAssertFalse(composer.palette.isEmpty)

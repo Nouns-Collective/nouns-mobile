@@ -19,4 +19,19 @@ extension SKSpriteNode {
       return $0 + [texture]
     }
   }
+  
+  static func loadTextures(atlases: [String]) -> [SKTexture] {
+    guard var atlas = atlases.first?.components(separatedBy: "-") else {
+      return []
+    }
+    
+    atlas.removeLast()
+    
+    let textureAtlas = SKTextureAtlas(named: atlas.joined(separator: "-"))
+    return atlases.reduce([]) {
+      let texture = textureAtlas.textureNamed($1)
+      texture.filteringMode = .nearest
+      return $0 + [texture]
+    }
+  }
 }

@@ -7,9 +7,20 @@
 
 import Foundation
 import AVFoundation
+import os
 
 /// Auto-Listening & record  & applies pre-built effects.
 public class VoiceChangerEngine: ObservableObject {
+  
+  /// Various modes to capture the voice.
+  public enum CaptureMode {
+    
+    /// Voice capture is based on sound analysis where speech & slience are the triggers.
+    case auto
+    
+    /// Voice capture is based on manual managment with the given assiated value `isRecording`.
+    case manual(_ isRecording: Bool)
+  }
   
   /// Vairous voice change states.
   public enum State: String {
@@ -26,11 +37,18 @@ public class VoiceChangerEngine: ObservableObject {
     case monster
   }
   
+  /// The location of the audio file after applying the chosen effect.
+  @Published public private(set) var outputFileURL: URL? {
+    didSet {
+      objectWillChange.send()
+    }
+  }
+  
   /// The current voice changer state.
   @Published public private(set) var state: State = .idle {
     didSet {
       if oldValue != state {
-        print("🏁🎙 Audio Engine is", state.rawValue)
+        logger.debug("🏁🎙 Audio Engine is \(self.state.rawValue, privacy: .public)")
       }
     }
   }
@@ -43,30 +61,47 @@ public class VoiceChangerEngine: ObservableObject {
   /// Determines the state of the audio being processed.
   @Published public private(set) var audioProcessingState: AudioStatus = .undefined {
     didSet {
-      print("🔊 Audio is processed as", audioProcessingState.rawValue)
+      logger.debug("🔊 Audio is processed as \(self.audioProcessingState.rawValue)")
     }
   }
- 
+  
+  /// States the mode currently applied to capture the voice.
+  @Published public var captureMode: CaptureMode = .auto
+  
+  /// A boolean to indicate whether the start and stop of voice capture will be controlled
+  /// manually instead of the sound analysis based on speech & silence.
+  public var isVoiceCapturedUsingSoundAnalysis: Bool = true
+  
+  /// A boolean to enable persisting the voice recorded to the disk.
+  public var isPersistenceEnabled: Bool = false
+  
   /// Audio nodes, controls playback, and configures real-time rendering.
   private let audioEngine = AVAudioEngine()
   
   /// A reader node for the recoded file captured from the hardware input (mic).
   private let recordedFilePlayer = AVAudioPlayerNode()
   
-  /// An object that represents an redcoded audio file.
-  private var recordedFile: AVAudioFile?
+  /// An object that represents an recorded audio file with no effect applied.
+  private var voiceLessEffectOutput: VoiceCaptureOutput?
+  
+  /// An object that represents an redcoded audio file with the chosen effect applied
+  private var voicePlusEffectOuput: VoiceCaptureOutput?
   
   /// Calculates the recorded audio powers to determine the status if `loud` or `silent`.
   private var audioStateDetector: AudioStateDetector?
   
+  /// The index of a bus on an audio node while monitoring.
   private var outputBus: AVAudioNodeBus = 0
   
-  /// Set an output format.
-  private var outputFormat: AVAudioFormat
+  /// A number of audio sample frames.
+  private let bufferSize = AVAudioFrameCount(4096)
   
-  public init() {
-    outputFormat = audioEngine.inputNode.outputFormat(forBus: outputBus)
-  }
+  private let logger = Logger(
+    subsystem: "wtf.nouns.ios.services",
+    category: "VoiceChangerEngine"
+  )
+  
+  public init() { }
   
   deinit {
     stop()
@@ -80,10 +115,8 @@ public class VoiceChangerEngine: ObservableObject {
     stop()
     
     try startAudioSession()
-    
-    audioStateDetector = try MLAudioStateDetector(audioFormat: outputFormat)
     try prepareAudioEngineToRecordSpeech()
-    prepareAudioEngine(forEffect: effect)
+    try prepareAudioEngine(forEffect: effect)
     
     audioEngine.prepare()
     try audioEngine.start()
@@ -95,8 +128,8 @@ public class VoiceChangerEngine: ObservableObject {
       if audioEngine.isRunning {
         audioEngine.stop()
 //        try? audioEngine.inputNode.setVoiceProcessingEnabled(false)
-        audioEngine.inputNode.removeTap(onBus: 0)
-        audioEngine.mainMixerNode.removeTap(onBus: 0)
+        audioEngine.inputNode.removeTap(onBus: outputBus)
+        audioEngine.mainMixerNode.removeTap(onBus: outputBus)
       }
       
       audioStateDetector = nil
@@ -104,7 +137,7 @@ public class VoiceChangerEngine: ObservableObject {
     stopAudioSession()
   }
   
-  private func prepareAudioEngine(forEffect effect: VoiceChangerEngine.Effect) {
+  private func prepareAudioEngine(forEffect effect: VoiceChangerEngine.Effect) throws {
     audioEngine.attach(recordedFilePlayer)
     
     // Plug-in all audio units to apply related effect.
@@ -116,14 +149,38 @@ public class VoiceChangerEngine: ObservableObject {
     }
     
     audioEngine.connect(outputAudioUnit, to: audioEngine.mainMixerNode, format: nil)
+    
+    let mainMixer = audioEngine.mainMixerNode
+    let outputFormat = mainMixer.outputFormat(forBus: outputBus)
+    voicePlusEffectOuput = try VoiceCaptureOutput(audioFormat: outputFormat)
+    
+    mainMixer.installTap(
+      onBus: outputBus,
+      bufferSize: bufferSize,
+      format: outputFormat
+    ) { [weak self] buffer, _ in
+
+      guard let self = self else { return }
+
+      // While the captured voice with effect is playing, persist the buffer to the disk.
+      guard self.state == .playing else { return }
+      
+      do {
+        try self.voicePlusEffectOuput?.persistStream(buffer)
+
+      } catch {
+        self.logger.error("⚠️ 🔊 Could not persist buffer with effect: \(error.localizedDescription, privacy: .public)")
+      }
+    }
   }
   
   private func prepareAudioEngineToRecordSpeech() throws {
-    
     // Record using the mic.
     let input = audioEngine.inputNode
+    let outputFormat = input.outputFormat(forBus: outputBus)
+    audioStateDetector = try MLAudioStateDetector(audioFormat: outputFormat)
+    voiceLessEffectOutput = try VoiceCaptureOutput(audioFormat: outputFormat)
 //    try input.setVoiceProcessingEnabled(true)
-    let bufferSize = AVAudioFrameCount(4096)
     
     input.installTap(
       onBus: outputBus,
@@ -131,83 +188,98 @@ public class VoiceChangerEngine: ObservableObject {
       format: outputFormat
     ) { [weak self] buffer, when in
       
-      guard let self = self, let audioStateDetector = self.audioStateDetector else {
-        return
-      }
+      guard let self = self else { return }
       
       // Stop recording if the previous recording is being played.
       guard self.state != .playing else { return }
       
-      // Process the current samples to find audio status.
-      audioStateDetector.process(buffer: buffer, sampleTime: when.sampleTime)
-      
-      switch audioStateDetector.status {
-      case .speech:
-        self.persistStreamingAudioBuffer(buffer)
-
-      case .silence:
-        self.processSilence()
+      switch self.captureMode {
+      case .manual(let isRecoding):
+        self.handleManualRecording(for: buffer, isRecording: isRecoding)
         
-      case .undefined:
-        break
+      case .auto:
+        self.handleAutoRecording(for: buffer, sampleTime: when.sampleTime)
       }
+    }
+  }
+  
+  private func handleManualRecording(for buffer: AVAudioPCMBuffer, isRecording: Bool) {
+    guard isRecording else {
+      return playbackCapturedVoice()
+    }
+    
+    do {
+      try voiceLessEffectOutput?.persistStream(buffer)
+
+    } catch {
+      logger.error("⚠️ 🔊 Could not persist buffer without effect: \(error.localizedDescription, privacy: .public)")
+    }
+  }
+  
+  private func handleAutoRecording(for buffer: AVAudioPCMBuffer, sampleTime: AVAudioFramePosition) {
+    guard let audioStateDetector = audioStateDetector else {
+      return
+    }
+
+    // Process the current samples to find audio status.
+    audioStateDetector.process(buffer: buffer, sampleTime: sampleTime)
+    
+    switch audioStateDetector.status {
+    case .speech:
+      // Update the state to in the recording state.
+      state = .recording
+
+      do {
+        try voiceLessEffectOutput?.persistStream(buffer)
+
+      } catch {
+        logger.error("⚠️ 🔊 Could not persist buffer without effect: \(error.localizedDescription, privacy: .public)")
+      }
+
+    case .silence:
+      playbackCapturedVoice()
+
+    case .undefined:
+      break
     }
   }
   
   // MARK: - Audio Units Effects
   
-  private func applyEffect(file: AVAudioFile) {
-    recordedFilePlayer.scheduleFile(file, at: nil) { [weak self] in
+  /// Plays back the voice with effect.
+  private func playbackCapturedVoice() {
+    // Access the voice captured and persisted to the disk.
+    guard let voiceLessEffectOutput = voiceLessEffectOutput,
+          !voiceLessEffectOutput.isEmpty
+    else { return }
+    
+    recordedFilePlayer.scheduleFile(voiceLessEffectOutput.audioFile, at: nil) { [weak self] in
+      // When the play of the audio without effect has stopped.
+      guard let self = self else { return }
+      
+      // Deletes the audio with no effect after the playback.
+      self.voiceLessEffectOutput = nil
+      
+      DispatchQueue.main.async {
+        // Publish the location of the audio recorded with the chosen effect.
+        self.outputFileURL = self.voicePlusEffectOuput?.audioFile.url
+        
+        self.logger.info("📍 🔊 Audio with effect stored at \(self.outputFileURL?.absoluteString ?? "💥 Unavailable")")
+      }
+      
+      // Resets the voice capture & effect applied to the listening state.
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self?.state = .idle
-        self?.audioProcessingState = .silence
+        self.state = .idle
+        self.audioProcessingState = .silence
       }
     }
     
-    state = .playing
-    audioProcessingState = .speech
+    DispatchQueue.main.async {
+      self.state = .playing
+      self.audioProcessingState = .speech
+    }
+    
     recordedFilePlayer.play()
-  }
-  
-  // MARK: - Process recorded voice
-  
-  private func persistStreamingAudioBuffer(_ buffer: AVAudioPCMBuffer) {
-    do {
-      // Update the state to in the recording state.
-      state = .recording
-      
-      try newAudioFile()
-      try recordedFile?.write(from: buffer)
-      
-    } catch {
-      print("⚠️ Could not write buffer: \(error)")
-    }
-  }
-  
-  private func processSilence() {
-    guard let recordedFile = recordedFile else {
-      return
-    }
-    
-    applyEffect(file: recordedFile)
-    self.recordedFile = nil
-  }
-  
-  /// Generates a new `AVAudioFile` if it does not exist.
-  private func newAudioFile() throws {
-    guard recordedFile == nil else { return }
-    
-    recordedFile = try AVAudioFile(
-      forWriting: generateUniqueFileURL(),
-      settings: outputFormat.settings
-    )
-  }
-  
-  private func generateUniqueFileURL() -> URL {
-    var fileURL = URL(fileURLWithPath: NSTemporaryDirectory())
-    fileURL.appendPathComponent(UUID().uuidString)
-    fileURL.appendPathExtension("caf")
-    return fileURL
   }
 }
 
@@ -230,13 +302,13 @@ extension VoiceChangerEngine: AudioAuthorization {
       return .denied
       
     @unknown default:
-      fatalError("unknown authorization status for microphone access.")
+      fatalError("💥 🔊 unknown authorization status for microphone access.")
     }
   }
   
   @discardableResult
-  public func requestRecordPermission() async throws -> Bool {
-    return await AVCaptureDevice.requestAccess(for: .audio)
+  public func requestRecordPermission() async -> Bool {
+    await AVCaptureDevice.requestAccess(for: .audio)
   }
   
   /// Configures and activates an `AVAudioSession`.

@@ -16,14 +16,15 @@ final class AppCore {
   
   let onChainNounsService: OnChainNounsService = TheGraphOnChainNouns()
   let offChainNounsService: OffChainNounsService = CoreDataOffChainNouns()
+  let nounComposer: NounComposer = OfflineNounComposer.default()
+  
+  /// A service to extract the eth domain from the network.
+  let ensNameService: ENS = Web3ENSProvider()
   
   /// Service responsible for handling Apple Push Notifications.
-  lazy var messaging: Messaging = FirebaseMessaging()
+  let messaging: Messaging = FirebaseMessaging()
   
   /// User stored preference settings.
   lazy var settingsStore: SettingsStore = UserDefaultsSettingsStore(messaging: messaging)
   
-  lazy var ensNameService: ENS = Web3ENSProvider()
-  
-  lazy var nounComposer: NounComposer = OfflineNounComposer.default()
 }

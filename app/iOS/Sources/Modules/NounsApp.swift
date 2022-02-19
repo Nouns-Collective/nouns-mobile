@@ -46,37 +46,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     
-    // Set up remote notifications.
-    setUpMessaging()
-    
     return true
   }
   
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) { }
   
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) { }
-}
-
-// MARK: - Messaging
-
-extension AppDelegate {
-  
-  func setUpMessaging() {
-    
-    let messaging = AppCore.shared.messaging
-    let settingsStore = AppCore.shared.settingsStore
-    // Subscribe to topics on APNs registration.
-    messaging.setTokenHandler = {
-      settingsStore.syncMessagingTopicsSubscription()
-    }
-    
-    Task {
-      // Requests APNs authorization.
-      _ = try await messaging.appAuthorization(
-        UIApplication.shared,
-        authorizationOptions: [.alert, .badge, .sound]
-      )
-    }
-  }
-  
 }

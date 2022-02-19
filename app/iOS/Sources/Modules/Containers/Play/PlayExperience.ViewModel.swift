@@ -11,11 +11,8 @@ import Services
 extension PlayExperience {
   
   class ViewModel: ObservableObject {
-    @Published var seed: Seed
     
-    init() {
-      seed = Seed(background: 0, glasses: 8, head: 26, body: 20, accessory: 0)
-    }
+    /// 
+    @Published var seed = Seed.default
   }
-  
 }

@@ -16,6 +16,43 @@ struct NounProfileInfo: View {
   @State private var isShareSheetPresented = false
   @Environment(\.dismiss) private var dismiss
   
+  /// A view that displays the toolbar content above the noun info list.
+  ///
+  /// - Returns: This view contains the title, and a button for dismissing the view.
+  var toolbarContent: some View {
+    HStack {
+      Text(viewModel.title)
+        .font(.custom(.bold, relativeTo: .title2))
+      
+      Spacer()
+      
+      SoftButton(
+        icon: { Image.xmark },
+        action: { dismiss() })
+    }
+  }
+  
+  /// A view that displays the actions content below the noun info list.
+  ///
+  /// - Returns: This view contains buttons to `Share` & `Remix` the displayed noun.
+  private var actionsContent: some View {
+    HStack {
+      // Shares the live auction link.
+      SoftButton(
+        text: R.string.shared.share(),
+        largeAccessory: { Image.share },
+        action: { isShareSheetPresented.toggle() })
+        .controlSize(.large)
+      
+      // Switch context to the creator exprience using the current Noun's seed.
+      SoftButton(
+        text: R.string.shared.remix(),
+        largeAccessory: { Image.splice },
+        action: { })
+        .controlSize(.large)
+    }
+  }
+  
   var body: some View {
     NavigationView {
       VStack(spacing: 0) {
@@ -23,7 +60,7 @@ struct NounProfileInfo: View {
         NounPuzzle(seed: viewModel.nounTraits)
         
         PlainCell(length: 20) {
-          CardToolBar(viewModel: viewModel, dismiss: dismiss)
+          toolbarContent
           
           if viewModel.isAuctionSettled || viewModel.isWinnerAnounced {
             SettledAuctionInfoSheet(
@@ -44,7 +81,7 @@ struct NounProfileInfo: View {
           }, destination: {
             AuctionInfo(viewModel: .init(auction: viewModel.auction))
           })
-
+          
         }
         .padding([.bottom, .horizontal])
       }

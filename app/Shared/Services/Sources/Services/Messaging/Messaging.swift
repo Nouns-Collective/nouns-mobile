@@ -9,19 +9,40 @@ import Foundation
 import Firebase
 import FirebaseMessaging
 import UIKit.UIApplication
-import os.log
+import os
+
+public enum MessagingAuthorizationStatus {
+  
+  /// The user hasn't yet made a choice about whether the app is allowed to schedule notifications.
+  case notDetermined
+
+  /// The app isn't authorized to schedule or receive notifications.
+  case denied
+  
+  /// The app is authorized to schedule or receive notifications.
+  case authorized
+  
+  /// The application is provisionally authorized to post noninterruptive user notifications.
+  case provisional
+  
+  /// The app is authorized to schedule or receive notifications for a limited amount of time.
+  case ephemeral
+}
 
 public protocol Messaging: AnyObject {
   
+  /// The app's ability to schedule and receive remote notifications.
+  var authorizationStatus: MessagingAuthorizationStatus { get async }
+  
   /// Asynchronously sets the event handler work item on received registration token.
-  var setTokenHandler: (() async throws -> Void)? { get set }
+  var onRegistrationCompletion: (() async throws -> Void)? { get set }
   
   /// Requests authorization to interact with the user when local and remote
   /// notifications are delivered to the user’s device.
   ///
   /// - Parameters:
   ///  - application: The singleton app object.
-  func appAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool
+  func requestAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool
   
   /// Asynchronously subscribe to the provided topic, retrying on failure.
   ///
@@ -38,7 +59,12 @@ public protocol Messaging: AnyObject {
 
 public class FirebaseMessaging: NSObject {
   
-  public var setTokenHandler: (() async throws -> Void)?
+  public var onRegistrationCompletion: (() async throws -> Void)?
+  
+  private let logger = Logger(
+    subsystem: "wtf.nouns.ios.services",
+    category: "Messaging"
+  )
   
   public override init() {
     super.init()
@@ -55,8 +81,39 @@ public class FirebaseMessaging: NSObject {
 
 extension FirebaseMessaging: Messaging {
   
+  public var authorizationStatus: MessagingAuthorizationStatus {
+    get async {
+      await withCheckedContinuation { continuation in
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { [weak self] settings in
+          
+          switch settings.authorizationStatus {
+          case .notDetermined:
+            continuation.resume(returning: .notDetermined)
+            
+          case .denied:
+            continuation.resume(returning: .denied)
+            
+          case .authorized:
+            continuation.resume(returning: .authorized)
+            
+          case .provisional:
+            continuation.resume(returning: .provisional)
+            
+          case .ephemeral:
+            continuation.resume(returning: .ephemeral)
+            
+          @unknown default:
+            self?.logger.error("💥 🔊 unknown authorization status for remote notifications.")
+            break
+          }
+        }
+      }
+    }
+  }
+  
   @MainActor
-  public func appAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool {
+  public func requestAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool {
     let center = UNUserNotificationCenter.current()
     
     // Display notification (sent via APNS)
@@ -101,8 +158,8 @@ extension FirebaseMessaging: UNUserNotificationCenterDelegate {
 extension FirebaseMessaging: Firebase.MessagingDelegate {
   
   public func messaging(_ messaging: Firebase.Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    print("🏁 🆔 Firebase registration token: ", fcmToken ?? "⚠️ Unavailable")
+    logger.debug("🏁 🆔 Firebase registration token: \(fcmToken ?? "⚠️ Unavailable")")
     
-    Task { try await setTokenHandler?() }
+    Task { try await onRegistrationCompletion?() }
   }
 }

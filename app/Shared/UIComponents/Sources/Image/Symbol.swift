@@ -118,7 +118,7 @@ extension Image {
   
   public static let swipePick = Image("swipe-pick", bundle: .module)
   
-  public struct pointRight {
+  public enum PointRight {
     
     public static let standard = Image("hand-point-right", bundle: .module)
     
@@ -134,4 +134,11 @@ extension Image {
   public static let robot = Image("robot", bundle: .module)
   
   public static let later = Image("later", bundle: .module)
+  
+  public enum Controls {
+    
+    public static let play = Image("play", bundle: .module)
+    
+    public static let pause = Image("pause", bundle: .module)
+  }
 }

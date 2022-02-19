@@ -6,47 +6,56 @@
 //
 
 import SwiftUI
-import Services
 import UIComponents
-import Combine
 import SpriteKit
+import Services
 
 struct NounPlayground: View {
-  
-  @Environment(\.dismiss) private var dismiss
-  @StateObject private var viewModel = ViewModel()
-  @Namespace private var nsTypeSelection
-  
-  public let noun: Noun
+  @StateObject var viewModel: ViewModel
   
   @State private var selection: Int = 0
+  @Environment(\.dismiss) private var dismiss
+  @Namespace private var nsTypeSelection
   
-  private var playScene: PlayScene {
-    let scene = PlayScene(viewModel: viewModel, size: CGSize(width: 320, height: 320))
-    scene.scaleMode = .fill
-    scene.view?.showsFPS = false
-    return scene
+  /// Holds a reference to the localized text.
+  private let localize = R.string.nounPlayground.self
+  
+  ///
+  init(viewModel: ViewModel) {
+    _viewModel = StateObject(wrappedValue: viewModel)
+    talkingNoun = TalkingNoun(seed: viewModel.currentNoun.seed)
   }
   
+  /// A view that displays the noun scene above the various list of audio effect.
+  ///
+  /// - Returns: This view contains the play scene to animate the eyes and mouth.
+  private let talkingNoun: TalkingNoun
+  
+  /// A SwiftUI view that renders the `TalkingNoun` scene.
   private var spriteView: some View {
-    SpriteView(scene: playScene, options: [.allowsTransparency])
+    SpriteView(scene: talkingNoun, options: [.allowsTransparency])
       .frame(width: 320, height: 320)
   }
   
   var body: some View {
-    VStack(spacing: 50) {
-      Text(R.string.play.playgroundTitle())
+    VStack(spacing: 0) {
+      // Displays the current recoding state.
+      Text(R.string.playExperience.playgroundTitle())
         .font(.custom(.bold, size: 19))
         .offset(y: -80)
         .foregroundColor(Color.componentNounsBlack)
       
-      ConditionalSpacer(!viewModel.isRequestingAudioPermission)
+      ConditionalSpacer(!viewModel.isRequestingAudioCapturePermission)
       
       spriteView
       
       Spacer()
       
-      // Record button should go here
+      // The maximum record duration is set to 20 seconds by default.
+      RecordButton(
+        $viewModel.isRecording,
+        coachmark: localize.holdToRecordCoachmark()
+      ).padding(.bottom, 60)
       
       OutlinePicker(selection: $selection) {
         ForEach(VoiceChangerEngine.Effect.allCases, id: \.rawValue) { effect in
@@ -56,43 +65,47 @@ struct NounPlayground: View {
         }
       }
       .padding(.bottom, 20)
-      .hidden(viewModel.isRequestingAudioPermission)
-      //      .emptyPlaceholder(when: viewModel.state == .coachmark) {
-      //        CoachmarkTool(R.string.play.chooseCoachmark(), iconView: {
-      //          Image.pointRight.white
-      //            .rotationEffect(.degrees(-75))
-      //        })
-      //          .padding(.bottom, 60)
-      //      }
+      .hidden(viewModel.isRequestingAudioCapturePermission)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-    .softNavigationItems(leftAccessory: {
+    .softNavigationTitle(leftAccessory: {
       SoftButton(
         icon: { Image.xmark },
         action: { dismiss() })
-      
-    }, rightAccessory: { EmptyView() })
+    })
     .background(Gradient.bubbleGum)
-    .bottomSheet(isPresented: viewModel.showAudioPermissionDialog, content: {
+    .bottomSheet(isPresented: viewModel.showAudioCapturePermissionDialog) {
+      // Presents the audio permission dialog on not determined
+      // state of audio capture permission.
       AudioPermissionDialog(viewModel: viewModel)
-    })
-    .bottomSheet(isPresented: viewModel.showAudioSettingsSheet, content: {
+    }
+    .bottomSheet(isPresented: viewModel.showAudioCaptureSettingsSheet) {
+      // Presents the audio settings dialog on denied
+      // of the audio capture permission.
       AudioSettingsDialog(viewModel: viewModel)
-    })
+    }
     .onDisappear {
       viewModel.stopListening()
     }
+    // Updates the recording on audio effect changes.
     .onChange(of: selection) { newValue in
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
     }
-    .onChange(of: viewModel.isRecording) { recording in
-      switch recording {
-      case true:
-        // viewModel.screenRecorder.startRecording(viewToRecord)
-        break
-      case false:
-        viewModel.stopRecording()
-      }
+    // Moves up & down the mouth while playing back the audio recorded.
+    .onChange(of: viewModel.isNounTalking) { isNounTalking in
+      talkingNoun.isTalking = isNounTalking
+    }
+    .onChange(of: viewModel.state == .share) { _ in
+      viewModel.startVideoRecording(
+        source: spriteView,
+        background: Gradient.bubbleGum
+      )
+    }
+    .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
+      ShareTalkingNounDialog(
+        videoURL: viewModel.recordedVideo?.share,
+        progressValue: viewModel.talkingNounRecordProgress
+      )
     }
   }
 }

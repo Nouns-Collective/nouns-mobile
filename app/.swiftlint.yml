@@ -44,3 +44,4 @@ excluded:
   - WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift
   - Shared/Services/Tests
   - Shared/Services/Sources/GraphQL/Internal
+  - Shared/Tools/.build

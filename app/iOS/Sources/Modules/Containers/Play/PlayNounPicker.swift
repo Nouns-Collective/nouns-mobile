@@ -10,17 +10,19 @@ import UIComponents
 import Services
 
 struct PlayNounPicker: View {
-  @Namespace private var namespace
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
   @Environment(\.dismiss) private var dismiss
     
   @State private var selectedNoun: Noun?
   @State private var isCreatorPresented: Bool = false
   
+  /// Holds a reference to the localized text.
+  private let localize = R.string.playExperience.self
+  
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       OffChainNounsFeed(
-        title: R.string.play.chooseNoun(),
+        title: localize.chooseNoun(),
         selection: $selectedNoun
       ) {
         EmptyNounsView {
@@ -31,6 +33,7 @@ struct PlayNounPicker: View {
         SoftButton(
           icon: { Image.back },
           action: { dismiss() })
+        
       }, rightAccessory: {
         SoftButton(
           text: "New",
@@ -41,13 +44,17 @@ struct PlayNounPicker: View {
       })
     }
     .background(Gradient.blueberryJam)
+    // Gives the ability to create a new noun offline by driving
+    // the user to the creation experience.
     .fullScreenCover(isPresented: $isCreatorPresented) {
       NounCreator(viewModel: .init())
     }
-    .fullScreenCover(item: $selectedNoun) {
+    // Displays the playground to play with the selected noun.
+    .fullScreenCover(item: $selectedNoun, onDismiss: {
       selectedNoun = nil
-    } content: { noun in
-      NounPlayground(noun: noun)
-    }
+      
+    }, content: { noun in
+      NounPlayground(viewModel: .init(noun: noun))
+    })
   }
 }
