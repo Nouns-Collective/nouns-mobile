@@ -14,17 +14,20 @@ extension OffChainNounProfile {
   struct MoreActionsDialog: View {
     
     @ObservedObject var viewModel: ViewModel
-        
+    
     var body: some View {
       VStack(alignment: .leading, spacing: 10) {
+        
         // Switches to the play experience using the built Noun.
         SoftButton(
           text: R.string.offchainNounActions.play(),
           largeAccessory: { Image.playOutline },
-          action: { })
+          action: {
+            viewModel.isPlayPresented.toggle()
+          })
           .controlSize(.large)
         
-        //
+        // Edit the noun.
         SoftButton(
           text: R.string.offchainNounActions.edit(),
           largeAccessory: { Image.createOutline },
@@ -56,6 +59,11 @@ extension OffChainNounProfile {
           })
           .controlSize(.large)
       }
+      // Presents the playground with the current displayed noun.
+      .fullScreenCover(isPresented: $viewModel.isPlayPresented) {
+        NounPlayground(viewModel: .init(noun: viewModel.noun))
+      }
+      // Presents the noun creator to edit the current displayed noun
       .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
         NounCreator(
           viewModel: .init(

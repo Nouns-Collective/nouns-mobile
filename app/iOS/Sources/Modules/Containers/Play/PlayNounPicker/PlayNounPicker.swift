@@ -12,7 +12,7 @@ import Services
 struct PlayNounPicker: View {
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
   @Environment(\.dismiss) private var dismiss
-    
+  
   @State private var selectedNoun: Noun?
   @State private var isCreatorPresented: Bool = false
   
@@ -23,25 +23,26 @@ struct PlayNounPicker: View {
     ScrollView(.vertical, showsIndicators: false) {
       OffChainNounsFeed(
         title: localize.chooseNoun(),
-        selection: $selectedNoun
-      ) {
-        EmptyNounsView {
-          isCreatorPresented.toggle()
-        }
-      }
-      .softNavigationItems(leftAccessory: {
-        SoftButton(
-          icon: { Image.back },
-          action: { dismiss() })
-        
-      }, rightAccessory: {
-        SoftButton(
-          text: "New",
-          largeAccessory: { Image.new },
-          action: {
+        selection: $selectedNoun,
+        emptyPlaceholder: {
+          
+          // On the empty list of offline names, presents options
+          // to create a new noun.
+          EmptyView(action: {
             isCreatorPresented.toggle()
           })
-      })
+        })
+        .softNavigationItems(leftAccessory: {
+          SoftButton(
+            icon: { Image.back },
+            action: { dismiss() })
+          
+        }, rightAccessory: {
+          SoftButton(
+            text: "New",
+            largeAccessory: { Image.new },
+            action: { isCreatorPresented.toggle() })
+        })
     }
     .background(Gradient.blueberryJam)
     // Gives the ability to create a new noun offline by driving

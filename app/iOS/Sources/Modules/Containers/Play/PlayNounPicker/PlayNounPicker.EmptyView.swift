@@ -11,8 +11,9 @@ import Services
 
 extension PlayNounPicker {
     
-  /// A placeholder view for when there are no nouns to choose from in the Play (`NounPlayground`) experience.
-  struct EmptyNounsView: View {
+  /// A placeholder view for when there are no nouns to choose
+  /// from in the Play (`NounPlayground`) experience.
+  struct EmptyView: View {
     
     ///
     let action: () -> Void
@@ -31,7 +32,9 @@ extension PlayNounPicker {
         Spacer()
         
         VStack(spacing: 0) {
-          NounSpeechBubble(localize.createNounSpeechBubble(), noun: "un-noun", spacing: -60)
+          NounSpeechBubble(
+            localize.createNounSpeechBubble(),
+            noun: "un-noun", spacing: -60)
           
           OutlineButton(
             text: localize.createNoun(),
@@ -45,7 +48,8 @@ extension PlayNounPicker {
       }
       .padding(.horizontal, 20)
       .padding(.bottom, tabBarHeight)
-      // Extra padding between the bottom of the last noun card and the top of the tab view
+      // Extra padding between the bottom of the last noun
+      // card and the top of the tab view
       .padding(.bottom, 20)
     }
   }

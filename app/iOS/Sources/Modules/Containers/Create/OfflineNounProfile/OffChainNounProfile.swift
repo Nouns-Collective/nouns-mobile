@@ -66,8 +66,11 @@ struct OffChainNounProfile: View {
     }
     // Option to share the built noun.
     .sheet(isPresented: $viewModel.isShareSheetPresented) {
-      if let imageData = viewModel.exportImageData, let image = UIImage(data: imageData) {
-        ShareSheet(activityItems: [image], imageMetadata: image, titleMetadata: viewModel.noun.name)
+      
+      if let imageData = viewModel.exportImageData,
+         let image = UIImage(data: imageData) {
+        ShareSheet(activityItems: [image], imageMetadata: image,
+                   titleMetadata: viewModel.noun.name)
       }
     }
   }

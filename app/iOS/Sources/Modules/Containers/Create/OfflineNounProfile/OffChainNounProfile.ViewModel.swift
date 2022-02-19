@@ -12,9 +12,14 @@ extension OffChainNounProfile {
   
   final class ViewModel: ObservableObject {
     
+    /// The current represented noun.
     @Published var noun: Noun
     
-    private let service: OffChainNounsService
+    /// A string indicate the noun birthday in long date style.
+    @Published private(set) var nounBirthdate: String
+    
+    /// A boolean to present the playground with the use of the current noun.
+    @Published var isPlayPresented: Bool = false
     
     @Published var isRenamePresented: Bool = false
     
@@ -25,18 +30,18 @@ extension OffChainNounProfile {
     @Published var shouldShowNounCreator: Bool = false
     
     /// The image data of the noun to export and share
-    var exportImageData: Data?
+    @Published var exportImageData: Data?
         
+    private let service: OffChainNounsService
+    
     init(
       noun: Noun,
       service: OffChainNounsService = AppCore.shared.offChainNounsService
     ) {
       self.noun = noun
       self.service = service
-    }
-    
-    var nounBirthdate: String {
-      noun.createdAt.formatted()
+      
+      nounBirthdate = noun.createdAt.formatted()
     }
     
     func deleteNoun() {

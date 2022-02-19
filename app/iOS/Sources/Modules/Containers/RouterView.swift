@@ -38,6 +38,7 @@ struct RouterView: View {
   var body: some View {
     // TODO: Enhancing OutlineTabView API by prodviding a view modifier to construct the tab items
     OutlineTabView(selection: $selectedTab) {
+      
       ExploreExperience()
         .outlineTabItem(
           normal: .exploreOutline,
