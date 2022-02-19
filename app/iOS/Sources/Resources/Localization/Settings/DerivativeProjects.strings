@@ -1,0 +1,15 @@
+/* 
+  DerivativeProjects.strings
+  Nouns
+
+  Created by Ziad Tamim on 19.02.22.
+  
+*/
+
+"title" = "Derivative projects";
+
+"message" = "Derivative projects take the DNA of Nouns to build something new, and are key to growing the Nouns community.";
+
+"nouns-center.title" = "Nouns Center";
+
+"nouns-center.link" = "https://nouns.center/projects";

@@ -4497,7 +4497,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 26 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 27 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -5139,6 +5139,72 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("proceed.title", tableName: "Create", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.derivativeProjects` struct is generated, and contains static references to 4 localization keys.
+    struct derivativeProjects {
+      /// Value: Derivative projects
+      static let title = Rswift.StringResource(key: "title", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Derivative projects take the DNA of Nouns to build something new, and are key to growing the Nouns community.
+      static let message = Rswift.StringResource(key: "message", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Nouns Center
+      static let nounsCenterTitle = Rswift.StringResource(key: "nouns-center.title", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://nouns.center/projects
+      static let nounsCenterLink = Rswift.StringResource(key: "nouns-center.link", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Derivative projects
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "DerivativeProjects", bundle: bundle, comment: "")
+      }
+
+      /// Value: Derivative projects take the DNA of Nouns to build something new, and are key to growing the Nouns community.
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "DerivativeProjects", bundle: bundle, comment: "")
+      }
+
+      /// Value: Nouns Center
+      static func nounsCenterTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("nouns-center.title", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
+          return "nouns-center.title"
+        }
+
+        return NSLocalizedString("nouns-center.title", tableName: "DerivativeProjects", bundle: bundle, comment: "")
+      }
+
+      /// Value: https://nouns.center/projects
+      static func nounsCenterLink(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("nouns-center.link", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
+          return "nouns-center.link"
+        }
+
+        return NSLocalizedString("nouns-center.link", tableName: "DerivativeProjects", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

@@ -23,6 +23,7 @@ struct AboutView: View {
           ProposalsInfoSection()
           SpacesInfoSection()
           DocumentationInfoSection()
+          DerivativeProjectsInfoSection()
         }
         .padding(.horizontal, 20)
         .padding(.bottom, tabBarHeight)
