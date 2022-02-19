@@ -39,7 +39,7 @@ struct PlayNounPicker: View {
           
         }, rightAccessory: {
           SoftButton(
-            text: "New",
+            text: localize.createNounAction(),
             largeAccessory: { Image.new },
             action: { isCreatorPresented.toggle() })
         })

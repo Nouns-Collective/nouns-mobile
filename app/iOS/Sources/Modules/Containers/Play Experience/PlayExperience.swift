@@ -13,7 +13,7 @@ struct PlayExperience: View {
   @StateObject var viewModel: ViewModel 
   
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
-  @State private var isNounPickerPresented : Bool = false
+  @State private var isNounPickerPresented: Bool = false
   
   /// A view that displays the talking noun scene below the speech bubble.
   ///

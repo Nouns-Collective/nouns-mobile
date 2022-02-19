@@ -16,8 +16,6 @@
 
 "proceed.title" = "Get going";
 
-"playground.title" = "Say something";
-
 "choose.coachmark" = "Swipe to pick a noun";
 
 "choose.noun" = "Pick a noun, yo";
@@ -25,3 +23,5 @@
 "no.nouns" = "You need a noun!";
 
 "create.noun.speech.bubble" = "Yo, you don't have any nouns. Create one and give it something to say!";
+
+"create-noun.action" = "New";

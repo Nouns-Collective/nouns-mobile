@@ -13,7 +13,7 @@ import Services
 struct NounPlayground: View {
   @StateObject var viewModel: ViewModel
   
-  @State private var selection: Int = 0
+  @State private var selectedVoiceEffect: Int = 0
   @Environment(\.dismiss) private var dismiss
   @Namespace private var nsTypeSelection
   
@@ -40,10 +40,10 @@ struct NounPlayground: View {
   var body: some View {
     VStack(spacing: 0) {
       // Displays the current recoding state.
-      Text(R.string.playExperience.playgroundTitle())
+      Text(localize.title())
         .font(.custom(.bold, size: 19))
         .offset(y: -80)
-        .foregroundColor(Color.componentNounsBlack)
+        .foregroundColor(.componentNounsBlack)
       
       ConditionalSpacer(!viewModel.isRequestingAudioCapturePermission)
       
@@ -57,7 +57,7 @@ struct NounPlayground: View {
         coachmark: localize.holdToRecordCoachmark()
       ).padding(.bottom, 60)
       
-      OutlinePicker(selection: $selection) {
+      OutlinePicker(selection: $selectedVoiceEffect) {
         ForEach(VoiceChangerEngine.Effect.allCases, id: \.rawValue) { effect in
           effect.image
             .frame(width: 40)
@@ -74,21 +74,21 @@ struct NounPlayground: View {
         action: { dismiss() })
     })
     .background(Gradient.bubbleGum)
+    // Presents the audio permission dialog on not determined
+    // state of audio capture permission.
     .bottomSheet(isPresented: viewModel.showAudioCapturePermissionDialog) {
-      // Presents the audio permission dialog on not determined
-      // state of audio capture permission.
       AudioPermissionDialog(viewModel: viewModel)
     }
+    // Presents the audio settings dialog on denied
+    // of the audio capture permission.
     .bottomSheet(isPresented: viewModel.showAudioCaptureSettingsSheet) {
-      // Presents the audio settings dialog on denied
-      // of the audio capture permission.
       AudioSettingsDialog(viewModel: viewModel)
     }
     .onDisappear {
       viewModel.stopListening()
     }
     // Updates the recording on audio effect changes.
-    .onChange(of: selection) { newValue in
+    .onChange(of: selectedVoiceEffect) { newValue in
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
     }
     // Moves up & down the mouth while playing back the audio recorded.

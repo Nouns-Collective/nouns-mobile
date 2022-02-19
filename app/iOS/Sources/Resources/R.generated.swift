@@ -5711,10 +5711,12 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounPlayground` struct is generated, and contains static references to 1 localization keys.
+    /// This `R.string.nounPlayground` struct is generated, and contains static references to 2 localization keys.
     struct nounPlayground {
       /// Value: Hold to record
       static let holdToRecordCoachmark = Rswift.StringResource(key: "hold-to-record.coachmark", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Say something
+      static let title = Rswift.StringResource(key: "title", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Hold to record
       static func holdToRecordCoachmark(preferredLanguages: [String]? = nil) -> String {
@@ -5727,6 +5729,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("hold-to-record.coachmark", tableName: "NounPlayground", bundle: bundle, comment: "")
+      }
+
+      /// Value: Say something
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "NounPlayground", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounPlayground", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "NounPlayground", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
@@ -6077,12 +6092,12 @@ struct R: Rswift.Validatable {
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Give your noun something to say!
       static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: New
+      static let createNounAction = Rswift.StringResource(key: "create-noun.action", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Pick a noun, yo
       static let chooseNoun = Rswift.StringResource(key: "choose.noun", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Play
       static let title = Rswift.StringResource(key: "title", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Say something
-      static let playgroundTitle = Rswift.StringResource(key: "playground.title", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Swipe to pick a noun
       static let chooseCoachmark = Rswift.StringResource(key: "choose.coachmark", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Yo, you don't have any nouns. Create one and give it something to say!
@@ -6131,6 +6146,19 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("subheadline", tableName: "PlayExperience", bundle: bundle, comment: "")
       }
 
+      /// Value: New
+      static func createNounAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("create-noun.action", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
+          return "create-noun.action"
+        }
+
+        return NSLocalizedString("create-noun.action", tableName: "PlayExperience", bundle: bundle, comment: "")
+      }
+
       /// Value: Pick a noun, yo
       static func chooseNoun(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
@@ -6155,19 +6183,6 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("title", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
-
-      /// Value: Say something
-      static func playgroundTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("playground.title", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "playground.title"
-        }
-
-        return NSLocalizedString("playground.title", tableName: "PlayExperience", bundle: bundle, comment: "")
       }
 
       /// Value: Swipe to pick a noun
