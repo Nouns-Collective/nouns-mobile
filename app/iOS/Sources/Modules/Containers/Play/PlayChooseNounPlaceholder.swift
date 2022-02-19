@@ -14,22 +14,27 @@ extension PlayNounPicker {
   /// A placeholder view for when there are no nouns to choose from in the Play (`NounPlayground`) experience.
   struct EmptyNounsView: View {
     
+    ///
+    let action: () -> Void
+    
+    ///
     @Environment(\.outlineTabViewHeight) private var tabBarHeight
     
-    let action: () -> Void
-
+    /// Holds a reference to the localized text.
+    private let localize = R.string.playExperience.self
+    
     var body: some View {
       VStack(alignment: .leading, spacing: 10) {
-        Text(R.string.play.noNouns())
+        Text(R.string.playExperience.noNouns())
           .font(.custom(.bold, size: 36))
         
         Spacer()
         
         VStack(spacing: 0) {
-          NounSpeechBubble(R.string.play.createNounSpeechBubble(), noun: "un-noun", spacing: -60)
+          NounSpeechBubble(localize.createNounSpeechBubble(), noun: "un-noun", spacing: -60)
           
           OutlineButton(
-            text: R.string.play.createNoun(),
+            text: localize.createNoun(),
             largeAccessory: { Image.new },
             action: action)
             .controlSize(.large)

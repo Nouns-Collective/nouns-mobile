@@ -44,7 +44,7 @@ public protocol ScreenRecorder: AnyObject {
   /// Stops recording the view
   ///
   /// - Returns: A preview video URL for the video without a watermark and the share video URL for the video with the watermark
-  func stopRecording() async throws -> (previewVideoURL: URL, shareVideoURL: URL)
+  func stopRecording() async throws -> (preview: URL, share: URL)
 }
 
 public enum ScreenRecorderError: Error {
@@ -99,7 +99,6 @@ public class CAScreenRecorder: ScreenRecorder {
   
   private var frameSize: CGSize? {
     guard let firstFrameSize = framesWithoutWatermark.first?.size else {
-      print("🎥 No frames to calculate frame size from")
       return nil
     }
     
@@ -133,12 +132,12 @@ public class CAScreenRecorder: ScreenRecorder {
   
   public func startRecording(_ view: UIView, backgroundView: UIView?, audioFileURL: URL) {
     self.audioFileURL = audioFileURL
-    sourceView = constructView(view, backgroundView: backgroundView)
+    recordingView = constructView(view, backgroundView: backgroundView)
     displayLink = CADisplayLink(target: self, selector: #selector(tick))
     displayLink?.add(to: .main, forMode: .common)
   }
   
-  public func stopRecording() async throws -> (previewVideoURL: URL, shareVideoURL: URL) {
+  public func stopRecording() async throws -> (preview: URL, share: URL) {
     displayLink?.invalidate()
     displayLink = nil
     audioFileURL = nil
@@ -218,6 +217,10 @@ public class CAScreenRecorder: ScreenRecorder {
      * Video input
      *******************
      */
+    
+    guard let frameSize = frameSize else {
+      throw "🎥 No frames to calculate frame size from"
+    }
     
     // Defines the input of the asset writer to consume the captured frames of the source view.
     let videoSettings: [String: Any] = [

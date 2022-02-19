@@ -11,7 +11,7 @@ import SpriteKit
 import Services
 
 struct NounPlayground: View {
-  @StateObject var viewModel = ViewModel()
+  @StateObject var viewModel: ViewModel
   
   @State private var selection: Int = 0
   @Environment(\.dismiss) private var dismiss
@@ -20,10 +20,16 @@ struct NounPlayground: View {
   /// Holds a reference to the localized text.
   private let localize = R.string.nounPlayground.self
   
+  ///
+  init(viewModel: ViewModel) {
+    _viewModel = StateObject(wrappedValue: viewModel)
+    talkingNoun = TalkingNoun(seed: viewModel.currentNoun.seed)
+  }
+  
   /// A view that displays the noun scene above the various list of audio effect.
   ///
   /// - Returns: This view contains the play scene to animate the eyes and mouth.
-  private let talkingNoun = TalkingNoun(seed: Seed.default)
+  private let talkingNoun: TalkingNoun
   
   /// A SwiftUI view that renders the `TalkingNoun` scene.
   private var spriteView: some View {
@@ -39,7 +45,7 @@ struct NounPlayground: View {
         .offset(y: -80)
         .foregroundColor(Color.componentNounsBlack)
       
-      ConditionalSpacer(!viewModel.isRequestingAudioPermission)
+      ConditionalSpacer(!viewModel.isRequestingAudioCapturePermission)
       
       spriteView
       
@@ -59,7 +65,7 @@ struct NounPlayground: View {
         }
       }
       .padding(.bottom, 20)
-      .hidden(viewModel.isRequestingAudioPermission)
+      .hidden(viewModel.isRequestingAudioCapturePermission)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .softNavigationTitle(leftAccessory: {
@@ -68,12 +74,12 @@ struct NounPlayground: View {
         action: { dismiss() })
     })
     .background(Gradient.bubbleGum)
-    .bottomSheet(isPresented: viewModel.showAudioPermissionDialog) {
+    .bottomSheet(isPresented: viewModel.showAudioCapturePermissionDialog) {
       // Presents the audio permission dialog on not determined
       // state of audio capture permission.
       AudioPermissionDialog(viewModel: viewModel)
     }
-    .bottomSheet(isPresented: viewModel.showAudioSettingsSheet) {
+    .bottomSheet(isPresented: viewModel.showAudioCaptureSettingsSheet) {
       // Presents the audio settings dialog on denied
       // of the audio capture permission.
       AudioSettingsDialog(viewModel: viewModel)
@@ -81,12 +87,12 @@ struct NounPlayground: View {
     .onDisappear {
       viewModel.stopListening()
     }
+    // Updates the recording on audio effect changes.
     .onChange(of: selection) { newValue in
-      // Updates the recording on audio effect changes.
       viewModel.updateEffect(to: .init(rawValue: newValue) ?? .robot)
     }
+    // Moves up & down the mouth while playing back the audio recorded.
     .onChange(of: viewModel.isNounTalking) { isNounTalking in
-      // Moves up & down the mouth while playing back the audio recorded.
       talkingNoun.isTalking = isNounTalking
     }
     .onChange(of: viewModel.state == .share) { _ in
@@ -97,7 +103,7 @@ struct NounPlayground: View {
     }
     .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
       ShareTalkingNounDialog(
-        videoURL: viewModel.recordedTalkingNounVideoURL,
+        videoURL: viewModel.recordedVideo?.share,
         progressValue: viewModel.talkingNounRecordProgress
       )
     }

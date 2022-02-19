@@ -21,9 +21,13 @@ extension SKSpriteNode {
   }
   
   static func loadTextures(atlases: [String]) -> [SKTexture] {
-    guard let atlas = atlases.first else { return [] }
+    guard var atlas = atlases.first?.components(separatedBy: "-") else {
+      return []
+    }
     
-    let textureAtlas = SKTextureAtlas(named: atlas)
+    atlas.removeLast()
+    
+    let textureAtlas = SKTextureAtlas(named: atlas.joined(separator: "-"))
     return atlases.reduce([]) {
       let texture = textureAtlas.textureNamed($1)
       texture.filteringMode = .nearest

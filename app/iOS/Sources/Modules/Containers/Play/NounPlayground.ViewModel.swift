@@ -53,48 +53,59 @@ extension NounPlayground {
     }
     
     /// Shows the audio permission sheet to request voice capture permission.
-    @Published private(set) var showAudioPermissionDialog = false
+    @Published private(set) var showAudioCapturePermissionDialog = false
     
     /// Shows the audio settings sheet when the voice capture permission has been denied or restricted.
-    @Published private(set) var showAudioSettingsSheet = false
+    @Published private(set) var showAudioCaptureSettingsSheet = false
     
     /// A Boolean value indicates whether the noun is talking.
     @Published private(set) var isNounTalking = false
     
-    ///
-    @Published private(set) var recordedTalkingNounVideoURL: URL?
+    /// Represents recorded videos of the talking noun with version with and without watermark.
+    @Published private(set) var recordedVideo: (preview: URL, share: URL)?
     
     ///
     @Published private(set) var talkingNounRecordProgress: Double = 0.0
     
-    ///
-    public var audioProcessingState: AudioStatus {
+    /// Represents the recorded voice playback status if on `speech` or `silent` mode.
+    var audioProcessingState: AudioStatus {
       voiceChangerEngine.audioProcessingState
     }
     
-    ///
-    public var currentVoiceEffect: VoiceChangerEngine.Effect {
+    /// Represents the effect currently applied to the recorded voice.
+    var currentVoiceEffect: VoiceChangerEngine.Effect {
       voiceChangerEngine.effect
     }
     
-    ///
-    public var isRequestingAudioPermission: Bool {
-      showAudioSettingsSheet || showAudioPermissionDialog
+    /// A boolean to indicate audio capture permission dialog is presented.
+    var isRequestingAudioCapturePermission: Bool {
+      showAudioCaptureSettingsSheet || showAudioCapturePermissionDialog
     }
     
+    /// The current displayed noun.
+    let currentNoun: Noun
+    
+    ///
     private let voiceChangerEngine: VoiceChangerEngine
+    
+    ///
     private let screenRecorder: ScreenRecorder
     
+    /// Stores this type-erasing cancellable instance in the specified set.
     private var cancellables = Set<AnyCancellable>()
+    
+    /// An object for writing interpolated string messages to the unified logging system.
     private let logger = Logger(
       subsystem: "wtf.nouns.ios",
       category: "Noun Playground"
     )
     
     init(
+      noun: Noun,
       voiceChangerEngine: VoiceChangerEngine = VoiceChangerEngine(),
       screenRecorder: ScreenRecorder = CAScreenRecorder()
     ) {
+      self.currentNoun = noun
       self.voiceChangerEngine = voiceChangerEngine
       self.screenRecorder = screenRecorder
       
@@ -151,18 +162,20 @@ extension NounPlayground {
     private func handleVoiceCapturePermission() {
       switch voiceChangerEngine.recordPermission {
       case .undetermined:
-        showAudioPermissionDialog = true
+        showAudioCapturePermissionDialog = true
         
       case .granted:
-        showAudioPermissionDialog = false
+        showAudioCapturePermissionDialog = false
         startListening()
         
       case .denied, .restricted:
-        showAudioSettingsSheet = true
+        showAudioCaptureSettingsSheet = true
       }
     }
     
-    /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
+    /// Asks the `VoiceChangerEngine` to start listening to audio using the microphone input.
+    /// Recording is triggered depending on the selected `manual` or `auto` mode
+    /// where the latter uses sound analysis to detect `speech` or `silence`.
     func startListening() {
       do {
         try voiceChangerEngine.prepare()
@@ -171,7 +184,7 @@ extension NounPlayground {
       }
     }
     
-    /// Toggles the audio service to start listening to the user and calculating the average power / volume of the micrphone input
+    /// Asks the `VoiceChangerEngine` to stop capturing audio.
     func stopListening() {
       voiceChangerEngine.stop()
     }
@@ -203,7 +216,7 @@ extension NounPlayground {
         do {
           // The publisher will trigger the activity sharing sheet
           // with the url as an attachment.
-          recordedTalkingNounVideoURL = try await screenRecorder.stopRecording()
+          recordedVideo = try await screenRecorder.stopRecording()
           
         } catch {
           logger.error("💥 An error occurred while stopping screen recording: \(error.localizedDescription, privacy: .public)")

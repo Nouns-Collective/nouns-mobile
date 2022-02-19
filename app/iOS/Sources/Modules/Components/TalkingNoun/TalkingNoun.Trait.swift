@@ -12,17 +12,16 @@ extension TalkingNoun {
   
   final class Trait: SKSpriteNode {
     
-    init(nounTraitName: String) throws {
+    init?(nounTraitName: String) {
       guard let image = UIImage(nounTraitName: nounTraitName) else {
-        throw "💥 Noun's trait \(nounTraitName) not found."
+        return nil
       }
       
       let texture = SKTexture(image: image)
       texture.filteringMode = .nearest
       
       super.init(texture: texture, color: SKColor.clear,
-                 size: CGSize(width: 320, height: 320))
-      
+                 size: TalkingNoun.traitSize)
     }
     
     required init?(coder aDecoder: NSCoder) {
