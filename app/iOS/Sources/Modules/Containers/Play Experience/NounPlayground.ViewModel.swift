@@ -130,9 +130,9 @@ extension NounPlayground {
           
           guard case .manual = self.voiceChangerEngine.captureMode else { return }
           
-//          // Changing the status to `share` presents a dialog
-//          // to ask the user to share or reject the recorded spoken name.
-//          self.state = .share
+          // Changing the status to `share` presents a dialog
+          // to ask the user to share or reject the recorded spoken name.
+          self.state = .share
           
           // Reset the capture voice using the sound analysis.
           self.voiceChangerEngine.captureMode = .auto

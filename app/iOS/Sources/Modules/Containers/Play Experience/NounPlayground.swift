@@ -95,12 +95,12 @@ struct NounPlayground: View {
     .onChange(of: viewModel.isNounTalking) { isNounTalking in
       talkingNoun.isTalking = isNounTalking
     }
-    .onChange(of: viewModel.state == .share) { _ in
-      viewModel.startVideoRecording(
-        source: spriteView,
-        background: Gradient.bubbleGum
-      )
-    }
+//    .onChange(of: viewModel.state == .share) { _ in
+//      viewModel.startVideoRecording(
+//        source: spriteView,
+//        background: Gradient.bubbleGum
+//      )
+//    }
     .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
       ShareTalkingNounDialog(
         videoURL: viewModel.recordedVideo?.share,
