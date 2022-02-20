@@ -11,27 +11,22 @@ import os
 
 final class VoiceCaptureOutput {
   
-  ///
+  /// An object that represents an audio file that the system can open for reading or writing
   private(set) var audioFile: AVAudioFile
-  
-  ///
-  var isEmpty: Bool {
-    audioFile.length > 0
-  }
   
   ///
   private let logger = Logger(
     subsystem: "wtf.nouns.ios.services",
-    category: "VoiceCapturePersistency"
+    category: "VoiceCaptureOutput"
   )
   
   init(audioFormat: AVAudioFormat) throws {
     /// Generates a new `AVAudioFile` given the audio format.
-    let fileURL = Self.generateUniqueFileURL()
-    audioFile = try AVAudioFile(forWriting: fileURL, settings: audioFormat.settings)
+    let audioFileURL = Self.generateUniqueFileURL()
+    audioFile = try AVAudioFile(forWriting: audioFileURL, settings: audioFormat.settings)
   }
   
-  deinit {
+  func reset() {
     deleteFile(at: audioFile.url)
   }
   
@@ -40,7 +35,14 @@ final class VoiceCaptureOutput {
   func persistStream(
     _ buffer: AVAudioPCMBuffer
   ) throws {
-      try audioFile.write(from: buffer)
+    let audioFileURL = audioFile.url
+    let audioSettings = audioFile.fileFormat.settings
+    
+    if !FileManager.default.fileExists(atPath: audioFileURL.path) {
+      audioFile = try AVAudioFile(forWriting: audioFileURL, settings: audioSettings)
+    }
+    
+    try audioFile.write(from: buffer)
   }
   
   // MARK: - File management

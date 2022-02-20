@@ -9,6 +9,7 @@ import Foundation
 import AVFoundation
 import SoundAnalysis
 import Combine
+import os
 
 /// Various audio states.
 public enum AudioStatus: String {
@@ -24,12 +25,16 @@ protocol AudioStateDetector: AnyObject {
   /// The current audio state.
   var status: AudioStatus { get }
   
+  /// The previous audio state.
+  var previousState: AudioStatus { get }
+  
   func process(buffer: AVAudioPCMBuffer, sampleTime: AVAudioFramePosition)
 }
 
 final class MLAudioStateDetector: AudioStateDetector {
   
   private(set) var status: AudioStatus = .undefined
+  private(set) var previousState: AudioStatus = .undefined
   
   /// An analyzer that performs sound classification.
   private var analyzer: SNAudioStreamAnalyzer
@@ -64,6 +69,11 @@ final class MLAudioStateDetector: AudioStateDetector {
   /// the audio that the previous window uses.
   private let overlapFactor = Double(0.9)
   
+  private let logger = Logger(
+    subsystem: "wtf.nouns.ios.services",
+    category: "AudioStateDetector"
+  )
+  
   init(audioFormat: AVAudioFormat) throws {
     analyzer = SNAudioStreamAnalyzer(format: audioFormat)
     
@@ -90,16 +100,18 @@ final class MLAudioStateDetector: AudioStateDetector {
                                           absenceMeasurementsToEndDetection: 2)
     
     detectionCancellable = subject.sink { completion in
+      
       switch completion {
       case .finished:
-        print("🎙 Sound detection is stopped")
+        self.logger.info("🎙 Sound detection is stopped")
       case .failure(let error):
-        print("⚠️ 🎙 Sound detection is stopped due to \(error)")
+        self.logger.error("⚠️ 🎙 Sound detection is stopped due to \(error.localizedDescription)")
       }
+      
     } receiveValue: { [weak self] result in
       guard let self = self else { return }
       guard let lastSpeechState = self.lastSpeechState else {
-        print("⚠️ 🎙 Couldn't analyse the sound as no initial speech state was found.")
+        self.logger.error("⚠️ 🎙 Couldn't analyse the sound as no initial speech state was found.")
         return
       }
       
@@ -109,6 +121,7 @@ final class MLAudioStateDetector: AudioStateDetector {
         givenClassificationResult: result
       )
       
+      self.previousState = self.status
       self.status = lastSpeechState.isDetected ? .speech : .silence
     }
   }
