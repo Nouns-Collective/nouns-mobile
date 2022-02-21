@@ -32,6 +32,11 @@ struct NounProfileInfo: View {
     }
   }
   
+  /// The background gradient colors of the noun, based on the seed's `background` value
+  private var background: GradientColors {
+    viewModel.nounTraits.background == 0 ? .coolGreydient : .warmGreydient
+  }
+  
   /// A view that displays the actions content below the noun info list.
   ///
   /// - Returns: This view contains buttons to `Share` & `Remix` the displayed noun.
@@ -85,7 +90,7 @@ struct NounProfileInfo: View {
         }
         .padding([.bottom, .horizontal])
       }
-      .background(Gradient.warmGreydient)
+      .background(Gradient(background, startPoint: .center, endPoint: .bottom))
       .navigationBarTitle("")
       .navigationBarHidden(true)
     }
