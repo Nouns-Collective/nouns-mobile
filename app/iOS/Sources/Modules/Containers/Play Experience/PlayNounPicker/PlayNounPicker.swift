@@ -56,6 +56,7 @@ struct PlayNounPicker: View {
       
     }, content: { noun in
       NounPlayground(viewModel: .init(noun: noun))
+        .addBottomSheet(style: .init(showDimmingView: false))
     })
   }
 }

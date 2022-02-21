@@ -14,6 +14,7 @@ extension OffChainNounProfile {
   struct DeleteSheet: View {
     
     @ObservedObject var viewModel: OffChainNounProfile.ViewModel
+    @EnvironmentObject var bottomSheetManager: BottomSheetManager
     
     @Environment(\.dismiss) private var dismiss
     
@@ -36,6 +37,7 @@ extension OffChainNounProfile {
             withAnimation {
               // Dismisses the entire screen when the noun is deleted
               viewModel.deleteNoun()
+              bottomSheetManager.closeBottomSheet()
               dismiss()
             }
           })

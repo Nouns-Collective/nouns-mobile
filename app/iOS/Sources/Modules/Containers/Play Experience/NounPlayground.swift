@@ -14,6 +14,8 @@ struct NounPlayground: View {
   @StateObject var viewModel: ViewModel
   
   @State private var selectedVoiceEffect: Int = 0
+  
+  @EnvironmentObject var bottomSheetManager: BottomSheetManager
   @Environment(\.dismiss) private var dismiss
   @Namespace private var nsTypeSelection
   
@@ -76,12 +78,12 @@ struct NounPlayground: View {
     .background(Gradient.bubbleGum)
     // Presents the audio permission dialog on not determined
     // state of audio capture permission.
-    .bottomSheet(isPresented: viewModel.showAudioCapturePermissionDialog) {
+    .bottomSheet(isPresented: $viewModel.showAudioCapturePermissionDialog) {
       AudioPermissionDialog(viewModel: viewModel)
     }
     // Presents the audio settings dialog on denied
     // of the audio capture permission.
-    .bottomSheet(isPresented: viewModel.showAudioCaptureSettingsSheet) {
+    .bottomSheet(isPresented: $viewModel.showAudioCaptureSettingsSheet) {
       AudioSettingsDialog(viewModel: viewModel)
     }
     .onDisappear {
@@ -101,11 +103,15 @@ struct NounPlayground: View {
         background: Gradient.bubbleGum
       )
     }
-    .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
-      ShareTalkingNounDialog(
-        videoURL: viewModel.recordedVideo?.share,
-        progressValue: viewModel.talkingNounRecordProgress
-      )
+    .onChange(of: viewModel.state) { state in
+      bottomSheetManager.updateBottomSheet(isPresented: state == .share, content: {
+        ShareTalkingNounDialog(
+         videoURL: viewModel.recordedVideo?.share,
+         progressValue: viewModel.talkingNounRecordProgress
+       )
+      }, onDismiss: {
+        viewModel.state = .freestyle
+      })
     }
   }
 }

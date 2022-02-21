@@ -56,6 +56,8 @@ struct OffChainNounProfile: View {
       .padding(.horizontal, 20)
     }
     .background(Gradient(.allCases[viewModel.noun.seed.background]))
+    .ignoresSafeArea(.keyboard, edges: .bottom)
+    .addBottomSheet()
     // Option to delete the current build progress.
     .bottomSheet(isPresented: $viewModel.isDeletePresented) {
       DeleteSheet(viewModel: viewModel)

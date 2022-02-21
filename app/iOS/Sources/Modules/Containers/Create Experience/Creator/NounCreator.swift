@@ -10,6 +10,7 @@ import UIComponents
 
 struct NounCreator: View {
   @StateObject var viewModel = ViewModel()
+  @EnvironmentObject var bottomSheetManager: BottomSheetManager
   
   @Namespace private var nsTraitPicker
   @Environment(\.dismiss) private var dismiss
@@ -53,15 +54,7 @@ struct NounCreator: View {
         }
       }
     }))
-    // Sheet presented when the user is finished creating their
-    // noun and is ready to name/save their noun
-    .bottomSheet(isPresented: viewModel.mode == .done, showDimmingView: false, allowDrag: false) {
-      NounMetadataDialog(viewModel: viewModel)
-    }
-    // Sheet presented when the user wants to cancel the noun creation process and go to the previous screen
-    .bottomSheet(isPresented: viewModel.mode == .cancel, showDimmingView: true, allowDrag: false) {
-      DiscardNounSheet(viewModel: viewModel)
-    }
+    .addBottomSheet()
     .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
       EmitterView()
@@ -70,6 +63,28 @@ struct NounCreator: View {
         .opacity(viewModel.showConfetti && !viewModel.finishedConfetti ? 1 : 0)
         .ignoresSafeArea()
         .allowsHitTesting(false)
+    }
+    .onChange(of: viewModel.mode) { mode in
+      switch mode {
+      case .done:
+        // Sheet presented when the user is finished creating their
+        // noun and is ready to name/save their noun
+        bottomSheetManager.showBottomSheet {
+          viewModel.mode = .creating
+        } content: {
+          NounMetadataDialog(viewModel: viewModel)
+        }
+      case .cancel:
+        // Sheet presented when the user wants to cancel the noun
+        // creation process
+        bottomSheetManager.showBottomSheet {
+          viewModel.mode = .creating
+        } content: {
+          DiscardNounSheet(viewModel: viewModel)
+        }
+      case .creating:
+        bottomSheetManager.closeBottomSheet()
+      }
     }
   }
 }
