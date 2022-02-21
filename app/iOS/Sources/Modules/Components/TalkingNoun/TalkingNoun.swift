@@ -67,6 +67,7 @@ final class TalkingNoun: SKScene {
     return accessory
   }()
   
+  private lazy var glasses = Trait(nounTraitName: "glasses-pink-empty")
   private lazy var eyes = Eyes()
   private lazy var mouth = Mouth(seed: seed)
   
@@ -79,7 +80,7 @@ final class TalkingNoun: SKScene {
     view?.allowsTransparency = true
     view?.backgroundColor = .clear
     
-    [body, accessory, head, eyes].compactMap { trait in
+    [body, accessory, head, glasses, eyes].compactMap { trait in
       trait?.position = CGPoint(x: frame.midX, y: frame.midY)
       trait?.size = Self.traitSize
       return trait

@@ -144,22 +144,27 @@ extension NounPlayground {
       // Updates the state on whether the audio contains `speech` or `silence`.
       voiceChangerEngine.$audioProcessingState
         .sink { [weak self] status in
-          guard let self = self else { return }
           
-          switch status {
-          case .speech:
-            // On speech, the noun will move the mouth up & down.
-            self.isNounTalking = (status == .speech)
-            
-            // Update the coachmark on top to indicate the noun is talking.
-            self.voiceRecordStateCoachmark = self.localize.voiceStateRecording()
-            
-          case .silence, .undefined:
-            // Update the coachmark on top to indicate the noun is not talking.
-            self.voiceRecordStateCoachmark = self.localize.voiceStateNotRecording()
-          }
+          // On speech, the noun will move the mouth up & down.
+          self?.isNounTalking = (status == .speech)
         }
         .store(in: &cancellables)
+      
+      // Subscribes to the voice capture state to reflect the changes.
+      voiceChangerEngine.$captureState.sink { [weak self] state in
+        guard let self = self else { return }
+        
+        switch state {
+        case .recording:
+          // Update the coachmark on top to indicate the noun is talking.
+          self.voiceRecordStateCoachmark = self.localize.voiceStateRecording()
+          
+        case .idle, .playing:
+          // Update the coachmark on top to indicate the noun is not talking.
+          self.voiceRecordStateCoachmark = self.localize.voiceStateNotRecording()
+        }
+      }
+      .store(in: &cancellables)
     }
     
     deinit {
@@ -214,7 +219,7 @@ extension NounPlayground {
       voiceChangerEngine.effect = effect
     }
     
-    // MARK: - Screen Recorder / Audio Effect
+    // MARK: - Talking Noun Video Recorder
     
     func startVideoRecording<V, B>(source: V, background: B) where V: View, B: View {
       guard let recordedVoiceFileURL = voiceChangerEngine.outputFileURL else {

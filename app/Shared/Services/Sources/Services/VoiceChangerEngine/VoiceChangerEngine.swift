@@ -23,7 +23,7 @@ public class VoiceChangerEngine: ObservableObject {
   }
   
   /// Vairous voice change states.
-  public enum State: String {
+  public enum CaptureState: String {
     case idle
     case recording
     case playing
@@ -45,10 +45,10 @@ public class VoiceChangerEngine: ObservableObject {
   }
   
   /// The current voice changer state.
-  @Published public private(set) var state: State = .idle {
+  @Published public private(set) var captureState: CaptureState = .idle {
     didSet {
-      if oldValue != state {
-        logger.debug("🏁🎙 Audio Engine is \(self.state.rawValue, privacy: .public)")
+      if oldValue != captureState {
+        logger.debug("🏁🎙 Audio Engine is \(self.captureState.rawValue, privacy: .public)")
       }
     }
   }
@@ -101,7 +101,9 @@ public class VoiceChangerEngine: ObservableObject {
     category: "VoiceChangerEngine"
   )
   
-  public init() { }
+  public init() {
+    
+  }
   
   deinit {
     stop()
@@ -163,7 +165,7 @@ public class VoiceChangerEngine: ObservableObject {
       guard let self = self else { return }
 
       // While the captured voice with effect is playing, persist the buffer to the disk.
-      guard self.state == .playing else { return }
+      guard self.captureState == .playing else { return }
       
       do {
         try self.voicePlusEffectOuput?.persistStream(buffer)
@@ -191,7 +193,7 @@ public class VoiceChangerEngine: ObservableObject {
       guard let self = self else { return }
       
       // Stop recording if the previous recording is being played.
-      guard self.state != .playing else { return }
+      guard self.captureState != .playing else { return }
       
       switch self.captureMode {
       case .manual(let isRecoding):
@@ -226,9 +228,11 @@ public class VoiceChangerEngine: ObservableObject {
     
     switch audioStateDetector.status {
     case .speech:
-      // Update the state to in the recording state.
-      state = .recording
-
+      DispatchQueue.main.async {
+        // Update the state to in the recording state.
+        self.captureState = .recording
+      }
+      
       do {
         try voiceLessEffectOutput?.persistStream(buffer)
 
@@ -237,6 +241,10 @@ public class VoiceChangerEngine: ObservableObject {
       }
 
     case .silence:
+      guard audioStateDetector.previousState == .speech else {
+        return
+      }
+      
       playbackCapturedVoice()
 
     case .undefined:
@@ -249,16 +257,13 @@ public class VoiceChangerEngine: ObservableObject {
   /// Plays back the voice with effect.
   private func playbackCapturedVoice() {
     // Access the voice captured and persisted to the disk.
-    guard let voiceLessEffectOutput = voiceLessEffectOutput,
-          !voiceLessEffectOutput.isEmpty
-    else { return }
+    guard let voiceLessEffectOutput = voiceLessEffectOutput else {
+      return
+    }
     
     recordedFilePlayer.scheduleFile(voiceLessEffectOutput.audioFile, at: nil) { [weak self] in
       // When the play of the audio without effect has stopped.
       guard let self = self else { return }
-      
-      // Deletes the audio with no effect after the playback.
-      self.voiceLessEffectOutput = nil
       
       DispatchQueue.main.async {
         // Publish the location of the audio recorded with the chosen effect.
@@ -269,13 +274,16 @@ public class VoiceChangerEngine: ObservableObject {
       
       // Resets the voice capture & effect applied to the listening state.
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        self.state = .idle
+        // Deletes the audio with no effect after the playback.
+        self.voiceLessEffectOutput?.reset()
+        
+        self.captureState = .idle
         self.audioProcessingState = .silence
       }
     }
     
     DispatchQueue.main.async {
-      self.state = .playing
+      self.captureState = .playing
       self.audioProcessingState = .speech
     }
     
