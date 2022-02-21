@@ -18,6 +18,9 @@ extension SettledAuctionInfoSheet {
     @Published private(set) var showWinningBid: Bool
     @Published private(set) var showBirthdate: Bool
     @Published private(set) var governanceTitle: String
+    @Published private(set) var domain: String?
+    
+    private let ensService: ENS
     
     private let localize = R.string.nounProfile.self
     private let auction: Auction
@@ -27,11 +30,15 @@ extension SettledAuctionInfoSheet {
     }
     
     public var nounWinner: String {
-      isNounderOwned ? R.string.nounProfile.noundersEth() : winner
+      isNounderOwned ? R.string.nounProfile.noundersEth() : (domain ?? winner)
     }
     
-    init(auction: Auction) {
+    init(
+      auction: Auction,
+      ensService: ENS = AppCore.shared.ensNameService
+    ) {
       self.auction = auction
+      self.ensService = ensService
       
       winner = auction.noun.owner.id
       let amount = EtherFormatter.eth(from: auction.amount)
@@ -54,6 +61,13 @@ extension SettledAuctionInfoSheet {
       } else {
         governanceTitle = localize.auctionSettledGovernance()
       }
+    }
+    
+    @MainActor
+    func fetchENS() async {
+      do {
+        domain = try await ensService.domainLookup(address: winner)
+      } catch { }
     }
   }
 }

@@ -35,7 +35,7 @@ extension NounActivityFeed {
       self.service = service
     }
     
-    var title: String {
+    var owner: String {
       auction.noun.owner.id
     }
     

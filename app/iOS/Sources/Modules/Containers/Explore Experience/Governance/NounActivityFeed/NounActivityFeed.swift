@@ -22,10 +22,8 @@ struct NounActivityFeed: View {
       VStack(alignment: .leading, spacing: 10) {
         
         // Displays the owner token.
-        Text(viewModel.title)
-          .lineLimit(1)
+        ENSText(token: viewModel.owner)
           .font(.custom(.bold, size: 36))
-          .truncationMode(.middle)
         
         VPageGrid(viewModel.votes, columns: gridLayout, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
           // load next activities batch.
@@ -113,10 +111,8 @@ extension NounActivityFeed {
       VStack(alignment: .leading, spacing: 10) {
         
         // Displays the owner token.
-        Text(viewModel.title)
-          .lineLimit(1)
+        ENSText(token: viewModel.owner)
           .font(.custom(.bold, size: 36))
-          .truncationMode(.middle)
         
         Spacer()
         
@@ -141,10 +137,8 @@ extension NounActivityFeed {
       VStack(alignment: .leading, spacing: 10) {
         
         // Displays the owner token.
-        Text(viewModel.title)
-          .lineLimit(1)
+        ENSText(token: viewModel.owner)
           .font(.custom(.bold, size: 36))
-          .truncationMode(.middle)
         
         Spacer()
         

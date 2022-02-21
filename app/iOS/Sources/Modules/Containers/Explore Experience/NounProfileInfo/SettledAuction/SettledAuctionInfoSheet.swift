@@ -55,5 +55,8 @@ struct SettledAuctionInfoSheet: View {
         Safari(url: url)
       }
     }
+    .task {
+      await viewModel.fetchENS()
+    }
   }
 }
