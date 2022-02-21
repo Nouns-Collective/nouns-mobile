@@ -30,6 +30,10 @@ struct ProposalsInfoSection: View {
         ) {
           ProposalRow(viewModel: .init(proposal: $0))
         }
+        .emptyPlaceholder(when: viewModel.isLoading) {
+          ProposalPlaceholder(count: 4)
+            .loading()
+        }
       }
       
       SoftNavigationLink(
