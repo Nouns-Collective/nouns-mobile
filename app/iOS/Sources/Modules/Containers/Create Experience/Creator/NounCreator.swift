@@ -69,7 +69,9 @@ struct NounCreator: View {
       case .done:
         // Sheet presented when the user is finished creating their
         // noun and is ready to name/save their noun
-        bottomSheetManager.showBottomSheet {
+        bottomSheetManager.showBottomSheet(
+          style: .init(showDimmingView: false)
+        ) {
           viewModel.mode = .creating
         } content: {
           NounMetadataDialog(viewModel: viewModel)

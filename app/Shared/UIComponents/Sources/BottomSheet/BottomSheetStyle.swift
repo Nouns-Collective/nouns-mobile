@@ -12,7 +12,7 @@ public struct BottomSheetStyle {
   /// A fixed color for the dimming view
   static let dimmingViewColor = Color.black.opacity(0.2)
   
-  /// Tells if should be there a cover between the Partial Sheet and the Content
+  /// Boolean value to determine if there should a dimming view between the bottom sheet and the Content
   var showDimmingView: Bool
   
   /// Minimum distance between the top of the sheet and the top of the screen
@@ -23,7 +23,7 @@ public struct BottomSheetStyle {
   /// - Parameters:
   ///   - showDimmingView: If the background cover is shown (behind the sheet)
   ///   - minTopDistance: Minimum distance between the top of the sheet and the top of the screen
-  public init(showDimmingView: Bool,
+  public init(showDimmingView: Bool = true,
               minTopDistance: CGFloat = 110
   ) {
     self.showDimmingView = showDimmingView

@@ -11,9 +11,6 @@ import Combine
 /// This is the modifier for the Bottom Sheet
 public struct BottomSheet: ViewModifier {
   
-  /// The Bottom Sheet Style configuration
-  var style: BottomSheetStyle
-  
   @EnvironmentObject private var manager: BottomSheetManager
   
   /// The rect containing the presenter
@@ -33,11 +30,11 @@ public struct BottomSheet: ViewModifier {
     let topSafeArea = (UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0)
     let calculatedTop = presenterContentRect.height + topSafeArea - sheetContentRect.height
     
-    guard calculatedTop < style.minTopDistance else {
+    guard calculatedTop < manager.style.minTopDistance else {
       return calculatedTop
     }
     
-    return style.minTopDistance
+    return manager.style.minTopDistance
   }
   
   /// The he point for the bottom anchor
@@ -117,7 +114,7 @@ public extension BottomSheet {
       // The cover view
       if manager.isPresented {
         Group {
-          if style.showDimmingView {
+          if manager.style.showDimmingView {
             Rectangle()
               .foregroundColor(BottomSheetStyle.dimmingViewColor)
           }
@@ -136,7 +133,7 @@ public extension BottomSheet {
       Group {
         VStack(spacing: 0) {
           VStack {
-            // Attach the SHEET CONTENT
+            // Attach the sheet's content
             self.manager.content
               .background(
                 GeometryReader { proxy in
@@ -298,6 +295,7 @@ public struct BottomSheetAddView<Base: View, InnerContent: View>: View {
   @EnvironmentObject var bottomSheetManager: BottomSheetManager
   
   @Binding var isPresented: Bool
+  let style: BottomSheetStyle
   let content: () -> InnerContent
   let base: Base
   
@@ -307,7 +305,7 @@ public struct BottomSheetAddView<Base: View, InnerContent: View>: View {
   }
   
   func updateContent() {
-    bottomSheetManager.updateBottomSheet(isPresented: isPresented, content: content, onDismiss: {
+    bottomSheetManager.updateBottomSheet(isPresented: isPresented, style: style, content: content, onDismiss: {
       self.isPresented = false
     })
   }
@@ -316,7 +314,11 @@ public struct BottomSheetAddView<Base: View, InnerContent: View>: View {
 public extension View {
   
   /// Presents a bottom sheet to the nearest view that utilizes the `.addBottomSheet()` view modifier
-  func bottomSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
-    BottomSheetAddView(isPresented: isPresented, content: content, base: self)
+  func bottomSheet<Content: View>(
+    isPresented: Binding<Bool>,
+    style: BottomSheetStyle = BottomSheetStyle.defaultStyle(),
+    @ViewBuilder content: @escaping () -> Content
+  ) -> some View {
+    BottomSheetAddView(isPresented: isPresented, style: style, content: content, base: self)
   }
 }

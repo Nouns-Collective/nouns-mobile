@@ -23,8 +23,13 @@ public class BottomSheetManager: ObservableObject {
       }
     }
   }
+  
   /// The content of the sheet
   @Published private(set) var content: AnyView
+  
+  /// The style of the bottom sheet
+  @Published private(set) var style: BottomSheetStyle
+  
   /// the onDismiss code runned when the bottom sheet is closed
   private(set) var onDismiss: (() -> Void)?
   
@@ -33,30 +38,33 @@ public class BottomSheetManager: ObservableObject {
   
   public init() {
     self.content = AnyView(EmptyView())
+    self.style = BottomSheetStyle.defaultStyle()
   }
-  
   
   /// Presents a bottom sheet  with a dynamic height based on his content.
   ///
   /// - Parameters:
   ///   - content: The content to place inside of the bottom sheet
   ///   - onDismiss: This code will be runned when the sheet is dismissed.
-  public func showBottomSheet<T>(_ onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> T) where T: View {
+  public func showBottomSheet<T>(style: BottomSheetStyle = BottomSheetStyle.defaultStyle(), _ onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> T) where T: View {
     guard !isPresented else {
       withAnimation(defaultAnimation) {
         updateBottomSheet(
+          style: style,
           content: {
             // do not animate the content, just the bottom sheet
             withAnimation(nil) {
               content()
             }
           },
-          onDismiss: onDismiss)
+          onDismiss: onDismiss
+        )
       }
       return
     }
     
     self.content = AnyView(content())
+    self.style = style
     self.onDismiss = onDismiss
     DispatchQueue.main.async {
       withAnimation(self.defaultAnimation) {
@@ -65,19 +73,21 @@ public class BottomSheetManager: ObservableObject {
     }
   }
   
-  
   /// Updates some properties of the bottom sheet
   ///
   /// - Parameters:
   ///   - isPresented: If the bottom sheet is presented
   ///   - content: The content to place inside of the Bottom Sheet.
   ///   - onDismiss: This code will be runned when the sheet is dismissed.
-  public func updateBottomSheet<T>(isPresented: Bool? = nil, content: (() -> T)? = nil, onDismiss: (() -> Void)? = nil) where T: View {
+  public func updateBottomSheet<T>(isPresented: Bool? = nil, style: BottomSheetStyle? = nil, content: (() -> T)? = nil, onDismiss: (() -> Void)? = nil) where T: View {
     if let content = content {
       self.content = AnyView(content())
     }
     if let onDismiss = onDismiss {
       self.onDismiss = onDismiss
+    }
+    if let style = style {
+      self.style = style
     }
     if let isPresented = isPresented {
       withAnimation(defaultAnimation) {
@@ -99,15 +109,14 @@ public extension View {
   
   /// Add a BottomSheet to the current view, whereby any child of this view (in the same navigation stack, not full screen covers),
   /// can use the `BottomSheetManager` or `.bottomSheet` view modifier to present a bottom sheet from that root view.
-  /// This ensures that wherever the `.bottomSheet` view modifier is used, the bottom sheet itself is presented over (highest z-index)
-  /// all the content of the root view where `.addBottomSheet` is used.
+  /// This ensures that regardless of where the `.bottomSheet` view modifier is used, the bottom sheet itself is presented
+  /// over (highest z-index) all the content of the root view where `.addBottomSheet` is used.
   ///
   /// - Parameters:
   ///   - style: The style configuration for the Bottom Sheet.
-  func addBottomSheet(
-    style: BottomSheetStyle = BottomSheetStyle.defaultStyle()) -> some View {
+  func addBottomSheet() -> some View {
       self.modifier(
-        BottomSheet(style: style)
+        BottomSheet()
       )
     }
 }
