@@ -8,18 +8,8 @@
 import Combine
 import SwiftUI
 
-/**
- The Bottom Sheet Manager helps to handle the Bottom Sheet when you have many view layers.
- 
- Make sure to pass an instance of this manager as an **environmentObject** to your root view in your Scene Delegate:
- ```
- let sheetManager: BottomSheetManager = BottomSheetManager()
- let window = UIWindow(windowScene: windowScene)
- window.rootViewController = UIHostingController(
- rootView: contentView.environmentObject(sheetManager)
- )
- ```
- */
+/// An observable obejct that helps the app handle the bottom sheet when you have many view layers.
+/// Make sure to pass an instance of this manager as an **environmentObject** to your root view in the SwiftUI `App`
 public class BottomSheetManager: ObservableObject {
   
   /// Published var to present or hide the bottom sheet
@@ -45,11 +35,12 @@ public class BottomSheetManager: ObservableObject {
     self.content = AnyView(EmptyView())
   }
   
-  /**
-   Presents a **Bottom Sheet**  with a dynamic height based on his content.
-   - parameter content: The content to place inside of the Bottom Sheet.
-   - parameter onDismiss: This code will be runned when the sheet is dismissed.
-   */
+  
+  /// Presents a bottom sheet  with a dynamic height based on his content.
+  ///
+  /// - Parameters:
+  ///   - content: The content to place inside of the bottom sheet
+  ///   - onDismiss: This code will be runned when the sheet is dismissed.
   public func showBottomSheet<T>(_ onDismiss: (() -> Void)? = nil, @ViewBuilder content: @escaping () -> T) where T: View {
     guard !isPresented else {
       withAnimation(defaultAnimation) {
@@ -74,12 +65,13 @@ public class BottomSheetManager: ObservableObject {
     }
   }
   
-  /**
-   Updates some properties of the **Bottom Sheet**
-   - parameter isPresented: If the bottom sheet is presented
-   - parameter content: The content to place inside of the Bottom Sheet.
-   - parameter onDismiss: This code will be runned when the sheet is dismissed.
-   */
+  
+  /// Updates some properties of the bottom sheet
+  ///
+  /// - Parameters:
+  ///   - isPresented: If the bottom sheet is presented
+  ///   - content: The content to place inside of the Bottom Sheet.
+  ///   - onDismiss: This code will be runned when the sheet is dismissed.
   public func updateBottomSheet<T>(isPresented: Bool? = nil, content: (() -> T)? = nil, onDismiss: (() -> Void)? = nil) where T: View {
     if let content = content {
       self.content = AnyView(content())
@@ -104,11 +96,14 @@ public class BottomSheetManager: ObservableObject {
 }
 
 public extension View {
-  /**
-   Add a BottomSheet to the current view. You should attach it to your Root View.
-   Use the BottomSheetManager as an environment object to present it whenever you want.
-   - parameter style: The style configuration for the Bottom Sheet.
-   */
+  
+  /// Add a BottomSheet to the current view, whereby any child of this view (in the same navigation stack, not full screen covers),
+  /// can use the `BottomSheetManager` or `.bottomSheet` view modifier to present a bottom sheet from that root view.
+  /// This ensures that wherever the `.bottomSheet` view modifier is used, the bottom sheet itself is presented over (highest z-index)
+  /// all the content of the root view where `.addBottomSheet` is used.
+  ///
+  /// - Parameters:
+  ///   - style: The style configuration for the Bottom Sheet.
   func addBottomSheet(
     style: BottomSheetStyle = BottomSheetStyle.defaultStyle()) -> some View {
       self.modifier(

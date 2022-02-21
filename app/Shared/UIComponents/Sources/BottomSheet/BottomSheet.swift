@@ -45,7 +45,7 @@ public struct BottomSheet: ViewModifier {
     return UIScreen.main.bounds.height + 5
   }
   
-  /// Calculates the sheets y position
+  /// Calculates the sheets y-position
   private var sheetPosition: CGFloat {
     if self.manager.isPresented {
       // 20.0 = To make sure we dont go under statusbar on screens without safe area inset
@@ -108,6 +108,7 @@ public struct BottomSheet: ViewModifier {
 public extension BottomSheet {
   
   private func sheetView() -> some View {
+    
     // Build the drag gesture
     let drag = dragGesture()
     
@@ -172,7 +173,7 @@ public extension BottomSheet {
 // MARK: - Drag Gesture
 extension BottomSheet {
   
-  /// Create a new **DragGesture** with *updating* and *onEndend* func
+  /// Creates a new drag gesture to manage dragging and dismissing the bottom sheet
   private func dragGesture() -> _EndedGesture<_ChangedGesture<DragGesture>> {
     DragGesture(minimumDistance: 0.1, coordinateSpace: .local)
       .onChanged(onDragChanged)
@@ -313,6 +314,8 @@ public struct BottomSheetAddView<Base: View, InnerContent: View>: View {
 }
 
 public extension View {
+  
+  /// Presents a bottom sheet to the nearest view that utilizes the `.addBottomSheet()` view modifier
   func bottomSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
     BottomSheetAddView(isPresented: isPresented, content: content, base: self)
   }
