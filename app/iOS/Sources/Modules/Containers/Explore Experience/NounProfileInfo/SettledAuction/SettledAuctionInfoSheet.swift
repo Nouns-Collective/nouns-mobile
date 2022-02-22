@@ -15,6 +15,30 @@ struct SettledAuctionInfoSheet: View {
   
   @State private var isSafariPresented = false
   
+  private var nounOwnerDomain: some View {
+    Label {
+      HStack(spacing: 4) {
+        Text(R.string.nounProfile.heldBy())
+          .font(.custom(.regular, relativeTo: .subheadline))
+        
+        ENSText(token: viewModel.winner)
+          .lineLimit(1)
+          .font(.custom(.medium, relativeTo: .subheadline))
+          .truncationMode(.middle)
+      
+        Spacer()
+        
+        Image.mdArrowRight
+      }
+    } icon: {
+      Image.holder
+    }
+    .contentShape(Rectangle())
+    .onTapGesture {
+      isActivityPresented.toggle()
+    }
+  }
+  
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       // The date when the auction was created.
@@ -34,12 +58,7 @@ struct SettledAuctionInfoSheet: View {
       }
       
       // Displays the winner of the auction using `ENS` or `Token`.
-      InfoCell(
-        text: R.string.nounProfile.heldBy(),
-        calloutText: viewModel.nounWinner,
-        icon: { Image.holder },
-        accessory: { Image.mdArrowRight },
-        action: { isSafariPresented.toggle() })
+      nounOwnerDomain
       
       // Action to display the governance details of the auction.
       InfoCell(
@@ -54,9 +73,6 @@ struct SettledAuctionInfoSheet: View {
       if let url = viewModel.nounProfileURL {
         Safari(url: url)
       }
-    }
-    .task {
-      await viewModel.fetchENS()
     }
   }
 }

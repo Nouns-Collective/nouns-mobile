@@ -173,7 +173,9 @@ public struct InfoCell<Icon: View, CalloutIcon: View, Accessory: View>: View {
         Text(text)
           .font(.custom(.regular, relativeTo: .subheadline))
         
+        // TODO: - Make this a `supplmentaryView` parameter
         if let calloutText = calloutText {
+          // TODO: - Make this a `CalloutText` component
           Label(title: {
             Text(calloutText)
               .lineLimit(1)

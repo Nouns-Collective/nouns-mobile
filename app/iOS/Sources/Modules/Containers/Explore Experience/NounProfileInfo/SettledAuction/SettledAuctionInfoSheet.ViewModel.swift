@@ -29,10 +29,6 @@ extension SettledAuctionInfoSheet {
       auction.noun.isNounderOwned
     }
     
-    public var nounWinner: String {
-      isNounderOwned ? R.string.nounProfile.noundersEth() : (domain ?? winner)
-    }
-    
     init(
       auction: Auction,
       ensService: ENS = AppCore.shared.ensNameService
@@ -61,13 +57,6 @@ extension SettledAuctionInfoSheet {
       } else {
         governanceTitle = localize.auctionSettledGovernance()
       }
-    }
-    
-    @MainActor
-    func fetchENS() async {
-      do {
-        domain = try await ensService.domainLookup(address: winner)
-      } catch { }
     }
   }
 }
