@@ -15,30 +15,6 @@ struct SettledAuctionInfoSheet: View {
   
   @State private var isSafariPresented = false
   
-  private var nounOwnerDomain: some View {
-    Label {
-      HStack(spacing: 4) {
-        Text(R.string.nounProfile.heldBy())
-          .font(.custom(.regular, relativeTo: .subheadline))
-        
-        ENSText(token: viewModel.winner)
-          .lineLimit(1)
-          .font(.custom(.medium, relativeTo: .subheadline))
-          .truncationMode(.middle)
-      
-        Spacer()
-        
-        Image.mdArrowRight
-      }
-    } icon: {
-      Image.holder
-    }
-    .contentShape(Rectangle())
-    .onTapGesture {
-      isActivityPresented.toggle()
-    }
-  }
-  
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       // The date when the auction was created.
@@ -52,13 +28,36 @@ struct SettledAuctionInfoSheet: View {
       if viewModel.showWinningBid {
         InfoCell(
           text: R.string.nounProfile.bidWinner(),
-          calloutText: viewModel.winningBid,
           icon: { Image.wonPrice },
-          calloutIcon: { Image.eth })
+          supplementaryView: {
+            Label {
+              Text(viewModel.winningBid)
+            } icon: {
+              Image.eth
+            }
+            .labelStyle(.calloutLabel(spacing: 2))
+            .padding(.leading, 4)
+          })
       }
       
       // Displays the winner of the auction using `ENS` or `Token`.
-      nounOwnerDomain
+      InfoCell(
+        text: R.string.nounProfile.heldBy(),
+        icon: { Image.holder },
+        supplementaryView: {
+          ENSText(token: viewModel.winner)
+            .lineLimit(1)
+            .font(.custom(.medium, relativeTo: .subheadline))
+            .truncationMode(.middle)
+            .padding(.leading, 4)
+        },
+        accessory: {
+          Image.mdArrowRight
+        },
+        action: {
+          isActivityPresented.toggle()
+        }
+      )
       
       // Action to display the governance details of the auction.
       InfoCell(
