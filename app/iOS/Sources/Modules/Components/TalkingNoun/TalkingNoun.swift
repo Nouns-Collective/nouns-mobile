@@ -67,7 +67,7 @@ final class TalkingNoun: SKScene {
     return accessory
   }()
   
-  private lazy var glasses = Trait(nounTraitName: "glasses-pink-empty")
+  private lazy var glasses = Trait(nounTraitName: "glasses-square-red")
   private lazy var eyes = Eyes()
   private lazy var mouth = Mouth(seed: seed)
   
@@ -80,19 +80,16 @@ final class TalkingNoun: SKScene {
     view?.allowsTransparency = true
     view?.backgroundColor = .clear
     
-    [body, accessory, head, glasses, eyes].compactMap { trait in
+    // Adding the same instance of talkingNoun multiple times results in a fatal error
+    // This would happen when using `ScreenRecorder` to record this scene as
+    // a `RecordingView` wrapper is created.
+    guard mouth.parent == nil else { return }
+    
+    [body, accessory, head, glasses, eyes, mouth].compactMap { trait in
       trait?.position = CGPoint(x: frame.midX, y: frame.midY)
       trait?.size = Self.traitSize
       return trait
     }
     .forEach(addChild)
-    
-    // Adding the same instance of talkingNoun multiple times results in a fatal error
-    // This would happen when using `ScreenRecorder` to record this scene as
-    // a `RecordingView` wrapper is created.
-    if mouth.parent == nil {
-      mouth.position = CGPoint(x: frame.midX, y: frame.midY)
-      addChild(mouth)
-    }
   }
 }

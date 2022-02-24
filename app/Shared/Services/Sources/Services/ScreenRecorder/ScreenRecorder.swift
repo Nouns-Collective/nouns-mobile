@@ -222,7 +222,8 @@ public class CAScreenRecorder: ScreenRecorder {
       throw "🎥 No frames to calculate frame size from"
     }
     
-    // Defines the input of the asset writer to consume the captured frames of the source view.
+    // Defines the input of the asset writer to consume the captured
+    // frames of the source view.
     let videoSettings: [String: Any] = [
       AVVideoCodecKey: codecType,
       AVVideoWidthKey: frameSize.width,
@@ -276,47 +277,47 @@ public class CAScreenRecorder: ScreenRecorder {
      *******************
      */
     
-    guard let audioFileURL = audioFileURL else {
-      throw "⚠️ 📺 Couldn't continue the screen recording! No audio file found."
-    }
-
-    let audioTrackOutput = try await loadAudioSample(at: audioFileURL)
-    
-    let outputAudioSettings: [String: Any] = [
-      AVFormatIDKey: kAudioFormatLinearPCM,
-      AVLinearPCMIsBigEndianKey: false,
-      AVLinearPCMIsFloatKey: false,
-      AVLinearPCMBitDepthKey: 16,
-    ]
-    
-    let audioWriterInput = AVAssetWriterInput(
-      mediaType: .audio,
-      outputSettings: outputAudioSettings
-    )
-    
-    guard writer.canAdd(audioWriterInput) else {
-      throw "⚠️ 📺 Unable to add the audio input to the asset writer"
-    }
-    
-    writer.add(audioWriterInput)
-    
-    let queue = DispatchQueue(label: "wtf.nouns.ios.screen-recorder.audio-write")
-  requestMediaStream: for await _ in audioWriterInput.requestMediaDataWhenReady(on: queue) {
-    
-    // while the input is ready for more data, it copies
-    // the available samples from the track output
-    // and appends them to the input.
-    while audioWriterInput.isReadyForMoreMediaData {
-      guard let sampleBuffer = audioTrackOutput.copyNextSampleBuffer() else {
-        audioWriterInput.markAsFinished()
-        break requestMediaStream
-      }
-      
-      guard audioWriterInput.append(sampleBuffer) else {
-        throw "⚠️ 📺 Couldn't append the audio sample buffer to the input"
-      }
-    }
-  }
+//    guard let audioFileURL = audioFileURL else {
+//      throw "⚠️ 📺 Couldn't continue the screen recording! No audio file found."
+//    }
+//
+//    let audioTrackOutput = try await loadAudioSample(at: audioFileURL)
+//    
+//    let outputAudioSettings: [String: Any] = [
+//      AVFormatIDKey: kAudioFormatLinearPCM,
+//      AVLinearPCMIsBigEndianKey: false,
+//      AVLinearPCMIsFloatKey: false,
+//      AVLinearPCMBitDepthKey: 16,
+//    ]
+//    
+//    let audioWriterInput = AVAssetWriterInput(
+//      mediaType: .audio,
+//      outputSettings: outputAudioSettings
+//    )
+//    
+//    guard writer.canAdd(audioWriterInput) else {
+//      throw "⚠️ 📺 Unable to add the audio input to the asset writer"
+//    }
+//    
+//    writer.add(audioWriterInput)
+//    
+//    let queue = DispatchQueue(label: "wtf.nouns.ios.screen-recorder.audio-write")
+//  requestMediaStream: for await _ in audioWriterInput.requestMediaDataWhenReady(on: queue) {
+//    
+//    // while the input is ready for more data, it copies
+//    // the available samples from the track output
+//    // and appends them to the input.
+//    while audioWriterInput.isReadyForMoreMediaData {
+//      guard let sampleBuffer = audioTrackOutput.copyNextSampleBuffer() else {
+//        audioWriterInput.markAsFinished()
+//        break requestMediaStream
+//      }
+//      
+//      guard audioWriterInput.append(sampleBuffer) else {
+//        throw "⚠️ 📺 Couldn't append the audio sample buffer to the input"
+//      }
+//    }
+//  }
     
     /*
      *******************

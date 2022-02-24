@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import Combine
 import os
 
 /// Auto-Listening & record  & applies pre-built effects.
@@ -206,9 +207,8 @@ public class VoiceChangerEngine: ObservableObject {
   }
   
   private func handleManualRecording(for buffer: AVAudioPCMBuffer, isRecording: Bool) {
-    guard isRecording else {
-      return playbackCapturedVoice()
-    }
+    // The playback is done uppon request.
+    guard isRecording else { return }
     
     do {
       try voiceLessEffectOutput?.persistStream(buffer)
@@ -253,6 +253,35 @@ public class VoiceChangerEngine: ObservableObject {
   }
   
   // MARK: - Audio Units Effects
+  
+  public func playback() -> AnyPublisher<TimeInterval, Never> {
+    let progress = PassthroughSubject<TimeInterval, Never>()
+    
+    let duration = voiceLessEffectOutput?.duration ?? 0
+    
+    let lastRenderTimeCancellable = recordedFilePlayer.lastRenderTime.publisher
+//      .compactMap { nodeTime in
+//        self.recordedFilePlayer.playerTime(forNodeTime: nodeTime)
+//      }
+      .sink { playerTime in
+        guard self.recordedFilePlayer.isPlaying else {
+          return progress.send(completion: .finished)
+        }
+        
+        let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
+        let fractionCompletion = currentTime / duration
+        progress.send(fractionCompletion)
+      }
+    
+    return progress.handleEvents { _ in
+      self.playbackCapturedVoice()
+    } receiveCompletion: { _ in
+      lastRenderTimeCancellable.cancel()
+    } receiveCancel: {
+      lastRenderTimeCancellable.cancel()
+    }
+    .eraseToAnyPublisher()
+  }
   
   /// Plays back the voice with effect.
   private func playbackCapturedVoice() {
