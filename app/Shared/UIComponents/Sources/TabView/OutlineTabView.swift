@@ -72,30 +72,51 @@ extension EnvironmentValues {
 }
 
 // TODO: Set `Tag` to conform to `Hashable`
-private struct OutlineTabItem: Hashable, Identifiable {
-  let id = UUID()
+public struct OutlineTabItem: Hashable, Identifiable {
+  public let id = UUID()
   // TODO: Icons should be type safe and conform to `View`.
   let normalStateIcon: Image
   let selectedStateIcon: Image
   let tag: Int
   
-  func hash(into hasher: inout Hasher) {
+  public init(
+    normalStateIcon: Image,
+    selectedStateIcon: Image,
+    tag: Int
+  ) {
+    self.normalStateIcon = normalStateIcon
+    self.selectedStateIcon = selectedStateIcon
+    self.tag = tag
+  }
+  
+  public init<T: RawRepresentable>(
+    normalStateIcon: Image,
+    selectedStateIcon: Image,
+    tag: T
+  ) where T.RawValue == Int {
+    self.normalStateIcon = normalStateIcon
+    self.selectedStateIcon = selectedStateIcon
+    self.tag = tag.rawValue
+  }
+  
+  public func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
 }
 
-private struct OutlineTabBar: View {
-  @Environment(\.outlineTabItemSelection) private var selection
-  @State private var selectedItemTag = 0
+public struct OutlineTabBar: View {
+  @Binding private var selectedItemTag: Int
   private let items: [OutlineTabItem]
   
-  init(
+  public init(
+    selection: Binding<Int>,
     _ items: [OutlineTabItem]
   ) {
+    self._selectedItemTag = selection
     self.items = items
   }
   
-  var body: some View {
+  public var body: some View {
     HStack {
       ForEach(items) { item in
         tabItem(item)
@@ -124,9 +145,6 @@ private struct OutlineTabBar: View {
       })
       .onTapGesture {
         selectedItemTag = item.tag
-      }
-      .onAppear {
-        selectedItemTag = selection
       }
   }
 }
@@ -222,7 +240,11 @@ public struct OutlineTabView<Content>: View where Content: View {
         .environment(\.outlineTabViewHeight, tabBarHeight)
     }
     .safeAreaInset(edge: .bottom, spacing: 40) {
-      OutlineTabBar(items)
+      /// In this build, we aren't using `OutlineTabView` and instead are just using `OutlineTabBar`
+      /// with a `TabView` wrapped around it. A binding selection value was added to `OutlineTabBar` to
+      /// accomodate this implementation. To keep `OutlineTabView` in the codebase for now, a constant
+      /// binding value was added in the meantime until `OutlineTabView` is either removed or re-designed.
+      OutlineTabBar(selection: .constant(0), items)
         .opacity(hideOutlineTabBar ? 0 : 1)
         .background(
           /// A clear background to capture the height of the tab bar and pass it to it's children.

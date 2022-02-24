@@ -30,22 +30,30 @@ struct SlotMachine: View {
       .frame(maxHeight: viewModel.imageSize)
     }
     .onAppear {
-      // Animate the slot machine's seed if `animateEntrance` is
-      // set to true. It will set the seed to something random,
-      // show all the neighbouring traits for all trait types.
-      // then animate the transition back to the original initial seed,
-      // finally hiding all the neighbouring traits at the end
-      if viewModel.animateEntrance {
-        viewModel.randomizeSeed()
-        viewModel.showAllTraits = true
+      // A small delay is needed so that all the animation logic
+      // happens after the view is rendered in it's complete form
+      // at least once. If the animation logic + the appearance of the
+      // view happens at the same time, the entire view will animate
+      // into place (including the navigation title and background)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
         
-        withAnimation(.spring(response: 2.0, dampingFraction: 1.0, blendDuration: 1.0)) {
-          viewModel.resetToInitialSeed()
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-          withAnimation {
-            self.viewModel.showAllTraits = false
+        // Animate the slot machine's seed if `animateEntrance` is
+        // set to true. It will set the seed to something random,
+        // show all the neighbouring traits for all trait types.
+        // then animate the transition back to the original initial seed,
+        // finally hiding all the neighbouring traits at the end
+        if viewModel.animateEntrance {
+          viewModel.randomizeSeed()
+          viewModel.showAllTraits = true
+          
+          withAnimation(.spring(response: 2.0, dampingFraction: 1.0, blendDuration: 1.0)) {
+            viewModel.resetToInitialSeed()
+          }
+          
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            withAnimation {
+              self.viewModel.showAllTraits = false
+            }
           }
         }
       }
