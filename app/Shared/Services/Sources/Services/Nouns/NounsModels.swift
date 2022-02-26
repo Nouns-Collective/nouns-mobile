@@ -197,7 +197,7 @@ public enum ProposalDetailedStatus: String {
 }
 
 /// The Proposal.
-public struct Proposal: Equatable {
+public struct Proposal: Equatable, Identifiable {
   
   /// Internal proposal ID
   public let id: String
