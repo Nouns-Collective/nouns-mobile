@@ -36,23 +36,23 @@ extension CreateExperience {
       VStack(alignment: .leading, spacing: 0) {
         Text(R.string.create.subhealine())
           .font(.custom(.regular, size: 17))
+          .padding(.horizontal, 20)
         
         Spacer()
                   
         SlotMachine(viewModel: .init(initialSeed: initialSeed, showShadow: false, animateEntrance: true))
-          .padding(.horizontal, -20)
           .disabled(true)
+          .drawingGroup()
 
         OutlineButton(
           text: R.string.create.proceedTitle(),
           largeAccessory: { Image.fingergunsRight },
           action: action)
           .controlSize(.large)
-          .padding(.horizontal)
+          .padding(.horizontal, 40)
         
         Spacer()
       }
-      .padding(.horizontal, 20)
       .padding(.bottom, tabBarHeight)
       // Extra padding between the bottom of the last noun card and the top of the tab view
       .padding(.bottom, 20)

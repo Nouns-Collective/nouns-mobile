@@ -11,6 +11,7 @@ import Services
 extension SettledAuctionCard {
   
   class ViewModel: ObservableObject {
+    
     /// The noun's ID.
     @Published private(set) var title: String
     
