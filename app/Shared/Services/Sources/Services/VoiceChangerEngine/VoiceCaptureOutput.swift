@@ -14,6 +14,12 @@ final class VoiceCaptureOutput {
   /// An object that represents an audio file that the system can open for reading or writing
   private(set) var audioFile: AVAudioFile
   
+  var duration: TimeInterval {
+    let sampleRateSong = Double(audioFile.fileFormat.sampleRate)
+    let lengthSongSeconds = Double(audioFile.length) / sampleRateSong
+    return lengthSongSeconds
+  }
+  
   ///
   private let logger = Logger(
     subsystem: "wtf.nouns.ios.services",

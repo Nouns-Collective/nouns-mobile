@@ -19,6 +19,9 @@ struct NounPlayground: View {
   @Environment(\.dismiss) private var dismiss
   @Namespace private var nsTypeSelection
   
+  /// A boolean indicates whether the activity sharing sheet is presented.
+  @State private var isShareSheetPresented = false
+  
   /// Holds a reference to the localized text.
   private let localize = R.string.nounPlayground.self
   
@@ -97,10 +100,17 @@ struct NounPlayground: View {
     .onChange(of: viewModel.isNounTalking) { isNounTalking in
       talkingNoun.isTalking = isNounTalking
     }
-    .onChange(of: viewModel.state == .share) { _ in
-      viewModel.startVideoRecording(
-        source: spriteView,
-        background: Gradient.bubbleGum
+//    .onChange(of: viewModel.state == .processing) { _ in
+//      viewModel.startVideoRecording(
+//        source: spriteView,
+//        background: Gradient.bubbleGum
+//      )
+//    }
+    .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
+      ShareTalkingNounDialog(
+        videoURL: viewModel.recordedVideo?.share,
+        progressValue: viewModel.videoPreparationProgress,
+        reset: { viewModel.reset() }
       )
     }
     .onChange(of: viewModel.state) { state in

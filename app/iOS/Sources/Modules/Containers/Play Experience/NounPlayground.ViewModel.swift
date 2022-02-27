@@ -22,6 +22,9 @@ extension NounPlayground {
       /// The user is recording their speech along with their noun's reptition, then persisted to the disk.
       case recording
       
+      ///
+      case processing
+      
       /// The user has completed recording and is ready to share, save, or start over
       case share
     }
@@ -29,25 +32,19 @@ extension NounPlayground {
     /// The current state of the playground where it switches between simply playing
     /// the voice with effect `freestyle`, adding the audio persistence
     /// option `recording`, or allowing the user to share it `share`.
-    @Published var state: State = .freestyle {
-      didSet {
-        switch state {
-        case .freestyle:
-          startListening()
-          
-        case .recording:
-          break
-          
-        case .share:
-          stopListening()
-        }
-      }
-    }
+    @Published private(set) var state: State = .freestyle
     
     /// Determines whether the user request to record and store audio on disk for sharing.
     @Published var isRecording = false {
       didSet {
         voiceChangerEngine.captureMode = .manual(isRecording)
+        
+        guard !isRecording else { return }
+        
+        // Changing the status to `processing` presents a dialog
+        // to show the talking noun video processing progress.
+        state = .processing
+        playbackCapturedVoice()
       }
     }
     
@@ -66,7 +63,7 @@ extension NounPlayground {
     @Published private(set) var recordedVideo: (preview: URL, share: URL)?
     
     ///
-    @Published private(set) var talkingNounRecordProgress: Double = 0.0
+    @Published private(set) var videoPreparationProgress: Double = 0.0
     
     /// Represents the recorded voice playback status if on `speech` or `silent` mode.
     var audioProcessingState: AudioStatus {
@@ -130,12 +127,15 @@ extension NounPlayground {
           
           guard case .manual = self.voiceChangerEngine.captureMode else { return }
           
-          // Changing the status to `share` presents a dialog
-          // to ask the user to share or reject the recorded spoken name.
-          self.state = .share
+          Task {
+            // Gives a buffer of 1.0 seconds before presenting
+            // the notification permission dialog.
+            try await Task.sleep(nanoseconds: 1_000_000_000)
+            
+            await self.stopVideoRecording()
+          }
           
-          // Reset the capture voice using the sound analysis.
-          self.voiceChangerEngine.captureMode = .auto
+          self.state = .share
           
           self.logger.debug("✅ 🔊 Successully persisted the audio with effect at: \(audioFileURLWithEffect.absoluteString, privacy: .public)")
         }
@@ -169,6 +169,13 @@ extension NounPlayground {
     
     deinit {
       stopListening()
+    }
+    
+    func reset() {
+      state = .freestyle
+      
+      // Reset the capture voice using the sound analysis.
+      voiceChangerEngine.captureMode = .auto
     }
     
     // MARK: - Voice Capture
@@ -210,6 +217,18 @@ extension NounPlayground {
     /// Asks the `VoiceChangerEngine` to stop capturing audio.
     func stopListening() {
       voiceChangerEngine.stop()
+    }
+    
+    /// Playback manuall the captured voice with the applied effect.
+    func playbackCapturedVoice() {
+      voiceChangerEngine.playback()
+        .sink { _ in
+          self.videoPreparationProgress = 1.0
+          
+        } receiveValue: { progress in
+          self.videoPreparationProgress = progress
+        }
+        .store(in: &cancellables)
     }
     
     // MARK: - Audio Effects
