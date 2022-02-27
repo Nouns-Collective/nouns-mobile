@@ -19,9 +19,7 @@ extension SettledAuctionInfoSheet {
     @Published private(set) var showBirthdate: Bool
     @Published private(set) var governanceTitle: String
     @Published private(set) var domain: String?
-    
-    private let ensService: ENS
-    
+        
     private let localize = R.string.nounProfile.self
     private let auction: Auction
     
@@ -30,11 +28,9 @@ extension SettledAuctionInfoSheet {
     }
     
     init(
-      auction: Auction,
-      ensService: ENS = AppCore.shared.ensNameService
+      auction: Auction
     ) {
       self.auction = auction
-      self.ensService = ensService
       
       winner = auction.noun.owner.id
       let amount = EtherFormatter.eth(from: auction.amount)
