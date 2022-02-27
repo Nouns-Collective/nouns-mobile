@@ -11,20 +11,33 @@ import Services
 
 /// List all proposals with pagination.
 struct ProposalFeedView: View {
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  
   @StateObject var viewModel: ViewModel
   
   @State private var isGovernanceInfoPresented = false
-  @Environment(\.dismiss) private var dismiss
-  @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  
   private let localize = R.string.proposal.self
+  
+  private let gridLayout = [
+    GridItem(.flexible(), spacing: 20),
+  ]
   
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
-      LazyVStack {
-        ForEach(viewModel.proposals, id: \.id) {
+      VPageGrid(
+        viewModel.proposals,
+        columns: gridLayout,
+        isLoading: viewModel.isLoading,
+        loadMoreAction: {
+          await viewModel.loadProposals()
+        }, placeholder: {
+          ProposalPlaceholder(count: 4)
+        }, content: {
           ProposalRow(viewModel: .init(proposal: $0))
         }
-      }
+      )
       .padding(.horizontal, 20)
       .padding(.bottom, tabBarHeight)
       // Extra padding between the bottom of the last noun card and the top of the tab view
