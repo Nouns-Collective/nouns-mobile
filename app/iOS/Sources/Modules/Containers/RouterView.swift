@@ -65,5 +65,6 @@ struct RouterView: View {
           tag: 3)
     }
     .onboarding()
+    .addBottomSheet()
   }
 }

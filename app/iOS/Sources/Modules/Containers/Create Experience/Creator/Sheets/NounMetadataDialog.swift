@@ -52,6 +52,7 @@ extension NounCreator {
   struct NounDialogActions: View {
     @ObservedObject var viewModel: NounCreator.ViewModel
 
+    @EnvironmentObject var bottomSheetManager: BottomSheetManager
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -60,6 +61,7 @@ extension NounCreator {
         largeAccessory: { Image.save },
         action: {
           viewModel.save()
+          bottomSheetManager.closeBottomSheet()
           dismiss()
         })
         .controlSize(.large)

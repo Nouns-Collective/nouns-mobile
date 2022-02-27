@@ -30,6 +30,7 @@ extension NounCreator {
   struct DiscardNounCreationSheet: View {
     @ObservedObject var viewModel: ViewModel
     
+    @EnvironmentObject var bottomSheetManager: BottomSheetManager
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -47,7 +48,10 @@ extension NounCreator {
             text: R.string.nounDeleteDialog.nounDeleteAction(),
             largeAccessory: { Image.trash },
             color: Color.componentNounRaspberry,
-            action: { dismiss() })
+            action: {
+              bottomSheetManager.closeBottomSheet()
+              dismiss()
+            })
             .controlSize(.large)
           
           SoftButton(
@@ -70,6 +74,7 @@ extension NounCreator {
   struct DiscardNounEditSheet: View {
     @ObservedObject var viewModel: ViewModel
     
+    @EnvironmentObject var bottomSheetManager: BottomSheetManager
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -87,7 +92,10 @@ extension NounCreator {
             text: R.string.nounDiscardEditDialog.nounDeleteAction(),
             largeAccessory: { Image.trash },
             color: Color.componentNounRaspberry,
-            action: { dismiss() })
+            action: {
+              bottomSheetManager.closeBottomSheet()
+              dismiss()
+            })
             .controlSize(.large)
           
           SoftButton(

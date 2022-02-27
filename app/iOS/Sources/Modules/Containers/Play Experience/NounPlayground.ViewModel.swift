@@ -51,10 +51,10 @@ extension NounPlayground {
     @Published private(set) var voiceRecordStateCoachmark: String
     
     /// Shows the audio permission sheet to request voice capture permission.
-    @Published private(set) var showAudioCapturePermissionDialog = false
+    @Published var showAudioCapturePermissionDialog = false
     
     /// Shows the audio settings sheet when the voice capture permission has been denied or restricted.
-    @Published private(set) var showAudioCaptureSettingsSheet = false
+    @Published var showAudioCaptureSettingsSheet = false
     
     /// A Boolean value indicates whether the noun is talking.
     @Published private(set) var isNounTalking = false

@@ -26,6 +26,8 @@ struct NounsApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   private var nounComposer = AppCore.shared.nounComposer
   
+  let bottomSheetManager = BottomSheetManager()
+  
   init() {
     UIComponents.configure()
   }
@@ -33,6 +35,7 @@ struct NounsApp: App {
   var body: some Scene {
     WindowGroup {
       RouterView()
+        .environmentObject(bottomSheetManager)
         .environment(\.nounComposer, nounComposer)
         .preferredColorScheme(.light)
     }
