@@ -58,7 +58,7 @@ struct ProposalFeedView: View {
           })
       })
     }
-    .background(Gradient.bubbleGum)
+    .background(Gradient.lemonDrop)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
       GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
     }
