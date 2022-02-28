@@ -29,7 +29,7 @@ struct RouterView: View {
   
   @StateObject var viewModel = ViewModel()
   
-  @State private var selectedTab = 0
+  @State private var selectedTab: Page = .explore
   
   private enum Page: Int {
     case explore
@@ -48,7 +48,7 @@ struct RouterView: View {
     UITabBar.appearance().alpha = 0
   }
   
-  private let items: [OutlineTabItem] = [
+  private let items = [
     OutlineTabItem(normalStateIcon: .exploreOutline, selectedStateIcon: .exploreFill, tag: Page.explore),
     OutlineTabItem(normalStateIcon: .createOutline, selectedStateIcon: .createFill, tag: Page.create),
     OutlineTabItem(normalStateIcon: .playOutline, selectedStateIcon: .playFill, tag: Page.play),
@@ -56,20 +56,19 @@ struct RouterView: View {
   ]
   
   var body: some View {
-    // TODO: Enhancing OutlineTabView API by prodviding a view modifier to construct the tab items
     ZStack(alignment: .bottom) {
       TabView(selection: $selectedTab) {
         ExploreExperience()
-          .tag(Page.explore.rawValue)
+          .tag(Page.explore)
         
         CreateExperience()
-          .tag(Page.create.rawValue)
+          .tag(Page.create)
         
         PlayExperience()
-          .tag(Page.play.rawValue)
+          .tag(Page.play)
         
         AboutView()
-          .tag(Page.about.rawValue)
+          .tag(Page.about)
       }
       .ignoresSafeArea(.all)
       
