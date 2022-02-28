@@ -50,10 +50,8 @@ struct SlotMachine: View {
             viewModel.resetToInitialSeed()
           }
           
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            withAnimation {
-              self.viewModel.showAllTraits = false
-            }
+          withAnimation(.spring().delay(2.5)) {
+            self.viewModel.showAllTraits = false
           }
         }
       }
