@@ -47,7 +47,7 @@ struct SettingsView: View {
             action: { dismiss() })
         })
       }
-      .background(Gradient.bubbleGum)
+      .background(Gradient.lemonDrop)
       .ignoresSafeArea()
       .sheet(isPresented: $isShareWithFriendsPresented) {
         if let url = URL(string: "https://nouns.wtf") {

@@ -28,7 +28,7 @@ struct AboutView: View {
         .padding(.horizontal, 20)
         .padding(.bottom, tabBarHeight)
         // Extra padding between the bottom of the last noun card and the top of the tab view
-        .padding(.bottom, 20)
+        .padding(.bottom, 40)
         .softNavigationTitle(localize.title(), rightAccessory: {
           // App's Settings
           Button(action: {
@@ -39,7 +39,7 @@ struct AboutView: View {
         })
       }
       .ignoresSafeArea(edges: .top)
-      .background(Gradient.bubbleGum)
+      .background(Gradient.lemonDrop)
       .bottomSheet(isPresented: $isAboutNounsPresented, content: {
         AboutNounsView(isPresented: $isAboutNounsPresented)
       })

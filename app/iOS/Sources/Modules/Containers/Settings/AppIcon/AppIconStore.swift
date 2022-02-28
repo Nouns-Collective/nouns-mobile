@@ -36,7 +36,7 @@ struct AppIconStore: View {
           action: { dismiss() })
       })
     }
-    .background(Gradient.bubbleGum)
+    .background(Gradient.lemonDrop)
   }
 }
 
