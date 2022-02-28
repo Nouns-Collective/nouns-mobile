@@ -106,21 +106,15 @@ struct NounPlayground: View {
 //        background: Gradient.bubbleGum
 //      )
 //    }
-    .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
-      ShareTalkingNounDialog(
-        videoURL: viewModel.recordedVideo?.share,
-        progressValue: viewModel.videoPreparationProgress,
-        reset: { viewModel.reset() }
-      )
-    }
     .onChange(of: viewModel.state) { state in
       bottomSheetManager.updateBottomSheet(isPresented: state == .share, content: {
         ShareTalkingNounDialog(
          videoURL: viewModel.recordedVideo?.share,
-         progressValue: viewModel.talkingNounRecordProgress
+         progressValue: viewModel.videoPreparationProgress,
+         reset: { viewModel.reset() }
        )
       }, onDismiss: {
-        viewModel.state = .freestyle
+        viewModel.reset()
       })
     }
   }
