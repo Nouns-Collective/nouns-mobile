@@ -13,6 +13,7 @@ extension ProposalFeedView {
   class ViewModel: ObservableObject {
     @Published var proposals = [Proposal]()
     @Published var isLoading = false
+    @Published var shouldLoadMore: Bool = true
     
     public var isInitiallyLoading: Bool {
       isLoading && proposals.isEmpty
@@ -30,11 +31,13 @@ extension ProposalFeedView {
       Task {
         do {
           isLoading = true
-          proposals += try await onChainNounsService.fetchProposals(
+          let proposals = try await onChainNounsService.fetchProposals(
             limit: pageLimit,
             after: proposals.count
-          ).data
+          )
           
+          self.proposals += proposals.data
+          self.shouldLoadMore = proposals.hasNext
         } catch { }
         
         isLoading = false

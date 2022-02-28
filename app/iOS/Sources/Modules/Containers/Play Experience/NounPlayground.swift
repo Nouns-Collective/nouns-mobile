@@ -14,8 +14,13 @@ struct NounPlayground: View {
   @StateObject var viewModel: ViewModel
   
   @State private var selectedVoiceEffect: Int = 0
+  
+  @EnvironmentObject var bottomSheetManager: BottomSheetManager
   @Environment(\.dismiss) private var dismiss
   @Namespace private var nsTypeSelection
+  
+  /// A boolean indicates whether the activity sharing sheet is presented.
+  @State private var isShareSheetPresented = false
   
   /// Holds a reference to the localized text.
   private let localize = R.string.nounPlayground.self
@@ -76,12 +81,12 @@ struct NounPlayground: View {
     .background(Gradient.bubbleGum)
     // Presents the audio permission dialog on not determined
     // state of audio capture permission.
-    .bottomSheet(isPresented: viewModel.showAudioCapturePermissionDialog) {
+    .bottomSheet(isPresented: $viewModel.showAudioCapturePermissionDialog) {
       AudioPermissionDialog(viewModel: viewModel)
     }
     // Presents the audio settings dialog on denied
     // of the audio capture permission.
-    .bottomSheet(isPresented: viewModel.showAudioCaptureSettingsSheet) {
+    .bottomSheet(isPresented: $viewModel.showAudioCaptureSettingsSheet) {
       AudioSettingsDialog(viewModel: viewModel)
     }
     .onDisappear {
@@ -95,7 +100,7 @@ struct NounPlayground: View {
     .onChange(of: viewModel.isNounTalking) { isNounTalking in
       talkingNoun.isTalking = isNounTalking
     }
-//    .onChange(of: viewModel.state == .share) { _ in
+//    .onChange(of: viewModel.state == .processing) { _ in
 //      viewModel.startVideoRecording(
 //        source: spriteView,
 //        background: Gradient.bubbleGum
@@ -104,8 +109,19 @@ struct NounPlayground: View {
     .bottomSheet(isPresented: viewModel.state == .share, showDimmingView: false) {
       ShareTalkingNounDialog(
         videoURL: viewModel.recordedVideo?.share,
-        progressValue: viewModel.talkingNounRecordProgress
+        progressValue: viewModel.videoPreparationProgress,
+        reset: { viewModel.reset() }
       )
+    }
+    .onChange(of: viewModel.state) { state in
+      bottomSheetManager.updateBottomSheet(isPresented: state == .share, content: {
+        ShareTalkingNounDialog(
+         videoURL: viewModel.recordedVideo?.share,
+         progressValue: viewModel.talkingNounRecordProgress
+       )
+      }, onDismiss: {
+        viewModel.state = .freestyle
+      })
     }
   }
 }

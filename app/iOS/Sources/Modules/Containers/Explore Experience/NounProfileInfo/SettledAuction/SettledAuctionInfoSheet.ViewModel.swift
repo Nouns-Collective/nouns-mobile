@@ -18,7 +18,8 @@ extension SettledAuctionInfoSheet {
     @Published private(set) var showWinningBid: Bool
     @Published private(set) var showBirthdate: Bool
     @Published private(set) var governanceTitle: String
-    
+    @Published private(set) var domain: String?
+        
     private let localize = R.string.nounProfile.self
     private let auction: Auction
     
@@ -26,11 +27,9 @@ extension SettledAuctionInfoSheet {
       auction.noun.isNounderOwned
     }
     
-    public var nounWinner: String {
-      isNounderOwned ? R.string.nounProfile.noundersEth() : winner
-    }
-    
-    init(auction: Auction) {
+    init(
+      auction: Auction
+    ) {
       self.auction = auction
       
       winner = auction.noun.owner.id

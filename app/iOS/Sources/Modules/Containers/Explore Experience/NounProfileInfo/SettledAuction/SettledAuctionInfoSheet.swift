@@ -28,18 +28,36 @@ struct SettledAuctionInfoSheet: View {
       if viewModel.showWinningBid {
         InfoCell(
           text: R.string.nounProfile.bidWinner(),
-          calloutText: viewModel.winningBid,
           icon: { Image.wonPrice },
-          calloutIcon: { Image.eth })
+          supplementaryView: {
+            Label {
+              Text(viewModel.winningBid)
+            } icon: {
+              Image.eth
+            }
+            .labelStyle(.calloutLabel(spacing: 2))
+            .padding(.leading, 4)
+          })
       }
       
       // Displays the winner of the auction using `ENS` or `Token`.
       InfoCell(
         text: R.string.nounProfile.heldBy(),
-        calloutText: viewModel.nounWinner,
         icon: { Image.holder },
-        accessory: { Image.mdArrowRight },
-        action: { isSafariPresented.toggle() })
+        supplementaryView: {
+          ENSText(token: viewModel.winner)
+            .lineLimit(1)
+            .font(.custom(.medium, relativeTo: .subheadline))
+            .truncationMode(.middle)
+            .padding(.leading, 4)
+        },
+        accessory: {
+          Image.mdArrowRight
+        },
+        action: {
+          isActivityPresented.toggle()
+        }
+      )
       
       // Action to display the governance details of the auction.
       InfoCell(

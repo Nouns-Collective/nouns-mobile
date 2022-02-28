@@ -45,7 +45,7 @@ extension LiveAuctionCard {
       // On auction end, anounce the winner.
       if auction.hasEnded {
         bidStatus = localize.winningBid()
-        winner = auction.bidder.id
+        winner = auction.bidder?.id ?? "N/A"
         remainingTime = "00h:00m:00s"
       } else {
         // Calculating the time left for the auction to end.

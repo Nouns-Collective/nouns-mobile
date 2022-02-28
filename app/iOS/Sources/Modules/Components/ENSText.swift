@@ -23,6 +23,14 @@ struct ENSText: View {
     self.ensService = ensService
   }
   
+  init(
+    noun: Noun,
+    ensService: ENS = AppCore.shared.ensNameService
+  ) {
+    self.token = noun.isNounderOwned ? R.string.nounProfile.noundersEth() : noun.owner.id
+    self.ensService = ensService
+  }
+  
   var body: some View {
     Text(domain ?? token)
       .lineLimit(1)

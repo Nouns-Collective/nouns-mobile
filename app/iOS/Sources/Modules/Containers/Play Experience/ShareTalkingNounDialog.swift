@@ -18,6 +18,9 @@ struct ShareTalkingNounDialog: View {
   /// The completed fraction of the video preparation task represented by the progress view.
   let progressValue: Double
   
+  ///
+  let reset: () -> Void
+  
   /// A boolean indicates whether the activity sharing sheet is presented.
   @State private var isShareSheetPresented = false
   
@@ -35,7 +38,7 @@ struct ShareTalkingNounDialog: View {
         SoftButton(
           text: "Share this",
           largeAccessory: { Image.share },
-          action: { })
+          action: { isShareSheetPresented.toggle() })
           .controlSize(.large)
         
       } else {
@@ -47,7 +50,7 @@ struct ShareTalkingNounDialog: View {
         largeAccessory: { Image.retry },
         action: {
           withAnimation {
-            
+            reset()
           }
         })
         .controlSize(.large)
@@ -55,8 +58,10 @@ struct ShareTalkingNounDialog: View {
     .padding(.bottom, 4)
     .sheet(isPresented: $isShareSheetPresented) {
       if let url = videoURL {
-        ShareSheet(activityItems: [url])
+        ShareSheet(activityItems: [url]) { _, _, _, _ in
+          reset()
+        }
       }
-    }
+    } 
   }
 }

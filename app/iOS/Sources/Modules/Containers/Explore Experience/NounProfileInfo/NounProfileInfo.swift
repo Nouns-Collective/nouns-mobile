@@ -102,6 +102,7 @@ struct NounProfileInfo: View {
     .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
       NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
     }
+    .addBottomSheet()
   }
 }
 

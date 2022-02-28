@@ -76,5 +76,6 @@ struct RouterView: View {
       OutlineTabBar(selection: $selectedTab, items)
     }
     .onboarding()
+    .addBottomSheet()
   }
 }

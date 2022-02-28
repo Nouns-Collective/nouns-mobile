@@ -18,8 +18,17 @@ struct LiveAuctionInfoSheet: View {
       // Displays the remaining time for the auction to be settled.
       InfoCell(
         text: R.string.nounProfile.auctionUnsettledTimeLeftLabel(),
-        calloutText: viewModel.remainingTime,
-        icon: { Image.timeleft })
+        icon: { Image.timeleft },
+        supplementaryView: {
+          Label(
+            title: {
+              Text(viewModel.remainingTime)
+            },
+            icon: {
+              EmptyView()
+            })
+          .labelStyle(.calloutLabel(spacing: 0))
+        })
       
       // Displays the date when the auction was created.
       InfoCell(
@@ -29,9 +38,16 @@ struct LiveAuctionInfoSheet: View {
       // Displays the current bid amount.
       InfoCell(
         text: R.string.nounProfile.auctionUnsettledLastBid(),
-        calloutText: viewModel.lastBid,
         icon: { Image.currentBid },
-        calloutIcon: { Image.eth })
+        supplementaryView: {
+          Label {
+            Text(viewModel.lastBid)
+          } icon: {
+            Image.currentBid
+          }
+          .labelStyle(.calloutLabel(spacing: 2))
+          .padding(.leading, 4)
+        })
       
       // Action to display the governance details of the auction.
       InfoCell(

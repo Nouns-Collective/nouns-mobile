@@ -39,10 +39,10 @@ struct AboutView: View {
         })
       }
       .ignoresSafeArea(edges: .top)
-      .background(Gradient.lemonDrop)
-      .bottomSheet(isPresented: $isAboutNounsPresented) {
+      .background(Gradient.bubbleGum)
+      .bottomSheet(isPresented: $isAboutNounsPresented, content: {
         AboutNounsView(isPresented: $isAboutNounsPresented)
-      }
+      })
       .fullScreenCover(isPresented: $isSettingsPresented) {
         SettingsView()
       }
