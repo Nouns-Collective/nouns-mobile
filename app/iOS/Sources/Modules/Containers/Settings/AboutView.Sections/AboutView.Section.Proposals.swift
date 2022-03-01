@@ -30,7 +30,7 @@ struct ProposalsInfoSection: View {
         ) {
           ProposalRow(viewModel: .init(proposal: $0))
         }
-        .emptyPlaceholder(when: viewModel.isLoading) {
+        .emptyPlaceholder(when: viewModel.isInitiallyLoading) {
           ProposalPlaceholder(count: 4)
             .loading()
         }

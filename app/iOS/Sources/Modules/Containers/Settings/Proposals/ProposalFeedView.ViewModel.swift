@@ -15,6 +15,10 @@ extension ProposalFeedView {
     @Published var isLoading = false
     @Published var shouldLoadMore: Bool = true
     
+    public var isInitiallyLoading: Bool {
+      isLoading && proposals.isEmpty
+    }
+    
     private let pageLimit = 20
     private let onChainNounsService: OnChainNounsService
     

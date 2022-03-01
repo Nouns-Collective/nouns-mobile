@@ -19,7 +19,7 @@ public struct OutlineToggle: View {
     ZStack(alignment: isOn ? .trailing : .leading) {
       Capsule()
         .strokeBorder(.black, lineWidth: 2)
-        .background(isOn ? AnyView(Gradient.bubbleGum) : AnyView(Color.white))
+        .background(isOn ? AnyView(Gradient.lemonDrop) : AnyView(Color.white))
         .clipShape(Capsule())
         .frame(width: 56, height: 34)
       

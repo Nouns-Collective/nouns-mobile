@@ -12,6 +12,7 @@ import Services
 extension RouterView {
   
   final class ViewModel: ObservableObject {
+    
     private let settingsStore: SettingsStore
     
     init(settingsStore: SettingsStore = AppCore.shared.settingsStore) {
@@ -28,41 +29,50 @@ struct RouterView: View {
   
   @StateObject var viewModel = ViewModel()
   
-  @State private var selectedTab = 0
+  @State private var selectedTab: Page = .explore
+  
+  private enum Page: Int {
+    case explore
+    case create
+    case play
+    case about
+  }
   
   init() {
     // TODO: Theming Should be extracted as it is related to the theme.
     UINavigationBar.appearance().barTintColor = .clear
     UITableView.appearance().backgroundColor = .clear
+    
+    // Hides the UITabBar that appears when using SwiftUI's
+    // `TabView` so we can show only `OutlineTabBar` instead. 
+    UITabBar.appearance().alpha = 0
   }
   
+  private let items = [
+    OutlineTabItem(normalStateIcon: .exploreOutline, selectedStateIcon: .exploreFill, tag: Page.explore),
+    OutlineTabItem(normalStateIcon: .createOutline, selectedStateIcon: .createFill, tag: Page.create),
+    OutlineTabItem(normalStateIcon: .playOutline, selectedStateIcon: .playFill, tag: Page.play),
+    OutlineTabItem(normalStateIcon: .aboutOutline, selectedStateIcon: .aboutFill, tag: Page.about)
+  ]
+  
   var body: some View {
-    // TODO: Enhancing OutlineTabView API by prodviding a view modifier to construct the tab items
-    OutlineTabView(selection: $selectedTab) {
+    ZStack(alignment: .bottom) {
+      TabView(selection: $selectedTab) {
+        ExploreExperience()
+          .tag(Page.explore)
+        
+        CreateExperience()
+          .tag(Page.create)
+        
+        PlayExperience()
+          .tag(Page.play)
+        
+        AboutView()
+          .tag(Page.about)
+      }
+      .ignoresSafeArea(.all)
       
-      ExploreExperience()
-        .outlineTabItem(
-          normal: .exploreOutline,
-          selected: .exploreFill,
-          tag: 0)
-      
-      CreateExperience()
-        .outlineTabItem(
-          normal: .createOutline,
-          selected: .createFill,
-          tag: 1)
-      
-      PlayExperience()
-        .outlineTabItem(
-          normal: .playOutline,
-          selected: .playFill,
-          tag: 2)
-      
-      AboutView()
-        .outlineTabItem(
-          normal: .aboutOutline,
-          selected: .aboutFill,
-          tag: 3)
+      OutlineTabBar(selection: $selectedTab, items)
     }
     .onboarding()
     .addBottomSheet()
