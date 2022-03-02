@@ -13,19 +13,7 @@ struct CreateOnboardingView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      ZStack(alignment: .bottom) {
-        Image(R.image.onboardingCreateBackground.name)
-          .resizable()
-          .scaledToFill()
-        
-        VStack {
-          Spacer()
-          
-          Image(R.image.createNounPizza.name)
-            .resizable()
-            .scaledToFit()
-        }
-      }
+      ImageSequence(images: viewModel.onboardingImages())
       
       OnboardingView.Footer(
         viewModel: viewModel,
@@ -43,6 +31,7 @@ struct CreateOnboardingView: View {
           viewModel.selectedPage = .play
         }
       }
+      .fixedSize(horizontal: false, vertical: true)
     }
     .ignoresSafeArea()
     .background(Gradient.freshMint)

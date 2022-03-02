@@ -13,24 +13,7 @@ struct PlayOnboardingView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      ZStack(alignment: .bottom) {
-        Image(R.image.onboardingPlayBackground.name)
-          .resizable()
-          .scaledToFill()
-        
-        VStack(spacing: 0) {
-          Spacer()
-          
-          Image(R.image.homeSliceChat.name)
-            .resizable()
-            .scaledToFit()
-            .frame(height: 112, alignment: .center)
-          
-          Image(R.image.pizzaNoun.name)
-            .resizable()
-            .scaledToFit()
-        }
-      }
+      ImageSequence(images: viewModel.onboardingImages())
       
       OnboardingView.Footer(
         viewModel: viewModel,
@@ -53,6 +36,7 @@ struct PlayOnboardingView: View {
           }
         }
       }
+      .fixedSize(horizontal: false, vertical: true)
     }
     .ignoresSafeArea()
     .background(Gradient.blueberryJam)

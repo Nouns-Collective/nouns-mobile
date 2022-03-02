@@ -17,9 +17,30 @@ extension OnboardingView {
     case explore
     case create
     case play
+    
+    fileprivate var assetFolder: String {
+      switch self {
+      case .intro:
+        return "nouns-onboarding-1"
+      case .explore:
+        return "nouns-onboarding-2"
+      case .create:
+        return "nouns-onboarding-3"
+      case .play:
+        return "nouns-onboarding-4"
+      }
+    }
+    
+    fileprivate var numberOfAssets: Int {
+      switch self {
+      case .intro, .explore, .create, .play:
+        return 120
+      }
+    }
   }
   
   class ViewModel: ObservableObject {
+    
     /// Verify whether to show the Onboarding flow.
     @Published var showOnboarding: Bool
     
@@ -41,6 +62,20 @@ extension OnboardingView {
       settingsStore.hasCompletedOnboarding = true
       
       showOnboarding.toggle()
+    }
+    
+    func onboardingImages() -> [UIImage] {
+      let folder = selectedPage.assetFolder
+      var images = [UIImage]()
+      
+      for asset in 0..<selectedPage.numberOfAssets {
+        let index = String(format: "%03d", asset)
+        let imagePath = "\(folder)/\(folder)_\(index)"
+        guard let image = UIImage(named: imagePath) else { continue }
+        images.append(image)
+      }
+      
+      return images
     }
   }
 }

@@ -16,7 +16,7 @@ extension OnboardingView {
     let trailing: () -> Trailing
     
     var body: some View {
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 20) {
         Text(title)
           .font(.custom(.bold, size: 36))
           .foregroundColor(Color.componentNounsBlack)
