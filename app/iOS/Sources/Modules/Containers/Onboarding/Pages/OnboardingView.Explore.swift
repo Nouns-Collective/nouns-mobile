@@ -13,15 +13,7 @@ struct ExploreOnboardingView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      ZStack(alignment: .bottom) {
-        Image(R.image.onboardingExploreBackground.name)
-          .resizable()
-          .scaledToFill()
-        
-        Image(R.image.exploreOnboarding.name)
-          .resizable()
-          .scaledToFit()
-      }
+      ImageSequence(images: viewModel.onboardingImages())
       
       OnboardingView.Footer(
         viewModel: viewModel,
@@ -39,6 +31,7 @@ struct ExploreOnboardingView: View {
           viewModel.selectedPage = .create
         }
       }
+      .fixedSize(horizontal: false, vertical: true)
     }
     .ignoresSafeArea()
     .background(Gradient.lemonDrop)

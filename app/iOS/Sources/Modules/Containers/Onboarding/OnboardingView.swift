@@ -32,7 +32,12 @@ struct OnboardingContent: ViewModifier {
 }
 
 struct OnboardingView: View {
-  @ObservedObject var viewModel = ViewModel()
+  @ObservedObject var viewModel: ViewModel
+  
+  init(viewModel: ViewModel) {
+    self.viewModel = viewModel
+    UITabBar.appearance().alpha = 0.0
+  }
   
   var body: some View {
     TabView(selection: $viewModel.selectedPage) {
@@ -53,7 +58,6 @@ struct OnboardingView: View {
         viewModel: viewModel)
         .tag(OnboardingView.Page.play)
     }
-    .tabViewStyle(.page(indexDisplayMode: .never))
     .ignoresSafeArea()
   }
 }
