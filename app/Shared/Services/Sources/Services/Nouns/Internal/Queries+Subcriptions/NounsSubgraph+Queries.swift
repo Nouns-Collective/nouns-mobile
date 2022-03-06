@@ -148,6 +148,7 @@ internal enum NounsSubgraph {
               votes
             }
             executionETA
+            createdTimestamp
           }
         }
       """
