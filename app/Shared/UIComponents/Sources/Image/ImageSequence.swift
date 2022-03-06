@@ -14,46 +14,27 @@ public struct ImageSequence: View {
   @State private var image: Image = Image("")
   
   /// The names of the images to use for the sequence
-  @State private var images: [String]
+  private let images: [String]
   
   /// The desired fps (frames per second) to animate the sequence at
   private let fps: CGFloat
-  
-  private let timer: Publishers.Autoconnect<Timer.TimerPublisher>
   
   @State private var imageIndex: Int = 0
     
   public init(images: [String], fps: CGFloat = 30) {
     self.images = images
     self.fps = fps
-    self.timer = Timer.publish(every: 1 / fps, on: .main, in: .common).autoconnect()
   }
   
   public var body: some View {
-    Group {
-      image
-        .centerCropped()
+    TimelineView(.periodic(from: .now, by: 1 / fps)) { context in
+      if let image = UIImage(named: images[imageIndex % images.count]) {
+        Image(uiImage: image)
+          .centerCropped()
+          .onChange(of: context.date) { (_: Date) in
+            imageIndex += 1
+          }
+      }
     }
-    .onReceive(timer) { _ in
-      self.animate()
-    }
-    .onDisappear {
-      self.clear()
-    }
-  }
-  
-  private func animate() {
-    if imageIndex < self.images.count {
-      let uiImage = UIImage(named: self.images[imageIndex])!
-      self.image = Image(uiImage: uiImage)
-      imageIndex += 1
-    } else {
-      imageIndex = 0
-    }
-  }
-  
-  private func clear() {
-    timer.upstream.connect().cancel()
-    images.removeAll()
   }
 }
