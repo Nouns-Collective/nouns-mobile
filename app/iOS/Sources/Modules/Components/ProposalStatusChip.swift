@@ -34,6 +34,8 @@ struct ProposalStatusChip: View {
       return .executed
     case .expired:
       return .expired
+    case .active:
+      return .active
     }
   }
   
