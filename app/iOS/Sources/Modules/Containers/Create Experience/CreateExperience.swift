@@ -9,6 +9,19 @@ import SwiftUI
 import UIComponents
 import Services
 
+/// Passes an initial seed value to all children
+struct NounInitialSeed: EnvironmentKey {
+  static var defaultValue: Seed = AppCore.shared.nounComposer.randomSeed()
+}
+
+extension EnvironmentValues {
+  
+  var initialSeed: Seed {
+    get { self[NounInitialSeed.self] }
+    set { self[NounInitialSeed.self] = newValue }
+  }
+}
+
 /// Displays the Create Experience route.
 struct CreateExperience: View {
   
@@ -17,12 +30,8 @@ struct CreateExperience: View {
   
   @State private var selectedNoun: Noun?
   
-  private let initialSeed: Seed
-  
-  init() {
-    self.initialSeed = AppCore.shared.nounComposer.randomSeed()
-  }
-  
+  @State private var initialSeed: Seed = AppCore.shared.nounComposer.randomSeed()
+
   var body: some View {
     NavigationView {
       VStack(spacing: 20) {
@@ -51,11 +60,11 @@ struct CreateExperience: View {
               action: { isCreatorPresented.toggle() })
           }, emptyPlaceholder: {
             EmptyNounsView(
-              initialSeed: initialSeed,
               isCreatorPresented: $isCreatorPresented
             ) {
               isCreatorPresented.toggle()
             }
+            .environment(\.initialSeed, initialSeed)
           })
       }
       .background(Gradient.freshMint)
@@ -68,6 +77,10 @@ struct CreateExperience: View {
       })
       .fullScreenCover(isPresented: $isCreatorPresented) {
         NounCreator(viewModel: .init(initialSeed: initialSeed))
+      }
+      .onAppear {
+        // Randomize noun everytime tab is revisited
+        initialSeed = AppCore.shared.nounComposer.randomSeed()
       }
     }
   }

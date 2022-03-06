@@ -46,7 +46,7 @@ extension SlotMachine {
     }
     
     /// The initial seed of the noun creator, reflecting which traits are selected and displayed initially
-    public let initialSeed: Seed
+    public var initialSeed: Seed
     
     /// A boolean to determine if the shadow should be visible below the noun
     public let showShadow: Bool
@@ -78,15 +78,14 @@ extension SlotMachine {
     private var cancellables = Set<AnyCancellable>()
     
     init(
-      initialSeed: Seed = Seed.default,
       showShadow: Bool = true,
       animateEntrance: Bool = false
     ) {
-      self.initialSeed = initialSeed
+      self.initialSeed = Seed.default
       self.seed = initialSeed
       self.showShadow = showShadow
       self.animateEntrance = animateEntrance
-      
+            
       setupNotifications()
     }
     

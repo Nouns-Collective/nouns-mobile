@@ -7,8 +7,11 @@
 
 import SwiftUI
 import UIComponents
+import Services
 
 struct SlotMachine: View {
+  @Environment(\.initialSeed) var initialSeed: Seed
+  
   @StateObject var viewModel: ViewModel
   
   var body: some View {
@@ -50,11 +53,14 @@ struct SlotMachine: View {
             viewModel.resetToInitialSeed()
           }
           
-          withAnimation(.spring().delay(2.5)) {
+          withAnimation(.spring().delay(3.0)) {
             self.viewModel.showAllTraits = false
           }
         }
       }
+    }
+    .onChange(of: initialSeed) { newValue in
+      viewModel.initialSeed = newValue
     }
   }
 }
