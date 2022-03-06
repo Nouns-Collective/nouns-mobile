@@ -1,0 +1,41 @@
+/* 
+  Shared.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+"share" = "Share";
+
+"remix" = "Remix";
+
+"learn.more" = "Learn more";
+
+"done" = "Done";
+
+"try.again" = "Try Again";
+
+// MARK: - States
+
+"unavailable" = "Unavailable";
+
+"not.applicable" = "N/A";
+
+"untitled" = "Untitled";
+
+// MARK: - Noun Parts
+
+"glasses" = "Glasses";
+
+"head" = "Head";
+
+"body" = "Body";
+
+"accessory" = "Accessory";
+
+"background" = "Background";
+
+// MARK: - Links
+
+"nouns.website" = "https://nouns.wtf";

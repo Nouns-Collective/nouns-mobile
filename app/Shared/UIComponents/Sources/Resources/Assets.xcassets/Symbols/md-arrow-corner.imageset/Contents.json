@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "md-arrow-corner.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,13 @@
+/* 
+  NounPlayground.strings
+  Nouns
+
+  Created by Ziad Tamim on 06.02.22.
+  
+*/
+
+"hold-to-record.coachmark" = "Hold to record";
+
+"voice.state.not-recording" = "Say something!";
+
+"voice.state.recording" = "I’m recording…";

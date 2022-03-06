@@ -6,75 +6,54 @@
 //
 
 import XCTest
-import Combine
 @testable import Services
 
 final class GraphQLClientFetchTests: XCTestCase {
-  
-  /// Tests a successful request and response against the GraphQL client
-  func testGraphQLClientFetchQuerySucceed() throws {
-    // given
-    let response = Fixtures.data(contentOf: "NounsListResponse", withExtension: "json")
-    let networkClient = MockNetworkClient(data: response)
-    let graphQLClient = GraphQL(networkingClient: networkClient)
-    let query = NounsSubgraph.NounsListQuery(first: 10, skip: 0)
-
-    let expectation = expectation(description: #function)
-    var subscriptions = Set<AnyCancellable>()
-
-    // when
-    graphQLClient.fetch(query, cachePolicy: .fetchIgnoringCacheData)
-      .sink { completion in
-        switch completion {
-        case .finished:
-          print("Finished")
-        case let .failure(error):
-          XCTFail("💥 Something went wrong: \(error)")
+    
+    /// Tests a successful request and response against the GraphQL client
+    func testGraphQLClientFetchQuerySucceed() async throws {
+        
+        enum MockDataURLResponder: MockURLResponder {
+            static func respond(to request: URLRequest) throws -> Data? {
+                Fixtures.data(contentOf: "nouns-response-valid", withExtension: "json")
+            }
         }
-      } receiveValue: { (response: HTTPResponse<Page<[Noun]>>) in
-        XCTAssertTrue(Thread.isMainThread)
-        XCTAssertFalse(response.data.data.isEmpty)
-
-        expectation.fulfill()
-      }
-      .store(in: &subscriptions)
-
-    // then
-    wait(for: [expectation], timeout: 1.0)
-  }
-  
-  /// Tests a bad server response
-  func testGraphQLClientFetchQueryFailureWithBadServerResponseError() throws {
-    // given
-    let mockError = RequestError.request(URLError(.badServerResponse))
-    let networkClient = MockNetworkClient(error: mockError)
-    let graphQLClient = GraphQL(networkingClient: networkClient)
-    let query = NounsSubgraph.NounsListQuery(first: 10, skip: 0)
-
-    let expectation = expectation(description: #function)
-    var subscriptions = Set<AnyCancellable>()
-
-    // when
-    graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
-      .sink { completion in
-        if case let .failure(error) = completion {
-          XCTAssertTrue(Thread.isMainThread)
-          XCTAssertEqual(error, .request(error: mockError))
-          
-          expectation.fulfill()
+        
+        // given
+        let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
+        let client = URLSessionNetworkClient(urlSession: urlSession)
+        let graphQLClient = GraphQLClient(networkingClient: client)
+        let query = NounsSubgraph.NounsQuery(limit: 10, skip: 0)
+        
+        // when
+        let page: Page<[Noun]> = try await graphQLClient.fetch(query, cachePolicy: .fetchIgnoringCacheData)
+        
+        // then
+        XCTAssertFalse(page.data.isEmpty)
+    }
+    
+    /// Tests a bad server response
+    func testGraphQLClientFetchQueryFailureWithBadServerResponseError() async {
+        
+        enum MockErrorURLResponder: MockURLResponder {
+            static func respond(to request: URLRequest) throws -> Data? {
+                throw URLError(.badServerResponse)
+            }
         }
-
-      } receiveValue: { (response: HTTPResponse<Page<[Noun]>>) in
-        XCTFail("💥 result unexpected")
-      }
-      .store(in: &subscriptions)
-
-    // then
-    wait(for: [expectation], timeout: 1.0)
-  }
-  
-  /// Tests a no data response
-  func testGraphQLClientFetchQueryFailureWithNoDataError() throws {
-    fatalError("Implementation for \(#function) missing")
-  }
+        
+        // given
+        let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
+        let client = URLSessionNetworkClient(urlSession: urlSession)
+        let graphQLClient = GraphQLClient(networkingClient: client)
+        let query = NounsSubgraph.NounsQuery(limit: 10, skip: 0)
+        
+        do {
+            // when
+            let _: Page<[Noun]> = try await graphQLClient.fetch(query, cachePolicy: .returnCacheDataAndFetch)
+            XCTFail("💥 result unexpected")
+        } catch {
+            // then
+            XCTAssertEqual((error as? URLError)?.code, .badServerResponse)
+        }
+    }
 }

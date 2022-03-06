@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "sm-cancel.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

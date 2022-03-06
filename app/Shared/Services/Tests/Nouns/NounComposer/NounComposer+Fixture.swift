@@ -1,0 +1,39 @@
+//
+//  Trait+Fixture.swift
+//  
+//
+//  Created by Ziad Tamim on 15.11.21.
+//
+
+@testable import Services
+
+extension Trait {
+  
+  static var bodyFixture: Self {
+    Trait(rleData: "0x0015171f090e020e020e020e02020201000b02020201000b02020201000b02020201000b02020201000b02020201000b02020201000b02",
+          assetImage: "body-bege-bsod",
+          textures: [:]
+    )
+  }
+  
+  static var headFixture: Self {
+    Trait(rleData: "0x00021e140605000137020001370f0004000237020002370e0003000337020003370d0002000437020004370c0003000337020003370d0004000237020002370e0005000137020001370f000d370b000d370b000d370b000d370b000d370b000d370b000d370600057d0d370600017d017e017d017e017d0b37097d017e017d017e017d0b370d7d0a370523097d0b370d7d",
+          assetImage: "head-aardvark",
+          textures: ["mouth": ["mouth-default-1", "mouth-default-2"]]
+    )
+  }
+  
+  static var glassesFixture: Self {
+    Trait(rleData: "0x000b1710070300062001000620030001200201022301200100012002010223012004200201022303200201022301200420020102230320020102230120012002000120020102230120010001200201022301200300062001000620",
+          assetImage: "glasses-hip-rose",
+          textures: [:]
+    )
+  }
+  
+  static var accessoryFixture: Self {
+    Trait(rleData: "0x0017141e0d0100011f0500021f05000100011f0300011f01000100011f0200011f02000300011f03000200011f0200021f0100011f0200011f0100011f0400011f0100011f",
+          assetImage: "accessory-1n",
+          textures: [:]
+    )
+  }
+}

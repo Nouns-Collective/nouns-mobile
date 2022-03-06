@@ -1,0 +1,23 @@
+/* 
+  Spaces.strings
+  Nouns
+
+  Created by Ziad Tamim on 05.12.21.
+  
+*/
+
+"title" = "Spaces";
+
+"message" = "Nouns are an experimental attempt to improve the formation of on-chain avatar communities";
+
+"discord.title" = "Discord";
+"discord.link" = "https://discord.gg/nouns";
+
+"twitter.title" = "Twitter";
+"twitter.link" = "https://twitter.com/nounsdao";
+
+"etherscan.title" = "Etherscan";
+"etherscan.link" = "https://etherscan.io/address/0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03";
+
+"discourse.title" = "Discourse";
+"discourse.link" = "https://discourse.nouns.wtf";

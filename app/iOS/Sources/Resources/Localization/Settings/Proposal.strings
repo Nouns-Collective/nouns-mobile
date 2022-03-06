@@ -1,0 +1,15 @@
+/* 
+  Proposal.strings
+  Nouns
+
+  Created by Ziad Tamim on 05.12.21.
+  
+*/
+
+"title" = "Proposals";
+
+"identifier" = "Proposal %s";
+
+"message" = "Nouns are an experimental attempt to improve the formation of on-chain avatar communities";
+
+"see.all" = "See all proposals";

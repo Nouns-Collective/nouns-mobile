@@ -1,0 +1,15 @@
+/* 
+  NounDiscardEditDialog.strings
+  Nouns
+
+  Created by Mohammed Ibrahim on 2022-02-05.
+  
+*/
+
+"title" = "Leavin'?";
+
+"message" = "Are you sure you want to get rid of this edit and lose the awesomeness?";
+
+"noun.delete.action" = "Yeah, get rid of the edit";
+
+"noun.cancel.action" = "No, I want to keep editing";

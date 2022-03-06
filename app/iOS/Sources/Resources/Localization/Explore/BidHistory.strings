@@ -1,0 +1,19 @@
+/* 
+  BidHistory.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+"menu.title" = "Bid history";
+
+"empty-state" = "No bid history registered.";
+
+"block.date" = "%s at %s";
+
+"block.unavailable" = "Unavailable";
+
+"error.empty.title" = "Failed to load bid history";
+
+"error.loadMore.title" = "Failed to load more bids";

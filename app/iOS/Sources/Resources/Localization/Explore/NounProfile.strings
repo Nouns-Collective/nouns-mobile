@@ -1,0 +1,34 @@
+/* 
+  OnChainNounProfile.strings
+  Nouns
+
+  Created by Ziad Tamim on 22.11.21.
+  
+*/
+
+// MARK: - Shared
+
+"birthday" = "Born %s";
+
+"bid-winner" = "Won for";
+
+"held-by" = "Held by";
+
+"nounders" = "Nounders";
+
+"nounders.eth" = "nounders.eth";
+
+// MARK: - Live Auction
+
+"auction.unsettled.governance" = "Bid history";
+
+"auction.unsettled.time-left.label" = "Ends in";
+
+"auction.unsettled.time-left" = "%dh %dm %ds";
+
+"auction.unsettled.last-bid" = "Current bid";
+
+// MARK: - Settled Auction
+
+"auction.settled.governance.nounder" = "Activity";
+"auction.settled.governance" = "Bid history & activity";

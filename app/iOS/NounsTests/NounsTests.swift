@@ -6,7 +6,6 @@
 //
 
 import XCTest
-@testable import Nouns
 
 class NounsTests: XCTestCase {
 

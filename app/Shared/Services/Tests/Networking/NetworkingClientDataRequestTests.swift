@@ -6,77 +6,52 @@
 //
 
 import XCTest
-import Combine
 @testable import Services
 
 final class NetworkingClientDataRequestTests: XCTestCase {
-  
-  fileprivate static let baseURL = "https://nouns.wtf"
-  
-  func testNetworkingClientDataRequestSucceed() throws {
     
-    enum MockDataURLResponder: MockURLResponder {
-      static func respond(to request: URLRequest) throws -> Data {
-        "Valid Response".data(using: .utf8)!
-      }
-    }
+    fileprivate static let baseURL = "https://nouns.wtf"
     
-    // given
-    let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
-    let client = URLSessionNetworkClient(urlSession: urlSession)
-    let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
-    
-    var cancellables = Set<AnyCancellable>()
-    let expectation = expectation(description: #function)
-    
-    // when
-    client.data(for: request)
-      .sink { completion in
-        switch completion {
-        case .finished:
-          expectation.fulfill()
-        case .failure(let error):
-          XCTFail("🔥 Oops failed: \(error)")
+    func testNetworkingClientDataRequestSucceed() async throws {
+        
+        enum MockDataURLResponder: MockURLResponder {
+            static func respond(to request: URLRequest) throws -> Data? {
+                "Valid Response".data(using: .utf8)
+            }
         }
-      } receiveValue: { data in
+        
+        // given
+        let urlSession = URLSession(mockResponder: MockDataURLResponder.self)
+        let client = URLSessionNetworkClient(urlSession: urlSession)
+        let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
+        
+        // when
+        let data = try await client.data(for: request)
+        
+        // then
         XCTAssertEqual("Valid Response", String(data: data, encoding: .utf8))
-      }
-      .store(in: &cancellables)
-    
-    // then
-    wait(for: [expectation], timeout: 1.0)
-  }
-  
-  func testNetworkingClientDataRequestFailedWithBadURL() {
-    
-    enum MockErrorURLResponder: MockURLResponder {
-      static func respond(to request: URLRequest) throws -> Data {
-        throw URLError(.badURL)
-      }
     }
     
-    // given
-    let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
-    let client = URLSessionNetworkClient(urlSession: urlSession)
-    let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
-    
-    var cancellables = Set<AnyCancellable>()
-    let expectation = expectation(description: #function)
-    
-    // when
-    client.data(for: request)
-      .sink { completion in
-        if case let .failure(.request(error)) = completion {
-          XCTAssertEqual((error as? URLError)?.code, .badURL)
-          
-          expectation.fulfill()
+    func testNetworkingClientDataRequestFailedWithBadURL() async {
+        
+        enum MockErrorURLResponder: MockURLResponder {
+            static func respond(to request: URLRequest) throws -> Data? {
+                throw URLError(.badURL)
+            }
         }
-      } receiveValue: { _ in
-        XCTFail("💥 result unexpected")
-      }
-      .store(in: &cancellables)
-    
-    // then
-    wait(for: [expectation], timeout: 1.0)
-  }
+        
+        // given
+        let urlSession = URLSession(mockResponder: MockErrorURLResponder.self)
+        let client = URLSessionNetworkClient(urlSession: urlSession)
+        let request = NetworkDataRequest(url: URL(string: Self.baseURL)!)
+        
+        // when
+        do {
+            _ = try await client.data(for: request)
+            XCTFail("💥 result unexpected")
+            
+        } catch {
+            XCTAssertEqual((error as? URLError)?.code, .badURL)
+        }
+    }
 }

@@ -1,0 +1,3 @@
+import ToolsCore
+
+NounsTextureGenerator.main()

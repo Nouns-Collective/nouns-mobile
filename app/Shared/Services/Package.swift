@@ -4,31 +4,45 @@
 import PackageDescription
 
 let package = Package(
-    name: "Services",
-    platforms: [.iOS(.v15)],
-    products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "Services",
-            targets: ["Services"]),
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "Services",
-            dependencies: [],
-            path: "Sources",
-            resources: [.process("Resources")]
-        ),
-        .testTarget(
-            name: "ServicesTests",
-            dependencies: ["Services"],
-            path: "Tests",
-            resources: [.process("Fixtures")]),
-    ]
+  name: "Services",
+  platforms: [.iOS(.v15)],
+  products: [
+    .library(
+      name: "Services",
+      targets: ["Services"]),
+  ],
+  dependencies: [
+    .package(
+      url: "https://github.com/argentlabs/web3.swift",
+      from: "0.7.0"
+    ),
+    .package(
+      name: "Firebase",
+      url: "https://github.com/firebase/firebase-ios-sdk",
+      from: "8.10.0"
+    )
+  ],
+  targets: [
+    .target(
+      name: "Services",
+      dependencies: [
+        "web3.swift",
+        .product(name: "FirebaseAnalytics", package: "Firebase"),
+        .product(name: "FirebaseCrashlytics", package: "Firebase"),
+        .product(name: "FirebaseMessaging", package: "Firebase"),
+      ],
+      path: "Sources",
+      resources: [.process("Resources")]
+    ),
+    .testTarget(
+      name: "ServicesTests",
+      dependencies: ["Services"],
+      path: "Tests",
+      resources: [
+        .process("Fixtures/Resources"),
+        .process("Nouns/OnChainTheGraphStore/Fixtures"),
+        .process("Nouns/NounComposer/Fixtures"),
+        .process("ENS/Fixtures"),
+      ]),
+  ]
 )

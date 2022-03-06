@@ -25,26 +25,118 @@ public struct SpeechBubble: View {
     
     public var body: some View {
         ZStack {
-            Image("speech.bubble", bundle: .module)
-                .resizable()
-                .scaledToFit()
-                .overlay(label)
+            label
+                .offset(y: -14)
+                .background(
+                    Image("speech.bubble", bundle: .module)
+                        .resizable()
+                        .scaledToFill()
+                )
+                .frame(maxWidth: .infinity, minHeight: 112)
         }
     }
     
     private var label: some View {
-        GeometryReader { proxy in
-            VStack {
-                Spacer()
-                Text(content)
-                    .fontWeight(.medium)
-                    .minimumScaleFactor(0.5)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(3)
-                    .padding(.horizontal, proxy.size.width*0.11)
-                    .padding(.bottom, proxy.size.height*0.23)
-                Spacer()
+        Text(content)
+            // TODO: - Update font to Space Mono
+            .font(Font.custom(.medium, size: 17))
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+            .padding()
+    }
+}
+
+/// State indicator for occurred errors.
+public struct ErrorStateBubble: View {
+    
+    private let message: String
+    
+    /// Create a state view that display a message.
+    ///
+    /// ```swift
+    /// ZStack {
+    ///     Gradient.bubbleGum
+    ///         .ignoresSafeArea()
+    ///
+    ///     ErrorStateView("Dude, something’s wrong with the auction")
+    ///         .padding()
+    /// }
+    /// ```
+    ///
+    /// - Parameter title: The message to communicate.
+    public init(_ message: String) {
+        self.message = message
+    }
+    
+    public var body: some View {
+        VStack(spacing: 0) {
+            SpeechBubble(message)
+            Image("noun-error-persona", bundle: .module)
+                .resizable()
+                .scaledToFit()
+            OutlineButton(text: "Try again",
+                          icon: { Image.retry },
+                          action: { })
+        }
+    }
+}
+
+/// State indicator for occurred errors.
+public struct NounSpeechBubble: View {
+    
+    private let message: String
+    
+    private let noun: String
+    
+    private let spacing: CGFloat
+    
+    /// Create a noun view that display a message.
+    ///
+    /// ```swift
+    /// ZStack {
+    ///     Gradient.bubbleGum
+    ///         .ignoresSafeArea()
+    ///
+    ///     NounSpeechView("Dude, something’s wrong with the auction", noun: "talking-noun")
+    ///         .padding()
+    /// }
+    /// ```
+    ///
+    /// - Parameter title: The message to communicate.
+    public init(_ message: String, noun: String, spacing: CGFloat = -25) {
+        self.message = message
+        self.noun = noun
+        self.spacing = spacing
+    }
+    
+    public var body: some View {
+        VStack(spacing: spacing) {
+            SpeechBubble(message)
+            Image(noun, bundle: .module)
+                .resizable()
+                .scaledToFit()
+        }
+    }
+}
+
+struct SpeechBubble_preview: PreviewProvider {
+    struct PreviewView: View {
+        init() {
+            UIComponents.configure()
+        }
+        
+        public var body: some View {
+            ZStack {
+                Gradient.lemonDrop
+                    .ignoresSafeArea()
+                
+                NounSpeechBubble("One noun, everyday, forever.", noun: "talking-noun")
+                    .padding()
             }
         }
+    }
+    
+    static var previews: some View {
+        PreviewView()
     }
 }

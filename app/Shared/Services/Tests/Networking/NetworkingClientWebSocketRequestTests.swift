@@ -14,8 +14,9 @@ final class NetworkingClientWebSocketRequestTests: XCTestCase {
   fileprivate static let baseURL = "wss://nouns.wtf"
   
   func testNetworkingClientWebSocketRequestSucceed() throws {
+      
     enum MockDataURLResponder: MockURLResponder {
-      static func respond(to request: URLRequest) throws -> Data {
+      static func respond(to request: URLRequest) throws -> Data? {
         "Valid Response".data(using: .utf8)!
       }
     }
@@ -45,8 +46,9 @@ final class NetworkingClientWebSocketRequestTests: XCTestCase {
   }
   
   func testNetworkingClientWebSocketRequestFailedWithBadURL() throws {
+      
     enum MockErrorURLResponder: MockURLResponder {
-      static func respond(to request: URLRequest) throws -> Data {
+      static func respond(to request: URLRequest) throws -> Data? {
         throw URLError(.badURL)
       }
     }
@@ -62,7 +64,7 @@ final class NetworkingClientWebSocketRequestTests: XCTestCase {
     // when
     client.receive(for: request)
       .sink { completion in
-        if case let .failure(.request(error)) = completion {
+        if case let .failure(error) = completion {
           XCTAssertEqual((error as? URLError)?.code, .badURL)
           
           expectation.fulfill()

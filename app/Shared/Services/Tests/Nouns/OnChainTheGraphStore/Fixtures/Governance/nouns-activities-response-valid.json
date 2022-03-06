@@ -1,0 +1,17 @@
+{
+  "data": {
+    "noun": {
+      "votes": [
+        {
+          "id": "0x2536c09e5f5691498805884fa37811be3b2bddb4-1",
+          "proposal": {
+            "description": "# setProposalThresholdBPS(50)\n\n===thank you for your consideration ",
+            "id": "14",
+            "status": "QUEUED"
+          },
+          "supportDetailed": 1
+        }
+      ]
+    }
+  }
+}
