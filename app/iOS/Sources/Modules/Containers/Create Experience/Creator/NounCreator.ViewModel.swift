@@ -49,6 +49,9 @@ extension NounCreator {
     
     private var visibleSections: [TraitType] = []
     
+    /// Boolean value to determine if the trait picker grid is expanded
+    @Published public var isExpanded: Bool = false
+    
     /// The `Seed` in build progress.
     @Published var seed: Seed = .default
     
@@ -236,6 +239,8 @@ extension NounCreator {
     
     /// A method to keep track of when a trait section has disappeared completely from the grid
     func traitSectionDidDisappear(_ traitType: TraitType) {
+      guard isExpanded else { return }
+      
       visibleSections.removeAll { $0 == traitType }
       
       guard !traitUpdatesPaused else { return }
@@ -248,6 +253,8 @@ extension NounCreator {
     
     /// A method to keep track of when a trait section has first appeared in the grid
     func traitSectionDidAppear(_ traitType: TraitType) {
+      guard isExpanded else { return }
+      
       visibleSections.append(traitType)
       
       guard !traitUpdatesPaused else { return }

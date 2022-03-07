@@ -38,14 +38,11 @@ extension NounCreator {
             }
           }
           .padding(.horizontal)
-          // TODO: - This currently creates breaking UI issues (https://github.com/secretmissionsoftware/nouns-ios/issues/288)
-          /*
           .onChange(of: selectedTraitType) { newValue in
             withAnimation {
               proxy.scrollTo(newValue, anchor: .center)
             }
           }
-           */
         }
       }
     }

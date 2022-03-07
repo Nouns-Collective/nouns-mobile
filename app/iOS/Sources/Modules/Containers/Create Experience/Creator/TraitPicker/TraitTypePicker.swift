@@ -15,8 +15,6 @@ extension NounCreator {
     @ObservedObject var viewModel: ViewModel
     let animation: Namespace.ID
     
-    @Binding var isExpanded: Bool
-    
     @State private var selectedTraitType: Int = TraitType.glasses.rawValue
     
     private let rowSpec = [
@@ -25,34 +23,55 @@ extension NounCreator {
       GridItem(.flexible()),
     ]
     
+    private func dragGesture() -> _EndedGesture<DragGesture> {
+      DragGesture()
+        .onEnded { value in
+          let verticalDirection = value.predictedEndLocation.y - value.location.y
+          
+          if verticalDirection < 0 {
+            // Swipe up
+            withAnimation {
+              viewModel.isExpanded = true
+            }
+          } else {
+            // Swipe down
+            withAnimation {
+              viewModel.isExpanded = false
+            }
+          }
+        }
+    }
+    
     var body: some View {
-      return PlainCell(
-        background: isExpanded ? Color.white : nil,
-        borderColor: isExpanded ? Color.black : nil
+      PlainCell(
+        background: viewModel.isExpanded ? Color.white : nil,
+        borderColor: viewModel.isExpanded ? Color.black : nil
       ) {
         VStack(spacing: 0) {
-          // Control to expand or fold `PickerTrait`.
-          Image.chevronDown
-            .rotationEffect(.degrees(isExpanded ? 180 : 0))
-            .onTapGesture {
-              withAnimation {
-                isExpanded.toggle()
+          VStack(spacing: 0) {
+            // Control to expand or fold `PickerTrait`.
+            Image.chevronDown
+              .rotationEffect(.degrees(viewModel.isExpanded ? 0 : 180))
+              .onTapGesture {
+                withAnimation {
+                  viewModel.isExpanded.toggle()
+                }
               }
-            }
-            .padding(.vertical, 4)
-          
-          TraitTypeSegmentedControl(viewModel: viewModel, selectedTraitType: $selectedTraitType)
+              .padding(.vertical, 4)
+            
+            TraitTypeSegmentedControl(viewModel: viewModel, selectedTraitType: $selectedTraitType)
+          }
+          .gesture(dragGesture())
           
           // Expand or Fold the collection of Noun's Traits.
-          if isExpanded {
+          if viewModel.isExpanded {
             TraitTypeGrid(viewModel: viewModel)
           }
         }
         .padding(.bottom, 4)
       }
-      .padding([.leading, .bottom, .trailing], isExpanded ? 12 : 0)
+      .padding([.leading, .bottom, .trailing], viewModel.isExpanded ? 12 : 0)
       .onChange(of: viewModel.currentModifiableTraitType) { newValue in
-        // causing an infinite cycle
         if newValue.rawValue != selectedTraitType {
           selectedTraitType = newValue.rawValue
         }

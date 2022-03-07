@@ -90,6 +90,18 @@ extension NounCreator {
           }
           .padding(.vertical, 12)
           .padding(.trailing)
+          .onAppear {
+            // Scroll to the currently selected trait type first
+            //
+            // Without this, the trait grid will show the first section (glasses)
+            // which will invoke a `viewModel.traitSectionDidAppear(.glasses)`, thus
+            // changing the selection back to glasses even if the user had previously selected
+            // another section before the trait grid appeared
+            proxy.scrollTo(traitFirstIndexID(viewModel.currentModifiableTraitType), anchor: .leading)
+          }
+          .onDisappear {
+            print("Disappeared outer")
+          }
           .onReceive(viewModel.tapPublisher, perform: { newTrait in
             // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
             withAnimation {

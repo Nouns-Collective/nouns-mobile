@@ -14,10 +14,7 @@ struct NounCreator: View {
   
   @Namespace private var nsTraitPicker
   @Environment(\.dismiss) private var dismiss
-  
-  /// Boolean value to determine if the trait picker grid is expanded
-  @State private var isExpanded: Bool = false
-  
+    
   var body: some View {
     ZStack {
       VStack(spacing: 0) {
@@ -25,13 +22,12 @@ struct NounCreator: View {
         
         SlotMachine(viewModel: .init(initialSeed: viewModel.initialSeed))
         
-        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+        ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
         
         if viewModel.mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
-            animation: nsTraitPicker,
-            isExpanded: $isExpanded
+            animation: nsTraitPicker
           )
         }
       }
