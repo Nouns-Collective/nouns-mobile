@@ -165,10 +165,14 @@ extension SlotMachine {
     }
     
     /// Selecting a trait by swiping left or right on the noun
-    func selectTrait(at offsetX: Double) {
-      // Calculate the visible index based on the offsetX progress.
-      let progress = -offsetX / imageSize
-      let index = Int(progress.rounded())
+    func selectTrait(direction: Double) {
+      // Only allow swiping between traits if the difference between the predicted
+      // gesture end location and the final drag location is greater than 40.
+      guard abs(direction) >= 40 else { return }
+      
+      // If direction is negative, we should go to the next (right) trait
+      // If direction is positive, we should go to the previous (left) trait
+      let index: Int = direction > 0 ? -1 : 1
       
       // Set Bounderies to not scroll over empty.
       let maxLimit = currentModifiableTraitType.traits.endIndex - 1

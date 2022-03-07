@@ -99,9 +99,6 @@ extension NounCreator {
             // another section before the trait grid appeared
             proxy.scrollTo(traitFirstIndexID(viewModel.currentModifiableTraitType), anchor: .leading)
           }
-          .onDisappear {
-            print("Disappeared outer")
-          }
           .onReceive(viewModel.tapPublisher, perform: { newTrait in
             // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
             withAnimation {
