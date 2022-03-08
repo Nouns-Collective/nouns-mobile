@@ -50,7 +50,7 @@ extension NounCreator {
                 TraitPickerItem(image: trait.assetImage)
                   .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
-                    withAnimation {
+                    withAnimation(.easeInOut) {
                       viewModel.selectTrait(index, ofType: type)
                     }
                   }
@@ -67,12 +67,12 @@ extension NounCreator {
             }
             
             // Gradient background selection
-            TraitCollectionSection(type: .background, items: Gradient.allGradients) { gradient, index in
+            TraitCollectionSection(type: .background, items: NounCreator.backgroundColors) { gradient, index in
               
-              GradientPickerItem(colors: gradient)
+              GradientPickerItem(colors: gradient.colors)
                 .selected(viewModel.isSelected(index, traitType: .background))
                 .onTapGesture {
-                  withAnimation {
+                  withAnimation(.easeInOut) {
                     viewModel.selectTrait(index, ofType: .background)
                   }
                 }

@@ -17,6 +17,9 @@ struct NounCreator: View {
     
   var body: some View {
     ZStack {
+      BackgroundPicker(viewModel: viewModel)
+        .ignoresSafeArea(.all)
+        
       VStack(spacing: 0) {
         ConditionalSpacer(viewModel.mode == .creating)
         
@@ -31,27 +34,26 @@ struct NounCreator: View {
           )
         }
       }
+      .modifier(AccessoryItems(viewModel: viewModel, done: {
+        withAnimation {
+          viewModel.didFinish()
+          
+          // Dismiss the view automatically when finished editing
+          if viewModel.isEditing {
+            dismiss()
+          }
+        }
+      }, cancel: {
+        withAnimation {
+          if viewModel.mode == .done {
+            viewModel.setMode(to: .creating)
+          } else {
+            viewModel.setMode(to: .cancel)
+          }
+        }
+      }))
     }
-    .modifier(AccessoryItems(viewModel: viewModel, done: {
-      withAnimation {
-        viewModel.didFinish()
-        
-        // Dismiss the view automatically when finished editing
-        if viewModel.isEditing {
-          dismiss()
-        }
-      }
-    }, cancel: {
-      withAnimation {
-        if viewModel.mode == .done {
-          viewModel.setMode(to: .creating)
-        } else {
-          viewModel.setMode(to: .cancel)
-        }
-      }
-    }))
     .addBottomSheet()
-    .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
       EmitterView()
         .zIndex(100)

@@ -9,6 +9,7 @@ import Foundation
 import Services
 import SwiftUI
 import Combine
+import UIComponents
 
 typealias TraitType = SlotMachine.ViewModel.TraitType
 
@@ -21,6 +22,22 @@ extension Notification.Name {
 }
 
 extension NounCreator {
+  
+  /// The list of background gradients for use in the noun creator
+  static let backgroundColors: [GradientColors] = [
+    .cherrySunset,
+    .keyLimePie,
+    .blueberryJam,
+    .orangesicle,
+    .kiwiDream,
+    .grapeAttack,
+    .mangoChunks,
+    .freshMint,
+    .magnoliaGarden,
+    .lemonDrop,
+    .oceanBreeze,
+    .bubbleGum
+  ]
   
   final class ViewModel: ObservableObject {
     
@@ -269,6 +286,31 @@ extension NounCreator {
       DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
         self?.traitUpdatesPaused = false
       }
+    }
+    
+    /// Calculates the offset needed to display the currently selected
+    /// background in the background picker
+    func backgroundOffset(width: CGFloat, offset: CGFloat) -> CGFloat {
+      return (Double(seed.background) * -width) + offset
+    }
+    
+    /// Selecting a background by swiping left or right on the background picker
+    func selectBackground(direction: Double) {
+      // Only allow swiping between traits if the difference between the predicted
+      // gesture end location and the final drag location is greater than 40.
+      guard abs(direction) >= 40 else { return }
+      
+      // If direction is negative, we should go to the next (right) trait
+      // If direction is positive, we should go to the previous (left) trait
+      let index: Int = direction > 0 ? -1 : 1
+      
+      // Set Bounderies to not scroll over empty.
+      let maxLimit = NounCreator.backgroundColors.endIndex - 1
+      let minLimit = 0
+      
+      seed.background = max(
+        min(seed.background + index, maxLimit),
+        minLimit)
     }
   }
 }
