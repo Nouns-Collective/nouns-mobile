@@ -20,10 +20,10 @@ struct BidRow: View {
           Label {
             Text(viewModel.bidAmount)
               .foregroundColor(Color.componentNounsBlack)
-              .font(.custom(.bold, relativeTo: .title3))
+              .font(.custom(.bold, size: 24))
           } icon: {
             Image.eth
-              .asThumbnail()
+              .asThumbnail(maxWidth: 18, maxHeight: 18)
           }
           .labelStyle(.titleAndIcon(spacing: 4))
           
@@ -31,14 +31,14 @@ struct BidRow: View {
           
           // Timestamp of the bid
           Text(viewModel.bidDate)
-            .font(Font.custom(.medium, relativeTo: .footnote))
+            .font(Font.custom(.medium, size: 13))
             .opacity(0.5)
         }
         
         // An Account is any address that holds any amount of Nouns
         Label {
           ENSText(token: viewModel.bidderIdentifier)
-            .font(.custom(.medium, relativeTo: .subheadline))
+            .font(.custom(.medium, size: 17))
             .foregroundColor(Color.componentNounsBlack)
           
         } icon: {

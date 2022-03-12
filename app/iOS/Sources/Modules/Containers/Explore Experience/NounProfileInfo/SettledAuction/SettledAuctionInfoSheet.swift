@@ -47,7 +47,7 @@ struct SettledAuctionInfoSheet: View {
         supplementaryView: {
           ENSText(token: viewModel.winner)
             .lineLimit(1)
-            .font(.custom(.medium, relativeTo: .subheadline))
+            .font(.custom(.medium, size: 15))
             .truncationMode(.middle)
             .padding(.leading, 4)
         },

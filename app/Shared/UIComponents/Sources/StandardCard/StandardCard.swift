@@ -124,7 +124,7 @@ public struct StandardCard<HeaderString: StringProtocol, Media: View, Accessory:
                 
                 content
             }
-            .padding(20)
+            .padding()
         }
         .background(Color.white)
         .cornerRadius(12)

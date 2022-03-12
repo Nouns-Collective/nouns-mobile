@@ -13,7 +13,7 @@ struct AuctionBidHistory: View {
   @StateObject var viewModel: ViewModel
   
   private let gridLayout = [
-    GridItem(.flexible(), spacing: 20),
+    GridItem(.flexible(), spacing: 8),
   ]
   
   var body: some View {
@@ -25,7 +25,7 @@ struct AuctionBidHistory: View {
         Text(viewModel.title)
           .font(.custom(.bold, size: 36))
         
-        VPageGrid(viewModel.bids, columns: gridLayout, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
+        VPageGrid(viewModel.bids, columns: gridLayout, spacing: 10, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
           // load next bid history batch.
           await viewModel.fetchBidHistory()
           
@@ -87,10 +87,10 @@ extension AuctionBidHistory {
         Spacer()
         
         Text(R.string.bidHistory.emptyState())
-            .font(.custom(.medium, relativeTo: .headline))
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-            .padding()
-            .opacity(0.6)
+          .font(.custom(.regular, size: 15))
+          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+          .padding()
+          .opacity(0.6)
         
         Spacer()
       }

@@ -122,8 +122,7 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
       }
       .padding(.trailing, 6)
     }
-    .padding(.horizontal, 16)
-    .padding(.vertical, 12)
+    .padding(16)
   }
 }
 

@@ -13,7 +13,7 @@ struct NounActivityFeed: View {
   @StateObject var viewModel: ViewModel
   
   private let gridLayout = [
-    GridItem(.flexible(), spacing: 20),
+    GridItem(.flexible(), spacing: 8),
   ]
   
   var body: some View {
@@ -25,7 +25,7 @@ struct NounActivityFeed: View {
         ENSText(token: viewModel.owner)
           .font(.custom(.bold, size: 36))
         
-        VPageGrid(viewModel.votes, columns: gridLayout, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
+        VPageGrid(viewModel.votes, columns: gridLayout, spacing: 10, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
           // load next activities batch.
           await viewModel.fetchActivity()
           
@@ -117,7 +117,7 @@ extension NounActivityFeed {
         Spacer()
         
         Text(R.string.activity.emptyState())
-            .font(.custom(.medium, relativeTo: .headline))
+            .font(.custom(.regular, size: 15))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .padding()
             .opacity(0.6)

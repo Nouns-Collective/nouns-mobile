@@ -19,7 +19,7 @@ struct ExploreExperience: View {
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
           if let auction = viewModel.liveAuction {
             LiveAuctionCard(viewModel: .init(auction: auction))
           } else if viewModel.failedToLoadLiveAuction {

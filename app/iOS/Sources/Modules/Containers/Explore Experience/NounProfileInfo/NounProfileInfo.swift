@@ -22,7 +22,7 @@ struct NounProfileInfo: View {
   var toolbarContent: some View {
     HStack {
       Text(viewModel.title)
-        .font(.custom(.bold, relativeTo: .title2))
+        .font(.custom(.bold, size: 36))
       
       Spacer()
       
@@ -103,27 +103,6 @@ struct NounProfileInfo: View {
       NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
     }
     .addBottomSheet()
-  }
-}
-
-extension NounProfileInfo {
-  
-  struct CardToolBar: View {
-    @ObservedObject var viewModel: ViewModel
-    let dismiss: DismissAction
-    
-    var body: some View {
-      HStack {
-        Text(viewModel.title)
-          .font(.custom(.bold, relativeTo: .title2))
-        
-        Spacer()
-        
-        SoftButton(
-          icon: { Image.xmark },
-          action: { dismiss() })
-      }
-    }
   }
 }
 
