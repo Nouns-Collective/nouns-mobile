@@ -9887,24 +9887,41 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 2 localization keys.
+    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 3 localization keys.
     struct nounDAOInfo {
-      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.
+      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun %@ was owned by %@, they could vote on proposals to the DAO and this is their voting activity.
       static let description = Rswift.StringResource(key: "description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once a noun has an owner, the owner could vote on proposals to the DAO and this page would show their voting activity.
+      static let descriptionNoOwner = Rswift.StringResource(key: "descriptionNoOwner", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: What is this?
       static let title = Rswift.StringResource(key: "title", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.
-      static func description(preferredLanguages: [String]? = nil) -> String {
+      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun %@ was owned by %@, they could vote on proposals to the DAO and this is their voting activity.
+      static func description(_ value1: String, _ value2: String, preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+          let format = NSLocalizedString("description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1, value2)
         }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
+        guard let (locale, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
           return "description"
         }
 
-        return NSLocalizedString("description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+        let format = NSLocalizedString("description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1, value2)
+      }
+
+      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once a noun has an owner, the owner could vote on proposals to the DAO and this page would show their voting activity.
+      static func descriptionNoOwner(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("descriptionNoOwner", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
+          return "descriptionNoOwner"
+        }
+
+        return NSLocalizedString("descriptionNoOwner", tableName: "NounDAOInfo", bundle: bundle, comment: "")
       }
 
       /// Value: What is this?

@@ -60,7 +60,11 @@ struct ProposalFeedView: View {
     }
     .background(Gradient.lemonDrop)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
-      GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
+      GovernanceInfoCard(
+        isPresented: $isGovernanceInfoPresented,
+        nounId: nil,
+        owner: nil
+      )
     }
   }
 }
