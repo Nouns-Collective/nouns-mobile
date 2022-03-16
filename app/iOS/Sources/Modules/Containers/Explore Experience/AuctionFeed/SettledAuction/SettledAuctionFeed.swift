@@ -69,8 +69,10 @@ extension ExploreExperience {
           .padding(.bottom, 20)
         }
       }
-      .task {
-        await viewModel.loadAuctions()
+      .onAppear {
+        Task {
+          await viewModel.loadAuctions()
+        }
       }
     }
   }
