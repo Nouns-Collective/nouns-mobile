@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  ImageSlideshow.swift
 //  
 //
 //  Created by Mohammed Ibrahim on 2022-03-02.
@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 /// A view to display an animated sequence of images, like a flip book
-public struct ImageSequence: View {
+public struct ImageSlideshow: View {
   
   @State private var image: Image = Image("")
   
@@ -28,13 +28,27 @@ public struct ImageSequence: View {
   
   public var body: some View {
     TimelineView(.periodic(from: .now, by: 1 / fps)) { context in
-      if let image = UIImage(named: images[imageIndex % images.count]) {
+      SlideshowImageView(now: context.date, images: images)
+    }
+  }
+}
+
+internal struct SlideshowImageView: View {
+  
+  public let now: Date
+  
+  public let images: [String]
+
+  @State private var index: Int = 0
+  
+  var body: some View {
+    Group {
+      if let image = UIImage(named: images[index % images.count]) {
         Image(uiImage: image)
           .centerCropped()
-          .onChange(of: context.date) { (_: Date) in
-            imageIndex += 1
-          }
       }
+    }.onChange(of: now) { _ in
+      index += 1
     }
   }
 }

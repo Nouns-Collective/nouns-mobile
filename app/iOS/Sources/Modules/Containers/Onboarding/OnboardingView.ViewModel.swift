@@ -18,6 +18,7 @@ extension OnboardingView {
     case create
     case play
     
+    /// The folder in which to find the frames for each onboarding page's image sequence background
     fileprivate var assetFolder: String {
       switch self {
       case .intro:
@@ -31,6 +32,7 @@ extension OnboardingView {
       }
     }
     
+    /// The number of onboarding images (frames for an image sequence video) each onboarding page has
     fileprivate var numberOfAssets: Int {
       switch self {
       case .intro, .explore, .create, .play:
