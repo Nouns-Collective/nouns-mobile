@@ -128,11 +128,11 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
 }
 
 /// A label for buttons with text as well as an optional large accessory image
-public struct LargeAccessoryButtonLabel: View {
+public struct LargeAccessoryButtonLabel<Accessory: View>: View {
   @Environment (\.controlSize) var controlSize: ControlSize
   
-  /// The icon for the button on the far right of the button (accessory image)
-  let accessoryImage: Image?
+  /// The accessory for the button on the far right of the button
+  let accessory: Accessory?
   
   /// The text for the button, appearing on the right side of the icon
   let text: String
@@ -140,10 +140,34 @@ public struct LargeAccessoryButtonLabel: View {
   /// Specify the tinting color for the content.
   let color: Color
   
+  init(
+    accessory: Accessory,
+    text: String,
+    color: Color
+  ) {
+    self.accessory = accessory
+    self.text = text
+    self.color = color
+  }
+  
+  init(
+    accessory: Accessory,
+    text: String,
+    color: Color
+  ) where Accessory == Image {
+    self.accessory = {
+      accessory
+        .resizable()
+    }()
+    self.text = text
+    self.color = color
+  }
+  
   /// Boolean value to determine whether the button should be full width
   private var fullWidth: Bool {
     controlSize == .large
   }
+  
   
   public var body: some View {
     HStack(spacing: 10) {
@@ -155,9 +179,8 @@ public struct LargeAccessoryButtonLabel: View {
         Spacer()
       }
       
-      if let accessory = accessoryImage {
+      if let accessory = accessory {
         accessory
-          .resizable()
           .aspectRatio(contentMode: .fit)
           .frame(height: 28, alignment: .center)
           .foregroundColor(color)
@@ -281,15 +304,15 @@ public struct SoftButton<Label: View>: View {
   ///   - text: The text for the button (optional)
   ///   - largeAccessory: The accessory image of the button
   ///   - action: The action function for when the button is tapped
-  public init(
+  public init<V>(
     text: String,
-    @ViewBuilder largeAccessory: () -> Image? = { nil },
+    @ViewBuilder largeAccessory: () -> V,
     color: Color = .black,
     action: @escaping () -> Void
-  ) where Label == LargeAccessoryButtonLabel {
+  ) where Label == LargeAccessoryButtonLabel<V>, V: View {
     self.label = {
       return LargeAccessoryButtonLabel(
-        accessoryImage: largeAccessory(),
+        accessory: largeAccessory(),
         text: text,
         color: color
       )
