@@ -16,14 +16,18 @@ extension CreateExperience {
     
     @Environment(\.outlineTabViewHeight) private var tabBarHeight
     
+    private let initialSeed: Seed
+    
     private let action: () -> Void
         
     @Binding var isCreatorPresented: Bool
         
     init(
+      initialSeed: Seed = Seed.default,
       isCreatorPresented: Binding<Bool>,
       action: @escaping () -> Void
     ) {
+      self.initialSeed = initialSeed
       self._isCreatorPresented = isCreatorPresented
       self.action = action
     }
@@ -36,7 +40,11 @@ extension CreateExperience {
         
         Spacer()
                   
-        SlotMachine(viewModel: .init(showShadow: false, animateEntrance: true))
+        SlotMachine(
+          initialSeed: initialSeed,
+          showShadow: false,
+          animateEntrance: true
+        )
           .disabled(true)
           .drawingGroup()
 

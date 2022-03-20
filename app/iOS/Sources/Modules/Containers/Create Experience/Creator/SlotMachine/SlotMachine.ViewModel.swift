@@ -49,10 +49,10 @@ extension SlotMachine {
     public var initialSeed: Seed
     
     /// A boolean to determine if the shadow should be visible below the noun
-    public let showShadow: Bool
+    public var showShadow: Bool
     
     /// A boolean to determine if the noun's `initialSeed` should animate into place
-    public let animateEntrance: Bool
+    public var animateEntrance: Bool
     
     @Published public var showAllTraits: Bool = false
     
@@ -78,10 +78,11 @@ extension SlotMachine {
     private var cancellables = Set<AnyCancellable>()
     
     init(
+      initialSeed: Seed = Seed.default,
       showShadow: Bool = true,
       animateEntrance: Bool = false
     ) {
-      self.initialSeed = Seed.default
+      self.initialSeed = initialSeed
       self.seed = initialSeed
       self.showShadow = showShadow
       self.animateEntrance = animateEntrance
