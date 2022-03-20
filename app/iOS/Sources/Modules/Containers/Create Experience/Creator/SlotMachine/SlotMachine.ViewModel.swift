@@ -30,6 +30,10 @@ extension Notification.Name {
   /// Along with this notification, a `SlotMachine.ViewModel.TraitType` object is passed along which is
   /// equal to the newly selected trait type
   static let slotMachineShouldUpdateModifiableTraitType = Notification.Name("slotMachineShouldUpdateModifiableTraitType")
+  
+  
+  static let slotMachineShouldShowAllTraits = Notification.Name("slotMachineShouldShowAllTraits")
+
 }
 
 extension SlotMachine {
@@ -108,6 +112,15 @@ extension SlotMachine {
         .removeDuplicates()
         .sink { newTraitType in
           self.currentModifiableTraitType = newTraitType
+        }
+        .store(in: &cancellables)
+      
+      NotificationCenter.default
+        .publisher(for: Notification.Name.slotMachineShouldShowAllTraits)
+        .compactMap { $0.object as? Bool }
+        .removeDuplicates()
+        .sink { showAllTraits in
+          self.showAllTraits = showAllTraits
         }
         .store(in: &cancellables)
     }

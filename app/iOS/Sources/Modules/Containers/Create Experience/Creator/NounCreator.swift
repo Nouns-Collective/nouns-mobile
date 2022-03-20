@@ -88,5 +88,16 @@ struct NounCreator: View {
         bottomSheetManager.closeBottomSheet()
       }
     }
+    .onShake {
+      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: true)
+
+      withAnimation(.spring(response: 2.0, dampingFraction: 1.0, blendDuration: 1.0)) {
+        viewModel.randomizeNoun()
+      }
+      
+      withAnimation(.spring().delay(3.0)) {
+        NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: false)
+      }
+    }
   }
 }

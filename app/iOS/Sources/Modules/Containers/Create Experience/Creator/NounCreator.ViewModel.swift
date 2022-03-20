@@ -72,7 +72,7 @@ extension NounCreator {
     @Published private(set) var finishedConfetti: Bool = false
     
     /// The initial seed of the noun creator, reflecting which traits are selected and displayed initially
-    public let initialSeed: Seed
+    @Published public var initialSeed: Seed
     
     /// An action to be carried out when `isEditing` is set to `true` and the user has completed editing their noun
     public var didEditNoun: (_ seed: Seed) -> Void = { _ in }
@@ -262,6 +262,14 @@ extension NounCreator {
       DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
         self?.traitUpdatesPaused = false
       }
+    }
+    
+    /// Randomizes the noun
+    func randomizeNoun() {
+      self.initialSeed = AppCore.shared.nounComposer.randomSeed()
+      self.seed = AppCore.shared.nounComposer.randomSeed()
+      
+      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateSeed, object: seed)
     }
   }
 }
