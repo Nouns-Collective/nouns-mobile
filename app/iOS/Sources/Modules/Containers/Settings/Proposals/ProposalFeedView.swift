@@ -42,7 +42,6 @@ struct ProposalFeedView: View {
       .padding(.bottom, tabBarHeight)
       // Extra padding between the bottom of the last noun card and the top of the tab view
       .padding(.bottom, 20)
-      .ignoresSafeArea()
       .softNavigationTitle(localize.title(), leftAccessory: {
         SoftButton(
           icon: { Image.back },
@@ -57,8 +56,11 @@ struct ProposalFeedView: View {
             }
           })
       })
+      .padding(.top, 50)
     }
     .background(Gradient.lemonDrop)
+    .addGradientTopEdge(.componentUnripeLemon)
+    .ignoresSafeArea(edges: .top)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
       GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
     }

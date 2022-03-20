@@ -114,7 +114,7 @@ extension Gradient {
 public struct Gradient: ShapeStyle, View {
   
   /// An enumeration for the intended direction of the gradient
-  private let colors: [Color]
+  public let colors: [Color]
   
   /// The intended start point of the gradient
   private let startPoint: UnitPoint

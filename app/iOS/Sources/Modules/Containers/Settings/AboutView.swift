@@ -38,6 +38,7 @@ struct AboutView: View {
           })
         })
       }
+      .addGradientTopEdge(.componentUnripeLemon)
       .ignoresSafeArea(edges: .top)
       .background(Gradient.lemonDrop)
       .bottomSheet(isPresented: $isAboutNounsPresented, content: {
