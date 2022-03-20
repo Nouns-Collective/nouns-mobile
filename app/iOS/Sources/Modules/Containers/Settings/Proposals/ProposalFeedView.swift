@@ -13,6 +13,7 @@ import Services
 struct ProposalFeedView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @Environment(\.outlineTabBarHidden) var outlineTabViewHidden
   
   @StateObject var viewModel: ViewModel
   
@@ -61,6 +62,9 @@ struct ProposalFeedView: View {
     .background(Gradient.lemonDrop)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
       GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
+    }
+    .onAppear {
+      outlineTabViewHidden.wrappedValue = true
     }
   }
 }

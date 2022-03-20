@@ -39,15 +39,15 @@ private struct OutlineTabItemSelectionDidChange: PreferenceKey {
 }
 
 /// Accessing `TabBar` visibility state.
-private struct HideOutlineTabBar: EnvironmentKey {
-  static var defaultValue = false
+private struct OutlineTabBarHidden: EnvironmentKey {
+  static var defaultValue: Binding<Bool> = .constant(false)
 }
 
 extension EnvironmentValues {
   
-  fileprivate var hideOutlineTabBar: Bool {
-    get { self[HideOutlineTabBar.self] }
-    set { self[HideOutlineTabBar.self] = newValue }
+  public var outlineTabBarHidden: Binding<Bool> {
+    get { self[OutlineTabBarHidden.self] }
+    set { self[OutlineTabBarHidden.self] = newValue }
   }
 }
 
@@ -77,6 +77,8 @@ public struct OutlineTabBar<T: Hashable>: View {
   @Binding private var selectedItemTag: T
   private let items: [OutlineTabItem<T>]
   
+  @Environment(\.outlineTabBarHidden) var isHidden: Binding<Bool>
+  
   public init(
     selection: Binding<T>,
     _ items: [OutlineTabItem<T>]
@@ -97,6 +99,8 @@ public struct OutlineTabBar<T: Hashable>: View {
     .background(Color.white)
     .border(width: 2, edges: [.top, .bottom], color: .black)
     .clipShape(Rectangle())
+    .offset(x: 0, y: isHidden.wrappedValue ? 100 : 0)
+    .animation(.spring(), value: isHidden.wrappedValue)
   }
   
   private func tabItem(_ item: OutlineTabItem<T>) -> some View {
@@ -107,12 +111,5 @@ public struct OutlineTabBar<T: Hashable>: View {
       .onTapGesture {
         selectedItemTag = item.tag
       }
-  }
-}
-
-extension View {
-  
-  public func hideOutlineTabBar(_ state: Bool) -> some View {
-    environment(\.hideOutlineTabBar, state)
   }
 }

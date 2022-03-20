@@ -31,6 +31,8 @@ struct RouterView: View {
   
   @State private var selectedTab: Page = .explore
   
+  @State private var isTabBarHidden: Bool = false
+  
   private enum Page: Int {
     case explore
     case create
@@ -76,5 +78,6 @@ struct RouterView: View {
     }
     .onboarding()
     .addBottomSheet()
+    .environment(\.outlineTabBarHidden, $isTabBarHidden)
   }
 }
