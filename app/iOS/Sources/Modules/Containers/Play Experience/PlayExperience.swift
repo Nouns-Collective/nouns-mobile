@@ -13,7 +13,7 @@ struct PlayExperience: View {
   @StateObject var viewModel: ViewModel 
   
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
-  @Environment(\.outlineTabBarHidden) var outlineTabViewHidden
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
 
   @State private var isNounPickerPresented: Bool = false
   
@@ -70,7 +70,7 @@ struct PlayExperience: View {
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
       .onAppear {
-        outlineTabViewHidden.wrappedValue = false
+        outlineTabBarVisibility.show()
       }
     }
   }

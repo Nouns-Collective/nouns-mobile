@@ -11,7 +11,7 @@ import Services
 
 struct PlayNounPicker: View {
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
-  @Environment(\.outlineTabBarHidden) var outlineTabViewHidden
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
   
   @Environment(\.dismiss) private var dismiss
   
@@ -61,7 +61,7 @@ struct PlayNounPicker: View {
         .addBottomSheet()
     })
     .onAppear {
-      outlineTabViewHidden.wrappedValue = true
+      outlineTabBarVisibility.hide()
     }
   }
 }

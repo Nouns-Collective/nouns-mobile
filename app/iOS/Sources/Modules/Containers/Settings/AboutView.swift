@@ -10,7 +10,7 @@ import UIComponents
 
 struct AboutView: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
-  @Environment(\.outlineTabBarHidden) var outlineTabViewHidden
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
 
   @State private var isAboutNounsPresented = false
   @State private var isSettingsPresented = false
@@ -48,7 +48,7 @@ struct AboutView: View {
         SettingsView()
       }
       .onAppear {
-        outlineTabViewHidden.wrappedValue = false
+        outlineTabBarVisibility.show()
       }
     }
   }

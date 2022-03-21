@@ -38,16 +38,30 @@ private struct OutlineTabItemSelectionDidChange: PreferenceKey {
   }
 }
 
+public class OutlineTabBarVisibilityManager: ObservableObject {
+  @Published internal var isHidden: Bool = false
+  
+  public init() {}
+  
+  public func show() {
+    isHidden = false
+  }
+  
+  public func hide() {
+    isHidden = true
+  }
+}
+
 /// Accessing `TabBar` visibility state.
-private struct OutlineTabBarHidden: EnvironmentKey {
-  static var defaultValue: Binding<Bool> = .constant(false)
+private struct OutlineTabBarVisibility: EnvironmentKey {
+  static var defaultValue: OutlineTabBarVisibilityManager = OutlineTabBarVisibilityManager()
 }
 
 extension EnvironmentValues {
   
-  public var outlineTabBarHidden: Binding<Bool> {
-    get { self[OutlineTabBarHidden.self] }
-    set { self[OutlineTabBarHidden.self] = newValue }
+  public var outlineTabBarVisibility: OutlineTabBarVisibilityManager {
+    get { self[OutlineTabBarVisibility.self] }
+    set { self[OutlineTabBarVisibility.self] = newValue }
   }
 }
 
@@ -77,7 +91,7 @@ public struct OutlineTabBar<T: Hashable>: View {
   @Binding private var selectedItemTag: T
   private let items: [OutlineTabItem<T>]
   
-  @Environment(\.outlineTabBarHidden) var isHidden: Binding<Bool>
+  @Environment(\.outlineTabBarVisibility) var tabBarVisibility: OutlineTabBarVisibilityManager
   
   public init(
     selection: Binding<T>,
@@ -99,8 +113,8 @@ public struct OutlineTabBar<T: Hashable>: View {
     .background(Color.white)
     .border(width: 2, edges: [.top, .bottom], color: .black)
     .clipShape(Rectangle())
-    .offset(x: 0, y: isHidden.wrappedValue ? 100 : 0)
-    .animation(.spring(), value: isHidden.wrappedValue)
+    .offset(x: 0, y: tabBarVisibility.isHidden ? 100 : 0)
+    .animation(.spring(), value: tabBarVisibility.isHidden)
   }
   
   private func tabItem(_ item: OutlineTabItem<T>) -> some View {

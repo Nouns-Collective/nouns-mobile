@@ -13,7 +13,7 @@ import Services
 struct ProposalFeedView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
-  @Environment(\.outlineTabBarHidden) var outlineTabViewHidden
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
   
   @StateObject var viewModel: ViewModel
   
@@ -64,7 +64,7 @@ struct ProposalFeedView: View {
       GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
     }
     .onAppear {
-      outlineTabViewHidden.wrappedValue = true
+      outlineTabBarVisibility.hide()
     }
   }
 }
