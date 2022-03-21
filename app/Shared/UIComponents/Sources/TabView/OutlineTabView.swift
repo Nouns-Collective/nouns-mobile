@@ -113,8 +113,8 @@ public struct OutlineTabBar<T: Hashable>: View {
     .background(Color.white)
     .border(width: 2, edges: [.top, .bottom], color: .black)
     .clipShape(Rectangle())
-    .offset(x: 0, y: tabBarVisibility.isHidden ? 100 : 0)
-    .animation(.spring(), value: tabBarVisibility.isHidden)
+    .offset(x: 0, y: tabBarVisibility.isHidden ? 120 : 0)
+    .animation(.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.3), value: tabBarVisibility.isHidden)
   }
   
   private func tabItem(_ item: OutlineTabItem<T>) -> some View {
