@@ -57,7 +57,7 @@ struct NounCreator: View {
     .addBottomSheet()
     .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
-      EmitterView()
+      ImageSlideshow(images: Bundle.files(fromBundle: "nounfetti"), bundle: Bundle(path: Bundle.main.bundleURL.appendingPathComponent("nounfetti.bundle").path)!)
         .zIndex(100)
         .scaleEffect(viewModel.showConfetti ? 1 : 0, anchor: .top)
         .opacity(viewModel.showConfetti && !viewModel.finishedConfetti ? 1 : 0)
