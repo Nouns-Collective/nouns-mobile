@@ -41,7 +41,7 @@ struct ExploreExperience: View {
       }
       .disabled(viewModel.isLoadingSettledAuctions)
       .background(Gradient.cherrySunset)
-      .addGradientTopEdge(.componentPeachy)
+      .addGradient(.componentPeachy, edge: .top)
       .ignoresSafeArea(edges: .top)
       .task {
         await viewModel.listenLiveAuctionChanges()

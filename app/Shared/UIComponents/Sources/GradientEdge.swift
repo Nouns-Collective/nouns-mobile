@@ -12,8 +12,23 @@ struct GradientEdge: ViewModifier {
   
   let color: Color
   
+  let edge: Edge
+  
+  private var alignment: Alignment {
+    switch edge {
+    case .bottom:
+      return .bottom
+    case .top:
+      return .top
+    case .leading:
+      return .leading
+    case .trailing:
+      return .trailing
+    }
+  }
+  
   func body(content: Content) -> some View {
-    ZStack(alignment: .top) {
+    ZStack(alignment: alignment) {
       content
 
       Gradient(
@@ -29,9 +44,9 @@ struct GradientEdge: ViewModifier {
 
 extension View {
   
-  /// Adds a gradient view to the top of a view, with a solid color at the top of the gradient view
-  /// and fades out by the bottom of the gradient view.
-  public func addGradientTopEdge(_ color: Color) -> some View {
-    modifier(GradientEdge(color: color))
+  /// Adds a gradient view to the edge of a view, with a solid color at the edge of the screen's bounds
+  /// and fades out closer to the center of the screen's bounds
+  public func addGradient(_ color: Color, edge: Edge) -> some View {
+    modifier(GradientEdge(color: color, edge: edge))
   }
 }
