@@ -46,7 +46,7 @@ struct PlayExperience: View {
           Link(isActive: $isNounPickerPresented, content: {
             OutlineButton(
               text: localize.proceedTitle(),
-              largeAccessory: { Image.fingergunsRight },
+              largeAccessory: { Image.fingergunsRight.shakeRepeatedly() },
               action: { isNounPickerPresented.toggle() })
               .controlSize(.large)
             

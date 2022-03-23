@@ -46,7 +46,7 @@ extension CreateExperience {
 
         OutlineButton(
           text: R.string.create.proceedTitle(),
-          largeAccessory: { Image.fingergunsRight },
+          largeAccessory: { Image.fingergunsRight.shakeRepeatedly() },
           action: action)
           .controlSize(.large)
           .padding(.horizontal, 40)
