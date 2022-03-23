@@ -19,16 +19,19 @@ public struct ImageSlideshow: View {
   /// The desired fps (frames per second) to animate the sequence at
   private let fps: CGFloat
   
+  private let repeats: Bool
+  
   @State private var imageIndex: Int = 0
     
-  public init(images: [String], fps: CGFloat = 30) {
+  public init(images: [String], fps: CGFloat = 30, repeats: Bool = true) {
     self.images = images
     self.fps = fps
+    self.repeats = repeats
   }
   
   public var body: some View {
     TimelineView(.periodic(from: .now, by: 1 / fps)) { context in
-      SlideshowImageView(now: context.date, images: images)
+      SlideshowImageView(now: context.date, images: images, repeats: repeats)
     }
   }
 }
@@ -38,17 +41,21 @@ internal struct SlideshowImageView: View {
   public let now: Date
   
   public let images: [String]
+    
+  public let repeats: Bool
 
   @State private var index: Int = 0
   
   var body: some View {
     Group {
-      if let image = UIImage(named: images[index % images.count]) {
+      if !images.isEmpty, let image = UIImage(named: images[index % images.count]) {
         Image(uiImage: image)
           .centerCropped()
       }
     }.onChange(of: now) { _ in
-      index += 1
+      if index < images.count || repeats {
+       index += 1
+      }
     }
   }
 }
