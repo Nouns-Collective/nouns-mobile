@@ -26,7 +26,7 @@ struct OffChainNounCard: View {
       media: {
         NounPuzzle(seed: viewModel.noun.seed)
           .matchedGeometryEffect(id: "\(viewModel.noun.id)-puzzle", in: animation)
-          .background(Gradient(.allCases[viewModel.noun.seed.background]))
+          .background(Gradient(NounCreator.backgroundColors[viewModel.noun.seed.background]))
       },
       content: {
         Text(viewModel.nounBirthday)
