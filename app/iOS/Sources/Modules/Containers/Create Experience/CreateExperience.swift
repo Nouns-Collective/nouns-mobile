@@ -59,7 +59,7 @@ struct CreateExperience: View {
           })
       }
       .background(Gradient.freshMint)
-      .addGradient(.componentAqua, edge: .top)
+      .overlay(.componentAqua, edge: .top)
       .ignoresSafeArea(edges: .top)
       // Presents more details about the settled auction.
       .fullScreenCover(item: $selectedNoun, onDismiss: {

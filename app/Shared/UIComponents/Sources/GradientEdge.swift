@@ -46,7 +46,7 @@ extension View {
   
   /// Adds a gradient view to the edge of a view, with a solid color at the edge of the screen's bounds
   /// and fades out closer to the center of the screen's bounds
-  public func addGradient(_ color: Color, edge: Edge) -> some View {
+  public func overlay(_ color: Color, edge: Edge) -> some View {
     modifier(GradientEdge(color: color, edge: edge))
   }
 }

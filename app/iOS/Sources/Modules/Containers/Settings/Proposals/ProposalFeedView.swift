@@ -59,7 +59,7 @@ struct ProposalFeedView: View {
       .padding(.top, 50)
     }
     .background(Gradient.lemonDrop)
-    .addGradient(.componentUnripeLemon, edge: .top)
+    .overlay(.componentUnripeLemon, edge: .top)
     .ignoresSafeArea(edges: .top)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
       GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
