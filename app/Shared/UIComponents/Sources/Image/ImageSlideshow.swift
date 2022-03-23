@@ -48,15 +48,13 @@ internal struct SlideshowImageView: View {
   
   var body: some View {
     Group {
-      if images.count > 0, let image = UIImage(named: images[index % images.count]) {
+      if !images.isEmpty, let image = UIImage(named: images[index % images.count]) {
         Image(uiImage: image)
           .centerCropped()
       }
     }.onChange(of: now) { _ in
-      if index == images.count - 1 {
-        if repeats { index += 1 }
-      } else {
-        index += 1
+      if index < images.count || repeats {
+       index += 1
       }
     }
   }
