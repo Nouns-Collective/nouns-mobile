@@ -22,7 +22,7 @@ struct NounProfileInfo: View {
   var toolbarContent: some View {
     HStack {
       Text(viewModel.title)
-        .font(.custom(.bold, size: 36))
+        .font(.custom(.bold, relativeTo: .title2))
       
       Spacer()
       

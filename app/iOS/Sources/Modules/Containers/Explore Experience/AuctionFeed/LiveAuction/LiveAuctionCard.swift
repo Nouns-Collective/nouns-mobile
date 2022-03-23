@@ -34,7 +34,7 @@ struct LiveAuctionCard: View {
             // Displays the winner.
             CompoundLabel({
               ENSText(token: viewModel.winner)
-                .font(.custom(.medium, size: 15))
+                .font(.custom(.medium, relativeTo: .footnote))
             }, icon: Image.crown, caption: R.string.liveAuction.winner())
             
           } else {

@@ -15,7 +15,7 @@ public enum CardFont {
     var font: Font {
         switch self {
         case .large:
-            return Font.custom(.bold, size: 36)
+            return Font.custom(.bold, relativeTo: .title2)
         case .small:
             return Font.custom(.bold, size: 21)
         case .custom(let font):

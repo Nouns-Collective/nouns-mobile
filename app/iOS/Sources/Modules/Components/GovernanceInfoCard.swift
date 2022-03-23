@@ -27,7 +27,7 @@ struct GovernanceInfoCard: View {
     VStack(alignment: .leading, spacing: 20) {
       HStack {
         Text(R.string.nounDAOInfo.title())
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
         
         Spacer()
         
@@ -42,11 +42,11 @@ struct GovernanceInfoCard: View {
       
       if let nounId = nounId, let owner = owner {
         Text(R.string.nounDAOInfo.description(nounId, domain ?? owner))
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(5)
       } else {
         Text(R.string.nounDAOInfo.descriptionNoOwner())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(5)
       }
       

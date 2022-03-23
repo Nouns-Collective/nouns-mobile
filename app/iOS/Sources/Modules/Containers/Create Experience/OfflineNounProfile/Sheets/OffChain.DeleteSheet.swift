@@ -24,7 +24,7 @@ extension OffChainNounProfile {
         borderColor: nil
       ) {
         Text(R.string.nounDeleteDialog.message())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(6)
           .padding(.bottom, 20)
         

@@ -94,7 +94,7 @@ public struct RecordButton: View {
       }
       
       Text(coachmark)
-        .font(.custom(.medium, size: 17))
+        .font(.custom(.medium, relativeTo: .subheadline))
         .foregroundColor(Color.componentNounsBlack)
         .hidden(isTapped)
     }

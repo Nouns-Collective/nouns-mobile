@@ -36,7 +36,7 @@ extension SettingsView {
         )
         
         Text(localize.notificationNote())
-          .font(.custom(.regular, size: 13))
+          .font(.custom(.regular, relativeTo: .caption))
           .foregroundColor(Color.componentNounsBlack.opacity(0.6))
           .padding(.bottom, 10)
       }

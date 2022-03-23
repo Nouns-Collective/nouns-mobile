@@ -22,7 +22,7 @@ struct PlayOnboardingView: View {
         OutlineButton {
           HStack(spacing: 10) {
             Text("Get Started")
-              .font(Font.custom(.medium, size: 17))
+              .font(Font.custom(.medium, relativeTo: .subheadline))
             
             Image.PointRight.standard
               .resizable()

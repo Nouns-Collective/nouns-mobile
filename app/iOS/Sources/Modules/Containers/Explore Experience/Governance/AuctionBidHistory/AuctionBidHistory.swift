@@ -23,7 +23,7 @@ struct AuctionBidHistory: View {
         
         // Displays Noun's token.
         Text(viewModel.title)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
         
         VPageGrid(viewModel.bids, columns: gridLayout, spacing: 10, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
           // load next bid history batch.
@@ -81,13 +81,13 @@ extension AuctionBidHistory {
         // Displays the owner token.
         Text(viewModel.title)
           .lineLimit(1)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
           .truncationMode(.middle)
         
         Spacer()
         
         Text(R.string.bidHistory.emptyState())
-          .font(.custom(.regular, size: 15))
+          .font(.custom(.regular, relativeTo: .footnote))
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
           .padding()
           .opacity(0.6)
@@ -109,7 +109,7 @@ extension AuctionBidHistory {
         // Displays the owner token.
         Text(viewModel.title)
           .lineLimit(1)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
           .truncationMode(.middle)
         
         Spacer()

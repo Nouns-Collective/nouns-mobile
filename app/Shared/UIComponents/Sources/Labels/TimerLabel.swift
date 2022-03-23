@@ -23,11 +23,11 @@ public struct TimerLabel: View {
             VStack(alignment: .leading) {
                 
                 Text(countdown)
-                    .font(.custom(.bold, size: 13))
+                    .font(.custom(.bold, relativeTo: .caption))
                     .multilineTextAlignment(.leading)
                     
                 Text("Remaining")
-                    .font(.custom(.regular, size: 13).monospacedDigit())
+                    .font(.custom(.regular, relativeTo: .caption).monospacedDigit())
             }
         }
         .onAppear {

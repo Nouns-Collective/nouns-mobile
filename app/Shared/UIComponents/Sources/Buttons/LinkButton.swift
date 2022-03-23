@@ -42,7 +42,7 @@ public struct LinkButton<Destination>: View where Destination: View {
                 accessory: {
                     if let trailingText = trailing {
                         Text(trailingText)
-                            .font(.custom(.regular, size: 17))
+                            .font(.custom(.regular, relativeTo: .subheadline))
                             .foregroundColor(Color.componentNounsBlack.opacity(0.5))
                     }
                 },

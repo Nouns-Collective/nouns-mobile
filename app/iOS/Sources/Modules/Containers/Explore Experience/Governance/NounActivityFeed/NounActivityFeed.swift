@@ -23,7 +23,7 @@ struct NounActivityFeed: View {
         
         // Displays the owner token.
         ENSText(token: viewModel.owner)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
         
         VPageGrid(viewModel.votes, columns: gridLayout, spacing: 10, isLoading: viewModel.isLoading, shouldLoadMore: viewModel.shouldLoadMore, loadMoreAction: {
           // load next activities batch.
@@ -112,12 +112,12 @@ extension NounActivityFeed {
         
         // Displays the owner token.
         ENSText(token: viewModel.owner)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
         
         Spacer()
         
         Text(R.string.activity.emptyState())
-            .font(.custom(.regular, size: 15))
+            .font(.custom(.regular, relativeTo: .footnote))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .padding()
             .opacity(0.6)
@@ -138,7 +138,7 @@ extension NounActivityFeed {
         
         // Displays the owner token.
         ENSText(token: viewModel.owner)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
         
         Spacer()
         

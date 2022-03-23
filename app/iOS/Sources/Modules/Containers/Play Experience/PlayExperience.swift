@@ -32,7 +32,7 @@ struct PlayExperience: View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
         Text(localize.subheadline())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
         
         VStack(spacing: 0) {
           VStack(spacing: -40) {
