@@ -22,7 +22,7 @@ extension SettingsView {
           icon: .speaker,
           isOn: Binding(
             get: { viewModel.isNounOClockNotificationEnabled },
-            set: { viewModel.isNounOClockNotificationEnabled = $0 }
+            set: { viewModel.setNounOClockNotification(isEnabled: $0) }
           )
         )
         
@@ -31,7 +31,7 @@ extension SettingsView {
           icon: .speaker,
           isOn: Binding(
             get: { viewModel.isNewNounNotificationEnabled },
-            set: { viewModel.isNewNounNotificationEnabled = $0 }
+            set: { viewModel.setNewNounNotification(isEnabled: $0) }
           )
         )
         
@@ -39,6 +39,9 @@ extension SettingsView {
           .font(.custom(.regular, size: 13))
           .foregroundColor(Color.componentNounsBlack.opacity(0.6))
           .padding(.bottom, 10)
+      }
+      .task {
+        await viewModel.refreshNotificationStates()
       }
     }
   }

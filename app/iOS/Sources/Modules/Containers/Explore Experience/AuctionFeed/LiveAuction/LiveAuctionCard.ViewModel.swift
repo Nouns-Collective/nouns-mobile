@@ -22,8 +22,10 @@ extension LiveAuctionCard {
     /// Indicate whether the auction time is over.
     @Published private(set) var isWinnerAnounced = false
     
-    private let localize = R.string.liveAuction.self
     private let composer: NounComposer
+    
+    /// Holds a reference to the localized text.
+    private let localize = R.string.liveAuction.self
     
     init(
       auction: Auction,

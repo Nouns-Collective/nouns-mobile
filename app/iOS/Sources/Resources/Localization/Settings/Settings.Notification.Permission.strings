@@ -1,0 +1,21 @@
+/* 
+  NotificationPermission.strings
+  Nouns
+
+  Created by Ziad Tamim on 06.03.22.
+  
+*/
+
+"title" = "Push Notifications";
+
+"motivation.title" = "Turn on notifications?";
+
+"motivation.content" = "To get notifications about nouns, you’ll need to turn them on in your iOS settings.";
+
+"instruction.title" = "Here's how:";
+
+"instruction.step.1" = "Tap “Notifications”";
+
+"instruction.step.2" = "Turn “Allow Notifications” on";
+
+"enable-notification.action" = "Go to iOS Settings";

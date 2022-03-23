@@ -13,6 +13,8 @@ struct AboutView: View {
   
   @State private var isAboutNounsPresented = false
   @State private var isSettingsPresented = false
+  
+  /// Holds a reference to the localized text.
   private let localize = R.string.about.self
   
   var body: some View {

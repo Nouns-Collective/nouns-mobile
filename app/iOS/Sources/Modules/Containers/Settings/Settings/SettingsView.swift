@@ -38,6 +38,12 @@ struct SettingsView: View {
             leading: localize.shareFriends(),
             icon: .share,
             action: { isShareWithFriendsPresented.toggle() })
+          
+          // A tutorial view is presented to guide the user on how to enable
+          // the notification from the settings app if denied.
+          Link(isActive: $viewModel.isNotificationPermissionTutorialPresented,
+               content: { EmptyView() },
+               destination: { NotificationPermission() })
         }
         .padding(.horizontal, 20)
         .softNavigationTitle(localize.title(), rightAccessory: {
@@ -54,6 +60,10 @@ struct SettingsView: View {
           ShareSheet(activityItems: [url])
         }
       }
+      .notificationPermissionDialog(
+        isPresented: $viewModel.isNotificationPermissionDialogPresented
+      )
+      .addBottomSheet()
     }
   }
 }
