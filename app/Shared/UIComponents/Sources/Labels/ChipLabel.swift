@@ -45,7 +45,7 @@ public struct ChipLabel: View {
     HStack {
       state.image
       Text(title)
-        .font(.custom(.medium, relativeTo: .footnote))
+        .font(.custom(.medium, relativeTo: .caption))
       
     }
     .foregroundColor(state.foregroundColor)

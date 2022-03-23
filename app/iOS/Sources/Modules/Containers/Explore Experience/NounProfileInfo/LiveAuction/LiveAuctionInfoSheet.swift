@@ -21,7 +21,7 @@ struct LiveAuctionInfoSheet: View {
         icon: { Image.timeleft },
         supplementaryView: {
           Text(viewModel.remainingTime)
-            .font(.custom(.medium, relativeTo: .subheadline))
+            .font(.custom(.medium, relativeTo: .footnote))
             .padding(.leading, 4)
         })
       

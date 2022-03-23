@@ -16,7 +16,7 @@ public struct PlayToggle: View {
     SoftButton {
       HStack {
         Text(isPlaying ? "Pause" : "Play")
-          .font(.custom(.medium, size: 17))
+          .font(.custom(.medium, relativeTo: .subheadline))
           
         Image.Controls.play
           .resizable()

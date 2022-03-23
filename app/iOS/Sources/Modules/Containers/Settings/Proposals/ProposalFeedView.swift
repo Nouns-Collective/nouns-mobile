@@ -62,7 +62,11 @@ struct ProposalFeedView: View {
     .overlay(.componentUnripeLemon, edge: .top)
     .ignoresSafeArea(edges: .top)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
-      GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
+      GovernanceInfoCard(
+        isPresented: $isGovernanceInfoPresented,
+        nounId: nil,
+        owner: nil
+      )
     }
   }
 }

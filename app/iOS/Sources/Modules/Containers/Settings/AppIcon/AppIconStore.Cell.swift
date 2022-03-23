@@ -55,7 +55,7 @@ extension AppIconStore {
         
         HStack {
           Text("Default")
-            .font(.custom(.medium, size: 13))
+            .font(.custom(.medium, relativeTo: .caption))
           
           if isSelected {
             Image.check

@@ -122,8 +122,7 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
       }
       .padding(.trailing, 6)
     }
-    .padding(.horizontal, 16)
-    .padding(.vertical, 12)
+    .padding(16)
   }
 }
 
@@ -172,7 +171,7 @@ public struct LargeAccessoryButtonLabel<Accessory: View>: View {
   public var body: some View {
     HStack(spacing: 10) {
       Text(text)
-        .font(Font.custom(.medium, size: 17))
+        .font(Font.custom(.medium, relativeTo: .subheadline))
         .foregroundColor(color)
       
       if fullWidth {

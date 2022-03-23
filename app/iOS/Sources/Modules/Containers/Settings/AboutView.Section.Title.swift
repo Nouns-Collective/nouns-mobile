@@ -16,11 +16,11 @@ extension AboutView {
     
     var body: some View {
       Text(title)
-        .font(.custom(.bold, size: 36))
+        .font(.custom(.bold, relativeTo: .title2))
         .padding(.top, 10)
       
       Text(subtitle)
-        .font(.custom(.regular, size: 17))
+        .font(.custom(.regular, relativeTo: .subheadline))
         .lineSpacing(5)
         .padding(.bottom, 10)
     }

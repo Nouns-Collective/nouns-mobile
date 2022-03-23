@@ -15,4 +15,3 @@ extension Image {
       .frame(maxWidth: maxWidth, maxHeight: maxHeight, alignment: .center)
   }
 }
-
