@@ -91,11 +91,11 @@ struct R: Rswift.Validatable {
   #if os(iOS) || os(tvOS)
   /// This `R.storyboard` struct is generated, and contains static references to 1 storyboards.
   struct storyboard {
-    /// Storyboard `Launch Screen`.
+    /// Storyboard `LaunchScreen`.
     static let launchScreen = _R.storyboard.launchScreen()
 
     #if os(iOS) || os(tvOS)
-    /// `UIStoryboard(name: "Launch Screen", bundle: ...)`
+    /// `UIStoryboard(name: "LaunchScreen", bundle: ...)`
     static func launchScreen(_: Void = ()) -> UIKit.UIStoryboard {
       return UIKit.UIStoryboard(resource: R.storyboard.launchScreen)
     }
@@ -11242,12 +11242,12 @@ struct _R: Rswift.Validatable {
       typealias InitialController = UIKit.UIViewController
 
       let bundle = R.hostingBundle
-      let name = "Launch Screen"
+      let name = "LaunchScreen"
 
       static func validate() throws {
-        if UIKit.UIImage(named: "glasses", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'glasses' is used in storyboard 'Launch Screen', but couldn't be loaded.") }
+        if UIKit.UIImage(named: "glasses", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'glasses' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
         if #available(iOS 11.0, tvOS 11.0, *) {
-          if UIKit.UIColor(named: "launch.screen.background", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Color named 'launch.screen.background' is used in storyboard 'Launch Screen', but couldn't be loaded.") }
+          if UIKit.UIColor(named: "launch.screen.background", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Color named 'launch.screen.background' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
         }
       }
 
