@@ -143,8 +143,8 @@ struct R: Rswift.Validatable {
   struct file {
     /// Resource file `GoogleService-Info.plist`.
     static let googleServiceInfoPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "GoogleService-Info", pathExtension: "plist")
-    /// Resource file `nounfetti.bundle`.
-    static let nounfettiBundle = Rswift.FileResource(bundle: R.hostingBundle, name: "nounfetti", pathExtension: "bundle")
+    /// Resource file `nounfetti.json`.
+    static let nounfettiJson = Rswift.FileResource(bundle: R.hostingBundle, name: "nounfetti", pathExtension: "json")
 
     /// `bundle.url(forResource: "GoogleService-Info", withExtension: "plist")`
     static func googleServiceInfoPlist(_: Void = ()) -> Foundation.URL? {
@@ -152,9 +152,9 @@ struct R: Rswift.Validatable {
       return fileResource.bundle.url(forResource: fileResource)
     }
 
-    /// `bundle.url(forResource: "nounfetti", withExtension: "bundle")`
-    static func nounfettiBundle(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.nounfettiBundle
+    /// `bundle.url(forResource: "nounfetti", withExtension: "json")`
+    static func nounfettiJson(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.nounfettiJson
       return fileResource.bundle.url(forResource: fileResource)
     }
 
@@ -4484,6 +4484,1092 @@ struct R: Rswift.Validatable {
       /// `UIImage(named: "head-zebra", bundle: ..., traitCollection: ...)`
       static func headZebra(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
         return UIKit.UIImage(resource: R.image.headsLessMouth.headZebra, compatibleWith: traitCollection)
+      }
+      #endif
+
+      fileprivate init() {}
+    }
+
+    /// This `R.image.nounfetti` struct is generated, and contains static references to 120 images.
+    struct nounfetti {
+      /// Image `Noun-fetti_00000`.
+      static let nounFetti_00000 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00000")
+      /// Image `Noun-fetti_00001`.
+      static let nounFetti_00001 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00001")
+      /// Image `Noun-fetti_00002`.
+      static let nounFetti_00002 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00002")
+      /// Image `Noun-fetti_00003`.
+      static let nounFetti_00003 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00003")
+      /// Image `Noun-fetti_00004`.
+      static let nounFetti_00004 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00004")
+      /// Image `Noun-fetti_00005`.
+      static let nounFetti_00005 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00005")
+      /// Image `Noun-fetti_00006`.
+      static let nounFetti_00006 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00006")
+      /// Image `Noun-fetti_00007`.
+      static let nounFetti_00007 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00007")
+      /// Image `Noun-fetti_00008`.
+      static let nounFetti_00008 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00008")
+      /// Image `Noun-fetti_00009`.
+      static let nounFetti_00009 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00009")
+      /// Image `Noun-fetti_00010`.
+      static let nounFetti_00010 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00010")
+      /// Image `Noun-fetti_00011`.
+      static let nounFetti_00011 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00011")
+      /// Image `Noun-fetti_00012`.
+      static let nounFetti_00012 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00012")
+      /// Image `Noun-fetti_00013`.
+      static let nounFetti_00013 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00013")
+      /// Image `Noun-fetti_00014`.
+      static let nounFetti_00014 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00014")
+      /// Image `Noun-fetti_00015`.
+      static let nounFetti_00015 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00015")
+      /// Image `Noun-fetti_00016`.
+      static let nounFetti_00016 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00016")
+      /// Image `Noun-fetti_00017`.
+      static let nounFetti_00017 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00017")
+      /// Image `Noun-fetti_00018`.
+      static let nounFetti_00018 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00018")
+      /// Image `Noun-fetti_00019`.
+      static let nounFetti_00019 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00019")
+      /// Image `Noun-fetti_00020`.
+      static let nounFetti_00020 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00020")
+      /// Image `Noun-fetti_00021`.
+      static let nounFetti_00021 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00021")
+      /// Image `Noun-fetti_00022`.
+      static let nounFetti_00022 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00022")
+      /// Image `Noun-fetti_00023`.
+      static let nounFetti_00023 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00023")
+      /// Image `Noun-fetti_00024`.
+      static let nounFetti_00024 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00024")
+      /// Image `Noun-fetti_00025`.
+      static let nounFetti_00025 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00025")
+      /// Image `Noun-fetti_00026`.
+      static let nounFetti_00026 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00026")
+      /// Image `Noun-fetti_00027`.
+      static let nounFetti_00027 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00027")
+      /// Image `Noun-fetti_00028`.
+      static let nounFetti_00028 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00028")
+      /// Image `Noun-fetti_00029`.
+      static let nounFetti_00029 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00029")
+      /// Image `Noun-fetti_00030`.
+      static let nounFetti_00030 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00030")
+      /// Image `Noun-fetti_00031`.
+      static let nounFetti_00031 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00031")
+      /// Image `Noun-fetti_00032`.
+      static let nounFetti_00032 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00032")
+      /// Image `Noun-fetti_00033`.
+      static let nounFetti_00033 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00033")
+      /// Image `Noun-fetti_00034`.
+      static let nounFetti_00034 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00034")
+      /// Image `Noun-fetti_00035`.
+      static let nounFetti_00035 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00035")
+      /// Image `Noun-fetti_00036`.
+      static let nounFetti_00036 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00036")
+      /// Image `Noun-fetti_00037`.
+      static let nounFetti_00037 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00037")
+      /// Image `Noun-fetti_00038`.
+      static let nounFetti_00038 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00038")
+      /// Image `Noun-fetti_00039`.
+      static let nounFetti_00039 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00039")
+      /// Image `Noun-fetti_00040`.
+      static let nounFetti_00040 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00040")
+      /// Image `Noun-fetti_00041`.
+      static let nounFetti_00041 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00041")
+      /// Image `Noun-fetti_00042`.
+      static let nounFetti_00042 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00042")
+      /// Image `Noun-fetti_00043`.
+      static let nounFetti_00043 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00043")
+      /// Image `Noun-fetti_00044`.
+      static let nounFetti_00044 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00044")
+      /// Image `Noun-fetti_00045`.
+      static let nounFetti_00045 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00045")
+      /// Image `Noun-fetti_00046`.
+      static let nounFetti_00046 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00046")
+      /// Image `Noun-fetti_00047`.
+      static let nounFetti_00047 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00047")
+      /// Image `Noun-fetti_00048`.
+      static let nounFetti_00048 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00048")
+      /// Image `Noun-fetti_00049`.
+      static let nounFetti_00049 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00049")
+      /// Image `Noun-fetti_00050`.
+      static let nounFetti_00050 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00050")
+      /// Image `Noun-fetti_00051`.
+      static let nounFetti_00051 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00051")
+      /// Image `Noun-fetti_00052`.
+      static let nounFetti_00052 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00052")
+      /// Image `Noun-fetti_00053`.
+      static let nounFetti_00053 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00053")
+      /// Image `Noun-fetti_00054`.
+      static let nounFetti_00054 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00054")
+      /// Image `Noun-fetti_00055`.
+      static let nounFetti_00055 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00055")
+      /// Image `Noun-fetti_00056`.
+      static let nounFetti_00056 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00056")
+      /// Image `Noun-fetti_00057`.
+      static let nounFetti_00057 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00057")
+      /// Image `Noun-fetti_00058`.
+      static let nounFetti_00058 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00058")
+      /// Image `Noun-fetti_00059`.
+      static let nounFetti_00059 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00059")
+      /// Image `Noun-fetti_00060`.
+      static let nounFetti_00060 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00060")
+      /// Image `Noun-fetti_00061`.
+      static let nounFetti_00061 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00061")
+      /// Image `Noun-fetti_00062`.
+      static let nounFetti_00062 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00062")
+      /// Image `Noun-fetti_00063`.
+      static let nounFetti_00063 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00063")
+      /// Image `Noun-fetti_00064`.
+      static let nounFetti_00064 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00064")
+      /// Image `Noun-fetti_00065`.
+      static let nounFetti_00065 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00065")
+      /// Image `Noun-fetti_00066`.
+      static let nounFetti_00066 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00066")
+      /// Image `Noun-fetti_00067`.
+      static let nounFetti_00067 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00067")
+      /// Image `Noun-fetti_00068`.
+      static let nounFetti_00068 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00068")
+      /// Image `Noun-fetti_00069`.
+      static let nounFetti_00069 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00069")
+      /// Image `Noun-fetti_00070`.
+      static let nounFetti_00070 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00070")
+      /// Image `Noun-fetti_00071`.
+      static let nounFetti_00071 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00071")
+      /// Image `Noun-fetti_00072`.
+      static let nounFetti_00072 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00072")
+      /// Image `Noun-fetti_00073`.
+      static let nounFetti_00073 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00073")
+      /// Image `Noun-fetti_00074`.
+      static let nounFetti_00074 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00074")
+      /// Image `Noun-fetti_00075`.
+      static let nounFetti_00075 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00075")
+      /// Image `Noun-fetti_00076`.
+      static let nounFetti_00076 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00076")
+      /// Image `Noun-fetti_00077`.
+      static let nounFetti_00077 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00077")
+      /// Image `Noun-fetti_00078`.
+      static let nounFetti_00078 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00078")
+      /// Image `Noun-fetti_00079`.
+      static let nounFetti_00079 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00079")
+      /// Image `Noun-fetti_00080`.
+      static let nounFetti_00080 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00080")
+      /// Image `Noun-fetti_00081`.
+      static let nounFetti_00081 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00081")
+      /// Image `Noun-fetti_00082`.
+      static let nounFetti_00082 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00082")
+      /// Image `Noun-fetti_00083`.
+      static let nounFetti_00083 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00083")
+      /// Image `Noun-fetti_00084`.
+      static let nounFetti_00084 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00084")
+      /// Image `Noun-fetti_00085`.
+      static let nounFetti_00085 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00085")
+      /// Image `Noun-fetti_00086`.
+      static let nounFetti_00086 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00086")
+      /// Image `Noun-fetti_00087`.
+      static let nounFetti_00087 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00087")
+      /// Image `Noun-fetti_00088`.
+      static let nounFetti_00088 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00088")
+      /// Image `Noun-fetti_00089`.
+      static let nounFetti_00089 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00089")
+      /// Image `Noun-fetti_00090`.
+      static let nounFetti_00090 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00090")
+      /// Image `Noun-fetti_00091`.
+      static let nounFetti_00091 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00091")
+      /// Image `Noun-fetti_00092`.
+      static let nounFetti_00092 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00092")
+      /// Image `Noun-fetti_00093`.
+      static let nounFetti_00093 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00093")
+      /// Image `Noun-fetti_00094`.
+      static let nounFetti_00094 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00094")
+      /// Image `Noun-fetti_00095`.
+      static let nounFetti_00095 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00095")
+      /// Image `Noun-fetti_00096`.
+      static let nounFetti_00096 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00096")
+      /// Image `Noun-fetti_00097`.
+      static let nounFetti_00097 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00097")
+      /// Image `Noun-fetti_00098`.
+      static let nounFetti_00098 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00098")
+      /// Image `Noun-fetti_00099`.
+      static let nounFetti_00099 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00099")
+      /// Image `Noun-fetti_00100`.
+      static let nounFetti_00100 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00100")
+      /// Image `Noun-fetti_00101`.
+      static let nounFetti_00101 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00101")
+      /// Image `Noun-fetti_00102`.
+      static let nounFetti_00102 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00102")
+      /// Image `Noun-fetti_00103`.
+      static let nounFetti_00103 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00103")
+      /// Image `Noun-fetti_00104`.
+      static let nounFetti_00104 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00104")
+      /// Image `Noun-fetti_00105`.
+      static let nounFetti_00105 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00105")
+      /// Image `Noun-fetti_00106`.
+      static let nounFetti_00106 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00106")
+      /// Image `Noun-fetti_00107`.
+      static let nounFetti_00107 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00107")
+      /// Image `Noun-fetti_00108`.
+      static let nounFetti_00108 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00108")
+      /// Image `Noun-fetti_00109`.
+      static let nounFetti_00109 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00109")
+      /// Image `Noun-fetti_00110`.
+      static let nounFetti_00110 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00110")
+      /// Image `Noun-fetti_00111`.
+      static let nounFetti_00111 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00111")
+      /// Image `Noun-fetti_00112`.
+      static let nounFetti_00112 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00112")
+      /// Image `Noun-fetti_00113`.
+      static let nounFetti_00113 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00113")
+      /// Image `Noun-fetti_00114`.
+      static let nounFetti_00114 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00114")
+      /// Image `Noun-fetti_00115`.
+      static let nounFetti_00115 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00115")
+      /// Image `Noun-fetti_00116`.
+      static let nounFetti_00116 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00116")
+      /// Image `Noun-fetti_00117`.
+      static let nounFetti_00117 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00117")
+      /// Image `Noun-fetti_00118`.
+      static let nounFetti_00118 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00118")
+      /// Image `Noun-fetti_00119`.
+      static let nounFetti_00119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nounfetti/Noun-fetti_00119")
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00000", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00000(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00000, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00001", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00001(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00001, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00002", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00002(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00002, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00003", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00003(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00003, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00004", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00004(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00004, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00005", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00005(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00005, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00006", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00006(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00006, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00007", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00007(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00007, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00008", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00008(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00008, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00009", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00009(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00009, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00010", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00010(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00010, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00011", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00011(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00011, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00012", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00012(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00012, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00013", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00013(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00013, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00014", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00014(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00014, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00015", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00015(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00015, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00016", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00016(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00016, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00017", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00017(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00017, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00018", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00018(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00018, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00019", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00019(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00019, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00020", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00020(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00020, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00021", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00021(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00021, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00022", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00022(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00022, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00023", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00023(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00023, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00024", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00024(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00024, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00025", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00025(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00025, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00026", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00026(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00026, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00027", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00027(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00027, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00028", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00028(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00028, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00029", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00029(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00029, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00030", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00030(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00030, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00031", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00031(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00031, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00032", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00032(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00032, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00033", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00033(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00033, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00034", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00034(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00034, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00035", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00035(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00035, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00036", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00036(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00036, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00037", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00037(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00037, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00038", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00038(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00038, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00039", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00039(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00039, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00040", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00040(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00040, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00041", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00041(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00041, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00042", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00042(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00042, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00043", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00043(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00043, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00044", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00044(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00044, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00045", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00045(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00045, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00046", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00046(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00046, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00047", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00047(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00047, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00048", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00048(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00048, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00049", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00049(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00049, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00050", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00050(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00050, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00051", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00051(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00051, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00052", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00052(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00052, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00053", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00053(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00053, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00054", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00054(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00054, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00055", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00055(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00055, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00056", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00056(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00056, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00057", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00057(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00057, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00058", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00058(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00058, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00059", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00059(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00059, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00060", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00060(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00060, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00061", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00061(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00061, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00062", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00062(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00062, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00063", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00063(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00063, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00064", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00064(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00064, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00065", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00065(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00065, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00066", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00066(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00066, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00067", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00067(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00067, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00068", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00068(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00068, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00069", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00069(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00069, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00070", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00070(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00070, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00071", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00071(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00071, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00072", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00072(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00072, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00073", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00073(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00073, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00074", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00074(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00074, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00075", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00075(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00075, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00076", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00076(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00076, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00077", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00077(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00077, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00078", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00078(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00078, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00079", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00079(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00079, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00080", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00080(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00080, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00081", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00081(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00081, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00082", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00082(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00082, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00083", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00083(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00083, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00084", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00084(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00084, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00085", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00085(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00085, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00086", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00086(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00086, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00087", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00087(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00087, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00088", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00088(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00088, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00089", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00089(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00089, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00090", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00090(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00090, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00091", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00091(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00091, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00092", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00092(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00092, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00093", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00093(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00093, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00094", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00094(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00094, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00095", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00095(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00095, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00096", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00096(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00096, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00097", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00097(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00097, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00098", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00098(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00098, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00099", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00099(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00099, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00100", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00100(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00100, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00101", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00101(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00101, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00102", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00102(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00102, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00103", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00103(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00103, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00104", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00104(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00104, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00105", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00105(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00105, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00106", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00106(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00106, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00107", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00107(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00107, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00108", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00108(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00108, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00109", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00109(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00109, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00110", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00110(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00110, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00111", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00111(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00111, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00112", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00112(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00112, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00113", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00113(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00113, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00114", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00114(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00114, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00115", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00115(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00115, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00116", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00116(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00116, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00117", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00117(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00117, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00118", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00118(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00118, compatibleWith: traitCollection)
+      }
+      #endif
+
+      #if os(iOS) || os(tvOS)
+      /// `UIImage(named: "Noun-fetti_00119", bundle: ..., traitCollection: ...)`
+      static func nounFetti_00119(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+        return UIKit.UIImage(resource: R.image.nounfetti.nounFetti_00119, compatibleWith: traitCollection)
       }
       #endif
 
