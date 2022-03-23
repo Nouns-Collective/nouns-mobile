@@ -13,6 +13,8 @@ struct PlayExperience: View {
   @StateObject var viewModel: ViewModel 
   
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
+
   @State private var isNounPickerPresented: Bool = false
   
   /// A view that displays the talking noun scene below the speech bubble.
@@ -67,6 +69,9 @@ struct PlayExperience: View {
       .softNavigationTitle(localize.title())
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
+      .onAppear {
+        outlineTabBarVisibility.show()
+      }
     }
   }
 }

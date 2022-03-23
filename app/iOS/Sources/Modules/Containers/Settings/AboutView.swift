@@ -10,7 +10,8 @@ import UIComponents
 
 struct AboutView: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
-  
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
+
   @State private var isAboutNounsPresented = false
   @State private var isSettingsPresented = false
   private let localize = R.string.about.self
@@ -46,6 +47,9 @@ struct AboutView: View {
       })
       .fullScreenCover(isPresented: $isSettingsPresented) {
         SettingsView()
+      }
+      .onAppear {
+        outlineTabBarVisibility.show()
       }
     }
   }

@@ -13,6 +13,7 @@ import Services
 struct ProposalFeedView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
   
   @StateObject var viewModel: ViewModel
   
@@ -67,6 +68,9 @@ struct ProposalFeedView: View {
         nounId: nil,
         owner: nil
       )
+    }
+    .onAppear {
+      outlineTabBarVisibility.hide()
     }
   }
 }
