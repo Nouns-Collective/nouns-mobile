@@ -41,6 +41,7 @@ struct ExploreExperience: View {
       }
       .disabled(viewModel.isLoadingSettledAuctions)
       .background(Gradient.cherrySunset)
+      .overlay(.componentPeachy, edge: .top)
       .ignoresSafeArea(edges: .top)
       .task {
         await viewModel.listenLiveAuctionChanges()

@@ -38,6 +38,7 @@ struct AboutView: View {
           })
         })
       }
+      .overlay(.componentUnripeLemon, edge: .top)
       .ignoresSafeArea(edges: .top)
       .background(Gradient.lemonDrop)
       .bottomSheet(isPresented: $isAboutNounsPresented, content: {
