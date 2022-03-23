@@ -88,6 +88,23 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
 
+  #if os(iOS) || os(tvOS)
+  /// This `R.storyboard` struct is generated, and contains static references to 1 storyboards.
+  struct storyboard {
+    /// Storyboard `Launch Screen`.
+    static let launchScreen = _R.storyboard.launchScreen()
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "Launch Screen", bundle: ...)`
+    static func launchScreen(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.launchScreen)
+    }
+    #endif
+
+    fileprivate init() {}
+  }
+  #endif
+
   /// This `R.color` struct is generated, and contains static references to 2 colors.
   struct color {
     /// Color `AccentColor`.
@@ -153,7 +170,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 246 images.
+  /// This `R.image` struct is generated, and contains static references to 247 images.
   struct image {
     /// Image `NounsWatermark`.
     static let nounsWatermark = Rswift.ImageResource(bundle: R.hostingBundle, name: "NounsWatermark")
@@ -207,6 +224,8 @@ struct R: Rswift.Validatable {
     static let eyesShift_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_5")
     /// Image `eyes-shift_6`.
     static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
+    /// Image `glasses`.
+    static let glasses = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses")
     /// Image `head-ape-mouth-1`.
     static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
     /// Image `head-ape-mouth-2`.
@@ -827,6 +846,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-shift_6", bundle: ..., traitCollection: ...)`
     static func eyesShift_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesShift_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses", bundle: ..., traitCollection: ...)`
+    static func glasses(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glasses, compatibleWith: traitCollection)
     }
     #endif
 
@@ -11185,7 +11211,7 @@ struct R: Rswift.Validatable {
 
   fileprivate struct intern: Rswift.Validatable {
     fileprivate static func validate() throws {
-      // There are no resources to validate
+      try _R.validate()
     }
 
     fileprivate init() {}
@@ -11196,6 +11222,42 @@ struct R: Rswift.Validatable {
   fileprivate init() {}
 }
 
-struct _R {
+struct _R: Rswift.Validatable {
+  static func validate() throws {
+    #if os(iOS) || os(tvOS)
+    try storyboard.validate()
+    #endif
+  }
+
+  #if os(iOS) || os(tvOS)
+  struct storyboard: Rswift.Validatable {
+    static func validate() throws {
+      #if os(iOS) || os(tvOS)
+      try launchScreen.validate()
+      #endif
+    }
+
+    #if os(iOS) || os(tvOS)
+    struct launchScreen: Rswift.StoryboardResourceWithInitialControllerType, Rswift.Validatable {
+      typealias InitialController = UIKit.UIViewController
+
+      let bundle = R.hostingBundle
+      let name = "Launch Screen"
+
+      static func validate() throws {
+        if UIKit.UIImage(named: "glasses", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'glasses' is used in storyboard 'Launch Screen', but couldn't be loaded.") }
+        if #available(iOS 11.0, tvOS 11.0, *) {
+          if UIKit.UIColor(named: "launch.screen.background", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Color named 'launch.screen.background' is used in storyboard 'Launch Screen', but couldn't be loaded.") }
+        }
+      }
+
+      fileprivate init() {}
+    }
+    #endif
+
+    fileprivate init() {}
+  }
+  #endif
+
   fileprivate init() {}
 }
