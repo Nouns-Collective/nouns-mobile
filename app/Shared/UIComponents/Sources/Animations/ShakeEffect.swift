@@ -31,16 +31,16 @@ struct Shake: ViewModifier {
   /// A boolean state to determine when the view is shaking and when it is still (paused)
   @State private var shake: Bool = false
   
+  private let timer = Timer.publish(every: 3.0, on: .main, in: .common).autoconnect()
+
   func body(content: Content) -> some View {
     content
       .modifier(ShakeEffect(shakeNumber: shake ? 2 : 0))
-      .onAppear {
-        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
-          withAnimation(.easeInOut(duration: 1.0)) {
-            shake.toggle()
-          }
+      .onReceive(timer, perform: { _ in
+        withAnimation(.easeInOut(duration: 1.0)) {
+          shake.toggle()
         }
-      }
+      })
   }
 }
 
