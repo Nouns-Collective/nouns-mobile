@@ -18,6 +18,7 @@ extension OnboardingView {
     case create
     case play
     
+    /// The folder in which to find the frames for each onboarding page's image sequence background
     fileprivate var assetFolder: String {
       switch self {
       case .intro:
@@ -31,6 +32,7 @@ extension OnboardingView {
       }
     }
     
+    /// The number of onboarding images (frames for an image sequence video) each onboarding page has
     fileprivate var numberOfAssets: Int {
       switch self {
       case .intro, .explore, .create, .play:
@@ -64,15 +66,14 @@ extension OnboardingView {
       showOnboarding.toggle()
     }
     
-    func onboardingImages() -> [UIImage] {
+    func onboardingImages() -> [String] {
       let folder = selectedPage.assetFolder
-      var images = [UIImage]()
+      var images = [String]()
       
       for asset in 0..<selectedPage.numberOfAssets {
         let index = String(format: "%03d", asset)
         let imagePath = "\(folder)/\(folder)_\(index)"
-        guard let image = UIImage(named: imagePath) else { continue }
-        images.append(image)
+        images.append(imagePath)
       }
       
       return images

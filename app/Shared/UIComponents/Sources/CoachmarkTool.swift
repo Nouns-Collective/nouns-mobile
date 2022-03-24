@@ -57,7 +57,7 @@ public struct CoachmarkTool<Content>: View where Content: View {
         .frame(width: 32, height: 32, alignment: .center)
       
       Text(title)
-        .font(.custom(.medium, size: 17))
+        .font(.custom(.medium, relativeTo: .subheadline))
         .foregroundColor(Color.componentNounsBlack)
     }
   }

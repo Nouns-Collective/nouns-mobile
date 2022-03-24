@@ -40,7 +40,7 @@ extension NounCreator {
       ) {
         VStack(alignment: .leading) {
           Text(R.string.nounDeleteDialog.message())
-            .font(.custom(.regular, size: 17))
+            .font(.custom(.regular, relativeTo: .subheadline))
             .lineSpacing(6)
             .padding(.bottom, 20)
           
@@ -84,7 +84,7 @@ extension NounCreator {
       ) {
         VStack(alignment: .leading) {
           Text(R.string.nounDiscardEditDialog.message())
-            .font(.custom(.regular, size: 17))
+            .font(.custom(.regular, relativeTo: .subheadline))
             .lineSpacing(6)
             .padding(.bottom, 20)
           

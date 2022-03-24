@@ -13,6 +13,8 @@ struct PlayExperience: View {
   @StateObject var viewModel: ViewModel 
   
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
+
   @State private var isNounPickerPresented: Bool = false
   
   /// A view that displays the talking noun scene below the speech bubble.
@@ -32,7 +34,7 @@ struct PlayExperience: View {
     NavigationView {
       VStack(alignment: .leading, spacing: 0) {
         Text(localize.subheadline())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
         
         VStack(spacing: 0) {
           VStack(spacing: -40) {
@@ -46,7 +48,7 @@ struct PlayExperience: View {
           Link(isActive: $isNounPickerPresented, content: {
             OutlineButton(
               text: localize.proceedTitle(),
-              largeAccessory: { Image.fingergunsRight },
+              largeAccessory: { Image.fingergunsRight.shakeRepeatedly() },
               action: { isNounPickerPresented.toggle() })
               .controlSize(.large)
             
@@ -67,6 +69,9 @@ struct PlayExperience: View {
       .softNavigationTitle(localize.title())
       .background(Gradient.blueberryJam)
       .ignoresSafeArea(edges: .top)
+      .onAppear {
+        outlineTabBarVisibility.show()
+      }
     }
   }
 }

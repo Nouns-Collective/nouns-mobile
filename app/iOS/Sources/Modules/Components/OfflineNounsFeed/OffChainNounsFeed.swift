@@ -61,7 +61,7 @@ struct OffChainNounsFeed<PlaceholderView: View, RightBarItem: View>: View {
     VStack(alignment: .leading, spacing: 20) {
       if let title = title {
         Text(title)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
       }
       
       ForEach(viewModel.nouns, id: \.self) { noun in

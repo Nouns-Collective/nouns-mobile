@@ -24,7 +24,7 @@ extension NounPlayground {
         borderColor: nil
       ) {
         Text(R.string.audioPermissionDialog.body())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(6)
           .padding(.bottom, 20)
         
@@ -66,7 +66,7 @@ extension NounPlayground {
         borderColor: nil
       ) {
         Text(R.string.audioSettingsDialog.body())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(6)
           .padding(.bottom, 20)
         

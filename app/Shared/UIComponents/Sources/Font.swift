@@ -51,13 +51,13 @@ public extension Font.TextStyle {
     var size: CGFloat {
         switch self {
         case .largeTitle:
-            return 60
+            return 52
             
         case .title:
             return 48
             
         case .title2:
-            return 34
+            return 36
             
         case .title3:
             return 24
@@ -66,13 +66,13 @@ public extension Font.TextStyle {
             return 18
             
         case .subheadline, .callout:
-            return 16
+            return 17
             
         case .footnote:
-            return 14
+            return 15
             
         case .caption, .caption2:
-            return 12
+            return 13
             
         @unknown default:
             return 8

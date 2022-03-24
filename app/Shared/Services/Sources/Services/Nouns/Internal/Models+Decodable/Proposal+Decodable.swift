@@ -25,5 +25,11 @@ extension Proposal: Decodable {
     } else {
       executionETA = nil
     }
+    
+    if let createdTimestampAsString = try container.decodeIfPresent(String.self, forKey: AnyCodingKey("createdTimestamp")) {
+      createdTimestamp = try TimeIntervalDecoder.timeInterval(createdTimestampAsString, decoder)
+    } else {
+      createdTimestamp = nil
+    }
   }
 }

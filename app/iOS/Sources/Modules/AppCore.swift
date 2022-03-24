@@ -7,6 +7,7 @@
 
 import Combine
 import Services
+import UIComponents
 
 final class AppCore {
   static let shared = AppCore()
@@ -17,7 +18,7 @@ final class AppCore {
   let onChainNounsService: OnChainNounsService = TheGraphOnChainNouns()
   let offChainNounsService: OffChainNounsService = CoreDataOffChainNouns()
   let nounComposer: NounComposer = OfflineNounComposer.default()
-  
+
   /// A service to extract the eth domain from the network.
   let ensNameService: ENS = Web3ENSProvider()
   

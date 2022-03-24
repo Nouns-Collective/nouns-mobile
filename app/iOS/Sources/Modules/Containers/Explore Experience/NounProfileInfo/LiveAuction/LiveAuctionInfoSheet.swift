@@ -20,14 +20,9 @@ struct LiveAuctionInfoSheet: View {
         text: R.string.nounProfile.auctionUnsettledTimeLeftLabel(),
         icon: { Image.timeleft },
         supplementaryView: {
-          Label(
-            title: {
-              Text(viewModel.remainingTime)
-            },
-            icon: {
-              EmptyView()
-            })
-          .labelStyle(.calloutLabel(spacing: 0))
+          Text(viewModel.remainingTime)
+            .font(.custom(.medium, relativeTo: .footnote))
+            .padding(.leading, 4)
         })
       
       // Displays the date when the auction was created.
@@ -43,7 +38,7 @@ struct LiveAuctionInfoSheet: View {
           Label {
             Text(viewModel.lastBid)
           } icon: {
-            Image.currentBid
+            Image.eth
           }
           .labelStyle(.calloutLabel(spacing: 2))
           .padding(.leading, 4)

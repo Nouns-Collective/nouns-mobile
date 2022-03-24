@@ -35,7 +35,7 @@ extension CreateExperience {
     var body: some View {
       VStack(alignment: .leading, spacing: 0) {
         Text(R.string.create.subhealine())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .padding(.horizontal, 20)
         
         Spacer()
@@ -50,7 +50,7 @@ extension CreateExperience {
 
         OutlineButton(
           text: R.string.create.proceedTitle(),
-          largeAccessory: { Image.fingergunsRight },
+          largeAccessory: { Image.fingergunsRight.shakeRepeatedly() },
           action: action)
           .controlSize(.large)
           .padding(.horizontal, 40)

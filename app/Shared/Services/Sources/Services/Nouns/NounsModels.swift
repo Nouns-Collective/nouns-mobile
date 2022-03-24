@@ -162,6 +162,7 @@ public enum ProposalDetailedStatus: String {
   
   case expired
   
+  case active
   case defeated
   case succeeded
   
@@ -170,8 +171,18 @@ public enum ProposalDetailedStatus: String {
     case .pending:
       return .pending
     case .active:
-      // Active proposals are displayed as either succeeded or defeated
-      return proposal.isDefeated ? .defeated : .succeeded
+      // From https://nouns.wtf/create-proposal, "The voting period will begin after 2 1/3 days and last for 3 days."
+      if let createdTimestamp = proposal.createdTimestamp {
+        let createdDate = Date(timeIntervalSince1970: createdTimestamp)
+        // When voting has ended (approx 2 weeks after the executionETA), active proposals
+        // are either classified as succeeding or defeated
+        if let votingEndDate = createdDate.dateAfter(hours: 8, days: 5), Date() > votingEndDate {
+          return proposal.isDefeated ? .defeated : .succeeded
+        }
+      }
+      
+      // If voting is still open, the proposal is simply `active`
+      return .active
     case .cancelled:
       return .cancelled
     case .vetoed:
@@ -179,14 +190,10 @@ public enum ProposalDetailedStatus: String {
     case .queued:
       // Proposals that are queued are considered expired if two weeks after the executionETA has passed
       if let executionETA = proposal.executionETA {
-        var dateComponents = DateComponents()
-        dateComponents.weekOfYear = 2 // For removing one day (yesterday): -1
-        if let expiryDate = Calendar.current.date(byAdding: dateComponents, to: Date(timeIntervalSince1970: executionETA)) {
-          let currentDate = Date()
-          
-          if currentDate > expiryDate {
-            return .expired
-          }
+        let executionDate = Date(timeIntervalSince1970: executionETA)
+        
+        if let expiryDate = executionDate.dateAfter(weeks: 2), Date() > expiryDate {
+          return .expired
         }
       }
       return .queued
@@ -219,6 +226,9 @@ public struct Proposal: Equatable, Identifiable {
   
   /// Once the proposal is queued for execution it will have an ETA of the execution
   public let executionETA: TimeInterval?
+  
+  /// A timestamp for when the proposal was created
+  public let createdTimestamp: TimeInterval?
 
   /// The amount of votes in favour of this proposal
   public var forVotes: Int {
