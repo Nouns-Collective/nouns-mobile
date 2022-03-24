@@ -39,7 +39,7 @@ public struct SpeechBubble: View {
     private var label: some View {
         Text(content)
             // TODO: - Update font to Space Mono
-            .font(Font.custom(.medium, size: 17))
+            .font(Font.custom(.medium, relativeTo: .subheadline))
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
             .padding()

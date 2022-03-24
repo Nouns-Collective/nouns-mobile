@@ -31,6 +31,8 @@ struct RouterView: View {
   
   @State private var selectedTab: Page = .explore
   
+  @StateObject private var tabBarVisibilityManager = OutlineTabBarVisibilityManager()
+    
   private enum Page: Int {
     case explore
     case create
@@ -76,5 +78,6 @@ struct RouterView: View {
     }
     .onboarding()
     .addBottomSheet()
+    .environment(\.outlineTabBarVisibility, tabBarVisibilityManager)
   }
 }

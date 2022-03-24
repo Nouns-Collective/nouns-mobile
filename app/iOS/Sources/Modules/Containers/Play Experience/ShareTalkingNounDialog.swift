@@ -30,7 +30,7 @@ struct ShareTalkingNounDialog: View {
       borderColor: nil
     ) {
       Text("Get ready! Your video will be ready soon.")
-        .font(.custom(.regular, size: 17))
+        .font(.custom(.regular, relativeTo: .subheadline))
         .lineSpacing(6)
         .padding(.bottom, 20)
       

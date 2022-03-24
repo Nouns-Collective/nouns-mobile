@@ -18,8 +18,8 @@ extension ExploreExperience {
     @State private var selectedAuction: Auction?
     
     private let gridLayout = [
-      GridItem(.flexible(), spacing: 20),
-      GridItem(.flexible(), spacing: 20),
+      GridItem(.flexible(), spacing: 16),
+      GridItem(.flexible(), spacing: 16),
     ]
     
     var body: some View {
