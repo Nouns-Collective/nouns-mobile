@@ -271,5 +271,15 @@ extension NounCreator {
       
       NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateSeed, object: seed)
     }
+    
+    /// Shows all traits on the `SlotMachine`, instead of just the currently modifiable trait type
+    func showAllTraits() {
+      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: true)
+    }
+    
+    /// Hides all traits on the `SlotMachine`, except the currently modifiable trait type
+    func hideAllTraits() {
+      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: false)
+    }
   }
 }
