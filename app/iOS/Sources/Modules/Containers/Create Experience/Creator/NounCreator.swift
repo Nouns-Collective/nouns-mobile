@@ -29,6 +29,10 @@ struct NounCreator: View {
         
         ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
         
+        CreateCoachmarks(viewModel: viewModel, isExpanded: isExpanded)
+        
+        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+        
         if viewModel.mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
@@ -99,6 +103,9 @@ struct NounCreator: View {
       withAnimation(.spring().delay(3.0)) {
         viewModel.hideAllTraits()
       }
+    }
+    .onAppear {
+      viewModel.showCoachmarkGuide()
     }
   }
 }
