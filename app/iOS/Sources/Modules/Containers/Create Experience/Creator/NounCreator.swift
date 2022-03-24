@@ -23,7 +23,7 @@ struct NounCreator: View {
       VStack(spacing: 0) {
         ConditionalSpacer(viewModel.mode == .creating)
         
-        SlotMachine(viewModel: .init(initialSeed: viewModel.initialSeed))
+        SlotMachine(initialSeed: viewModel.initialSeed)
         
         ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
         
@@ -55,10 +55,9 @@ struct NounCreator: View {
     }
     .addBottomSheet()
     .overlay {
-      EmitterView()
+      NounfettiView()
         .zIndex(100)
-        .scaleEffect(viewModel.showConfetti ? 1 : 0, anchor: .top)
-        .opacity(viewModel.showConfetti && !viewModel.finishedConfetti ? 1 : 0)
+        .hidden(!viewModel.showConfetti || viewModel.finishedConfetti)
         .ignoresSafeArea()
         .allowsHitTesting(false)
     }

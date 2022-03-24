@@ -20,7 +20,7 @@ struct ProposalRow: View {
       VStack(alignment: .leading, spacing: 20) {
         HStack {
           Text(viewModel.identifier)
-            .font(.custom(.regular, size: 13))
+            .font(.custom(.regular, relativeTo: .caption))
           
           Spacer()
           
@@ -28,7 +28,7 @@ struct ProposalRow: View {
         }
         
         Text(viewModel.title)
-          .font(.custom(.medium, size: 17))
+          .font(.custom(.medium, relativeTo: .subheadline))
         
       }.padding()
     }

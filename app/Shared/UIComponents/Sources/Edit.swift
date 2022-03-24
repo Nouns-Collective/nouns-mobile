@@ -20,7 +20,7 @@ public struct Edit: ViewModifier {
     VStack(alignment: .leading) {
       if isActive {
         TextField(placeholder, text: $text)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
         
         Divider()
           .frame(height: 2)

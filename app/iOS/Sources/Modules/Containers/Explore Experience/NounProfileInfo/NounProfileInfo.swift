@@ -108,27 +108,6 @@ struct NounProfileInfo: View {
 
 extension NounProfileInfo {
   
-  struct CardToolBar: View {
-    @ObservedObject var viewModel: ViewModel
-    let dismiss: DismissAction
-    
-    var body: some View {
-      HStack {
-        Text(viewModel.title)
-          .font(.custom(.bold, relativeTo: .title2))
-        
-        Spacer()
-        
-        SoftButton(
-          icon: { Image.xmark },
-          action: { dismiss() })
-      }
-    }
-  }
-}
-
-extension NounProfileInfo {
-  
   struct CardActionsItems: View {
     
     @ObservedObject var viewModel: ViewModel

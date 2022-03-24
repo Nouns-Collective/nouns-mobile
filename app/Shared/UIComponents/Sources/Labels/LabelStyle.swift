@@ -32,7 +32,7 @@ public struct CalloutLabelStyle: LabelStyle {
       Spacer().frame(width: spacing)
       configuration.title
         .lineLimit(1)
-        .font(.custom(.medium, relativeTo: .subheadline))
+        .font(.custom(.medium, relativeTo: .footnote))
         .truncationMode(.middle)
     } icon: {
       configuration.icon

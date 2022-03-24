@@ -10,7 +10,8 @@ import UIComponents
 
 struct AboutView: View {
   @Environment(\.outlineTabViewHeight) var tabBarHeight
-  
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
+
   @State private var isAboutNounsPresented = false
   @State private var isSettingsPresented = false
   private let localize = R.string.about.self
@@ -38,6 +39,7 @@ struct AboutView: View {
           })
         })
       }
+      .overlay(.componentUnripeLemon, edge: .top)
       .ignoresSafeArea(edges: .top)
       .background(Gradient.lemonDrop)
       .bottomSheet(isPresented: $isAboutNounsPresented, content: {
@@ -45,6 +47,9 @@ struct AboutView: View {
       })
       .fullScreenCover(isPresented: $isSettingsPresented) {
         SettingsView()
+      }
+      .onAppear {
+        outlineTabBarVisibility.show()
       }
     }
   }

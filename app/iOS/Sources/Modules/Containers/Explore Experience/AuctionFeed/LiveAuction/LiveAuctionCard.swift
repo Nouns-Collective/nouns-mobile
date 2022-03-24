@@ -34,7 +34,7 @@ struct LiveAuctionCard: View {
             // Displays the winner.
             CompoundLabel({
               ENSText(token: viewModel.winner)
-                .font(.custom(.medium, relativeTo: .subheadline))
+                .font(.custom(.medium, relativeTo: .footnote))
             }, icon: Image.crown, caption: R.string.liveAuction.winner())
             
           } else {
@@ -57,6 +57,7 @@ struct LiveAuctionCard: View {
         }
         .padding(.top, 20)
       })
+      .headerStyle(.large)
       .onTapGesture {
         showNounProfile.toggle()
       }

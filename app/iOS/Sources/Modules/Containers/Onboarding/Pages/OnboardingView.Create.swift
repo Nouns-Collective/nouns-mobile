@@ -13,7 +13,7 @@ struct CreateOnboardingView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      ImageSequence(images: viewModel.onboardingImages())
+      ImageSlideshow(images: viewModel.onboardingImages())
       
       OnboardingView.Footer(
         viewModel: viewModel,

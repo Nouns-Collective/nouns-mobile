@@ -157,7 +157,7 @@ public struct InfoCell<Icon: View, SupplementaryView: View, Accessory: View>: Vi
     Label {
       HStack(spacing: 0) {
         Text(text)
-          .font(.custom(.regular, relativeTo: .subheadline))
+          .font(.custom(.regular, relativeTo: .footnote))
         
         supplementaryView
         

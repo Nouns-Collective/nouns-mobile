@@ -22,7 +22,7 @@ public struct SafeLabel: View {
         HStack(spacing: 3) {
             icon
             Text(title)
-                .font(.custom(.bold, relativeTo: .footnote))
+                .font(.custom(.bold, relativeTo: .caption))
                 .redactable(style: .skeleton)
         }
     }

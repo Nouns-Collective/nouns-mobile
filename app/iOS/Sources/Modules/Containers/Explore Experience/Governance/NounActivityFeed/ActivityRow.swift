@@ -21,7 +21,7 @@ struct ActivityRow: View {
           
           Text(viewModel.proposalStatus)
             .foregroundColor(Color.componentNounsBlack)
-            .font(Font.custom(.medium, relativeTo: .footnote))
+            .font(Font.custom(.medium, relativeTo: .subheadline))
             .opacity(0.5)
         }
         

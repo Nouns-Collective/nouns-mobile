@@ -46,13 +46,13 @@ extension SlotMachine {
     }
     
     /// The initial seed of the noun creator, reflecting which traits are selected and displayed initially
-    public let initialSeed: Seed
+    public var initialSeed: Seed
     
     /// A boolean to determine if the shadow should be visible below the noun
-    public let showShadow: Bool
+    public var showShadow: Bool
     
     /// A boolean to determine if the noun's `initialSeed` should animate into place
-    public let animateEntrance: Bool
+    public var animateEntrance: Bool
     
     @Published public var showAllTraits: Bool = false
     
@@ -86,7 +86,7 @@ extension SlotMachine {
       self.seed = initialSeed
       self.showShadow = showShadow
       self.animateEntrance = animateEntrance
-      
+            
       setupNotifications()
     }
     
