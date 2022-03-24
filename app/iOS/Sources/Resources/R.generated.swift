@@ -9961,7 +9961,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 28 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 29 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -10469,6 +10469,44 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("block.unavailable", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.createCoachmark` struct is generated, and contains static references to 2 localization keys.
+    struct createCoachmark {
+      /// Value: Shake to shuffle
+      static let shake = Rswift.StringResource(key: "shake", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Swipe to pick %@
+      static let swipe = Rswift.StringResource(key: "swipe", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Shake to shuffle
+      static func shake(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "shake"
+        }
+
+        return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+      }
+
+      /// Value: Swipe to pick %@
+      static func swipe(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "swipe"
+        }
+
+        let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
       }
 
       fileprivate init() {}

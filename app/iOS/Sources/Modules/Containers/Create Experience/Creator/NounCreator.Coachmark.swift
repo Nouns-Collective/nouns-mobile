@@ -37,7 +37,7 @@ extension NounCreator {
           .resizable()
           .frame(width: 32, height: 32, alignment: .center)
           .shakeRepeatedly(axis: [.horizontal, .vertical], rest: 1.5, centered: true)
-        Text("Shake to shuffle")
+        Text(R.string.createCoachmark.shake())
           .font(.custom(.medium, relativeTo: .callout))
           .foregroundColor(.componentNounsBlack)
       }
@@ -54,7 +54,7 @@ extension NounCreator {
           .resizable()
           .frame(width: 32, height: 32, alignment: .center)
           .shakeRepeatedly(shakeCount: 1, offset: 10, rest: 1.5, centered: true)
-        Text("Swipe to pick \(viewModel.currentModifiableTraitType.description.lowercased())")
+        Text(R.string.createCoachmark.swipe(viewModel.currentModifiableTraitType.description.lowercased()))
           .font(.custom(.medium, relativeTo: .callout))
           .foregroundColor(.componentNounsBlack)
       }
