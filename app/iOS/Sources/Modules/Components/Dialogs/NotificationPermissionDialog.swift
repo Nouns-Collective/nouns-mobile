@@ -7,14 +7,22 @@
 
 import SwiftUI
 import UIComponents
+import Services
+
+extension View {
+  
+  func notificationPermissionDialog(isPresented: Binding<Bool>) -> some View {
+    bottomSheet(isPresented: isPresented) {
+      NotificationPermissionDialog(isPresented: isPresented)
+    }
+  }
+}
 
 /// An notification permission dialog for the initial `undetermined` state when asking for audio permission
 /// With this sheet, users can choose to enable audio permissions (which then presents a standardized iOS audio permission dialog)
 /// or choose to do it later, which dismisses the entire playground experience
 struct NotificationPermissionDialog: View {
-  
-  /// A closure to handle user action when it comes to enabling or disabling notification permission.
-  var action: (_ shouldAuthorize: Bool) -> Void
+  @Binding var isPresented: Bool
   
   var body: some View {
     ActionSheet(
@@ -33,7 +41,8 @@ struct NotificationPermissionDialog: View {
         largeAccessory: { Image.PointRight.standard },
         action: {
           withAnimation {
-            action(true)
+            setUpMessaging()
+            isPresented.toggle()
           }
         })
         .controlSize(.large)
@@ -43,21 +52,31 @@ struct NotificationPermissionDialog: View {
         largeAccessory: { Image.later },
         action: {
           withAnimation {
-            action(false)
+            isPresented.toggle()
           }
         })
         .controlSize(.large)
     }
     .padding(.bottom, 4)
   }
-}
-
-struct NotificationPermissionDialog_previews: PreviewProvider {
   
-  static var previews: some View {
-    Text("Notifications")
-      .bottomSheet(isPresented: .constant(true), content: {
-        NotificationPermissionDialog { _ in }
-      })
+  private func setUpMessaging() {
+    let messaging = AppCore.shared.messaging
+    let settingsStore = AppCore.shared.settingsStore
+    
+    Task {
+      // Subscribe to topics on APNs registration.
+      for try await _ in messaging.notificationStateDidChange {
+        settingsStore.syncMessagingTopicsSubscription()
+      }
+    }
+    
+    Task {
+      // Requests APNs authorization.
+      _ = try await messaging.requestAuthorization(
+        UIApplication.shared,
+        authorizationOptions: [.alert, .badge, .sound]
+      )
+    }
   }
 }

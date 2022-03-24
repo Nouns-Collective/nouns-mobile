@@ -27,7 +27,8 @@ public struct BottomSheet: ViewModifier {
   
   /// The point for the top anchor
   private var topAnchor: CGFloat {
-    let topSafeArea = (UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0)
+    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    let topSafeArea = windowScene?.keyWindow?.safeAreaInsets.top ?? 0
     let calculatedTop = presenterContentRect.height + topSafeArea - sheetContentRect.height
     
     guard calculatedTop < manager.style.minTopDistance else {
@@ -45,8 +46,10 @@ public struct BottomSheet: ViewModifier {
   /// Calculates the sheets y-position
   private var sheetPosition: CGFloat {
     if self.manager.isPresented {
+      
       // 20.0 = To make sure we dont go under statusbar on screens without safe area inset
-      let topInset = UIApplication.shared.windows.first?.safeAreaInsets.top ?? 20.0
+      let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+      let topInset = windowScene?.keyWindow?.safeAreaInsets.top ?? 20.0
       let position = self.topAnchor + self.dragOffset - self.keyboardOffset - 20
       
       if position < topInset {
@@ -122,9 +125,9 @@ public extension BottomSheet {
         .edgesIgnoringSafeArea(.vertical)
         .onTapGesture {
           withAnimation(manager.defaultAnimation) {
-            self.manager.isPresented = false
-            self.dismissKeyboard()
-            self.manager.onDismiss?()
+            manager.isPresented = false
+            dismissKeyboard()
+            manager.onDismiss?()
           }
         }
       }
@@ -134,7 +137,7 @@ public extension BottomSheet {
         VStack(spacing: 0) {
           VStack {
             // Attach the sheet's content
-            self.manager.content
+            manager.content
               .background(
                 GeometryReader { proxy in
                   Color.clear.preference(key: SheetPreferenceKey.self, value: [PreferenceData(bounds: proxy.frame(in: .global))])
@@ -154,12 +157,12 @@ public extension BottomSheet {
         .onPreferenceChange(SheetPreferenceKey.self, perform: { (prefData) in
           DispatchQueue.main.async {
             withAnimation(manager.defaultAnimation) {
-              self.sheetContentRect = prefData.first?.bounds ?? .zero
+              sheetContentRect = prefData.first?.bounds ?? .zero
             }
           }
         })
         .frame(width: UIScreen.main.bounds.width)
-        .offset(y: self.sheetPosition)
+        .offset(y: sheetPosition)
         .gesture(drag)
         .animation(manager.defaultAnimation)
       }
@@ -210,7 +213,7 @@ extension BottomSheet {
     } else if verticalDirection < 0 {
       withAnimation(manager.defaultAnimation) {
         dragOffset = 0
-        self.manager.isPresented = true
+        manager.isPresented = true
       }
     } else {
       /// The current sheet position
@@ -227,7 +230,7 @@ extension BottomSheet {
       
       withAnimation(manager.defaultAnimation) {
         dragOffset = 0
-        self.manager.isPresented = (closestPosition == topAnchor)
+        manager.isPresented = (closestPosition == topAnchor)
         if !manager.isPresented {
           manager.onDismiss?()
         }
