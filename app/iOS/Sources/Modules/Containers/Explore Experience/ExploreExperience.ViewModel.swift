@@ -72,30 +72,44 @@ extension ExploreExperience {
     
     /// Loads settled auctions
     @MainActor
-    func loadAuctions() async {
-      failedToLoadSettledAuctions = false
-      
-      do {
-        isLoadingSettledAuctions = true
-        // Load next batch of the settled auctions from the network.
-        // The cursor should be set to the amount of non-nounder owned
-        // nouns in the view model as nounder owned nouns are not considered "auctions"
-        let auctions = try await service.fetchAuctions(
-          settled: true,
-          includeNounderOwned: true,
-          limit: pageLimit,
-          cursor: notNounderOwnedCount
-        )
+    func loadAuctions() {
+      Task {
+        failedToLoadSettledAuctions = false
         
-        shouldLoadMore = auctions.hasNext
-                        
-        self.auctions += auctions.data
+        do {
+          isLoadingSettledAuctions = true
+          // Load next batch of the settled auctions from the network.
+          // The cursor should be set to the amount of non-nounder owned
+          // nouns in the view model as nounder owned nouns are not considered "auctions"
+          let auctions = try await service.fetchAuctions(
+            settled: true,
+            includeNounderOwned: true,
+            limit: pageLimit,
+            cursor: notNounderOwnedCount
+          )
+          
+          shouldLoadMore = auctions.hasNext
+                          
+          self.auctions += uniqueAuctions(auctions.data)
+          
+        } catch {
+          failedToLoadSettledAuctions = true
+        }
         
-      } catch {
-        failedToLoadSettledAuctions = true
+        isLoadingSettledAuctions = false
       }
+    }
+    
+    /// Helper function to prevent duplicate auctions from being shown in the feed
+    ///
+    /// This can be caused randomly be race conditions, espeically on initial launch of the app
+    /// where `onAppear` can be called more than once invoking the `loadAuctions` method twice.
+    private func uniqueAuctions(_ fetchedAuctions: [Auction]) -> [Auction] {
+      let keys = self.auctions.map { $0.id }
       
-      isLoadingSettledAuctions = false
+      return fetchedAuctions.filter { auction in
+        return !keys.contains(auction.id)
+      }
     }
   }
 }
