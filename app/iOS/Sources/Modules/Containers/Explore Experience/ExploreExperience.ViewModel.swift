@@ -90,13 +90,25 @@ extension ExploreExperience {
           
           shouldLoadMore = auctions.hasNext
                           
-          self.auctions += auctions.data
+          self.auctions += uniqueAuctions(auctions.data)
           
         } catch {
           failedToLoadSettledAuctions = true
         }
         
         isLoadingSettledAuctions = false
+      }
+    }
+    
+    /// Helper function to prevent duplicate auctions from being shown in the feed
+    ///
+    /// This can be caused randomly be race conditions, espeically on initial launch of the app
+    /// where `onAppear` can be called more than once invoking the `loadAuctions` method twice.
+    private func uniqueAuctions(_ fetchedAuctions: [Auction]) -> [Auction] {
+      let keys = self.auctions.map { $0.id }
+      
+      return fetchedAuctions.filter { auction in
+        return !keys.contains(auction.id)
       }
     }
   }
