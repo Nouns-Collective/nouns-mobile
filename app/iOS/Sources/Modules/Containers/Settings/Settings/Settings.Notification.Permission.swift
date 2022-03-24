@@ -70,6 +70,7 @@ struct NotificationPermission: View {
           icon: { Image.back },
           action: { dismiss() })
       })
+      .padding(.top, 20)
     }
     .background(Gradient.lemonDrop)
   }
