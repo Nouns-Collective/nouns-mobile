@@ -147,7 +147,7 @@ extension FirebaseMessaging: Messaging {
   
   public func unsubscribe(fromTopic topic: String) async throws {
     try await Firebase.Messaging.messaging().unsubscribe(fromTopic: topic)
-    logger.debug("🏁 Unsubscribed to topic: \(topic)")
+    logger.debug("🏁 Unsubscribed from topic: \(topic)")
   }
 }
 

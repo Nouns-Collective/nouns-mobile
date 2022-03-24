@@ -20,7 +20,7 @@ extension LiveAuctionCard {
     @Published private(set) var remainingTime: String
     @Published private(set) var winner = ""
     /// Indicate whether the auction time is over.
-    @Published private(set) var isWinnerAnounced = false
+    @Published private(set) var isWinnerAnnounced = false
     
     private let composer: NounComposer
     

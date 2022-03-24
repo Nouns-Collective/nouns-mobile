@@ -30,7 +30,7 @@ struct LiveAuctionCard: View {
       },
       content: {
         HStack {
-          if viewModel.isWinnerAnounced {
+          if viewModel.isWinnerAnnounced {
             // Displays the winner.
             CompoundLabel({
               ENSText(token: viewModel.winner)

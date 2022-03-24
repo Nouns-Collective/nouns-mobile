@@ -49,7 +49,7 @@ public struct UserDefaultsSettingsStore: SettingsStore {
   
   // MARK: - Notification
   
-  /// A persisted boolean indicates the nouns OClock noticiation permission.
+  /// A persisted boolean indicates the noun OClock notification permission.
   @AppStorage("isNounOClockNotificationEnabled") private var _isNounOClockNotificationEnabled = true {
     didSet { syncMessagingTopicsSubscription() }
   }

@@ -18,7 +18,7 @@ extension NounProfileInfo {
     @Published var shouldShowNounCreator: Bool = false
     
     /// Indicate whether the auction time is over.
-    @Published private(set) var isWinnerAnounced = false
+    @Published private(set) var isWinnerAnnounced = false
     
     /// A boolean to indicate whether the notification permission
     /// dialog is presented only on `notDetermined` state.
@@ -34,7 +34,7 @@ extension NounProfileInfo {
       
       title = R.string.explore.noun(auction.noun.id)
       isAuctionSettled = auction.settled
-      isWinnerAnounced = auction.hasEnded
+      isWinnerAnnounced = auction.hasEnded
       nounTraits = auction.noun.seed
       nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
       
