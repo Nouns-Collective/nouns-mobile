@@ -22,7 +22,7 @@ struct ProposalFeedView: View {
   private let localize = R.string.proposal.self
   
   private let gridLayout = [
-    GridItem(.flexible(), spacing: 20),
+    GridItem(.flexible(), spacing: 10),
   ]
   
   var body: some View {
@@ -30,6 +30,7 @@ struct ProposalFeedView: View {
       VPageGrid(
         viewModel.proposals,
         columns: gridLayout,
+        spacing: 10,
         isLoading: viewModel.isLoading,
         loadMoreAction: {
           await viewModel.loadProposals()

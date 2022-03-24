@@ -10,9 +10,11 @@ import UIComponents
 
 /// States various settings of the app.
 struct SettingsView: View {
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
+
   @StateObject var viewModel = ViewModel()
   
-  @Environment(\.dismiss) private var dismiss
   @State private var isShareWithFriendsPresented = false
   @State private var isAppIconCollectionPresented = false
   private let localize = R.string.settings.self
@@ -50,6 +52,7 @@ struct SettingsView: View {
           icon: { Image.back },
           action: { dismiss() })
       })
+      .padding(.top, 20)
     }
     .background(Gradient.lemonDrop)
     .ignoresSafeArea(.all, edges: .bottom)
@@ -61,6 +64,9 @@ struct SettingsView: View {
     .notificationPermissionDialog(
       isPresented: $viewModel.isNotificationPermissionDialogPresented
     )
+    .onAppear {
+      outlineTabBarVisibility.hide()
+    }
   }
 }
 
