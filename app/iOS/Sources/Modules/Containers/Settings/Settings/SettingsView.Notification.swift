@@ -11,6 +11,8 @@ import UIComponents
 extension SettingsView {
   
   struct NotificationSection: View {
+    @Environment(\.scenePhase) var scenePhase
+    
     @ObservedObject var viewModel: ViewModel
     
     private let localize = R.string.settings.self
@@ -22,7 +24,7 @@ extension SettingsView {
           icon: .speaker,
           isOn: Binding(
             get: { viewModel.isNounOClockNotificationEnabled },
-            set: { viewModel.isNounOClockNotificationEnabled = $0 }
+            set: { viewModel.setNounOClockNotification(isEnabled: $0) }
           )
         )
         
@@ -31,7 +33,7 @@ extension SettingsView {
           icon: .speaker,
           isOn: Binding(
             get: { viewModel.isNewNounNotificationEnabled },
-            set: { viewModel.isNewNounNotificationEnabled = $0 }
+            set: { viewModel.setNewNounNotification(isEnabled: $0) }
           )
         )
         
@@ -39,6 +41,18 @@ extension SettingsView {
           .font(.custom(.regular, relativeTo: .caption))
           .foregroundColor(Color.componentNounsBlack.opacity(0.6))
           .padding(.bottom, 10)
+      }
+      .task {
+        await viewModel.refreshNotificationStates()
+      }
+      // To update setting toggles everytime the app is reopened
+      // This is useful if the user is on the Settings screen (this current screen)
+      // and then goes to settings to turn on/off settings. Once they revisit the app
+      // and are back on this screen, the toggles will update to match the new settings state
+      .onChange(of: scenePhase == .active) { _ in
+        Task {
+          await viewModel.refreshNotificationStates()
+        }
       }
     }
   }

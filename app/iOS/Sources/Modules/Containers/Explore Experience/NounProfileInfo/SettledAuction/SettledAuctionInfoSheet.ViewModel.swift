@@ -19,9 +19,11 @@ extension SettledAuctionInfoSheet {
     @Published private(set) var showBirthdate: Bool
     @Published private(set) var governanceTitle: String
     @Published private(set) var domain: String?
-        
-    private let localize = R.string.nounProfile.self
+    
     private let auction: Auction
+    
+    /// Holds a reference to the localized text.
+    private let localize = R.string.nounProfile.self
     
     public var isNounderOwned: Bool {
       auction.noun.isNounderOwned

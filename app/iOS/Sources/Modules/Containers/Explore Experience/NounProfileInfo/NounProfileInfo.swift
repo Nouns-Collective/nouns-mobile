@@ -67,7 +67,7 @@ struct NounProfileInfo: View {
         PlainCell(length: 20) {
           toolbarContent
           
-          if viewModel.isAuctionSettled || viewModel.isWinnerAnounced {
+          if viewModel.isAuctionSettled || viewModel.isWinnerAnnounced {
             SettledAuctionInfoSheet(
               viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
@@ -102,6 +102,8 @@ struct NounProfileInfo: View {
     .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
       NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
     }
+    .notificationPermissionDialog(isPresented: $viewModel.isNotificationPermissionDialogPresented)
+    // TODO: What is for?
     .addBottomSheet()
   }
 }
