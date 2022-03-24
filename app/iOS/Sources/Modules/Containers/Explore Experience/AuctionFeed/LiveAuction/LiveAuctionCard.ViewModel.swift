@@ -36,7 +36,7 @@ extension LiveAuctionCard {
       
       title = R.string.explore.noun(auction.noun.id)
       nounTrait = auction.noun.seed
-      isWinnerAnounced = auction.hasEnded
+      isWinnerAnnounced = auction.hasEnded
       
       let backgroundIndex = auction.noun.seed.background
       nounBackground = composer.backgroundColors[backgroundIndex]

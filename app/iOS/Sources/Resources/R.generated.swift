@@ -10671,7 +10671,7 @@ struct R: Rswift.Validatable {
     struct settingsNotificationPermission {
       /// Value: Go to iOS Settings
       static let enableNotificationAction = Rswift.StringResource(key: "enable-notification.action", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Here's how:
+      /// Value: Here’s how:
       static let instructionTitle = Rswift.StringResource(key: "instruction.title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Push Notifications
       static let title = Rswift.StringResource(key: "title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -10697,7 +10697,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("enable-notification.action", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
       }
 
-      /// Value: Here's how:
+      /// Value: Here’s how:
       static func instructionTitle(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("instruction.title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")

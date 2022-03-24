@@ -32,11 +32,16 @@ struct AboutView: View {
         // Extra padding between the bottom of the last noun card and the top of the tab view
         .padding(.bottom, 40)
         .softNavigationTitle(localize.title(), rightAccessory: {
-          // App's Settings
-          Button(action: {
-            isSettingsPresented.toggle()
-          }, label: {
-            Image.settingsOutline
+          Link(isActive: $isSettingsPresented, content: {
+            // App's Settings
+            Button(action: {
+              isSettingsPresented.toggle()
+            }, label: {
+              Image.settingsOutline
+            })
+            
+          }, destination: {
+            SettingsView()
           })
         })
       }
@@ -45,15 +50,6 @@ struct AboutView: View {
       .bottomSheet(isPresented: $isAboutNounsPresented, content: {
         AboutNounsView(isPresented: $isAboutNounsPresented)
       })
-      .fullScreenCover(isPresented: $isSettingsPresented) {
-        SettingsView()
-      }
     }
-  }
-}
-
-struct AboutView_Previews: PreviewProvider {
-  static var previews: some View {
-    AboutView()
   }
 }
