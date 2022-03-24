@@ -18,12 +18,14 @@ struct NounCreator: View {
   /// Boolean value to determine if the trait picker grid is expanded
   @State private var isExpanded: Bool = false
   
+  private let confettiBundle = Bundle(path: Bundle.main.bundleURL.appendingPathComponent("nounfetti.bundle").path)
+  
   var body: some View {
     ZStack {
       VStack(spacing: 0) {
         ConditionalSpacer(viewModel.mode == .creating)
         
-        SlotMachine(viewModel: .init(initialSeed: viewModel.initialSeed))
+        SlotMachine(initialSeed: viewModel.initialSeed)
         
         ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
         
@@ -57,10 +59,9 @@ struct NounCreator: View {
     .addBottomSheet()
     .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
-      EmitterView()
+      NounfettiView()
         .zIndex(100)
-        .scaleEffect(viewModel.showConfetti ? 1 : 0, anchor: .top)
-        .opacity(viewModel.showConfetti && !viewModel.finishedConfetti ? 1 : 0)
+        .hidden(!viewModel.showConfetti || viewModel.finishedConfetti)
         .ignoresSafeArea()
         .allowsHitTesting(false)
     }

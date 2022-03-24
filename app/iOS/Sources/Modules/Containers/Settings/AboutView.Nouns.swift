@@ -38,10 +38,10 @@ struct AboutNounsView: View {
         
       // Content
       Text(localize.title())
-        .font(.custom(.bold, size: 36))
+        .font(.custom(.bold, relativeTo: .title2))
       
       Text(localize.nounsWtfDescription())
-        .font(.custom(.regular, size: 17))
+        .font(.custom(.regular, relativeTo: .subheadline))
         .lineSpacing(7)
       
       // Opens `nouns.wtf`

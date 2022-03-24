@@ -13,7 +13,7 @@ struct PlayOnboardingView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      ImageSequence(images: viewModel.onboardingImages())
+      ImageSlideshow(images: viewModel.onboardingImages())
       
       OnboardingView.Footer(
         viewModel: viewModel,
@@ -22,7 +22,7 @@ struct PlayOnboardingView: View {
         OutlineButton {
           HStack(spacing: 10) {
             Text("Get Started")
-              .font(Font.custom(.medium, size: 17))
+              .font(Font.custom(.medium, relativeTo: .subheadline))
             
             Image.PointRight.standard
               .resizable()

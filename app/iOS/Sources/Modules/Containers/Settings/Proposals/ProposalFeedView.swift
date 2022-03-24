@@ -13,6 +13,7 @@ import Services
 struct ProposalFeedView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
   
   @StateObject var viewModel: ViewModel
   
@@ -42,7 +43,6 @@ struct ProposalFeedView: View {
       .padding(.bottom, tabBarHeight)
       // Extra padding between the bottom of the last noun card and the top of the tab view
       .padding(.bottom, 20)
-      .ignoresSafeArea()
       .softNavigationTitle(localize.title(), leftAccessory: {
         SoftButton(
           icon: { Image.back },
@@ -57,10 +57,20 @@ struct ProposalFeedView: View {
             }
           })
       })
+      .padding(.top, 50)
     }
     .background(Gradient.lemonDrop)
+    .overlay(.componentUnripeLemon, edge: .top)
+    .ignoresSafeArea(edges: .top)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
-      GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
+      GovernanceInfoCard(
+        isPresented: $isGovernanceInfoPresented,
+        nounId: nil,
+        owner: nil
+      )
+    }
+    .onAppear {
+      outlineTabBarVisibility.hide()
     }
   }
 }

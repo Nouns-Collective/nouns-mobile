@@ -54,7 +54,7 @@ struct GovernanceInfoSection: View {
           
           Label(title: {
             Text(localize.treasury())
-              .font(.custom(.medium, size: 13))
+              .font(.custom(.medium, relativeTo: .caption))
             
           }, icon: {
             Image.nounLogo
@@ -69,7 +69,7 @@ struct GovernanceInfoSection: View {
           
           Label(title: {
             Text(viewModel.treasury)
-              .font(.custom(.bold, size: 24))
+              .font(.custom(.bold, relativeTo: .title3))
             
           }, icon: {
             Image.eth

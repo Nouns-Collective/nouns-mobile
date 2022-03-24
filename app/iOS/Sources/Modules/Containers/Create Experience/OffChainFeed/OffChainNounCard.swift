@@ -30,7 +30,7 @@ struct OffChainNounCard: View {
       },
       content: {
         Text(viewModel.nounBirthday)
-          .font(.custom(.regular, size: 15))
+          .font(.custom(.regular, relativeTo: .footnote))
           .padding(.top, 20)
       })
       .headerStyle(.large)

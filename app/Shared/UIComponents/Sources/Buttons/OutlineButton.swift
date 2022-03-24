@@ -155,17 +155,17 @@ public struct OutlineButton<Label>: View where Label: View {
   /// - Parameters:
   ///   - icon: The image for the button's icon (optional)
   ///   - text: The text for the button (optional)
-  ///   - largeAccessory: The accessory image of the button
+  ///   - largeAccessory: The accessory of the button
   ///   - action: The action function for when the button is tapped
-  public init(
+  public init<V>(
     text: String,
-    @ViewBuilder largeAccessory: () -> Image? = { nil },
+    @ViewBuilder largeAccessory: () -> V,
     color: Color = .black,
     action: @escaping () -> Void
-  ) where Label == LargeAccessoryButtonLabel {
+  ) where Label == LargeAccessoryButtonLabel<V>, V: View {
     self.label = {
       return LargeAccessoryButtonLabel(
-        accessoryImage: largeAccessory(),
+        accessory: largeAccessory(),
         text: text,
         color: color
       )

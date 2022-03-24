@@ -94,7 +94,7 @@ private struct SoftNavigationTitle<LeftAccessory, RightAccessory>: ViewModifier 
             HStack(alignment: .center) {
                 if let title = title {
                     Text(title)
-                        .font(.custom(.bold, size: 52))
+                        .font(.custom(.bold, relativeTo: .largeTitle))
                         .minimumScaleFactor(0.7)
                         .foregroundColor(Color.componentNounsBlack)
                 }
@@ -120,7 +120,7 @@ private struct SoftNavigationTitle<LeftAccessory, RightAccessory>: ViewModifier 
             
             if let title = title {
                 Text(title)
-                    .font(.custom(.bold, size: 52))
+                    .font(.custom(.bold, relativeTo: .largeTitle))
                     .minimumScaleFactor(0.7)
                     .foregroundColor(Color.componentNounsBlack)
             }

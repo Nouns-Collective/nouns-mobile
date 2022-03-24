@@ -38,16 +38,30 @@ private struct OutlineTabItemSelectionDidChange: PreferenceKey {
   }
 }
 
+public class OutlineTabBarVisibilityManager: ObservableObject {
+  @Published internal var isHidden: Bool = false
+  
+  public init() {}
+  
+  public func show() {
+    isHidden = false
+  }
+  
+  public func hide() {
+    isHidden = true
+  }
+}
+
 /// Accessing `TabBar` visibility state.
-private struct HideOutlineTabBar: EnvironmentKey {
-  static var defaultValue = false
+private struct OutlineTabBarVisibility: EnvironmentKey {
+  static var defaultValue: OutlineTabBarVisibilityManager = OutlineTabBarVisibilityManager()
 }
 
 extension EnvironmentValues {
   
-  fileprivate var hideOutlineTabBar: Bool {
-    get { self[HideOutlineTabBar.self] }
-    set { self[HideOutlineTabBar.self] = newValue }
+  public var outlineTabBarVisibility: OutlineTabBarVisibilityManager {
+    get { self[OutlineTabBarVisibility.self] }
+    set { self[OutlineTabBarVisibility.self] = newValue }
   }
 }
 
@@ -77,6 +91,8 @@ public struct OutlineTabBar<T: Hashable>: View {
   @Binding private var selectedItemTag: T
   private let items: [OutlineTabItem<T>]
   
+  @Environment(\.outlineTabBarVisibility) var tabBarVisibility: OutlineTabBarVisibilityManager
+  
   public init(
     selection: Binding<T>,
     _ items: [OutlineTabItem<T>]
@@ -97,6 +113,8 @@ public struct OutlineTabBar<T: Hashable>: View {
     .background(Color.white)
     .border(width: 2, edges: [.top, .bottom], color: .black)
     .clipShape(Rectangle())
+    .offset(x: 0, y: tabBarVisibility.isHidden ? 120 : 0)
+    .animation(.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.3), value: tabBarVisibility.isHidden)
   }
   
   private func tabItem(_ item: OutlineTabItem<T>) -> some View {
@@ -107,12 +125,5 @@ public struct OutlineTabBar<T: Hashable>: View {
       .onTapGesture {
         selectedItemTag = item.tag
       }
-  }
-}
-
-extension View {
-  
-  public func hideOutlineTabBar(_ state: Bool) -> some View {
-    environment(\.hideOutlineTabBar, state)
   }
 }

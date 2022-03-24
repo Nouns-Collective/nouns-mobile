@@ -42,11 +42,18 @@ struct SpacesInfoSection: View {
     .onChange(of: selectedURL) { newSelectedURL in
       isSafariPresented = (newSelectedURL != nil)
     }
-    .fullScreenCover(isPresented: $isSafariPresented) {
-      if let selectedURL = selectedURL {
-        Safari(url: selectedURL)
+    .fullScreenCover(
+      isPresented: $isSafariPresented,
+      onDismiss: {
+        selectedURL = nil
+        isSafariPresented = false
+      },
+      content: {
+        if let selectedURL = selectedURL {
+          Safari(url: selectedURL)
+        }
       }
-    }
+    )
   }
 }
 

@@ -58,7 +58,7 @@ public struct ActionSheetLargeTitleView: View {
       
       HStack(alignment: .center) {
         Text(title)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
           .fixedSize(horizontal: false, vertical: true)
           .edit(isActive: isEditing, text: $text, placeholder: placeholder)
         
@@ -79,7 +79,7 @@ public struct ActionSheetSmallTitleView: View {
   public var body: some View {
     HStack(alignment: .center) {
       Text(title)
-        .font(.custom(.bold, size: 36))
+        .font(.custom(.bold, relativeTo: .title2))
         .lineLimit(2)
       
       Spacer()

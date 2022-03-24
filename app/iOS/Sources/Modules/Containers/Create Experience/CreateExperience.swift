@@ -11,18 +11,10 @@ import Services
 
 /// Displays the Create Experience route.
 struct CreateExperience: View {
-  
-  @State private var isCreatorPresented = false
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
   
-  @State private var selectedNoun: Noun?
-  
-  private let initialSeed: Seed
-  
-  init() {
-    self.initialSeed = AppCore.shared.nounComposer.randomSeed()
-  }
-  
+  @StateObject private var viewModel = ViewModel()
+
   var body: some View {
     NavigationView {
       VStack(spacing: 20) {
@@ -41,33 +33,38 @@ struct CreateExperience: View {
         ///
         /// Related task: https://github.com/secretmissionsoftware/nouns-ios/issues/342
         OffChainNounsFeed(
-          selection: $selectedNoun,
+          selection: $viewModel.selectedNoun,
           isScrollable: true,
           navigationTitle: R.string.create.title(),
           navigationRightBarItem: {
             SoftButton(
               text: "New",
               largeAccessory: { Image.new },
-              action: { isCreatorPresented.toggle() })
+              action: { viewModel.isCreatorPresented.toggle() })
           }, emptyPlaceholder: {
             EmptyNounsView(
-              initialSeed: initialSeed,
-              isCreatorPresented: $isCreatorPresented
+              initialSeed: viewModel.initialSeed,
+              isCreatorPresented: $viewModel.isCreatorPresented
             ) {
-              isCreatorPresented.toggle()
+              viewModel.isCreatorPresented.toggle()
             }
           })
       }
       .background(Gradient.freshMint)
+      .overlay(.componentAqua, edge: .top)
       .ignoresSafeArea(edges: .top)
       // Presents more details about the settled auction.
-      .fullScreenCover(item: $selectedNoun, onDismiss: {
-        selectedNoun = nil
+      .fullScreenCover(item: $viewModel.selectedNoun, onDismiss: {
+        viewModel.selectedNoun = nil
       }, content: {
         OffChainNounProfile(viewModel: .init(noun: $0))
       })
-      .fullScreenCover(isPresented: $isCreatorPresented) {
-        NounCreator(viewModel: .init(initialSeed: initialSeed))
+      .fullScreenCover(isPresented: $viewModel.isCreatorPresented) {
+        NounCreator(viewModel: .init(initialSeed: viewModel.initialSeed))
+      }
+      .onDisappear {
+        // Randomize noun everytime tab is revisited
+        viewModel.randomizeNoun()
       }
     }
   }

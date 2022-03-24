@@ -17,7 +17,7 @@ struct ProposalPlaceholderRow: View {
       VStack(alignment: .leading, spacing: 20) {
         HStack {
           Text("Proposal 00")
-            .font(.custom(.regular, size: 13))
+            .font(.custom(.regular, relativeTo: .caption))
             .redactable(style: .skeleton)
           
           Spacer()
@@ -28,7 +28,7 @@ struct ProposalPlaceholderRow: View {
         }
         
         Text("Proposal Placeholder Title")
-          .font(.custom(.medium, size: 17))
+          .font(.custom(.medium, relativeTo: .subheadline))
           .redactable(style: .skeleton)
         
       }.padding()
