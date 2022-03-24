@@ -55,7 +55,7 @@ struct OffChainNounProfile: View {
       .padding(.bottom, 40)
       .padding(.horizontal, 20)
     }
-    .background(Gradient(.allCases[viewModel.noun.seed.background]))
+    .background(Gradient(NounCreator.backgroundColors[viewModel.noun.seed.background]))
     .ignoresSafeArea(.keyboard, edges: .bottom)
     .addBottomSheet()
     // Option to delete the current build progress.
