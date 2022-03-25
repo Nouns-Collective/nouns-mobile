@@ -145,4 +145,19 @@ extension Image {
   public static let aboutFill = Image("about-fill", bundle: .module)
   
   public static let aboutOutline = Image("about-outline", bundle: .module)
+  
+  public static let enabled = Image("enabled", bundle: .module)
+  
+  public static let notificationSettings = Image("notification-settings", bundle: .module)
+}
+
+struct Symbol_Preview: PreviewProvider {
+  static var previews: some View {
+    VStack {
+      HStack {
+        Image.enabled
+        Image.notificationSettings
+      }
+    }
+  }
 }

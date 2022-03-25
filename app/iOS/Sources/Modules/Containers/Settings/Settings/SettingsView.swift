@@ -10,50 +10,62 @@ import UIComponents
 
 /// States various settings of the app.
 struct SettingsView: View {
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
+
   @StateObject var viewModel = ViewModel()
   
-  @Environment(\.dismiss) private var dismiss
   @State private var isShareWithFriendsPresented = false
   @State private var isAppIconCollectionPresented = false
   private let localize = R.string.settings.self
   
   var body: some View {
-    NavigationView {
-      ScrollView(.vertical, showsIndicators: false) {
-        VStack {
-          NotificationSection(viewModel: viewModel)
-          
-          // App Icon
-          LinkButton(
-            isActive: $isAppIconCollectionPresented,
-            leading: localize.appIconTitle(),
-            trailing: localize.appIconDefault(),
-            icon: .nounLogo,
-            destination: {
-              AppIconStore()
-            })
-          
-          // Share with friends
-          DefaultButton(
-            leading: localize.shareFriends(),
-            icon: .share,
-            action: { isShareWithFriendsPresented.toggle() })
-        }
-        .padding(.horizontal, 20)
-        .softNavigationTitle(localize.title(), rightAccessory: {
-          // Dismisses the current views
-          SoftButton(
-            icon: { Image.xmark },
-            action: { dismiss() })
-        })
+    ScrollView(.vertical, showsIndicators: false) {
+      VStack {
+        NotificationSection(viewModel: viewModel)
+        
+        // App Icon
+        LinkButton(
+          isActive: $isAppIconCollectionPresented,
+          leading: localize.appIconTitle(),
+          trailing: localize.appIconDefault(),
+          icon: .nounLogo,
+          destination: {
+            AppIconStore()
+          })
+        
+        // Share with friends
+        DefaultButton(
+          leading: localize.shareFriends(),
+          icon: .share,
+          action: { isShareWithFriendsPresented.toggle() })
+        
+        // A tutorial view is presented to guide the user on how to enable
+        // the notification from the settings app if denied.
+        Link(isActive: $viewModel.isNotificationPermissionTutorialPresented,
+             content: { EmptyView() },
+             destination: { NotificationPermission() })
       }
-      .background(Gradient.lemonDrop)
-      .ignoresSafeArea()
-      .sheet(isPresented: $isShareWithFriendsPresented) {
-        if let url = URL(string: "https://nouns.wtf") {
-          ShareSheet(activityItems: [url])
-        }
+      .padding(.horizontal, 20)
+      .softNavigationTitle(localize.title(), leftAccessory: {
+        SoftButton(
+          icon: { Image.back },
+          action: { dismiss() })
+      })
+      .padding(.top, 20)
+    }
+    .background(Gradient.lemonDrop)
+    .ignoresSafeArea(.all, edges: .bottom)
+    .sheet(isPresented: $isShareWithFriendsPresented) {
+      if let url = URL(string: "https://nouns.wtf") {
+        ShareSheet(activityItems: [url])
       }
+    }
+    .notificationPermissionDialog(
+      isPresented: $viewModel.isNotificationPermissionDialogPresented
+    )
+    .onAppear {
+      outlineTabBarVisibility.hide()
     }
   }
 }

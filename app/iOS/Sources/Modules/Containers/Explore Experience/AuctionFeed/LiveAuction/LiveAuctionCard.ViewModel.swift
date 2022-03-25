@@ -20,10 +20,12 @@ extension LiveAuctionCard {
     @Published private(set) var remainingTime: String
     @Published private(set) var winner = ""
     /// Indicate whether the auction time is over.
-    @Published private(set) var isWinnerAnounced = false
+    @Published private(set) var isWinnerAnnounced = false
     
-    private let localize = R.string.liveAuction.self
     private let composer: NounComposer
+    
+    /// Holds a reference to the localized text.
+    private let localize = R.string.liveAuction.self
     
     init(
       auction: Auction,
@@ -34,7 +36,7 @@ extension LiveAuctionCard {
       
       title = R.string.explore.noun(auction.noun.id)
       nounTrait = auction.noun.seed
-      isWinnerAnounced = auction.hasEnded
+      isWinnerAnnounced = auction.hasEnded
       
       let backgroundIndex = auction.noun.seed.background
       nounBackground = composer.backgroundColors[backgroundIndex]

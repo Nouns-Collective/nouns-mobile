@@ -124,7 +124,8 @@ extension Proposal {
       status: .queued,
       votes: [],
       quorumVotes: 0,
-      executionETA: nil
+      executionETA: nil,
+      createdTimestamp: nil
     )
   }()
 }

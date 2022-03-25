@@ -14,6 +14,8 @@ struct AboutView: View {
 
   @State private var isAboutNounsPresented = false
   @State private var isSettingsPresented = false
+  
+  /// Holds a reference to the localized text.
   private let localize = R.string.about.self
   
   var body: some View {
@@ -31,11 +33,16 @@ struct AboutView: View {
         // Extra padding between the bottom of the last noun card and the top of the tab view
         .padding(.bottom, 40)
         .softNavigationTitle(localize.title(), rightAccessory: {
-          // App's Settings
-          Button(action: {
-            isSettingsPresented.toggle()
-          }, label: {
-            Image.settingsOutline
+          Link(isActive: $isSettingsPresented, content: {
+            // App's Settings
+            Button(action: {
+              isSettingsPresented.toggle()
+            }, label: {
+              Image.settingsOutline
+            })
+            
+          }, destination: {
+            SettingsView()
           })
         })
       }
@@ -45,18 +52,9 @@ struct AboutView: View {
       .bottomSheet(isPresented: $isAboutNounsPresented, content: {
         AboutNounsView(isPresented: $isAboutNounsPresented)
       })
-      .fullScreenCover(isPresented: $isSettingsPresented) {
-        SettingsView()
-      }
       .onAppear {
         outlineTabBarVisibility.show()
       }
     }
-  }
-}
-
-struct AboutView_Previews: PreviewProvider {
-  static var previews: some View {
-    AboutView()
   }
 }

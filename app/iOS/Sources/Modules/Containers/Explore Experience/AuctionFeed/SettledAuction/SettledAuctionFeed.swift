@@ -61,16 +61,14 @@ extension ExploreExperience {
             message: viewModel.auctions.isEmpty ? R.string.explore.settledErrorEmpty() : R.string.explore.settledErrorLoadMore(),
             buttonText: R.string.shared.tryAgain(),
             retryAction: {
-              Task {
-                await viewModel.loadAuctions()
-              }
+              viewModel.loadAuctions()
             }
           )
           .padding(.bottom, 20)
         }
       }
-      .task {
-        await viewModel.loadAuctions()
+      .onAppear {
+        viewModel.loadAuctions()
       }
     }
   }

@@ -9961,7 +9961,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 27 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 29 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -10469,6 +10469,44 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("block.unavailable", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.createCoachmark` struct is generated, and contains static references to 2 localization keys.
+    struct createCoachmark {
+      /// Value: Shake to shuffle
+      static let shake = Rswift.StringResource(key: "shake", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Swipe to pick %@
+      static let swipe = Rswift.StringResource(key: "swipe", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Shake to shuffle
+      static func shake(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "shake"
+        }
+
+        return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+      }
+
+      /// Value: Swipe to pick %@
+      static func swipe(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "swipe"
+        }
+
+        let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
       }
 
       fileprivate init() {}
@@ -11799,6 +11837,117 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("see.all", tableName: "Proposal", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.settingsNotificationPermission` struct is generated, and contains static references to 7 localization keys.
+    struct settingsNotificationPermission {
+      /// Value: Go to iOS Settings
+      static let enableNotificationAction = Rswift.StringResource(key: "enable-notification.action", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Here’s how:
+      static let instructionTitle = Rswift.StringResource(key: "instruction.title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Push Notifications
+      static let title = Rswift.StringResource(key: "title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Tap “Notifications”
+      static let instructionStep1 = Rswift.StringResource(key: "instruction.step.1", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: To get notifications about nouns, you’ll need to turn them on in your iOS settings.
+      static let motivationContent = Rswift.StringResource(key: "motivation.content", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Turn on notifications?
+      static let motivationTitle = Rswift.StringResource(key: "motivation.title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Turn “Allow Notifications” on
+      static let instructionStep2 = Rswift.StringResource(key: "instruction.step.2", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Go to iOS Settings
+      static func enableNotificationAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("enable-notification.action", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "enable-notification.action"
+        }
+
+        return NSLocalizedString("enable-notification.action", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Here’s how:
+      static func instructionTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("instruction.title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "instruction.title"
+        }
+
+        return NSLocalizedString("instruction.title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Push Notifications
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Tap “Notifications”
+      static func instructionStep1(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("instruction.step.1", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "instruction.step.1"
+        }
+
+        return NSLocalizedString("instruction.step.1", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: To get notifications about nouns, you’ll need to turn them on in your iOS settings.
+      static func motivationContent(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("motivation.content", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "motivation.content"
+        }
+
+        return NSLocalizedString("motivation.content", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Turn on notifications?
+      static func motivationTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("motivation.title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "motivation.title"
+        }
+
+        return NSLocalizedString("motivation.title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Turn “Allow Notifications” on
+      static func instructionStep2(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("instruction.step.2", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "instruction.step.2"
+        }
+
+        return NSLocalizedString("instruction.step.2", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

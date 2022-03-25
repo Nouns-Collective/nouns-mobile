@@ -12,6 +12,8 @@ struct AboutNounsView: View {
   @Binding var isPresented: Bool
   
   @State private var isSafariPresented = false
+  
+  /// Holds a reference to the localized text.
   private let localize = R.string.aboutNouns.self
   
   var body: some View {

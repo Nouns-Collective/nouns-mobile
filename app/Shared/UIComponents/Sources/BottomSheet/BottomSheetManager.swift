@@ -99,9 +99,9 @@ public class BottomSheetManager: ObservableObject {
   /// Close the Bottom Sheet and run the onDismiss function if it has been previously specified
   public func closeBottomSheet() {
     withAnimation(defaultAnimation) {
-      self.isPresented = false
+      isPresented = false
     }
-    self.onDismiss?()
+    onDismiss?()
   }
 }
 
@@ -115,7 +115,7 @@ public extension View {
   /// - Parameters:
   ///   - style: The style configuration for the Bottom Sheet.
   func addBottomSheet() -> some View {
-      self.modifier(
+      modifier(
         BottomSheet()
       )
     }
