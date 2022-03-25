@@ -72,9 +72,7 @@ extension NounCreator {
               GradientPickerItem(colors: gradient.colors)
                 .selected(viewModel.isSelected(index, traitType: .background))
                 .onTapGesture {
-                  withAnimation(.easeInOut) {
-                    viewModel.selectTrait(index, ofType: .background)
-                  }
+                  viewModel.selectTrait(index, ofType: .background)
                 }
                 .id("\(TraitType.background.rawValue)-\(index)")
                 // This applies a padding to only the first column (rowSpec.count)

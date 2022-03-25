@@ -68,7 +68,7 @@ extension NounCreator {
     
     /// Boolean value to determine if the trait picker grid is expanded
     @Published public var isExpanded: Bool = false
-
+    
     /// Indicates whether or not to show the swiping coachmark
     @Published private(set) var showSwipingCoachmark: Bool = false
     
@@ -330,7 +330,8 @@ extension NounCreator {
           }
         }
       }
-
+    }
+    
     /// Calculates the offset needed to display the currently selected
     /// background in the background picker
     func backgroundOffset(width: CGFloat, offset: CGFloat) -> CGFloat {

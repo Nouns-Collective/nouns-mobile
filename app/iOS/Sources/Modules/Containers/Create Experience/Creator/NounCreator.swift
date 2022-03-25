@@ -27,9 +27,9 @@ struct NounCreator: View {
         
         ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
         
-        CreateCoachmarks(viewModel: viewModel, isExpanded: isExpanded)
+        CreateCoachmarks(viewModel: viewModel, isExpanded: viewModel.isExpanded)
         
-        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+        ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
         
         if viewModel.mode != .done {
           TraitTypePicker(
