@@ -49,7 +49,7 @@ extension NounCreator {
       ) {
         VStack(spacing: 0) {
           VStack(spacing: 0) {
-            // Control to expand or fold `PickerTrait`.
+            // Control to expand or fold `TraitTypeGrid`.
             Image.chevronDown
               .rotationEffect(.degrees(viewModel.isExpanded ? 0 : 180))
               .onTapGesture {
