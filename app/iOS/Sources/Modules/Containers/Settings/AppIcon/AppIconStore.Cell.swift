@@ -40,6 +40,7 @@ extension AppIconStore {
             .font(.custom(.medium, relativeTo: .caption))
             .foregroundColor(textColor)
             .padding(.horizontal, 8)
+            .multilineTextAlignment(.center)
         }
       }
       .frame(maxWidth: .infinity)

@@ -178,62 +178,114 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 273 images.
+  /// This `R.image` struct is generated, and contains static references to 299 images.
   struct image {
     /// Image `AppIcon_Preview`.
     static let appIcon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon_Preview")
+    /// Image `BonsaiNeon_Preview`.
+    static let bonsaiNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "BonsaiNeon_Preview")
     /// Image `Bonsai_Preview`.
     static let bonsai_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Bonsai_Preview")
+    /// Image `CannedHamNeon_Preview`.
+    static let cannedHamNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "CannedHamNeon_Preview")
     /// Image `CannedHam_Preview`.
     static let cannedHam_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "CannedHam_Preview")
+    /// Image `ConeNeon_Preview`.
+    static let coneNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "ConeNeon_Preview")
     /// Image `Cone_Preview`.
     static let cone_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Cone_Preview")
+    /// Image `CowNeon_Preview`.
+    static let cowNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "CowNeon_Preview")
     /// Image `Cow_Preview`.
     static let cow_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Cow_Preview")
+    /// Image `CrabNeon_Preview`.
+    static let crabNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "CrabNeon_Preview")
     /// Image `Crab_Preview`.
     static let crab_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Crab_Preview")
+    /// Image `DNANeon_Preview`.
+    static let dnaNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "DNANeon_Preview")
     /// Image `DNA_Preview`.
     static let dna_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "DNA_Preview")
+    /// Image `DictionaryNeon_Preview`.
+    static let dictionaryNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "DictionaryNeon_Preview")
     /// Image `Dictionary_Preview`.
     static let dictionary_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Dictionary_Preview")
+    /// Image `EarthNeon_Preview`.
+    static let earthNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "EarthNeon_Preview")
     /// Image `Earth_Preview`.
     static let earth_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Earth_Preview")
+    /// Image `FanNeon_Preview`.
+    static let fanNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "FanNeon_Preview")
     /// Image `Fan_Preview`.
     static let fan_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Fan_Preview")
+    /// Image `FoxNeon_Preview`.
+    static let foxNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "FoxNeon_Preview")
     /// Image `Fox_Preview`.
     static let fox_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Fox_Preview")
+    /// Image `GnomeNeon_Preview`.
+    static let gnomeNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "GnomeNeon_Preview")
     /// Image `Gnome_Preview`.
     static let gnome_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Gnome_Preview")
+    /// Image `HighHeelNeon_Preview`.
+    static let highHeelNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "HighHeelNeon_Preview")
     /// Image `HighHeel_Preview`.
     static let highHeel_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "HighHeel_Preview")
+    /// Image `KetchupNeon_Preview`.
+    static let ketchupNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "KetchupNeon_Preview")
     /// Image `Ketchup_Preview`.
     static let ketchup_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Ketchup_Preview")
+    /// Image `LaptopNeon_Preview`.
+    static let laptopNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "LaptopNeon_Preview")
     /// Image `Laptop_Preview`.
     static let laptop_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Laptop_Preview")
+    /// Image `MilkNeon_Preview`.
+    static let milkNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "MilkNeon_Preview")
     /// Image `Milk_Preview`.
     static let milk_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Milk_Preview")
+    /// Image `NoodlesNeon_Preview`.
+    static let noodlesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "NoodlesNeon_Preview")
     /// Image `Noodles_Preview`.
     static let noodles_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noodles_Preview")
     /// Image `NounsWatermark`.
     static let nounsWatermark = Rswift.ImageResource(bundle: R.hostingBundle, name: "NounsWatermark")
+    /// Image `RobotNeon_Preview`.
+    static let robotNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "RobotNeon_Preview")
     /// Image `Robot_Preview`.
     static let robot_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Robot_Preview")
+    /// Image `SharkNeon_Preview`.
+    static let sharkNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "SharkNeon_Preview")
     /// Image `Shark_Preview`.
     static let shark_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Shark_Preview")
+    /// Image `StarSparklesNeon_Preview`.
+    static let starSparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarSparklesNeon_Preview")
     /// Image `Starsparkles_Preview`.
     static let starsparkles_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Starsparkles_Preview")
+    /// Image `TacoNeon_Preview`.
+    static let tacoNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "TacoNeon_Preview")
     /// Image `Taco_Preview`.
     static let taco_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Taco_Preview")
+    /// Image `UFONeon_Preview`.
+    static let ufoNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "UFONeon_Preview")
     /// Image `UFO_Preview`.
     static let ufo_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "UFO_Preview")
+    /// Image `VoidNeon_Preview`.
+    static let voidNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "VoidNeon_Preview")
     /// Image `Void_Preview`.
     static let void_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Void_Preview")
+    /// Image `VolcanoNeon_Preview`.
+    static let volcanoNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "VolcanoNeon_Preview")
     /// Image `Volcano_Preview`.
     static let volcano_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Volcano_Preview")
+    /// Image `WaveNeon_Preview`.
+    static let waveNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "WaveNeon_Preview")
     /// Image `Wave_Preview`.
     static let wave_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Wave_Preview")
+    /// Image `WeedNeon_Preview`.
+    static let weedNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "WeedNeon_Preview")
     /// Image `Weed_Preview`.
     static let weed_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Weed_Preview")
+    /// Image `WizardHatNeon_Preview`.
+    static let wizardHatNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "WizardHatNeon_Preview")
     /// Image `WizardHat_Preview`.
     static let wizardHat_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "WizardHat_Preview")
     /// Image `bell-noun`.
@@ -735,9 +787,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "BonsaiNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func bonsaiNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.bonsaiNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Bonsai_Preview", bundle: ..., traitCollection: ...)`
     static func bonsai_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.bonsai_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "CannedHamNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func cannedHamNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.cannedHamNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -749,9 +815,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "ConeNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func coneNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.coneNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Cone_Preview", bundle: ..., traitCollection: ...)`
     static func cone_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.cone_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "CowNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func cowNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.cowNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -763,9 +843,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "CrabNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func crabNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.crabNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Crab_Preview", bundle: ..., traitCollection: ...)`
     static func crab_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.crab_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "DNANeon_Preview", bundle: ..., traitCollection: ...)`
+    static func dnaNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.dnaNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -777,9 +871,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "DictionaryNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func dictionaryNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.dictionaryNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Dictionary_Preview", bundle: ..., traitCollection: ...)`
     static func dictionary_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.dictionary_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "EarthNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func earthNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.earthNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -791,9 +899,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "FanNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func fanNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.fanNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Fan_Preview", bundle: ..., traitCollection: ...)`
     static func fan_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.fan_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "FoxNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func foxNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.foxNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -805,9 +927,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "GnomeNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func gnomeNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.gnomeNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Gnome_Preview", bundle: ..., traitCollection: ...)`
     static func gnome_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.gnome_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "HighHeelNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func highHeelNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.highHeelNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -819,9 +955,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "KetchupNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func ketchupNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ketchupNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Ketchup_Preview", bundle: ..., traitCollection: ...)`
     static func ketchup_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.ketchup_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "LaptopNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func laptopNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.laptopNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -833,9 +983,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "MilkNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func milkNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.milkNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Milk_Preview", bundle: ..., traitCollection: ...)`
     static func milk_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.milk_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "NoodlesNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func noodlesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.noodlesNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -854,9 +1018,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "RobotNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func robotNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.robotNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Robot_Preview", bundle: ..., traitCollection: ...)`
     static func robot_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.robot_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "SharkNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func sharkNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.sharkNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -868,9 +1046,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "StarSparklesNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func starSparklesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.starSparklesNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Starsparkles_Preview", bundle: ..., traitCollection: ...)`
     static func starsparkles_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.starsparkles_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "TacoNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func tacoNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.tacoNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -882,9 +1074,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "UFONeon_Preview", bundle: ..., traitCollection: ...)`
+    static func ufoNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ufoNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "UFO_Preview", bundle: ..., traitCollection: ...)`
     static func ufo_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.ufo_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "VoidNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func voidNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.voidNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -896,9 +1102,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "VolcanoNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func volcanoNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.volcanoNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Volcano_Preview", bundle: ..., traitCollection: ...)`
     static func volcano_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.volcano_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "WaveNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func waveNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.waveNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -910,9 +1130,23 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "WeedNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func weedNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.weedNeon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "Weed_Preview", bundle: ..., traitCollection: ...)`
     static func weed_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.weed_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "WizardHatNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func wizardHatNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.wizardHatNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 

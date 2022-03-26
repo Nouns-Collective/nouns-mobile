@@ -15,12 +15,12 @@ struct AppIconStore: View {
   
   struct AppIcon: Hashable {
     let previewImage: String
-    let appIconAsset: String
+    let appIconAsset: String?
     let name: String
   }
   
   let icons: [AppIcon] = [
-    AppIcon(previewImage: "AppIcon_Preview", appIconAsset: "AppIcon", name: "Default"),
+    AppIcon(previewImage: "AppIcon_Preview", appIconAsset: nil, name: "Default"),
     AppIcon(previewImage: "Bonsai_Preview", appIconAsset: "Bonsai", name: "Bonsai"),
     AppIcon(previewImage: "CannedHam_Preview", appIconAsset: "CannedHam", name: "Canned Ham"),
     AppIcon(previewImage: "Cone_Preview", appIconAsset: "Cone", name: "Cone"),
@@ -45,7 +45,32 @@ struct AppIconStore: View {
     AppIcon(previewImage: "Void_Preview", appIconAsset: "Void", name: "Void"),
     AppIcon(previewImage: "Volcano_Preview", appIconAsset: "Volcano", name: "Volcano"),
     AppIcon(previewImage: "Wave_Preview", appIconAsset: "Wave", name: "Wave"),
-    AppIcon(previewImage: "Weed_Preview", appIconAsset: "Weed", name: "Weed")
+    AppIcon(previewImage: "Weed_Preview", appIconAsset: "Weed", name: "Weed"),
+    AppIcon(previewImage: "BonsaiNeon_Preview", appIconAsset: "BonsaiNeon", name: "Bonsai (Neon)"),
+    AppIcon(previewImage: "CannedHamNeon_Preview", appIconAsset: "CannedHamNeon", name: "Canned Ham (Neon)"),
+    AppIcon(previewImage: "ConeNeon_Preview", appIconAsset: "ConeNeon", name: "Cone (Neon)"),
+    AppIcon(previewImage: "CowNeon_Preview", appIconAsset: "CowNeon", name: "Cow (Neon)"),
+    AppIcon(previewImage: "CrabNeon_Preview", appIconAsset: "CrabNeon", name: "Crab (Neon)"),
+    AppIcon(previewImage: "DictionaryNeon_Preview", appIconAsset: "DictionaryNeon", name: "Dictionary (Neon)"),
+    AppIcon(previewImage: "DNANeon_Preview", appIconAsset: "DNANeon", name: "DNA (Neon)"),
+    AppIcon(previewImage: "EarthNeon_Preview", appIconAsset: "EarthNeon", name: "Earth (Neon)"),
+    AppIcon(previewImage: "FanNeon_Preview", appIconAsset: "FanNeon", name: "Fan (Neon)"),
+    AppIcon(previewImage: "FoxNeon_Preview", appIconAsset: "FoxNeon", name: "Fox (Neon)"),
+    AppIcon(previewImage: "GnomeNeon_Preview", appIconAsset: "GnomeNeon", name: "Gnome (Neon)"),
+    AppIcon(previewImage: "HighHeelNeon_Preview", appIconAsset: "HighHeelNeon", name: "HighHeel (Neon)"),
+    AppIcon(previewImage: "KetchupNeon_Preview", appIconAsset: "KetchupNeon", name: "Ketchup (Neon)"),
+    AppIcon(previewImage: "LaptopNeon_Preview", appIconAsset: "LaptopNeon", name: "Laptop (Neon)"),
+    AppIcon(previewImage: "MilkNeon_Preview", appIconAsset: "MilkNeon", name: "Milk (Neon)"),
+    AppIcon(previewImage: "NoodlesNeon_Preview", appIconAsset: "NoodlesNeon", name: "Noodles (Neon)"),
+    AppIcon(previewImage: "RobotNeon_Preview", appIconAsset: "RobotNeon", name: "Robot (Neon)"),
+    AppIcon(previewImage: "SharkNeon_Preview", appIconAsset: "SharkNeon", name: "Shark (Neon)"),
+    AppIcon(previewImage: "StarSparklesNeon_Preview", appIconAsset: "StarsparklesNeon", name: "Starsparkles (Neon)"),
+    AppIcon(previewImage: "TacoNeon_Preview", appIconAsset: "TacoNeon", name: "Taco (Neon)"),
+    AppIcon(previewImage: "UFONeon_Preview", appIconAsset: "UFONeon", name: "UFO (Neon)"),
+    AppIcon(previewImage: "VoidNeon_Preview", appIconAsset: "VoidNeon", name: "Void (Neon)"),
+    AppIcon(previewImage: "VolcanoNeon_Preview", appIconAsset: "VolcanoNeon", name: "Volcano (Neon)"),
+    AppIcon(previewImage: "WaveNeon_Preview", appIconAsset: "WaveNeon", name: "Wave (Neon)"),
+    AppIcon(previewImage: "WeedNeon_Preview", appIconAsset: "WeedNeon", name: "Weed (Neon)")
   ]
   
   private let columnsSpec = [
