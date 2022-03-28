@@ -7,21 +7,22 @@
 
 import SwiftUI
 import UIComponents
+import os
 
 struct AppIconStore: View {
   @State private var selectedIcon: String? = UIApplication.shared.alternateIconName
   @Environment(\.dismiss) private var dismiss
   private let localize = R.string.appIcon.self
   
+  struct AppIconLibrary: Hashable, Decodable {
+    let regular: [AppIcon]
+    let neon: [AppIcon]
+  }
+  
   struct AppIcon: Hashable, Decodable {
     let preview: String
     let asset: String?
     let name: String
-  }
-  
-  struct AppIconLibrary: Hashable, Decodable {
-    let regular: [AppIcon]
-    let neon: [AppIcon]
   }
   
   @State private var icons: [AppIcon] = []
@@ -31,6 +32,24 @@ struct AppIconStore: View {
     GridItem(.flexible(), spacing: 16),
     GridItem(.flexible(), spacing: 16),
   ]
+  
+  /// An object for writing interpolated string messages to the unified logging system.
+  private let logger = Logger(
+    subsystem: "wtf.nouns.ios",
+    category: "Nouns App Icon Store"
+  )
+  
+  private func loadAppIcons() {
+    guard let url = Bundle.main.url(forResource: "AppIcons", withExtension: "plist") else { return }
+    
+    do {
+      let data = try Data(contentsOf: url)
+      let result = try PropertyListDecoder().decode(AppIconLibrary.self, from: data)
+      self.icons = result.regular + result.neon
+    } catch {
+      logger.error("Failed to load app icon library from plist file")
+    }
+  }
   
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
@@ -54,13 +73,7 @@ struct AppIconStore: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       // Do any additional setup after loading the view.
-      let url = Bundle.main.url(forResource: "AppIcons", withExtension: "plist")!
-      do {
-        let data = try Data(contentsOf: url)
-        let result = try PropertyListDecoder().decode(AppIconLibrary.self, from: data)
-        print("Result: \(result)")
-        self.icons = result.regular + result.neon
-      } catch { print("Error: \(error)") }
+      
     }
   }
 }
