@@ -12,7 +12,7 @@ extension AppIconStore {
   
   struct Cell: View {
     let icon: AppIcon
-    @Binding var selection: AppIcon
+    @Binding var selection: String?
     
     @Environment(\.nounComposer) private var nounComposer
     
@@ -25,12 +25,12 @@ extension AppIconStore {
     }
     
     private var isSelected: Bool {
-      selection == icon
+      selection == icon.asset
     }
     
     var body: some View {
       VStack(spacing: 10) {
-        Image(icon.previewImage)
+        Image(icon.preview)
           .foregroundColor(.gray)
           .cornerRadius(15.6)
           .padding(.horizontal, 20)
@@ -47,11 +47,11 @@ extension AppIconStore {
       .padding(.vertical, 20)
       .border(.black, lineWidth: 2, fillColor: backgroundFillColor, cornerRadius: 8)
       .onTapGesture {
-        UIApplication.shared.setAlternateIconName(icon.appIconAsset) { error in
-          guard error == nil else { return }
+        UIApplication.shared.setAlternateIconName(icon.asset) { error in
+          print("Error: \(error)")
           
           withAnimation {
-            selection = icon
+            selection = icon.asset
           }
         }
       }

@@ -156,12 +156,20 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.file` struct is generated, and contains static references to 2 files.
+  /// This `R.file` struct is generated, and contains static references to 3 files.
   struct file {
+    /// Resource file `AppIcons.plist`.
+    static let appIconsPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "AppIcons", pathExtension: "plist")
     /// Resource file `GoogleService-Info.plist`.
     static let googleServiceInfoPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "GoogleService-Info", pathExtension: "plist")
     /// Resource file `nounfetti.json`.
     static let nounfettiJson = Rswift.FileResource(bundle: R.hostingBundle, name: "nounfetti", pathExtension: "json")
+
+    /// `bundle.url(forResource: "AppIcons", withExtension: "plist")`
+    static func appIconsPlist(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.appIconsPlist
+      return fileResource.bundle.url(forResource: fileResource)
+    }
 
     /// `bundle.url(forResource: "GoogleService-Info", withExtension: "plist")`
     static func googleServiceInfoPlist(_: Void = ()) -> Foundation.URL? {
@@ -256,8 +264,8 @@ struct R: Rswift.Validatable {
     static let sharkNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "SharkNeon_Preview")
     /// Image `Shark_Preview`.
     static let shark_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Shark_Preview")
-    /// Image `StarSparklesNeon_Preview`.
-    static let starSparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarSparklesNeon_Preview")
+    /// Image `StarsparklesNeon_Preview`.
+    static let starsparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarsparklesNeon_Preview")
     /// Image `Starsparkles_Preview`.
     static let starsparkles_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Starsparkles_Preview")
     /// Image `TacoNeon_Preview`.
@@ -1046,9 +1054,9 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "StarSparklesNeon_Preview", bundle: ..., traitCollection: ...)`
-    static func starSparklesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.starSparklesNeon_Preview, compatibleWith: traitCollection)
+    /// `UIImage(named: "StarsparklesNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func starsparklesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.starsparklesNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 

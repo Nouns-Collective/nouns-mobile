@@ -34,6 +34,7 @@ targets:
         INFOPLIST_FILE: iOS/Sources/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
         DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: Bonsai CannedHam Cone Cow Crab Dictionary DNA Earth Fan Fox Gnome HighHeel Ketchup Laptop Milk Noodles Robot Shark Starsparkles Taco UFO Void Volcano Wave Weed BonsaiNeon CannedHamNeon ConeNeon CowNeon CrabNeon DictionaryNeon DNANeon EarthNeon FanNeon FoxNeon GnomeNeon HighHeelNeon KetchupNeon LaptopNeon MilkNeon NoodlesNeon RobotNeon SharkNeon StarsparklesNeon TacoNeon UFONeon VoidNeon VolcanoNeon WaveNeon WeedNeon
     entitlements:
       path: iOS/Nouns.entitlements
       properties:
