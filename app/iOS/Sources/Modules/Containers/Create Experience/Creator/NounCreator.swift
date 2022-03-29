@@ -26,7 +26,6 @@ struct NounCreator: View {
         ConditionalSpacer(viewModel.mode == .creating)
         
         SlotMachine(initialSeed: viewModel.initialSeed)
-          .drawingGroup()
         
         ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
         

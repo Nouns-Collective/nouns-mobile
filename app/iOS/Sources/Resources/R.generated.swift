@@ -186,7 +186,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 300 images.
+  /// This `R.image` struct is generated, and contains static references to 299 images.
   struct image {
     /// Image `AppIcon_Preview`.
     static let appIcon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon_Preview")
@@ -264,8 +264,6 @@ struct R: Rswift.Validatable {
     static let sharkNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "SharkNeon_Preview")
     /// Image `Shark_Preview`.
     static let shark_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Shark_Preview")
-    /// Image `StarsparklesNeon_Preview 2`.
-    static let starsparklesNeon_Preview2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarsparklesNeon_Preview 2")
     /// Image `StarsparklesNeon_Preview`.
     static let starsparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarsparklesNeon_Preview")
     /// Image `Starsparkles_Preview`.
@@ -1052,13 +1050,6 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "Shark_Preview", bundle: ..., traitCollection: ...)`
     static func shark_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.shark_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "StarsparklesNeon_Preview 2", bundle: ..., traitCollection: ...)`
-    static func starsparklesNeon_Preview2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.starsparklesNeon_Preview2, compatibleWith: traitCollection)
     }
     #endif
 

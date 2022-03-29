@@ -7,8 +7,6 @@
 		<dict>
 			<key>preview</key>
 			<string>AppIcon_Preview</string>
-			<key>asset</key>
-			<string></string>
 			<key>name</key>
 			<string>Default</string>
 		</dict>
