@@ -33,6 +33,7 @@ public struct ImageSlideshow: View {
     TimelineView(.periodic(from: .now, by: 1 / fps)) { context in
       SlideshowImageView(now: context.date, images: images, repeats: repeats)
     }
+    .drawingGroup()
   }
 }
 
