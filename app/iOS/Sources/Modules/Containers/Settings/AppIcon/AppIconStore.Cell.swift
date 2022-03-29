@@ -11,64 +11,49 @@ import UIComponents
 extension AppIconStore {
   
   struct Cell: View {
-    let index: Int
-    @Binding var selection: Int 
+    let icon: AppIcon
+    @Binding var selection: String?
     
     @Environment(\.nounComposer) private var nounComposer
     
     private var backgroundFillColor: Color {
-      isSelected ? .componentNounsBlack.opacity(0.2) : .white
+      isSelected ? .componentNounsBlack.opacity(0.3) : .white
     }
     
-    private var background: Color {
-      guard let colorHex = nounComposer.backgroundColors.randomElement() else {
-        return Color.componentWarmGrey
-      }
-      return Color(hex: colorHex)
+    private var textColor: Color {
+      isSelected ? .white : .componentNounsBlack
     }
     
     private var isSelected: Bool {
-      selection == index
+      selection == icon.asset
     }
     
     var body: some View {
       VStack(spacing: 10) {
-        ZStack {
-          Image(nounTraitName: nounComposer.heads[index].assetImage)
-            .interpolation(.none)
-            .resizable()
-            .frame(width: 60, height: 60)
-            .offset(y: 5)
+        Image(icon.preview)
+          .foregroundColor(.gray)
+          .cornerRadius(15.6)
+          .padding(.horizontal, 20)
           
-          Image(nounTraitName: nounComposer.glasses.randomElement()!.assetImage)
-            .interpolation(.none)
-            .resizable()
-            .frame(width: 60, height: 60)
-            .offset(y: 5)
-        }
-        .frame(width: 42, height: 42)
-        .foregroundColor(.gray)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 10)
-        .background(background)
-        .cornerRadius(20)
-        
         HStack {
-          Text("Default")
+          Text(icon.name)
             .font(.custom(.medium, relativeTo: .caption))
-          
-          if isSelected {
-            Image.check
-              .renderingMode(.template)
-              .foregroundColor(.black)
-          }
+            .foregroundColor(textColor)
+            .padding(.horizontal, 8)
+            .multilineTextAlignment(.center)
         }
       }
-      .padding(.vertical, 15)
-      .padding(.horizontal, 20)
+      .frame(maxWidth: .infinity)
+      .padding(.vertical, 20)
       .border(.black, lineWidth: 2, fillColor: backgroundFillColor, cornerRadius: 8)
       .onTapGesture {
-        selection = index
+        UIApplication.shared.setAlternateIconName(icon.asset) { error in
+          print("Error: \(error)")
+          
+          withAnimation {
+            selection = icon.asset
+          }
+        }
       }
     }
   }
