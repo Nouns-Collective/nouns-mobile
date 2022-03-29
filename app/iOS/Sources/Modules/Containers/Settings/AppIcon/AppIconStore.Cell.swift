@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UIComponents
+import os
 
 extension AppIconStore {
   
@@ -28,6 +29,12 @@ extension AppIconStore {
       selection == icon.asset
     }
     
+    /// An object for writing interpolated string messages to the unified logging system.
+    private let logger = Logger(
+      subsystem: "wtf.nouns.ios",
+      category: "Nouns App Icon Store"
+    )
+    
     var body: some View {
       VStack(spacing: 10) {
         Image(icon.preview)
@@ -48,7 +55,10 @@ extension AppIconStore {
       .border(.black, lineWidth: 2, fillColor: backgroundFillColor, cornerRadius: 8)
       .onTapGesture {
         UIApplication.shared.setAlternateIconName(icon.asset) { error in
-          print("Error: \(error)")
+          if let error = error {
+            logger.error("Error setting alternate icon for asset for asset \"\(icon.asset ?? "unknown")\": \(error.localizedDescription, privacy: .public)")
+            return
+          }
           
           withAnimation {
             selection = icon.asset

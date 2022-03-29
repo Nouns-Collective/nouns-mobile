@@ -73,7 +73,7 @@ struct AppIconStore: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       // Do any additional setup after loading the view.
-      
+      loadAppIcons()
     }
   }
 }
