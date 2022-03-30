@@ -11,15 +11,7 @@ import SwiftUI
 import Combine
 import UIComponents
 
-typealias TraitType = SlotMachine.ViewModel.TraitType
-
-extension Notification.Name {
-  
-  struct SlotMachine {
-    
-    static let slotMachineDidUpdateSeed = Notification.Name("slotMachineDidUpdateSeed")
-  }
-}
+typealias TraitType = SlotMachine.TraitType
 
 extension NounCreator {
   
@@ -87,11 +79,10 @@ extension NounCreator {
     @Published var seed: Seed = .default
     
     /// Indicates the current modifiable trait type selected in the slot machine.
-    @Published var currentModifiableTraitType: TraitType = .glasses {
-      didSet {
-        NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateModifiableTraitType, object: currentModifiableTraitType)
-      }
-    }
+    @Published var currentModifiableTraitType: TraitType = .glasses
+    
+    /// Show all traits, including those that are not of the current modifiable trait type
+    @Published var shouldShowAllTraits: Bool = false
     
     /// The name of the noun currently being created
     @Published var nounName: String = ""
@@ -130,21 +121,6 @@ extension NounCreator {
       
       tapPublisher = tapSubject
         .eraseToAnyPublisher()
-      
-      setupNotifications()
-    }
-    
-    /// Sets up notification to listen to slot machine value changes and update
-    /// the `seed` in this view model accordingly
-    private func setupNotifications() {
-      NotificationCenter.default
-        .publisher(for: Notification.Name.slotMachineDidUpdateSeed)
-        .compactMap { $0.object as? Seed }
-        .removeDuplicates()
-        .sink { newSeed in
-          self.seed = newSeed
-        }
-        .store(in: &cancellables)
     }
     
     /// Select a trait using the grid view
@@ -170,8 +146,6 @@ extension NounCreator {
       case .glasses:
         seed.glasses = index
       }
-      
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateSeed, object: seed)
     }
     
     /// Returns a boolean indicating if an index is the selected index given a trait type
@@ -306,18 +280,16 @@ extension NounCreator {
     func randomizeNoun() {
       self.initialSeed = AppCore.shared.nounComposer.randomSeed()
       self.seed = AppCore.shared.nounComposer.randomSeed()
-      
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateSeed, object: seed)
     }
     
     /// Shows all traits on the `SlotMachine`, instead of just the currently modifiable trait type
     func showAllTraits() {
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: true)
+      shouldShowAllTraits = true
     }
     
     /// Hides all traits on the `SlotMachine`, except the currently modifiable trait type
     func hideAllTraits() {
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: false)
+      shouldShowAllTraits = false
     }
     
     /// Initiates coachmark instruction at beginning of create session

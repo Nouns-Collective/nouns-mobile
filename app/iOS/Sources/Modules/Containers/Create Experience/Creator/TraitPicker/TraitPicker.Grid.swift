@@ -75,8 +75,8 @@ extension NounCreator {
                   viewModel.selectTrait(index, ofType: .background)
                 }
                 .id("\(TraitType.background.rawValue)-\(index)")
-                // This applies a padding to only the first column (rowSpec.count)
-                // of items to distinguish the different trait sections
+              // This applies a padding to only the first column (rowSpec.count)
+              // of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
             .onAppear {

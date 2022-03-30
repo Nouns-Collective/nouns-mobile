@@ -23,7 +23,11 @@ struct NounCreator: View {
       VStack(spacing: 0) {
         ConditionalSpacer(viewModel.mode == .creating)
         
-        SlotMachine(initialSeed: viewModel.initialSeed)
+        SlotMachine(
+          seed: $viewModel.seed,
+          shouldShowAllTraits: $viewModel.shouldShowAllTraits,
+          initialSeed: viewModel.initialSeed
+        )
         
         ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
         
