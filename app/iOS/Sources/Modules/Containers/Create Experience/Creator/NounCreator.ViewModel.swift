@@ -60,6 +60,14 @@ extension NounCreator {
     /// A passthrought subject to send new trait update action values
     private let tapSubject = PassthroughSubject<TraitType, Never>()
     
+    /// The threshold at which a swipe is registered as a next/previous advancement. The scroll's direction value
+    /// is compared absolutely to this threshold value.
+    ///
+    /// Values below this threshold will not change the current trait value
+    /// Values above this threshold will change the current trait value by a negative or positive index
+    /// depending on the non-absolute value of the direction
+    private static let scrollThreshold: Double = 40
+    
     /// A boolean value for whether or not subsequent trait type selection updates
     /// should be paused, with any incoming values and updates being ignored
     private var traitUpdatesPaused: Bool = false
@@ -338,15 +346,15 @@ extension NounCreator {
       return (Double(seed.background) * -width) + offset
     }
     
-    /// Selecting a background by swiping left or right on the background picker
-    func selectBackground(direction: Double) {
+    /// A method invoked everytime the background picker behind the noun has registered a swipe gesture
+    func didScrollBackgroundPicker(withVelocity velocity: Double) {
       // Only allow swiping between traits if the difference between the predicted
-      // gesture end location and the final drag location is greater than 40.
-      guard abs(direction) >= 40 else { return }
+      // gesture end location and the final drag location is greater than the scroll threshold.
+      guard abs(velocity) >= Self.scrollThreshold else { return }
       
       // If direction is negative, we should go to the next (right) trait
       // If direction is positive, we should go to the previous (left) trait
-      let index: Int = direction > 0 ? -1 : 1
+      let index: Int = velocity > 0 ? -1 : 1
       
       // Set Bounderies to not scroll over empty.
       let maxLimit = NounCreator.backgroundColors.endIndex - 1

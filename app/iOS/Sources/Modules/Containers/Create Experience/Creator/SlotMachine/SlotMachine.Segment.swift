@@ -59,10 +59,10 @@ extension SlotMachine {
           state = value.translation.width
         })
         .onEnded({ value in
-          // A negative horizontal direction is a gesture starting from the right of the screen towards the left
-          // A positive horizontal direction is a gesture starting from the left of the screen towards the right
-          let horizontalDirection = value.predictedEndLocation.x - value.location.x
-          viewModel.selectTrait(direction: horizontalDirection)
+          // A negative horizontal velocity is a gesture starting from the right of the screen towards the left
+          // A positive horizontal velocity is a gesture starting from the left of the screen towards the right
+          let horizontalVelocity = value.predictedEndLocation.x - value.location.x
+          viewModel.didScroll(withVelocity: horizontalVelocity)
         })
     }
   }
