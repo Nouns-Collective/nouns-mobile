@@ -8,7 +8,8 @@
 import SwiftUI
 import Combine
 
-struct ShakeEffect: AnimatableModifier {
+/// An animation modifier that can be added to any view to add a (repeating or non-repeating) shaking animation.
+private struct ShakeEffect: AnimatableModifier {
   
   /// The number of times to shake the view
   var shakeNumber: CGFloat = 0
@@ -27,10 +28,20 @@ struct ShakeEffect: AnimatableModifier {
     }
   }
   
+  /// If the view is meant to be centered in the shake animation, then the view will move to the right
+  /// and to the left and back to the center when finished. Otherwise, the view will only move to the left when
+  /// shaking and then return to it's original position in it's super view.
+  ///
+  /// The phase offset is not required if the shake is centered, but is required to be added if the view is only meant to move to the left
   private var centeredPhaseOffset: CGFloat {
     centered ? 0 : ((1 / 2) * .pi)
   }
   
+  /// If the view is meant to be centered in the shake animation, then the view will move to the right
+  /// and to the left and back to the center when finished. Otherwise, the view will only move to the left when
+  /// shaking and then return to it's original position in it's super view.
+  ///
+  /// The offset is not required if the shake is centered, but is required to be added if the view is only meant to move to the left
   private var centeredOffset: CGFloat {
     centered ? 0 : offset
   }
@@ -52,6 +63,7 @@ struct ShakeEffect: AnimatableModifier {
   }
 }
 
+/// A view modifier to add the shake animatable modifier to any view
 struct Shake: ViewModifier {
     
   /// A boolean state to determine when the view is shaking and when it is still (paused)
@@ -77,6 +89,10 @@ struct Shake: ViewModifier {
   /// Whether or not the view should be centered (shake left and right, up and down) or not (only shake towards the left, or top)
   private let centered: Bool
   
+  private var shakeEffect: ShakeEffect {
+    ShakeEffect(shakeNumber: shake ? CGFloat(shakeCount) : 0, offset: maxOffset, axis: axis, centered: centered)
+  }
+  
   init(shakeCount: Int, shakeDuration: Double, maxOffset: CGFloat, axis: Axis.Set, rest: CGFloat, centered: Bool) {
     self.shakeCount = shakeCount
     self.shakeDuration = shakeDuration
@@ -89,7 +105,7 @@ struct Shake: ViewModifier {
 
   func body(content: Content) -> some View {
     content
-      .modifier(ShakeEffect(shakeNumber: shake ? CGFloat(shakeCount) : 0, offset: maxOffset, axis: axis, centered: centered))
+      .modifier(shakeEffect)
       .onReceive(timer, perform: { _ in
         withAnimation(.easeInOut(duration: shakeDuration)) {
           shake.toggle()

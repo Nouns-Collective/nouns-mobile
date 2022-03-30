@@ -264,8 +264,8 @@ struct R: Rswift.Validatable {
     static let sharkNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "SharkNeon_Preview")
     /// Image `Shark_Preview`.
     static let shark_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Shark_Preview")
-    /// Image `StarsparklesNeon_Preview`.
-    static let starsparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarsparklesNeon_Preview")
+    /// Image `StarSparklesNeon_Preview`.
+    static let starSparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarSparklesNeon_Preview")
     /// Image `Starsparkles_Preview`.
     static let starsparkles_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Starsparkles_Preview")
     /// Image `TacoNeon_Preview`.
@@ -1054,9 +1054,9 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "StarsparklesNeon_Preview", bundle: ..., traitCollection: ...)`
-    static func starsparklesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.starsparklesNeon_Preview, compatibleWith: traitCollection)
+    /// `UIImage(named: "StarSparklesNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func starSparklesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.starSparklesNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
