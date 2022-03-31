@@ -26,7 +26,8 @@ struct NounCreator: View {
         SlotMachine(
           seed: $viewModel.seed,
           shouldShowAllTraits: $viewModel.shouldShowAllTraits,
-          initialSeed: viewModel.initialSeed
+          initialSeed: viewModel.initialSeed,
+          currentModifiableTraitType: $viewModel.currentModifiableTraitType
         )
         
         ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)

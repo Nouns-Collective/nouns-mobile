@@ -49,18 +49,20 @@ struct SlotMachine: View {
   @Binding public var showAllTraits: Bool
   
   /// Indicates the current modifiable trait type selected in the slot machine.
-  @State var currentModifiableTraitType: TraitType = .glasses
+  @Binding var currentModifiableTraitType: TraitType
     
   init(
     seed: Binding<Seed>,
     shouldShowAllTraits: Binding<Bool>,
     initialSeed: Seed = Seed.default,
+    currentModifiableTraitType: Binding<TraitType> = .constant(.glasses),
     showShadow: Bool = true,
     animateEntrance: Bool = false
   ) {
     self.initialSeed = initialSeed
     self.showShadow = showShadow
     self.animateEntrance = animateEntrance
+    self._currentModifiableTraitType = currentModifiableTraitType
     self._showAllTraits = shouldShowAllTraits
     self._seed = seed
   }
