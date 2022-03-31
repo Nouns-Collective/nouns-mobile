@@ -35,7 +35,7 @@ public protocol Messaging: AnyObject {
   var authorizationStatus: MessagingAuthorizationStatus { get async }
   
   /// Asynchronously sets the event handler work item on received registration token.
-  var notificationStateDidChange: AsyncStream<Void> { get }
+  var notificationStateDidChange: NotificationCenter.Notifications { get }
   
   /// Requests authorization to interact with the user when local and remote
   /// notifications are delivered to the user’s device.
@@ -55,6 +55,8 @@ public protocol Messaging: AnyObject {
   /// - Parameters:
   ///   - topic: The topic name to subscribe to, for example, @"sports".
   func unsubscribe(fromTopic topic: String) async throws
+  
+  func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data)
 }
 
 public class FirebaseMessaging: NSObject {
@@ -70,27 +72,24 @@ public class FirebaseMessaging: NSObject {
     if FirebaseApp.app() == nil {
       FirebaseApp.configure()
     }
+    
+    Firebase.Messaging.messaging().delegate = self
   }
   
 }
 
 extension FirebaseMessaging: Messaging {
   
-  public var notificationStateDidChange: AsyncStream<Void> {
-    AsyncStream { [weak self] continuation in
-      
-      let listener = FirebaseMessagingObservable()
-      
-      listener.didReceiveRegistrationToken = { fcmToken in
-        self?.logger.debug("🏁 🆔 Firebase registration token: \(fcmToken ?? "⚠️ Unavailable")")
-        
-        continuation.yield()
-      }
-      
-      continuation.onTermination = { @Sendable _ in
-        listener.stop()
-      }
-    }
+  public func update(token: Data) {
+    Firebase.Messaging.messaging().apnsToken = token
+  }
+  
+  public func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {
+    Firebase.Messaging.messaging().apnsToken = deviceToken
+  }
+  
+  public var notificationStateDidChange: NotificationCenter.Notifications {
+    NotificationCenter.default.notifications(named: .MessagingRegistrationTokenRefreshed)
   }
   
   public var authorizationStatus: MessagingAuthorizationStatus {
@@ -166,23 +165,9 @@ extension FirebaseMessaging: UNUserNotificationCenterDelegate {
   }
 }
 
-final class FirebaseMessagingObservable: NSObject, Firebase.MessagingDelegate {
+extension FirebaseMessaging: Firebase.MessagingDelegate {
   
-  var didReceiveRegistrationToken: ((_ fcmToken: String?) -> Void)?
-  
-  override init() {
-    super.init()
-    // Use Firebase library to configure APIs
-    Firebase.Messaging.messaging().delegate = self
-  }
-  
-  func stop() {
-    Firebase.Messaging.messaging().delegate = nil
-  }
-  
-  // MARK: - Firebase.MessagingDelegate
-  
-  func messaging(_ messaging: Firebase.Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    didReceiveRegistrationToken?(fcmToken)
+  public func messaging(_ messaging: Firebase.Messaging, didReceiveRegistrationToken fcmToken: String?) {
+    logger.debug("🏁 🆔 Firebase registration token: \(fcmToken ?? "⚠️ Unavailable")")
   }
 }
