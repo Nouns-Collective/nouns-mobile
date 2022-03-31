@@ -29,6 +29,13 @@ struct NounCreator: View {
         
         ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
         
+        if !isExpanded {
+          Group {
+            CreateCoachmarks(viewModel: viewModel, isExpanded: isExpanded)
+            ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+          }
+        }
+        
         if viewModel.mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
@@ -88,6 +95,20 @@ struct NounCreator: View {
       case .creating:
         bottomSheetManager.closeBottomSheet()
       }
+    }
+    .onShake {
+      viewModel.showAllTraits()
+
+      withAnimation(.spring(response: 2.0, dampingFraction: 1.0, blendDuration: 1.0)) {
+        viewModel.randomizeNoun()
+      }
+      
+      withAnimation(.spring().delay(3.0)) {
+        viewModel.hideAllTraits()
+      }
+    }
+    .onAppear {
+      viewModel.showCoachmarkGuide()
     }
   }
 }

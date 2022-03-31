@@ -186,7 +186,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 300 images.
+  /// This `R.image` struct is generated, and contains static references to 299 images.
   struct image {
     /// Image `AppIcon_Preview`.
     static let appIcon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon_Preview")
@@ -264,10 +264,8 @@ struct R: Rswift.Validatable {
     static let sharkNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "SharkNeon_Preview")
     /// Image `Shark_Preview`.
     static let shark_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Shark_Preview")
-    /// Image `StarsparklesNeon_Preview 2`.
-    static let starsparklesNeon_Preview2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarsparklesNeon_Preview 2")
-    /// Image `StarsparklesNeon_Preview`.
-    static let starsparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarsparklesNeon_Preview")
+    /// Image `StarSparklesNeon_Preview`.
+    static let starSparklesNeon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "StarSparklesNeon_Preview")
     /// Image `Starsparkles_Preview`.
     static let starsparkles_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "Starsparkles_Preview")
     /// Image `TacoNeon_Preview`.
@@ -1056,16 +1054,9 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "StarsparklesNeon_Preview 2", bundle: ..., traitCollection: ...)`
-    static func starsparklesNeon_Preview2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.starsparklesNeon_Preview2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "StarsparklesNeon_Preview", bundle: ..., traitCollection: ...)`
-    static func starsparklesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.starsparklesNeon_Preview, compatibleWith: traitCollection)
+    /// `UIImage(named: "StarSparklesNeon_Preview", bundle: ..., traitCollection: ...)`
+    static func starSparklesNeon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.starSparklesNeon_Preview, compatibleWith: traitCollection)
     }
     #endif
 
@@ -10446,7 +10437,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 28 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 29 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -10954,6 +10945,44 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("block.unavailable", tableName: "BidHistory", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.createCoachmark` struct is generated, and contains static references to 2 localization keys.
+    struct createCoachmark {
+      /// Value: Shake to shuffle
+      static let shake = Rswift.StringResource(key: "shake", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Swipe to pick %@
+      static let swipe = Rswift.StringResource(key: "swipe", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Shake to shuffle
+      static func shake(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "shake"
+        }
+
+        return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+      }
+
+      /// Value: Swipe to pick %@
+      static func swipe(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "swipe"
+        }
+
+        let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
       }
 
       fileprivate init() {}

@@ -49,6 +49,12 @@ extension NounCreator {
     
     private var visibleSections: [TraitType] = []
     
+    /// Indicates whether or not to show the swiping coachmark
+    @Published private(set) var showSwipingCoachmark: Bool = false
+    
+    /// Indicates whether or not to show the shake coachmark
+    @Published private(set) var showShakeCoachmark: Bool = false
+    
     /// The `Seed` in build progress.
     @Published var seed: Seed = .default
     
@@ -65,14 +71,14 @@ extension NounCreator {
     /// Inidicates the current state of the user while creating their noun.
     @Published var mode: Mode = .creating
     
-    /// Indiicates whether or not to show the confetti overlay, triggered after finishing the creation of a noun
+    /// Indicates whether or not to show the confetti overlay, triggered after finishing the creation of a noun
     @Published private(set) var showConfetti: Bool = false
     
     /// A seperate boolean for showing/hiding the confetti in order to hide the confetti first before scaling it down
     @Published private(set) var finishedConfetti: Bool = false
     
     /// The initial seed of the noun creator, reflecting which traits are selected and displayed initially
-    public let initialSeed: Seed
+    @Published public var initialSeed: Seed
     
     /// An action to be carried out when `isEditing` is set to `true` and the user has completed editing their noun
     public var didEditNoun: (_ seed: Seed) -> Void = { _ in }
@@ -261,6 +267,44 @@ extension NounCreator {
       self.traitUpdatesPaused = true
       DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [weak self] in
         self?.traitUpdatesPaused = false
+      }
+    }
+    
+    /// Randomizes the noun
+    func randomizeNoun() {
+      self.initialSeed = AppCore.shared.nounComposer.randomSeed()
+      self.seed = AppCore.shared.nounComposer.randomSeed()
+      
+      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateSeed, object: seed)
+    }
+    
+    /// Shows all traits on the `SlotMachine`, instead of just the currently modifiable trait type
+    func showAllTraits() {
+      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: true)
+    }
+    
+    /// Hides all traits on the `SlotMachine`, except the currently modifiable trait type
+    func hideAllTraits() {
+      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: false)
+    }
+    
+    /// Initiates coachmark instruction at beginning of create session
+    func showCoachmarkGuide() {
+      withAnimation(.easeInOut) {
+        showShakeCoachmark = true
+      }
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+        withAnimation {
+          self.showShakeCoachmark = false
+          self.showSwipingCoachmark = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+          withAnimation {
+            self.showSwipingCoachmark = false
+          }
+        }
       }
     }
   }

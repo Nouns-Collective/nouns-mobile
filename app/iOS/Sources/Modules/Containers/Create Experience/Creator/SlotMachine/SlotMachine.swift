@@ -45,6 +45,7 @@ struct SlotMachine: View {
         }
       }
       .frame(maxHeight: viewModel.imageSize)
+      .drawingGroup()
     }
     .onAppear {
       // TODO: - Clean up in favour of `SlotMachine` not owning a `ViewModel` at all and instead injecting property values directly into the view
