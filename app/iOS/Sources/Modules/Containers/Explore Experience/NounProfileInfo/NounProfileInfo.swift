@@ -103,7 +103,6 @@ struct NounProfileInfo: View {
       NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
     }
     .notificationPermissionDialog(isPresented: $viewModel.isNotificationPermissionDialogPresented)
-    // TODO: What is for?
     .addBottomSheet()
   }
 }

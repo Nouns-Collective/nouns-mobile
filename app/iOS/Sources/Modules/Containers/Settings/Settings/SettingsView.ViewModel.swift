@@ -61,7 +61,7 @@ extension SettingsView {
           await handleNotificationPermission()
           return
         }
-        
+
         await settingsStore.setNewNounNotification(isEnabled: isEnabled)
         await refreshNotificationStates()
       }
