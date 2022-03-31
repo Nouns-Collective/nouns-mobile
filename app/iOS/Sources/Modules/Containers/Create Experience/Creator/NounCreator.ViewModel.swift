@@ -76,7 +76,11 @@ extension NounCreator {
     @Published private(set) var showShakeCoachmark: Bool = false
     
     /// The `Seed` in build progress.
-    @Published var seed: Seed = .default
+    @Published var seed: Seed = .default {
+      didSet {
+        pauseTraitUpdates()
+      }
+    }
     
     /// Indicates the current modifiable trait type selected in the slot machine.
     @Published var currentModifiableTraitType: TraitType = .glasses
