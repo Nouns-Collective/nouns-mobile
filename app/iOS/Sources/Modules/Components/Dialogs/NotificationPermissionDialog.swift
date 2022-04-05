@@ -72,8 +72,7 @@ struct NotificationPermissionDialog: View {
       )
       
       // Subscribe to topics on APNs registration.
-      await settingsStore.setNewNounNotification(isEnabled: true)
-      await settingsStore.setNounOClockNotification(isEnabled: true)
+      await settingsStore.setAllNotifications(isEnabled: true)
 
       for try await _ in messaging.notificationStateDidChange {
         settingsStore.syncMessagingTopicsSubscription()
