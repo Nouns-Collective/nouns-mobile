@@ -96,6 +96,7 @@ struct SlotMachine: View {
         }
       }
       .frame(maxHeight: Self.imageSize)
+      .drawingGroup()
     }
     .onAppear {
       // A small delay is needed so that all the animation logic

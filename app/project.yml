@@ -4,7 +4,7 @@ options:
   indentWidth: 2
   tabWidth: 2
   bundleIdPrefix: "wtf.nouns"
-  groupOrdering: 
+  groupOrdering:
     - order: [iOS, WatchOS]
 packages:
   Rswift:
@@ -14,7 +14,7 @@ packages:
     path: Shared/UIComponents
   Services:
     path: Shared/Services
-  
+
 settings:
   base:
     MARKETING_VERSION: 0.1.0
@@ -34,6 +34,8 @@ targets:
         INFOPLIST_FILE: iOS/Sources/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
         DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: Bonsai CannedHam Cone Cow Crab Dictionary DNA Earth Fan Fox Gnome HighHeel Ketchup Laptop Milk Noodles Robot Shark Starsparkles Taco UFO Void Volcano Wave Weed BonsaiNeon CannedHamNeon ConeNeon CowNeon CrabNeon DictionaryNeon DNANeon EarthNeon FanNeon FoxNeon GnomeNeon HighHeelNeon KetchupNeon LaptopNeon MilkNeon NoodlesNeon RobotNeon SharkNeon StarsparklesNeon TacoNeon UFONeon VoidNeon VolcanoNeon WaveNeon WeedNeon
+        TARGETED_DEVICE_FAMILY: 1
     entitlements:
       path: iOS/Nouns.entitlements
       properties:
@@ -101,7 +103,7 @@ targets:
       base:
         INFOPLIST_FILE: WatchOS/NounsWatch/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp
-  
+
   # Nouns WatchKit Extension
   Nouns WatchKit Extension:
     type: watchkit2-extension
