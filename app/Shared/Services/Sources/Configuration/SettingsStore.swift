@@ -27,6 +27,9 @@ public protocol SettingsStore {
   /// Changes the `New Noun` notification state persisted to the disk.
   func setNewNounNotification(isEnabled: Bool) async
   
+  /// Enables/disables the local persisted notification state for all notifications
+  func setAllNotifications(isEnabled: Bool) async
+  
   /// Sync locally stored notification states with the cloud to subscribe
   /// or unsubscribe from related topics.
   func syncMessagingTopicsSubscription()
@@ -126,5 +129,12 @@ public struct UserDefaultsSettingsStore: SettingsStore {
         return false
       }
     }
+  }
+  
+  public func setAllNotifications(isEnabled: Bool) async {
+    guard await isNotificationPermissionAuthorized else { return }
+    
+    _isNewNounNotificationEnabled = isEnabled
+    _isNounOClockNotificationEnabled = isEnabled
   }
 }

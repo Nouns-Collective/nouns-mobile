@@ -65,18 +65,18 @@ struct NotificationPermissionDialog: View {
     let settingsStore = AppCore.shared.settingsStore
     
     Task {
-      // Subscribe to topics on APNs registration.
-      for try await _ in messaging.notificationStateDidChange {
-        settingsStore.syncMessagingTopicsSubscription()
-      }
-    }
-    
-    Task {
       // Requests APNs authorization.
       _ = try await messaging.requestAuthorization(
         UIApplication.shared,
         authorizationOptions: [.alert, .badge, .sound]
       )
+      
+      // Subscribe to topics on APNs registration.
+      await settingsStore.setAllNotifications(isEnabled: true)
+
+      for try await _ in messaging.notificationStateDidChange {
+        settingsStore.syncMessagingTopicsSubscription()
+      }
     }
   }
 }
