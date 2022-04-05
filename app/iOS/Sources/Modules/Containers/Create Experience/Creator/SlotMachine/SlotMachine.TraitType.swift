@@ -1,5 +1,5 @@
 //
-//  SlotMachine.ViewModel.swift
+//  SlotMachine.TraitType.swift
 //  Nouns
 //
 //  Created by Mohammed Ibrahim on 2022-02-11.
@@ -37,9 +37,6 @@ extension SlotMachine.TraitType {
   
   /// This is the order that the assets and traits should be presented in order to replicate how the nouns should look
   static let layeredOrder: [SlotMachine.TraitType] = [.background, .body, .accessory, .head, .glasses]
-}
-
-extension SlotMachine.TraitType {
   
   var description: String {
     switch self {
