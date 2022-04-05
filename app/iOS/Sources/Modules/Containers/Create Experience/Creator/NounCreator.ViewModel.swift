@@ -138,17 +138,19 @@ extension NounCreator {
         self.currentModifiableTraitType = traitType
       }
       
-      switch traitType {
-      case .background:
-        seed.background = index
-      case .body:
-        seed.body = index
-      case .accessory:
-        seed.accessory = index
-      case .head:
-        seed.head = index
-      case .glasses:
-        seed.glasses = index
+      withAnimation(.easeInOut) {
+        switch traitType {
+        case .background:
+          seed.background = index
+        case .body:
+          seed.body = index
+        case .accessory:
+          seed.accessory = index
+        case .head:
+          seed.head = index
+        case .glasses:
+          seed.glasses = index
+        }
       }
     }
     

@@ -65,7 +65,9 @@ extension NounCreator {
           
           // Expand or Fold the collection of Noun's Traits.
           if viewModel.isExpanded {
-            TraitTypeGrid(viewModel: viewModel)
+            TraitPickerUIKitView(viewModel: viewModel)
+              .frame(height: 250)
+              .padding(.vertical, 8)
           }
         }
         .padding(.bottom, 4)
