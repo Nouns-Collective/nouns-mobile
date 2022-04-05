@@ -12,7 +12,6 @@ extension NounCreator {
   
   struct CreateCoachmarks: View {
     @ObservedObject var viewModel: ViewModel
-    let isExpanded: Bool
     
     var body: some View {
       Group {
@@ -24,7 +23,7 @@ extension NounCreator {
             .animation(.easeInOut, value: viewModel.showSwipingCoachmark)
         }
       }
-      .hidden(isExpanded)
+      .hidden(viewModel.isExpanded)
     }
   }
   

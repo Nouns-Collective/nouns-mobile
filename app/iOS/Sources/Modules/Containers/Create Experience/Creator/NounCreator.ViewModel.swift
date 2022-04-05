@@ -9,18 +9,27 @@ import Foundation
 import Services
 import SwiftUI
 import Combine
+import UIComponents
 
-typealias TraitType = SlotMachine.ViewModel.TraitType
-
-extension Notification.Name {
-  
-  struct SlotMachine {
-    
-    static let slotMachineDidUpdateSeed = Notification.Name("slotMachineDidUpdateSeed")
-  }
-}
+typealias TraitType = SlotMachine.TraitType
 
 extension NounCreator {
+  
+  /// The list of background gradients for use in the noun creator
+  static let backgroundColors: [GradientColors] = [
+    .cherrySunset,
+    .keyLimePie,
+    .blueberryJam,
+    .orangesicle,
+    .kiwiDream,
+    .grapeAttack,
+    .mangoChunks,
+    .freshMint,
+    .magnoliaGarden,
+    .lemonDrop,
+    .oceanBreeze,
+    .bubbleGum
+  ]
   
   final class ViewModel: ObservableObject {
     
@@ -43,11 +52,22 @@ extension NounCreator {
     /// A passthrought subject to send new trait update action values
     private let tapSubject = PassthroughSubject<TraitType, Never>()
     
+    /// The threshold at which a swipe is registered as a next/previous advancement. The scroll's direction value
+    /// is compared absolutely to this threshold value.
+    ///
+    /// Values below this threshold will not change the current trait value
+    /// Values above this threshold will change the current trait value by a negative or positive index
+    /// depending on the non-absolute value of the direction
+    private static let scrollThreshold: Double = 40
+    
     /// A boolean value for whether or not subsequent trait type selection updates
     /// should be paused, with any incoming values and updates being ignored
     private var traitUpdatesPaused: Bool = false
     
     private var visibleSections: [TraitType] = []
+    
+    /// Boolean value to determine if the trait picker grid is expanded
+    @Published public var isExpanded: Bool = false
     
     /// Indicates whether or not to show the swiping coachmark
     @Published private(set) var showSwipingCoachmark: Bool = false
@@ -56,14 +76,17 @@ extension NounCreator {
     @Published private(set) var showShakeCoachmark: Bool = false
     
     /// The `Seed` in build progress.
-    @Published var seed: Seed = .default
-    
-    /// Indicates the current modifiable trait type selected in the slot machine.
-    @Published var currentModifiableTraitType: TraitType = .glasses {
+    @Published var seed: Seed = .default {
       didSet {
-        NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateModifiableTraitType, object: currentModifiableTraitType)
+        pauseTraitUpdates()
       }
     }
+    
+    /// Indicates the current modifiable trait type selected in the slot machine.
+    @Published var currentModifiableTraitType: TraitType = .glasses
+    
+    /// Show all traits, including those that are not of the current modifiable trait type
+    @Published var shouldShowAllTraits: Bool = false
     
     /// The name of the noun currently being created
     @Published var nounName: String = ""
@@ -102,21 +125,6 @@ extension NounCreator {
       
       tapPublisher = tapSubject
         .eraseToAnyPublisher()
-      
-      setupNotifications()
-    }
-    
-    /// Sets up notification to listen to slot machine value changes and update
-    /// the `seed` in this view model accordingly
-    private func setupNotifications() {
-      NotificationCenter.default
-        .publisher(for: Notification.Name.slotMachineDidUpdateSeed)
-        .compactMap { $0.object as? Seed }
-        .removeDuplicates()
-        .sink { newSeed in
-          self.seed = newSeed
-        }
-        .store(in: &cancellables)
     }
     
     /// Select a trait using the grid view
@@ -142,8 +150,6 @@ extension NounCreator {
       case .glasses:
         seed.glasses = index
       }
-      
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateSeed, object: seed)
     }
     
     /// Returns a boolean indicating if an index is the selected index given a trait type
@@ -242,6 +248,8 @@ extension NounCreator {
     
     /// A method to keep track of when a trait section has disappeared completely from the grid
     func traitSectionDidDisappear(_ traitType: TraitType) {
+      guard isExpanded else { return }
+      
       visibleSections.removeAll { $0 == traitType }
       
       guard !traitUpdatesPaused else { return }
@@ -254,6 +262,8 @@ extension NounCreator {
     
     /// A method to keep track of when a trait section has first appeared in the grid
     func traitSectionDidAppear(_ traitType: TraitType) {
+      guard isExpanded else { return }
+      
       visibleSections.append(traitType)
       
       guard !traitUpdatesPaused else { return }
@@ -274,18 +284,16 @@ extension NounCreator {
     func randomizeNoun() {
       self.initialSeed = AppCore.shared.nounComposer.randomSeed()
       self.seed = AppCore.shared.nounComposer.randomSeed()
-      
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldUpdateSeed, object: seed)
     }
     
     /// Shows all traits on the `SlotMachine`, instead of just the currently modifiable trait type
     func showAllTraits() {
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: true)
+      shouldShowAllTraits = true
     }
     
     /// Hides all traits on the `SlotMachine`, except the currently modifiable trait type
     func hideAllTraits() {
-      NotificationCenter.default.post(name: Notification.Name.slotMachineShouldShowAllTraits, object: false)
+      shouldShowAllTraits = false
     }
     
     /// Initiates coachmark instruction at beginning of create session
@@ -306,6 +314,31 @@ extension NounCreator {
           }
         }
       }
+    }
+    
+    /// Calculates the offset needed to display the currently selected
+    /// background in the background picker
+    func backgroundOffset(width: CGFloat, offset: CGFloat) -> CGFloat {
+      return (Double(seed.background) * -width) + offset
+    }
+    
+    /// A method invoked everytime the background picker behind the noun has registered a swipe gesture
+    func didScrollBackgroundPicker(withVelocity velocity: Double) {
+      // Only allow swiping between traits if the difference between the predicted
+      // gesture end location and the final drag location is greater than the scroll threshold.
+      guard abs(velocity) >= Self.scrollThreshold else { return }
+      
+      // If direction is negative, we should go to the next (right) trait
+      // If direction is positive, we should go to the previous (left) trait
+      let index: Int = velocity > 0 ? -1 : 1
+      
+      // Set Bounderies to not scroll over empty.
+      let maxLimit = NounCreator.backgroundColors.endIndex - 1
+      let minLimit = 0
+      
+      seed.background = max(
+        min(seed.background + index, maxLimit),
+        minLimit)
     }
   }
 }

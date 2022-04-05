@@ -16,10 +16,14 @@ extension CreateExperience {
     
     @Environment(\.outlineTabViewHeight) private var tabBarHeight
     
+    @State private var seed: Seed = .default
+    
+    @State private var shouldShowAllTraits: Bool = false
+
     private let initialSeed: Seed
     
     private let action: () -> Void
-        
+    
     @Binding var isCreatorPresented: Bool
         
     init(
@@ -41,6 +45,8 @@ extension CreateExperience {
         Spacer()
                   
         SlotMachine(
+          seed: $seed,
+          shouldShowAllTraits: $shouldShowAllTraits,
           initialSeed: initialSeed,
           showShadow: false,
           animateEntrance: true

@@ -14,57 +14,58 @@ struct NounCreator: View {
   
   @Namespace private var nsTraitPicker
   @Environment(\.dismiss) private var dismiss
-  
-  /// Boolean value to determine if the trait picker grid is expanded
-  @State private var isExpanded: Bool = false
-  
-  private let confettiBundle = Bundle(path: Bundle.main.bundleURL.appendingPathComponent("nounfetti.bundle").path)
-  
+    
   var body: some View {
     ZStack {
+      BackgroundPicker(viewModel: viewModel)
+        .ignoresSafeArea(.all)
+        
       VStack(spacing: 0) {
         ConditionalSpacer(viewModel.mode == .creating)
         
-        SlotMachine(initialSeed: viewModel.initialSeed)
+        SlotMachine(
+          seed: $viewModel.seed,
+          shouldShowAllTraits: $viewModel.shouldShowAllTraits,
+          initialSeed: viewModel.initialSeed,
+          currentModifiableTraitType: $viewModel.currentModifiableTraitType
+        )
         
-        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+        ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
         
-        if !isExpanded {
+        if !viewModel.isExpanded {
           Group {
-            CreateCoachmarks(viewModel: viewModel, isExpanded: isExpanded)
-            ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+            CreateCoachmarks(viewModel: viewModel)
+            ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
           }
         }
         
         if viewModel.mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
-            animation: nsTraitPicker,
-            isExpanded: $isExpanded
+            animation: nsTraitPicker
           )
         }
       }
+      .modifier(AccessoryItems(viewModel: viewModel, done: {
+        withAnimation {
+          viewModel.didFinish()
+          
+          // Dismiss the view automatically when finished editing
+          if viewModel.isEditing {
+            dismiss()
+          }
+        }
+      }, cancel: {
+        withAnimation {
+          if viewModel.mode == .done {
+            viewModel.setMode(to: .creating)
+          } else {
+            viewModel.setMode(to: .cancel)
+          }
+        }
+      }))
     }
-    .modifier(AccessoryItems(viewModel: viewModel, done: {
-      withAnimation {
-        viewModel.didFinish()
-        
-        // Dismiss the view automatically when finished editing
-        if viewModel.isEditing {
-          dismiss()
-        }
-      }
-    }, cancel: {
-      withAnimation {
-        if viewModel.mode == .done {
-          viewModel.setMode(to: .creating)
-        } else {
-          viewModel.setMode(to: .cancel)
-        }
-      }
-    }))
     .addBottomSheet()
-    .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
       NounfettiView()
         .zIndex(100)

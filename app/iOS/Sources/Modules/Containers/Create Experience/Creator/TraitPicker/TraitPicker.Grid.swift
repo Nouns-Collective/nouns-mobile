@@ -50,7 +50,7 @@ extension NounCreator {
                 TraitPickerItem(image: trait.assetImage)
                   .selected(viewModel.isSelected(index, traitType: type))
                   .onTapGesture {
-                    withAnimation {
+                    withAnimation(.easeInOut) {
                       viewModel.selectTrait(index, ofType: type)
                     }
                   }
@@ -67,18 +67,16 @@ extension NounCreator {
             }
             
             // Gradient background selection
-            TraitCollectionSection(type: .background, items: Gradient.allGradients) { gradient, index in
+            TraitCollectionSection(type: .background, items: NounCreator.backgroundColors) { gradient, index in
               
-              GradientPickerItem(colors: gradient)
+              GradientPickerItem(colors: gradient.colors)
                 .selected(viewModel.isSelected(index, traitType: .background))
                 .onTapGesture {
-                  withAnimation {
-                    viewModel.selectTrait(index, ofType: .background)
-                  }
+                  viewModel.selectTrait(index, ofType: .background)
                 }
                 .id("\(TraitType.background.rawValue)-\(index)")
-                // This applies a padding to only the first column (rowSpec.count)
-                // of items to distinguish the different trait sections
+              // This applies a padding to only the first column (rowSpec.count)
+              // of items to distinguish the different trait sections
                 .padding(.leading, (0..<rowSpec.count).contains(index) ? 20 : 0)
             }
             .onAppear {
@@ -90,6 +88,15 @@ extension NounCreator {
           }
           .padding(.vertical, 12)
           .padding(.trailing)
+          .onAppear {
+            // Scroll to the currently selected trait type first
+            //
+            // Without this, the trait grid will show the first section (glasses)
+            // which will invoke a `viewModel.traitSectionDidAppear(.glasses)`, thus
+            // changing the selection back to glasses even if the user had previously selected
+            // another section before the trait grid appeared
+            proxy.scrollTo(traitFirstIndexID(viewModel.currentModifiableTraitType), anchor: .leading)
+          }
           .onReceive(viewModel.tapPublisher, perform: { newTrait in
             // Provides an animation to scroll to the first item of the newly selected trait (from the tab picker)
             withAnimation {
