@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import UIComponents
 import Combine
+import Services
 
 final class TraitPickerUIKitView: UIViewRepresentable {
   typealias UIViewType = TraitPickerUIKit
@@ -38,6 +39,8 @@ class TraitPickerUIKit: UIView {
   private var cancellables = Set<AnyCancellable>()
   
   private let traitTypes = TraitType.allCases
+  
+  private var didSetInitialScrollPosition: Bool = false
   
   private lazy var collectionViewLayout: UICollectionViewCompositionalLayout = {
     let fraction: CGFloat = 1 / 3
@@ -98,6 +101,12 @@ class TraitPickerUIKit: UIView {
         self?.collectionView.scrollToItem(at: IndexPath(item: 0, section: sectionIndex), at: .left, animated: true)
       }
       .store(in: &cancellables)
+    
+    viewModel.$seed
+      .sink { [weak self] seed in
+        self?.didUpdateSeedSelection(seed)
+      }
+      .store(in: &cancellables)
   }
   
   func setupViews() {
@@ -110,6 +119,47 @@ class TraitPickerUIKit: UIView {
       collectionView.topAnchor.constraint(equalTo: topAnchor),
       collectionView.heightAnchor.constraint(equalToConstant: 250)
     ])
+    
+    self.collectionView.reloadData()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      self.restoreScrollPosition()
+    }
+  }
+  
+  private func restoreScrollPosition() {
+    guard !didSetInitialScrollPosition else { return }
+    
+    self.collectionView.performBatchUpdates(nil, completion: { _ in
+      guard let sectionIndex = self.traitTypes.firstIndex(of: self.viewModel.currentModifiableTraitType) else { return }
+      
+      self.collectionView.scrollToItem(at: IndexPath(item: 0, section: sectionIndex), at: .left, animated: false)
+      
+      self.didSetInitialScrollPosition = true
+      
+      // Without this reload, gradients will not appear unless the cell disappears and reappears at least once.
+      self.collectionView.reloadData()
+      
+      self.didUpdateSeedSelection(self.viewModel.seed)
+    })
+  }
+  
+  private func didUpdateSeedSelection(_ seed: Seed) {
+    guard !viewModel.traitUpdatesPaused else { return }
+    
+    collectionView.indexPathsForSelectedItems?.filter({ $0.section == TraitType.head.rawValue && $0.item != seed.head }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
+    collectionView.selectItem(at: IndexPath(item: seed.head, section: TraitType.head.rawValue), animated: false, scrollPosition: .centeredVertically)
+    
+    collectionView.indexPathsForSelectedItems?.filter({ $0.section == TraitType.glasses.rawValue && $0.item != seed.glasses }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
+    collectionView.selectItem(at: IndexPath(item: seed.glasses, section: TraitType.glasses.rawValue), animated: false, scrollPosition: .centeredVertically)
+    
+    collectionView.indexPathsForSelectedItems?.filter({ $0.section == TraitType.body.rawValue && $0.item != seed.body }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
+    collectionView.selectItem(at: IndexPath(item: seed.body, section: TraitType.body.rawValue), animated: false, scrollPosition: .centeredVertically)
+    
+    collectionView.indexPathsForSelectedItems?.filter({ $0.section == TraitType.accessory.rawValue && $0.item != seed.accessory }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
+    collectionView.selectItem(at: IndexPath(item: seed.accessory, section: TraitType.accessory.rawValue), animated: false, scrollPosition: .centeredVertically)
+    
+    collectionView.indexPathsForSelectedItems?.filter({ $0.section == TraitType.background.rawValue && $0.item != seed.background }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
+    collectionView.selectItem(at: IndexPath(item: seed.background, section: TraitType.background.rawValue), animated: false, scrollPosition: .centeredVertically)
   }
 }
 
@@ -141,9 +191,11 @@ extension TraitPickerUIKit: UICollectionViewDelegate, UICollectionViewDataSource
       let gradient = NounCreator.backgroundColors[indexPath.row]
       let colors = gradient.colors.map { UIColor($0) }
       cell.setBackgroundGradient(colors: colors)
+      cell.hasGradient = true
     } else {
       let trait = traitTypes[indexPath.section].traits[indexPath.row]
       cell.setImage(trait.assetImage)
+      cell.hasGradient = false
     }
     
     return cell
@@ -153,17 +205,23 @@ extension TraitPickerUIKit: UICollectionViewDelegate, UICollectionViewDataSource
     collectionView.indexPathsForSelectedItems?.filter({ $0.section == indexPath.section }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
     return true
   }
-
+  
+  func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+    false
+  }
+  
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     self.viewModel.selectTrait(indexPath.row, ofType: self.traitTypes[indexPath.section])
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    guard didSetInitialScrollPosition else { return }
+    
     let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
     let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
     guard let visibleIndexPath = collectionView.indexPathForItem(at: visiblePoint) else { return }
-    viewModel.currentModifiableTraitType = traitTypes[visibleIndexPath.section]
+    viewModel.didScroll(traitType: traitTypes[visibleIndexPath.section])
   }
 }
 
@@ -178,6 +236,7 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
       UIView.animate(withDuration: 0.15) {
         self.layer.borderColor = self.isSelected ? UIColor(Color.componentNounsBlack).cgColor : nil
         self.layer.borderWidth = self.isSelected ? 2.0 : 0
+        self.selectedImageView.alpha = self.isSelected && self.hasGradient ? 1 : 0
       }
     }
   }
@@ -190,7 +249,23 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
     return imgView
   }()
   
+  lazy private var selectedImageView: UIImageView = {
+    let imgView = UIImageView()
+    imgView.translatesAutoresizingMaskIntoConstraints = false
+    imgView.contentMode = .scaleAspectFit
+    imgView.layer.magnificationFilter = .nearest
+    imgView.image = UIImage.checkmark?.withTintColor(UIColor(Color.componentNounsBlack))
+    imgView.tintColor = UIColor(Color.componentNounsBlack)
+    return imgView
+  }()
+  
   lazy private var gradientView: UIView = UIView()
+  
+  public var hasGradient: Bool = false {
+    didSet {
+      self.selectedImageView.alpha = self.isSelected && self.hasGradient ? 1 : 0
+    }
+  }
   
   override init(frame: CGRect) {
     super.init(frame: .zero)
@@ -227,6 +302,13 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
       imageView.rightAnchor.constraint(equalTo: rightAnchor),
       imageView.topAnchor.constraint(equalTo: topAnchor),
       imageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+    ])
+    
+    addSubview(selectedImageView)
+    
+    NSLayoutConstraint.activate([
+      selectedImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      selectedImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
     ])
   }
   

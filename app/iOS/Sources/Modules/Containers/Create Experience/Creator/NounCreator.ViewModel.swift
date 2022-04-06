@@ -62,7 +62,7 @@ extension NounCreator {
     
     /// A boolean value for whether or not subsequent trait type selection updates
     /// should be paused, with any incoming values and updates being ignored
-    private var traitUpdatesPaused: Bool = false
+    public var traitUpdatesPaused: Bool = false
     
     private var visibleSections: [TraitType] = []
     
@@ -246,6 +246,18 @@ extension NounCreator {
       currentModifiableTraitType = traitType
       
       tapSubject.send(traitType)
+    }
+    
+    /// Triggered when the user scrolls in any direction on the trait grid, potentially altering which trait section is the most visible
+    func didScroll(traitType: TraitType) {
+      guard !traitUpdatesPaused, currentModifiableTraitType != traitType else { return }
+      
+      // Pauses trait updates for some time as there can be conflicts
+      // when the scroll animation passes by intermediate trait sections, which
+      // would call traitSectionDidAppear or traitSectionDidDisappear
+      self.pauseTraitUpdates()
+      
+      currentModifiableTraitType = traitType
     }
     
     /// A method to keep track of when a trait section has disappeared completely from the grid
