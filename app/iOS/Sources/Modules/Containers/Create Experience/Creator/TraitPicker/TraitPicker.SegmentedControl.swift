@@ -19,9 +19,8 @@ extension NounCreator {
     @Namespace private var typeSelectionNamespace
     
     var body: some View {
-      ScrollViewReader { proxy in
-        
-        ScrollView(.horizontal, showsIndicators: false) {
+      ScrollView(.horizontal, showsIndicators: false) {
+        ScrollViewReader { proxy in
           
           // Displays all Noun's trait types in a segement control.
           OutlinePicker(selection: $selectedTraitType) {
@@ -37,13 +36,13 @@ extension NounCreator {
                 )
             }
           }
-          .padding(.horizontal)
           .onChange(of: selectedTraitType) { newValue in
             withAnimation {
-              proxy.scrollTo(newValue, anchor: .center)
+              proxy.scrollTo(newValue, anchor: .bottom)
             }
           }
         }
+        .padding(.horizontal)
       }
     }
   }
