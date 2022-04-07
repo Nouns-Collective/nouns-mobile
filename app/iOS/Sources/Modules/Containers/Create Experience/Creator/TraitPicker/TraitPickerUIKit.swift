@@ -11,6 +11,9 @@ import UIComponents
 import Combine
 import Services
 
+/// A UIKit implementation of `NounCreator.TraitTypeGrid`. The SwiftUI implementation had a few performance issues
+/// when scrolling and when using the scroll view reader. While some of these bugs were fixed in iOS 15.4, some remain on older
+/// devices regardless of iOS version.
 final class TraitPickerUIKitView: UIViewRepresentable {
   typealias UIViewType = TraitPickerUIKit
   
@@ -28,7 +31,7 @@ final class TraitPickerUIKitView: UIViewRepresentable {
   }
   
   func updateUIView(_ uiView: TraitPickerUIKit, context: Context) {
-    //
+    // Left intentionally blank
   }
 }
 
@@ -40,8 +43,10 @@ class TraitPickerUIKit: UIView {
   
   private let traitTypes = TraitType.allCases
   
+  /// A boolean value to determine if the collection view has scrolled to the currently selected trait type when the view first appears. This should only happen once everytime the view appears.
   private var didSetInitialScrollPosition: Bool = false
   
+  /// The layout configuration for the collection view to set a grid-like layout
   private lazy var collectionViewLayout: UICollectionViewCompositionalLayout = {
     let fraction: CGFloat = 1 / 3
     let itemInset: CGFloat = 2.5
@@ -94,7 +99,8 @@ class TraitPickerUIKit: UIView {
     collectionView.collectionViewLayout.invalidateLayout()
   }
   
-  func subscribeToChanges() {
+  /// Subscribes to changes from the `viewModel`
+  private func subscribeToChanges() {
     viewModel.tapPublisher
       .sink { [weak self] newTraitType in
         guard let sectionIndex = self?.traitTypes.firstIndex(of: newTraitType) else { return }
@@ -109,7 +115,7 @@ class TraitPickerUIKit: UIView {
       .store(in: &cancellables)
   }
   
-  func setupViews() {
+  private func setupViews() {
     addSubview(collectionView)
     
     NSLayoutConstraint.activate([
@@ -139,10 +145,13 @@ class TraitPickerUIKit: UIView {
       // Without this reload, gradients will not appear unless the cell disappears and reappears at least once.
       self.collectionView.reloadData()
       
+      // Selection states need to be set explicitly when the collection view loads for the first time
       self.didUpdateSeedSelection(self.viewModel.seed)
     })
   }
   
+  /// Triggered whenever the seed value changes, this method deselects traits from a trait type section and selects the newly selected trait value in it's place.
+  /// This occurs whenever the user swipes on the slot machine or updates the view model's `seed` value through another medium other than the UICollectionView this view.
   private func didUpdateSeedSelection(_ seed: Seed) {
     guard !viewModel.traitUpdatesPaused else { return }
     
@@ -187,12 +196,13 @@ extension TraitPickerUIKit: UICollectionViewDelegate, UICollectionViewDataSource
     
     cell.setupViews()
     
-    if traitTypes[indexPath.section] == .background {
+    switch traitTypes[indexPath.section] {
+    case .background:
       let gradient = NounCreator.backgroundColors[indexPath.row]
       let colors = gradient.colors.map { UIColor($0) }
       cell.setBackgroundGradient(colors: colors)
       cell.hasGradient = true
-    } else {
+    default:
       let trait = traitTypes[indexPath.section].traits[indexPath.row]
       cell.setImage(trait.assetImage)
       cell.hasGradient = false
@@ -202,6 +212,7 @@ extension TraitPickerUIKit: UICollectionViewDelegate, UICollectionViewDataSource
   }
   
   func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    // Deselects the rest of the traits in the same section before setting the selection state for the tapped trait
     collectionView.indexPathsForSelectedItems?.filter({ $0.section == indexPath.section }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
     return true
   }
@@ -215,6 +226,8 @@ extension TraitPickerUIKit: UICollectionViewDelegate, UICollectionViewDataSource
     self.viewModel.selectTrait(indexPath.row, ofType: self.traitTypes[indexPath.section])
   }
   
+  /// Determines which trait section is the most prominent/visible based on which section intersects with the centre of the collection view,
+  /// then updates the view model's `currentModifiableTraitType` value to match that value.
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard didSetInitialScrollPosition else { return }
     
@@ -229,7 +242,28 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
   
   static let reuseIdentifier = "traitItemCell"
   
+  /// The image of the trait, if applicable
   private var image: String?
+  
+  /// The image view to display the image of the trait
+  lazy private var imageView: UIImageView = {
+    let imgView = UIImageView()
+    imgView.translatesAutoresizingMaskIntoConstraints = false
+    imgView.contentMode = .scaleAspectFit
+    imgView.layer.magnificationFilter = .nearest
+    return imgView
+  }()
+  
+  /// The image view of the checkmark overlay for selected gradient items
+  lazy private var selectedImageView: UIImageView = {
+    let imgView = UIImageView()
+    imgView.translatesAutoresizingMaskIntoConstraints = false
+    imgView.contentMode = .scaleAspectFit
+    imgView.layer.magnificationFilter = .nearest
+    imgView.image = UIImage.checkmark?.withTintColor(UIColor(Color.componentNounsBlack))
+    imgView.tintColor = UIColor(Color.componentNounsBlack)
+    return imgView
+  }()
   
   override var isSelected: Bool {
     didSet {
@@ -241,24 +275,7 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
     }
   }
   
-  lazy private var imageView: UIImageView = {
-    let imgView = UIImageView()
-    imgView.translatesAutoresizingMaskIntoConstraints = false
-    imgView.contentMode = .scaleAspectFit
-    imgView.layer.magnificationFilter = .nearest
-    return imgView
-  }()
-  
-  lazy private var selectedImageView: UIImageView = {
-    let imgView = UIImageView()
-    imgView.translatesAutoresizingMaskIntoConstraints = false
-    imgView.contentMode = .scaleAspectFit
-    imgView.layer.magnificationFilter = .nearest
-    imgView.image = UIImage.checkmark?.withTintColor(UIColor(Color.componentNounsBlack))
-    imgView.tintColor = UIColor(Color.componentNounsBlack)
-    return imgView
-  }()
-  
+  /// The gradient view to display gradient backgrounds
   lazy private var gradientView: UIView = UIView()
   
   public var hasGradient: Bool = false {
@@ -312,6 +329,7 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
     ])
   }
   
+  /// Sets the trait image view to a specified trait image
   func setImage(_ image: String?) {
     self.image = image
     
@@ -323,6 +341,7 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
     imageView.image = UIImage(nounTraitName: image)
   }
   
+  /// Sets the gradient view's gradient layer to a gradient composed of a specified set of images
   func setBackgroundGradient(colors: [UIColor]) {
     let gradient = CAGradientLayer()
     
