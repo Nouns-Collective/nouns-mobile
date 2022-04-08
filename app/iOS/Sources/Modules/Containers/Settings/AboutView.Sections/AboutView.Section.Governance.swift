@@ -30,7 +30,8 @@ extension GovernanceInfoSection {
           
           guard let ethBalance = EtherFormatter.eth(
             from: balance,
-            minimumFractionDigits: 0
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
           ) else { return }
           
           treasury = ethBalance 

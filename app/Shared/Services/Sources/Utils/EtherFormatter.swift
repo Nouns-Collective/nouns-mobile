@@ -25,6 +25,9 @@ public class EtherFormatter: Formatter {
     
     /// The minimum number of digits after the decimal point
     public var minimumFractionDigits: Int = 2
+
+    /// The maximum number of digits after the decimal point
+    public var maximumFractionDigits: Int = 2
     
     public init(from fromUnit: Unit) {
         self.fromUnit = fromUnit
@@ -45,7 +48,7 @@ public class EtherFormatter: Formatter {
         case (.eth, .wei):
             return value.multiplying(by: EtherFormatter.ethToWeiFactor)
         default:
-            return 1
+            return value
         }
     }
     
@@ -59,7 +62,9 @@ public class EtherFormatter: Formatter {
     public func string(from stringVal: String) -> String? {
         let formatter = NumberFormatter()
         formatter.generatesDecimalNumbers = true
+        formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = minimumFractionDigits
+        formatter.maximumFractionDigits = maximumFractionDigits
         guard let number = formatter.number(from: stringVal) as? NSDecimalNumber else {
             return nil
         }

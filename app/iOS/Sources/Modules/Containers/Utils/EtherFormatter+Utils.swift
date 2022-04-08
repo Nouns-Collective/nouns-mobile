@@ -10,10 +10,11 @@ import Services
 
 extension EtherFormatter {
   
-  static func eth(from wei: String, minimumFractionDigits: Int = 2) -> String? {
+  static func eth(from wei: String, minimumFractionDigits: Int = 2, maximumFractionDigits: Int = 2) -> String? {
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth
     formatter.minimumFractionDigits = minimumFractionDigits
+    formatter.maximumFractionDigits = maximumFractionDigits
     return formatter.string(from: wei)
   }
 }
