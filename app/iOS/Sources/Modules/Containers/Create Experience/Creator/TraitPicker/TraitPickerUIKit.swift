@@ -98,13 +98,30 @@ class TraitPickerUIKit: UIView {
     super.layoutSubviews()
     collectionView.collectionViewLayout.invalidateLayout()
   }
+
+  private func selectedTrait(forType traitType: TraitType, withSeed seedValue: Seed? = nil) -> Int {
+    let seed = seedValue ?? viewModel.seed
+    switch traitType {
+    case .background:
+      return seed.background
+    case .body:
+      return seed.body
+    case .accessory:
+      return seed.accessory
+    case .head:
+      return seed.head
+    case .glasses:
+      return seed.glasses
+    }
+  }
   
   /// Subscribes to changes from the `viewModel`
   private func subscribeToChanges() {
     viewModel.tapPublisher
       .sink { [weak self] newTraitType in
         guard let sectionIndex = self?.traitTypes.firstIndex(of: newTraitType) else { return }
-        self?.collectionView.scrollToItem(at: IndexPath(item: 0, section: sectionIndex), at: .left, animated: true)
+        let selectedTraitIndex = self?.selectedTrait(forType: newTraitType) ?? 0
+        self?.collectionView.scrollToItem(at: IndexPath(item: selectedTraitIndex, section: sectionIndex), at: .centeredHorizontally, animated: true)
       }
       .store(in: &cancellables)
     
@@ -136,9 +153,10 @@ class TraitPickerUIKit: UIView {
     guard !didSetInitialScrollPosition else { return }
     
     self.collectionView.performBatchUpdates(nil, completion: { _ in
-      guard let sectionIndex = self.traitTypes.firstIndex(of: self.viewModel.currentModifiableTraitType) else { return }
-      
-      self.collectionView.scrollToItem(at: IndexPath(item: 0, section: sectionIndex), at: .left, animated: false)
+      let traitType = self.viewModel.currentModifiableTraitType
+      guard let sectionIndex = self.traitTypes.firstIndex(of: traitType) else { return }
+      let selectedTraitIndex = self.selectedTrait(forType: traitType)
+      self.collectionView.scrollToItem(at: IndexPath(item: selectedTraitIndex, section: sectionIndex), at: .centeredHorizontally, animated: false)
       
       self.didSetInitialScrollPosition = true
       
@@ -150,8 +168,8 @@ class TraitPickerUIKit: UIView {
     })
   }
   
-  /// Triggered whenever the seed value changes, this method deselects traits from a trait type section and selects the newly selected trait value in it's place.
-  /// This occurs whenever the user swipes on the slot machine or updates the view model's `seed` value through another medium other than the UICollectionView this view.
+  /// Triggered whenever the seed value changes, this method deselects traits from a trait type section and selects the newly selected trait value in its place.
+  /// This occurs whenever the user swipes on the slot machine or updates the view model's `seed` value through another medium other than the UICollectionView.
   private func didUpdateSeedSelection(_ seed: Seed) {
     guard !viewModel.traitUpdatesPaused else { return }
     
@@ -169,6 +187,12 @@ class TraitPickerUIKit: UIView {
     
     collectionView.indexPathsForSelectedItems?.filter({ $0.section == TraitType.background.rawValue && $0.item != seed.background }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
     collectionView.selectItem(at: IndexPath(item: seed.background, section: TraitType.background.rawValue), animated: false, scrollPosition: .centeredVertically)
+
+    let traitType = viewModel.currentModifiableTraitType
+    if let sectionIndex = traitTypes.firstIndex(of: traitType) {
+      let selectedTraitIndex = selectedTrait(forType: traitType, withSeed: seed)
+      collectionView.scrollToItem(at: IndexPath(item: selectedTraitIndex, section: sectionIndex), at: .centeredHorizontally, animated: true)
+    }
   }
 }
 
