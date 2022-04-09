@@ -186,7 +186,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 299 images.
+  /// This `R.image` struct is generated, and contains static references to 300 images.
   struct image {
     /// Image `AppIcon_Preview`.
     static let appIcon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon_Preview")
@@ -346,6 +346,8 @@ struct R: Rswift.Validatable {
     static let eyesShift_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_5")
     /// Image `eyes-shift_6`.
     static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
+    /// Image `glasses-frames-square-black`.
+    static let glassesFramesSquareBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-frames-square-black")
     /// Image `head-ape-mouth-1`.
     static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
     /// Image `head-ape-mouth-2`.
@@ -1337,6 +1339,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-shift_6", bundle: ..., traitCollection: ...)`
     static func eyesShift_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesShift_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-frames-square-black", bundle: ..., traitCollection: ...)`
+    static func glassesFramesSquareBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesFramesSquareBlack, compatibleWith: traitCollection)
     }
     #endif
 

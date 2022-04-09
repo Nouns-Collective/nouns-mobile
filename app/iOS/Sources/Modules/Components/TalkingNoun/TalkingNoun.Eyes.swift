@@ -19,18 +19,22 @@ extension TalkingNoun {
     }
     
     var state: State = .idle
+    let eyesNode = SKSpriteNode()
     
     private lazy var blinkTextures: [SKTexture] = {
       loadTextures(atlas: "eyes-blink", prefix: "eyes-blink_", from: 1, to: 5)
     }()
     
-    init() {
-      let texture = SKTexture(imageNamed: R.image.eyesBlink_1.name)
-      texture.filteringMode = .nearest
+    init(frameSize: CGSize) {
+      let glassesFrameTexture = SKTexture(imageNamed: R.image.glassesFramesSquareBlack.name)
+      glassesFrameTexture.filteringMode = .nearest
+      super.init(texture: glassesFrameTexture, color: SKColor.clear, size: frameSize)
+
+      eyesNode.texture = SKTexture(imageNamed: R.image.eyesBlink_1.name)
+      eyesNode.size = frameSize
+      addChild(eyesNode)
       
-      super.init(texture: texture, color: SKColor.clear, size: texture.size())
-      
-      blink()
+      animateEyes()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,18 +42,20 @@ extension TalkingNoun {
     }
     
     /// Default eyes
-    /// (wait 500-2500ms)
+    /// (wait 1000-3000ms)
     /// blink sequence
-    /// (wait 500-2500ms)
-    /// Default eyes (random left or right)
+    /// (wait 1000-3000ms)
+    /// eyes looking around
     /// …repeat
-    private func blink() {
+    private func animateEyes() {
       guard action(forKey: State.idle.rawValue) == nil else {
         return
       }
       
-      let pause = SKAction.wait(forDuration: 1.5, withRange: 2)
-      let blink = SKAction.animate(with: blinkTextures, timePerFrame: 0.05)
+      let pause = SKAction.wait(forDuration: 2, withRange: 2)
+      let blink = SKAction.run {
+        self.eyesNode.run(SKAction.animate(with: self.blinkTextures, timePerFrame: 0.05))
+      }
       let goofyEye = SKAction.customAction(withDuration: 0.0, actionBlock: randomEye)
       let sequence = SKAction.sequence([blink, pause, goofyEye, pause])
       let repeatForever = SKAction.repeatForever(sequence)
@@ -61,7 +67,7 @@ extension TalkingNoun {
       let index = state == .active ? 0 : Int.random(in: 0...6)
       let texture = SKTexture(imageNamed: "eyes-shift_\(index)")
       texture.filteringMode = .nearest
-      (node as? SKSpriteNode)?.texture = texture
+      eyesNode.texture = texture
     }
   }
 }

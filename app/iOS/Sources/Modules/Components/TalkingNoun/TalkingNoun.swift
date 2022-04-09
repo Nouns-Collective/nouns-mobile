@@ -66,9 +66,8 @@ final class TalkingNoun: SKScene {
     let accessory = Trait(nounTraitName: accessoryAsset)
     return accessory
   }()
-  
-  private lazy var glasses = Trait(nounTraitName: "glasses-square-red")
-  private lazy var eyes = Eyes()
+
+  private lazy var eyes = Eyes(frameSize: Self.traitSize)
   private lazy var mouth = Mouth(seed: seed)
   
   override func didMove(to view: SKView) {
@@ -85,7 +84,7 @@ final class TalkingNoun: SKScene {
     // a `RecordingView` wrapper is created.
     guard mouth.parent == nil else { return }
     
-    [body, accessory, head, glasses, eyes, mouth].compactMap { trait in
+    [body, accessory, head, eyes, mouth].compactMap { trait in
       trait?.position = CGPoint(x: frame.midX, y: frame.midY)
       trait?.size = Self.traitSize
       return trait
