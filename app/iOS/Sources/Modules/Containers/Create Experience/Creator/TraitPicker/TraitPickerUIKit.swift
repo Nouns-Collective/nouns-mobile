@@ -98,29 +98,13 @@ class TraitPickerUIKit: UIView {
     super.layoutSubviews()
     collectionView.collectionViewLayout.invalidateLayout()
   }
-
-  private func selectedTrait(forType traitType: TraitType, withSeed seedValue: Seed? = nil) -> Int {
-    let seed = seedValue ?? viewModel.seed
-    switch traitType {
-    case .background:
-      return seed.background
-    case .body:
-      return seed.body
-    case .accessory:
-      return seed.accessory
-    case .head:
-      return seed.head
-    case .glasses:
-      return seed.glasses
-    }
-  }
   
   /// Subscribes to changes from the `viewModel`
   private func subscribeToChanges() {
     viewModel.tapPublisher
       .sink { [weak self] newTraitType in
         guard let sectionIndex = self?.traitTypes.firstIndex(of: newTraitType) else { return }
-        let selectedTraitIndex = self?.selectedTrait(forType: newTraitType) ?? 0
+        let selectedTraitIndex = self?.viewModel.selectedTrait(forType: newTraitType) ?? 0
         self?.collectionView.scrollToItem(at: IndexPath(item: selectedTraitIndex, section: sectionIndex), at: .centeredHorizontally, animated: true)
       }
       .store(in: &cancellables)
@@ -139,8 +123,7 @@ class TraitPickerUIKit: UIView {
       collectionView.leftAnchor.constraint(equalTo: leftAnchor),
       collectionView.rightAnchor.constraint(equalTo: rightAnchor),
       collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      collectionView.topAnchor.constraint(equalTo: topAnchor),
-      collectionView.heightAnchor.constraint(equalToConstant: 250)
+      collectionView.topAnchor.constraint(equalTo: topAnchor)
     ])
     
     self.collectionView.reloadData()
@@ -155,7 +138,7 @@ class TraitPickerUIKit: UIView {
     self.collectionView.performBatchUpdates(nil, completion: { _ in
       let traitType = self.viewModel.currentModifiableTraitType
       guard let sectionIndex = self.traitTypes.firstIndex(of: traitType) else { return }
-      let selectedTraitIndex = self.selectedTrait(forType: traitType)
+      let selectedTraitIndex = self.viewModel.selectedTrait(forType: traitType)
       self.collectionView.scrollToItem(at: IndexPath(item: selectedTraitIndex, section: sectionIndex), at: .centeredHorizontally, animated: false)
       
       self.didSetInitialScrollPosition = true
@@ -190,7 +173,7 @@ class TraitPickerUIKit: UIView {
 
     let traitType = viewModel.currentModifiableTraitType
     if let sectionIndex = traitTypes.firstIndex(of: traitType) {
-      let selectedTraitIndex = selectedTrait(forType: traitType, withSeed: seed)
+      let selectedTraitIndex = viewModel.selectedTrait(forType: traitType)
       collectionView.scrollToItem(at: IndexPath(item: selectedTraitIndex, section: sectionIndex), at: .centeredHorizontally, animated: true)
     }
   }
