@@ -151,6 +151,11 @@ extension Image {
   public static let notificationSettings = Image("notification-settings", bundle: .module)
 }
 
+extension UIImage {
+  
+  public static let checkmark = UIImage(named: "checkmark", in: .module, with: nil)
+}
+
 struct Symbol_Preview: PreviewProvider {
   static var previews: some View {
     VStack {

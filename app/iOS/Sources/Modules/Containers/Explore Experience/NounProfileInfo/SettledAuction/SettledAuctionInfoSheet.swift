@@ -55,7 +55,7 @@ struct SettledAuctionInfoSheet: View {
           Image.mdArrowRight
         },
         action: {
-          isActivityPresented.toggle()
+          isSafariPresented.toggle()
         }
       )
       
