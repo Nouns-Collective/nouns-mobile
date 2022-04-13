@@ -36,7 +36,6 @@ struct RouterView: View {
   private enum Page: Int {
     case explore
     case create
-    case play
     case about
   }
   
@@ -53,7 +52,6 @@ struct RouterView: View {
   private let items = [
     OutlineTabItem(normalStateIcon: .exploreOutline, selectedStateIcon: .exploreFill, tag: Page.explore),
     OutlineTabItem(normalStateIcon: .createOutline, selectedStateIcon: .createFill, tag: Page.create),
-    OutlineTabItem(normalStateIcon: .playOutline, selectedStateIcon: .playFill, tag: Page.play),
     OutlineTabItem(normalStateIcon: .aboutOutline, selectedStateIcon: .aboutFill, tag: Page.about)
   ]
   
@@ -65,9 +63,6 @@ struct RouterView: View {
         
         CreateExperience()
           .tag(Page.create)
-        
-        PlayExperience()
-          .tag(Page.play)
         
         AboutView()
           .tag(Page.about)

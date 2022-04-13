@@ -18,15 +18,6 @@ extension OffChainNounProfile {
     var body: some View {
       VStack(alignment: .leading, spacing: 10) {
         
-        // Switches to the play experience using the built Noun.
-        SoftButton(
-          text: R.string.offchainNounActions.play(),
-          largeAccessory: { Image.playOutline },
-          action: {
-            viewModel.isPlayPresented.toggle()
-          })
-          .controlSize(.large)
-        
         // Edit the noun.
         SoftButton(
           text: R.string.offchainNounActions.edit(),
