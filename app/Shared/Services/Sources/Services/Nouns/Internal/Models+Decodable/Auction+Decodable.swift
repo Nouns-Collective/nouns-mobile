@@ -14,7 +14,7 @@ extension Auction {
     id = try container.decode(String.self, forKey: AnyCodingKey("id"))
     noun = try container.decode(Noun.self, forKey: AnyCodingKey("noun"))
     amount = try container.decode(String.self, forKey: AnyCodingKey("amount"))
-    bidder = try container.decode(Account.self, forKey: AnyCodingKey("bidder"))
+    bidder = try container.decodeIfPresent(Account.self, forKey: AnyCodingKey("bidder"))
     settled = try container.decode(Bool.self, forKey: AnyCodingKey("settled"))
     
     let startTimeAsString = try container.decode(String.self, forKey: AnyCodingKey("startTime"))
