@@ -10,6 +10,7 @@ import SwiftUI
 /// The button style configuration for the SoftButton
 public struct SoftButtonStyle: ButtonStyle {
   @Environment (\.controlSize) var controlSize: ControlSize
+  @Environment (\.isEnabled) var isEnabled: Bool
   
   /// The width of the button, determined by the controlSize environment property
   /// The two options are either an automatic width where it expands to fit it's contents (nil)
@@ -32,7 +33,7 @@ public struct SoftButtonStyle: ButtonStyle {
       .frame(maxWidth: width)
       .multilineTextAlignment(.center)
       .lineLimit(1)
-      .foregroundColor(Color.black)
+      .foregroundColor(isEnabled ? Color.black : Color.black.opacity(0.4))
       .overlay {
         RoundedRectangle(cornerRadius: 8)
           .stroke(Color.black.opacity(0.2), lineWidth: 6)
@@ -42,6 +43,7 @@ public struct SoftButtonStyle: ButtonStyle {
       .background(Color.black.opacity(configuration.isPressed ? 0.1 : 0.05))
       .clipShape(RoundedRectangle(cornerRadius: continuous ? 10 : 6, style: continuous ? .continuous : .circular))
       .animation(.spring(), value: configuration.isPressed)
+      .animation(.easeInOut, value: isEnabled)
   }
 }
 
@@ -129,6 +131,7 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
 /// A label for buttons with text as well as an optional large accessory image
 public struct LargeAccessoryButtonLabel<Accessory: View>: View {
   @Environment (\.controlSize) var controlSize: ControlSize
+  @Environment (\.isEnabled) var isEnabled: Bool
   
   /// The accessory for the button on the far right of the button
   let accessory: Accessory?
@@ -166,13 +169,12 @@ public struct LargeAccessoryButtonLabel<Accessory: View>: View {
   private var fullWidth: Bool {
     controlSize == .large
   }
-  
-  
+
   public var body: some View {
     HStack(spacing: 10) {
       Text(text)
         .font(Font.custom(.medium, relativeTo: .subheadline))
-        .foregroundColor(color)
+        .foregroundColor(isEnabled ? color : color.opacity(0.4))
       
       if fullWidth {
         Spacer()
@@ -183,9 +185,11 @@ public struct LargeAccessoryButtonLabel<Accessory: View>: View {
           .aspectRatio(contentMode: .fit)
           .frame(height: 28, alignment: .center)
           .foregroundColor(color)
+          .opacity(isEnabled ? 1 : 0.4)
       }
     }
     .padding(16)
+    .animation(.easeInOut, value: isEnabled)
   }
 }
 
@@ -299,9 +303,9 @@ public struct SoftButton<Label: View>: View {
   /// ```
   ///
   /// - Parameters:
-  ///   - icon: The image for the button's icon (optional)
   ///   - text: The text for the button (optional)
   ///   - largeAccessory: The accessory image of the button
+  ///   - color: The foreground color of the button content
   ///   - action: The action function for when the button is tapped
   public init<V>(
     text: String,
@@ -385,6 +389,21 @@ struct SoftButton_Previews: PreviewProvider {
       }, action: {
         print("Tapped")
       })
+
+      SoftButton(text: "Large accessory button disabled", largeAccessory: {
+        Image(systemName: "hand.thumbsup.fill")
+      }, action: {})
+      .disabled(true)
+
+      SoftButton(text: "Small accessory button disabled", smallAccessory: {
+        Image(systemName: "hand.thumbsup.fill")
+      }, action: {})
+      .disabled(true)
+
+      SoftButton(text: "Icon button disabled", icon: {
+        Image(systemName: "hand.thumbsup.fill")
+      }, action: {})
+      .disabled(true)
     }
   }
 }

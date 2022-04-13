@@ -36,6 +36,7 @@ extension OffChainNounProfile {
           })
           .controlSize(.large)
           .padding(.top, 20)
+          .disabled(viewModel.noun.name.isEmpty)
           .actionSheetLeadingBarItem(content: {
             
             // Dismisses the presented sheet.

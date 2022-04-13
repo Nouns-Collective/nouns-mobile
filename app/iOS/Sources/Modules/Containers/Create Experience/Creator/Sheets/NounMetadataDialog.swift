@@ -63,8 +63,10 @@ extension NounCreator {
           viewModel.save()
           bottomSheetManager.closeBottomSheet()
           dismiss()
-        })
-        .controlSize(.large)
+        }
+      )
+      .controlSize(.large)
+      .disabled(viewModel.nounName.isEmpty)
     }
   }
 }
