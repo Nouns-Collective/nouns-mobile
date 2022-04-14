@@ -8,32 +8,49 @@
 import SwiftUI
 import UIComponents
 
-struct ExploreOnboardingView: View {
-  @ObservedObject var viewModel: OnboardingView.ViewModel
+extension OnboardingView {
   
-  var body: some View {
-    VStack(spacing: 0) {
-      ImageSlideshow(images: viewModel.onboardingImages())
+  struct ExploreOnboardingView: View {
+
+    @Binding var selectedPage: Page
+    
+    private func onboardingImages() -> [String] {
+      let folder = Page.explore.assetFolder
+      var images = [String]()
       
-      OnboardingView.Footer(
-        viewModel: viewModel,
-        title: R.string.onboarding.explore()
-      ) {
-        OutlineButton {
-          HStack(spacing: 10) {
-            Image.mdArrowRight
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 24, alignment: .center)
-          }
-          .padding(16)
-        } action: {
-          viewModel.selectedPage = .create
-        }
+      for asset in 0..<Page.explore.numberOfAssets {
+        let index = String(format: "%03d", asset)
+        let imagePath = "\(folder)/\(folder)_\(index)"
+        images.append(imagePath)
       }
-      .fixedSize(horizontal: false, vertical: true)
+      
+      return images
     }
-    .ignoresSafeArea()
-    .background(Gradient.lemonDrop)
+    
+    var body: some View {
+      VStack(spacing: 0) {
+        ImageSlideshow(images: Page.explore.onboardingImages())
+        
+        OnboardingView.Footer(
+          page: .explore,
+          title: R.string.onboarding.explore()
+        ) {
+          OutlineButton {
+            HStack(spacing: 10) {
+              Image.mdArrowRight
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 24, alignment: .center)
+            }
+            .padding(16)
+          } action: {
+            selectedPage = .create
+          }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+      }
+      .ignoresSafeArea()
+      .background(Gradient.lemonDrop)
+    }
   }
 }

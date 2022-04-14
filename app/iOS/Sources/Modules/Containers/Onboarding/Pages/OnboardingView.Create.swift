@@ -8,32 +8,42 @@
 import SwiftUI
 import UIComponents
 
-struct CreateOnboardingView: View {
-  @ObservedObject var viewModel: OnboardingView.ViewModel
+extension OnboardingView {
   
-  var body: some View {
-    VStack(spacing: 0) {
-      ImageSlideshow(images: viewModel.onboardingImages())
-      
-      OnboardingView.Footer(
-        viewModel: viewModel,
-        title: R.string.onboarding.create()
-      ) {
-        OutlineButton {
-          HStack(spacing: 10) {
-            Image.mdArrowRight
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 24, alignment: .center)
+  struct CreateOnboardingView: View {
+    
+    @Binding var isPresented: Bool
+    
+    let onCompletion: () -> Void
+    
+    var body: some View {
+      VStack(spacing: 0) {
+        ImageSlideshow(images: Page.create.onboardingImages())
+        
+        OnboardingView.Footer(
+          page: .create,
+          title: R.string.onboarding.create()
+        ) {
+          OutlineButton {
+            HStack(spacing: 10) {
+              Text(R.string.shared.getStarted())
+                .font(Font.custom(.medium, relativeTo: .subheadline))
+              
+              Image.PointRight.standard
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 24, alignment: .center)
+            }
+            .padding(16)
+          } action: {
+            isPresented = false
+            onCompletion()
           }
-          .padding(16)
-        } action: {
-          viewModel.selectedPage = .play
         }
+        .fixedSize(horizontal: false, vertical: true)
       }
-      .fixedSize(horizontal: false, vertical: true)
+      .ignoresSafeArea()
+      .background(Gradient.freshMint)
     }
-    .ignoresSafeArea()
-    .background(Gradient.freshMint)
   }
 }

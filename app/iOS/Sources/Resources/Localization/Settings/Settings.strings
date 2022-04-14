@@ -20,6 +20,8 @@
 
 "app.icon.title" = "App Icon";
 
+"app.intro.title" = "App Intro";
+
 "app.icon.default" = "Default";
 
 "share.friends" = "Share with friends";

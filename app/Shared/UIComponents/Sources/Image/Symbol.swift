@@ -10,6 +10,8 @@ import SwiftUI
 /// Creates a labeled image that you can use as content for controls.
 extension Image {
   
+  public static let appIntro = Image("app-intro", bundle: .module)
+  
   public static let crown = Image("crown", bundle: .module)
   
   public static let active = Image("sm-active", bundle: .module)

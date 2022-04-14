@@ -16,6 +16,8 @@
 
 "try.again" = "Try Again";
 
+"get.started" = "Get Started";
+
 // MARK: - States
 
 "unavailable" = "Unavailable";

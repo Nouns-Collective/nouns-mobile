@@ -8,32 +8,49 @@
 import SwiftUI
 import UIComponents
 
-struct IntroductionOnboardingView: View {
-  @ObservedObject var viewModel: OnboardingView.ViewModel
+extension OnboardingView {
   
-  var body: some View {
-    VStack(spacing: 0) {
-      ImageSlideshow(images: viewModel.onboardingImages())
+  struct IntroductionOnboardingView: View {
+    
+    @Binding var selectedPage: Page
+    
+    private func onboardingImages() -> [String] {
+      let folder = Page.intro.assetFolder
+      var images = [String]()
       
-      OnboardingView.Footer(
-        viewModel: viewModel,
-        title: R.string.onboarding.introduction()
-      ) {
-        OutlineButton {
-          HStack(spacing: 10) {
-            Image.mdArrowRight
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(height: 24, alignment: .center)
-          }
-          .padding(16)
-        } action: {
-          viewModel.selectedPage = .explore
-        }
+      for asset in 0..<Page.intro.numberOfAssets {
+        let index = String(format: "%03d", asset)
+        let imagePath = "\(folder)/\(folder)_\(index)"
+        images.append(imagePath)
       }
-      .fixedSize(horizontal: false, vertical: true)
+      
+      return images
     }
-    .ignoresSafeArea()
-    .background(Gradient.bubbleGum)
+    
+    var body: some View {
+      VStack(spacing: 0) {
+        ImageSlideshow(images: Page.intro.onboardingImages())
+        
+        OnboardingView.Footer(
+          page: .intro,
+          title: R.string.onboarding.introduction()
+        ) {
+          OutlineButton {
+            HStack(spacing: 10) {
+              Image.mdArrowRight
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 24, alignment: .center)
+            }
+            .padding(16)
+          } action: {
+            selectedPage = .explore
+          }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+      }
+      .ignoresSafeArea()
+      .background(Gradient.bubbleGum)
+    }
   }
 }

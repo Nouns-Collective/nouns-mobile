@@ -11,7 +11,7 @@ import UIComponents
 extension OnboardingView {
   
   struct Footer<Trailing: View>: View {
-    @ObservedObject var viewModel: OnboardingView.ViewModel
+    let page: Page
     let title: String
     let trailing: () -> Trailing
     
@@ -27,7 +27,7 @@ extension OnboardingView {
         HStack(alignment: .bottom) {
           PageIndicator(
             pages: OnboardingView.Page.allCases,
-            selection: viewModel.selectedPage
+            selection: page
           )
           
           Spacer()

@@ -32,6 +32,8 @@ struct RouterView: View {
   @State private var selectedTab: Page = .explore
   
   @StateObject private var tabBarVisibilityManager = OutlineTabBarVisibilityManager()
+  
+  @State private var isOnboardingPresented = !AppCore.shared.settingsStore.hasCompletedOnboarding
     
   private enum Page: Int {
     case explore
@@ -56,6 +58,7 @@ struct RouterView: View {
   ]
   
   var body: some View {
+    
     ZStack(alignment: .bottom) {
       TabView(selection: $selectedTab) {
         ExploreExperience()
@@ -71,7 +74,10 @@ struct RouterView: View {
       
       OutlineTabBar(selection: $selectedTab, items)
     }
-    .onboarding()
+    .onboarding($isOnboardingPresented) {
+      // On completion of onboarding, toggle the local setting store to reflect the completion state so we show the onboarding on the first launch only
+      AppCore.shared.settingsStore.hasCompletedOnboarding = true
+    }
     .addBottomSheet()
     .environment(\.outlineTabBarVisibility, tabBarVisibilityManager)
   }

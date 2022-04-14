@@ -19,6 +19,8 @@ struct SettingsView: View {
   @State private var isAppIconCollectionPresented = false
   private let localize = R.string.settings.self
   
+  @State private var showOnboarding: Bool = false
+  
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       VStack {
@@ -40,6 +42,12 @@ struct SettingsView: View {
           icon: .share,
           action: { isShareWithFriendsPresented.toggle() })
         
+        // App intro
+        DefaultButton(
+          leading: localize.appIntroTitle(),
+          icon: .appIntro,
+          action: { showOnboarding.toggle() })
+        
         // A tutorial view is presented to guide the user on how to enable
         // the notification from the settings app if denied.
         Link(isActive: $viewModel.isNotificationPermissionTutorialPresented,
@@ -52,10 +60,11 @@ struct SettingsView: View {
           icon: { Image.back },
           action: { dismiss() })
       })
-      .padding(.top, 20)
+      .padding(.top, 70)
     }
     .background(Gradient.lemonDrop)
-    .ignoresSafeArea(.all, edges: .bottom)
+    .overlay(.componentUnripeLemon, edge: .top)
+    .ignoresSafeArea(edges: .top)
     .sheet(isPresented: $isShareWithFriendsPresented) {
       if let url = URL(string: "https://nouns.wtf") {
         ShareSheet(activityItems: [url])
@@ -67,6 +76,7 @@ struct SettingsView: View {
     .onAppear {
       outlineTabBarVisibility.hide()
     }
+    .onboarding($showOnboarding)
   }
 }
 

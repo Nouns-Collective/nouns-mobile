@@ -12432,10 +12432,12 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.settings` struct is generated, and contains static references to 9 localization keys.
+    /// This `R.string.settings` struct is generated, and contains static references to 10 localization keys.
     struct settings {
       /// Value: App Icon
       static let appIconTitle = Rswift.StringResource(key: "app.icon.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: App Intro
+      static let appIntroTitle = Rswift.StringResource(key: "app.intro.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Default
       static let appIconDefault = Rswift.StringResource(key: "app.icon.default", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
@@ -12464,6 +12466,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("app.icon.title", tableName: "Settings", bundle: bundle, comment: "")
+      }
+
+      /// Value: App Intro
+      static func appIntroTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
+          return "app.intro.title"
+        }
+
+        return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: bundle, comment: "")
       }
 
       /// Value: Default
@@ -12573,7 +12588,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.shared` struct is generated, and contains static references to 14 localization keys.
+    /// This `R.string.shared` struct is generated, and contains static references to 15 localization keys.
     struct shared {
       /// Value: Accessory
       static let accessory = Rswift.StringResource(key: "accessory", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -12583,6 +12598,8 @@ struct R: Rswift.Validatable {
       static let body = Rswift.StringResource(key: "body", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Done
       static let done = Rswift.StringResource(key: "done", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Get Started
+      static let getStarted = Rswift.StringResource(key: "get.started", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Glasses
       static let glasses = Rswift.StringResource(key: "glasses", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Head
@@ -12654,6 +12671,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("done", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: Get Started
+      static func getStarted(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("get.started", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "get.started"
+        }
+
+        return NSLocalizedString("get.started", tableName: "Shared", bundle: bundle, comment: "")
       }
 
       /// Value: Glasses
