@@ -24,7 +24,7 @@ struct NounfettiView: View {
   }
   
   var body: some View {
-    ImageSlideshow(images: frames, repeats: false)
+    ImageSlideshow(images: frames, atlas: "nounfetti", repeats: false)
       .zIndex(100)
       .ignoresSafeArea()
       .allowsHitTesting(false)

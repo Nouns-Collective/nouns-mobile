@@ -67,11 +67,12 @@ struct NounCreator: View {
     }
     .addBottomSheet()
     .overlay {
-      NounfettiView()
-        .zIndex(100)
-        .hidden(!viewModel.showConfetti || viewModel.finishedConfetti)
-        .ignoresSafeArea()
-        .allowsHitTesting(false)
+      if viewModel.showConfetti && !viewModel.finishedConfetti {
+        NounfettiView()
+          .zIndex(100)
+          .ignoresSafeArea()
+          .allowsHitTesting(false)
+      }
     }
     .onChange(of: viewModel.mode) { mode in
       switch mode {

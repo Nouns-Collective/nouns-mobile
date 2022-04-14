@@ -15,6 +15,7 @@ struct NounComposerKey: EnvironmentKey {
 
 extension EnvironmentValues {
   
+  // TODO: clean up environment values
   var nounComposer: NounComposer {
     get { self[NounComposerKey.self] }
     set { self[NounComposerKey.self] = newValue }

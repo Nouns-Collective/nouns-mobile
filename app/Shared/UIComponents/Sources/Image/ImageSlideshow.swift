@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import SpriteKit
 
 /// A view to display an animated sequence of images, like a flip book
 public struct ImageSlideshow: View {
@@ -20,20 +21,31 @@ public struct ImageSlideshow: View {
   private let fps: CGFloat
   
   private let repeats: Bool
+
+  private let scene: SKScene?
   
   @State private var imageIndex: Int = 0
     
-  public init(images: [String], fps: CGFloat = 30, repeats: Bool = true) {
+  public init(images: [String], atlas: String? = nil, fps: CGFloat = 30, repeats: Bool = true) {
     self.images = images
     self.fps = fps
     self.repeats = repeats
+    if let atlas = atlas {
+      self.scene = SlideshowScene(images: images, atlas: atlas, fps: fps, repeats: repeats)
+    } else {
+      self.scene = nil
+    }
   }
   
   public var body: some View {
-    TimelineView(.periodic(from: .now, by: 1 / fps)) { context in
-      SlideshowImageView(now: context.date, images: images, repeats: repeats)
+    if let scene = scene {
+      SpriteView(scene: scene, options: [.allowsTransparency])
+    } else {
+      TimelineView(.periodic(from: .now, by: 1 / fps)) { context in
+        SlideshowImageView(now: context.date, images: images, repeats: repeats)
+      }
+      .drawingGroup()
     }
-    .drawingGroup()
   }
 }
 
