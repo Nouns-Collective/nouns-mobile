@@ -55,6 +55,9 @@ public protocol Messaging: AnyObject {
   /// - Parameters:
   ///   - topic: The topic name to subscribe to, for example, @"sports".
   func unsubscribe(fromTopic topic: String) async throws
+
+  /// Notifies Analytics that a message was received
+  func appDidReceiveNotification(_ payload: [AnyHashable: Any])
   
   func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data)
 }
@@ -74,6 +77,9 @@ public class FirebaseMessaging: NSObject {
     }
     
     Firebase.Messaging.messaging().delegate = self
+
+    // Receive APNs events via the Notification Center delegate
+    UNUserNotificationCenter.current().delegate = self
   }
   
 }
@@ -121,21 +127,19 @@ extension FirebaseMessaging: Messaging {
       }
     }
   }
+
+  public func appDidReceiveNotification(_ payload: [AnyHashable: Any]) {
+    Firebase.Messaging.messaging().appDidReceiveMessage(payload)
+  }
   
   @MainActor
   public func requestAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool {
+
     let center = UNUserNotificationCenter.current()
-    
-    // Display notification (sent via APNS)
-    center.delegate = self
-    
+
     let authOptions: UNAuthorizationOptions = authorizationOptions
     async let requestAuthorization = center.requestAuthorization(options: authOptions)
-    
-    // Register for remote notification at all time in case
-    // the user has authorized notification from the settings.
-    application.registerForRemoteNotifications()
-    
+
     return try await requestAuthorization
   }
   
@@ -154,7 +158,9 @@ extension FirebaseMessaging: UNUserNotificationCenterDelegate {
   
   // Receive displayed notifications for iOS 10 devices.
   public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    
+
+    appDidReceiveNotification(notification.request.content.userInfo)
+
     // Change this to your preferred presentation option
     completionHandler([[.banner, .list, .sound]])
   }
