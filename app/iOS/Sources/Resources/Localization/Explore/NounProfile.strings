@@ -31,4 +31,4 @@
 // MARK: - Settled Auction
 
 "auction.settled.governance.nounder" = "Activity";
-"auction.settled.governance" = "Bid history & activity";
+"auction.settled.governance" = "Activity & bid history";

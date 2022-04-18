@@ -41,7 +41,7 @@ extension OffChainNounProfile {
       self.noun = noun
       self.service = service
       
-      nounBirthdate = noun.createdAt.formatted()
+      nounBirthdate = noun.createdAt.formatted(dateStyle: .long)
     }
     
     func deleteNoun() {

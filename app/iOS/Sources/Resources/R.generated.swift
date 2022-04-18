@@ -11766,10 +11766,10 @@ struct R: Rswift.Validatable {
       static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Activity
       static let auctionSettledGovernanceNounder = Rswift.StringResource(key: "auction.settled.governance.nounder", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Activity & bid history
+      static let auctionSettledGovernance = Rswift.StringResource(key: "auction.settled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Bid history
       static let auctionUnsettledGovernance = Rswift.StringResource(key: "auction.unsettled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Bid history & activity
-      static let auctionSettledGovernance = Rswift.StringResource(key: "auction.settled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Born %s
       static let birthday = Rswift.StringResource(key: "birthday", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Current bid
@@ -11813,6 +11813,19 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
+      /// Value: Activity & bid history
+      static func auctionSettledGovernance(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.settled.governance"
+        }
+
+        return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
       /// Value: Bid history
       static func auctionUnsettledGovernance(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
@@ -11824,19 +11837,6 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("auction.unsettled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
-
-      /// Value: Bid history & activity
-      static func auctionSettledGovernance(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.settled.governance"
-        }
-
-        return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
       /// Value: Born %s
