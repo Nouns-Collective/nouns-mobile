@@ -8,6 +8,7 @@
 import SwiftUI
 import UIComponents
 import Services
+import WidgetKit
 
 struct NounComposerKey: EnvironmentKey {
   static var defaultValue: NounComposer = AppCore.shared.nounComposer
@@ -56,8 +57,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
+    // Request to update all widgets contents.
+    WidgetCenter.shared.reloadAllTimelines()
+    
     AppCore.shared.messaging.appDidReceiveNotification(userInfo)
-    completionHandler(.noData)
+    completionHandler(.newData)
   }
   
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

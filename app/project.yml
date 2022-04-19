@@ -5,7 +5,7 @@ options:
   tabWidth: 2
   bundleIdPrefix: "wtf.nouns"
   groupOrdering:
-    - order: [iOS, WatchOS]
+    - order: [iOS, iOS Widgets, WatchOS]
 packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
@@ -44,13 +44,15 @@ targets:
       - package: Rswift
       - package: UIComponents
       - package: Services
+      - target: EverydayNounExtension
     scheme:
       testTargets:
         - Nouns iOS Tests
         - Nouns iOS UITests
     preBuildScripts:
-      - path: scripts/rswift.sh
-        name: R.swift
+      - name: R.swift
+        script: |
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Sources/Resources/R.generated.swift"
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
@@ -89,6 +91,40 @@ targets:
         INFOPLIST_FILE: iOS/NounsUITests/Info.plist
     dependencies:
       - target: Nouns
+
+# Noun Everyday (iOS Widget)
+  EverydayNounExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: iOS Widgets/EverydayNoun
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
+        GENERATE_INFOPLIST_FILE: 'YES'
+        INFOPLIST_FILE: iOS Widgets/EverydayNoun/Resources/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: EverydayNoun
+        INFOPLIST_KEY_NSHumanReadableCopyright: ''
+        IPHONEOS_DEPLOYMENT_TARGET: '15.0'
+        MARKETING_VERSION: '1.0'
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.EverydayNoun
+        SKIP_INSTALL: 'YES'
+        TARGETED_DEVICE_FAMILY: 1
+    preBuildScripts:
+      - name: R.swift
+        script: |
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS Widgets/EverydayNoun/Resources/R.generated.swift"
+        inputFiles:
+          - $TEMP_DIR/rswift-lastrun
+        outputFiles:
+          - $SRCROOT/iOS Widgets/EverydayNoun/Resources/R.generated.swift
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
+      - package: UIComponents
+      - package: Services
+      - package: Rswift
 
 # Nouns Watch App
   Nouns Watch:

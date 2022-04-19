@@ -39,9 +39,9 @@ excluded:
   - NounsUITests
   - NounsWatchTests
   - NounsWatchUITests
-  - iOS/Sources/Utils/R.generated.swift
   - iOS/NounsTests
-  - WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift
   - Shared/Services/Tests
   - Shared/Services/Sources/GraphQL/Internal
   - Shared/Tools/.build
+  - "*.generated.swift"
+  - DerivedData

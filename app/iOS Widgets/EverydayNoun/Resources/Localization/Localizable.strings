@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  Nouns
+
+  Created by Ziad Tamim on 16.04.22.
+  
+*/
+
+"widget_display_name" = "Everyday Noun";
+
+"widget_description" = "One noun, every day, forever.";
