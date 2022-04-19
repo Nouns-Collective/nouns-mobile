@@ -9,12 +9,26 @@ import SwiftUI
 import Services
 import Combine
 import UIComponents
+import SpriteKit
 
 /// Display the auction of the day in real time.
 struct LiveAuctionCard: View {
+  
   @ObservedObject var viewModel: ViewModel
   
   @State private var showNounProfile = false
+  
+  @State private var width: CGFloat = 100
+  
+  /// A view that displays an animated noun.
+  ///
+  /// - Returns: This view contains the play scene to animate the Noun's eyes.
+  private let talkingNoun: TalkingNoun
+  
+  init(viewModel: ViewModel) {
+    self.viewModel = viewModel
+    talkingNoun = TalkingNoun(seed: viewModel.auction.noun.seed)
+  }
   
   var body: some View {
     StandardCard(
@@ -25,8 +39,24 @@ struct LiveAuctionCard: View {
           .frame(width: 24, height: 24)
       },
       media: {
-        NounPuzzle(seed: viewModel.nounTrait)
-          .background(Color(hex: viewModel.nounBackground))
+        SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+          .background(
+            GeometryReader { proxy in
+              Color(hex: viewModel.nounBackground)
+                .onAppear {
+                  self.width = proxy.size.width
+                }
+            }
+          )
+          .frame(
+            minWidth: 100,
+            idealWidth: self.width,
+            maxWidth: .infinity,
+            minHeight: 100,
+            idealHeight: self.width,
+            maxHeight: .infinity,
+            alignment: .center
+          )
       },
       content: {
         HStack {

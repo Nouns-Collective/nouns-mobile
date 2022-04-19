@@ -29,6 +29,7 @@ struct OffChainNounProfile: View {
     VStack(spacing: 0) {
       // Build & Display the Noun.
       NounPuzzle(seed: viewModel.noun.seed)
+        .fixedSize(horizontal: false, vertical: true)
       
       ActionSheetStack(selection: $sheetState) {
         

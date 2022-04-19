@@ -7,6 +7,7 @@
 
 import Foundation
 import SpriteKit
+import Services
 
 extension TalkingNoun {
   
@@ -18,19 +19,46 @@ extension TalkingNoun {
       case active
     }
     
+    private class var nounComposer: NounComposer {
+      AppCore.shared.nounComposer
+    }
+    
     var state: State = .idle
     let eyesNode = SKSpriteNode()
     
-    private lazy var blinkTextures: [SKTexture] = {
-      loadTextures(atlas: "eyes-blink", prefix: "eyes-blink_", from: 1, to: 5)
-    }()
-    
-    init(frameSize: CGSize) {
-      let glassesFrameTexture = SKTexture(imageNamed: R.image.glassesFramesSquareBlack.name)
+    let blinkTextures: [SKTexture]
+    let shiftTextures: [SKTexture]
+
+    init(seed: Seed, frameSize: CGSize) {
+      guard let blinkTextures = Self.nounComposer.glasses[seed.glasses].textures["eyes-blink"] else {
+        fatalError("Couldn't load eye blink textures.")
+      }
+      
+      self.blinkTextures = blinkTextures.map {
+        let texture = SKTexture(imageNamed: $0)
+        texture.filteringMode = .nearest
+        return texture
+      }
+      
+      guard let shiftTextures = Self.nounComposer.glasses[seed.glasses].textures["eyes-shift"] else {
+        fatalError("Couldn't load eye shift textures.")
+      }
+      
+      self.shiftTextures = shiftTextures.map {
+        let texture = SKTexture(imageNamed: $0)
+        texture.filteringMode = .nearest
+        return texture
+      }
+      
+      guard let glassesFrame = Self.nounComposer.glasses[seed.glasses].textures["glasses-frame"]?.first else {
+        fatalError("Couldn't load eye shift textures.")
+      }
+      
+      let glassesFrameTexture = SKTexture(imageNamed: glassesFrame)
       glassesFrameTexture.filteringMode = .nearest
       super.init(texture: glassesFrameTexture, color: SKColor.clear, size: frameSize)
 
-      eyesNode.texture = SKTexture(imageNamed: R.image.eyesBlink_1.name)
+      eyesNode.texture = self.blinkTextures.first
       eyesNode.size = frameSize
       addChild(eyesNode)
       
@@ -64,10 +92,7 @@ extension TalkingNoun {
     }
     
     private func randomEye(_ node: SKNode, _ elapsedTime: CGFloat) {
-      let index = state == .active ? 0 : Int.random(in: 0...6)
-      let texture = SKTexture(imageNamed: "eyes-shift_\(index)")
-      texture.filteringMode = .nearest
-      eyesNode.texture = texture
+      eyesNode.texture = state == .active ? shiftTextures.first : shiftTextures.randomElement()
     }
   }
 }

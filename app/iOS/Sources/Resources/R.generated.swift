@@ -186,7 +186,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 420 images.
+  /// This `R.image` struct is generated, and contains static references to 467 images.
   struct image {
     /// Image `AppIcon_Preview`.
     static let appIcon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon_Preview")
@@ -562,6 +562,30 @@ struct R: Rswift.Validatable {
     static let createNounPizza = Rswift.ImageResource(bundle: R.hostingBundle, name: "create-noun-pizza")
     /// Image `explore-onboarding`.
     static let exploreOnboarding = Rswift.ImageResource(bundle: R.hostingBundle, name: "explore-onboarding")
+    /// Image `eyes-blink-fullblack_1`.
+    static let eyesBlinkFullblack_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_1")
+    /// Image `eyes-blink-fullblack_2`.
+    static let eyesBlinkFullblack_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_2")
+    /// Image `eyes-blink-fullblack_3`.
+    static let eyesBlinkFullblack_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_3")
+    /// Image `eyes-blink-fullblack_4`.
+    static let eyesBlinkFullblack_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_4")
+    /// Image `eyes-blink-red_1`.
+    static let eyesBlinkRed_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_1")
+    /// Image `eyes-blink-red_2`.
+    static let eyesBlinkRed_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_2")
+    /// Image `eyes-blink-red_3`.
+    static let eyesBlinkRed_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_3")
+    /// Image `eyes-blink-red_4`.
+    static let eyesBlinkRed_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_4")
+    /// Image `eyes-blink-rgb_1`.
+    static let eyesBlinkRgb_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_1")
+    /// Image `eyes-blink-rgb_2`.
+    static let eyesBlinkRgb_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_2")
+    /// Image `eyes-blink-rgb_3`.
+    static let eyesBlinkRgb_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_3")
+    /// Image `eyes-blink-rgb_4`.
+    static let eyesBlinkRgb_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_4")
     /// Image `eyes-blink_1`.
     static let eyesBlink_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_1")
     /// Image `eyes-blink_2`.
@@ -572,6 +596,42 @@ struct R: Rswift.Validatable {
     static let eyesBlink_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_4")
     /// Image `eyes-blink_5`.
     static let eyesBlink_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_5")
+    /// Image `eyes-shift-fullblack_1`.
+    static let eyesShiftFullblack_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_1")
+    /// Image `eyes-shift-fullblack_2`.
+    static let eyesShiftFullblack_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_2")
+    /// Image `eyes-shift-fullblack_3`.
+    static let eyesShiftFullblack_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_3")
+    /// Image `eyes-shift-fullblack_4`.
+    static let eyesShiftFullblack_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_4")
+    /// Image `eyes-shift-fullblack_5`.
+    static let eyesShiftFullblack_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_5")
+    /// Image `eyes-shift-fullblack_6`.
+    static let eyesShiftFullblack_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_6")
+    /// Image `eyes-shift-red_1`.
+    static let eyesShiftRed_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_1")
+    /// Image `eyes-shift-red_2`.
+    static let eyesShiftRed_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_2")
+    /// Image `eyes-shift-red_3`.
+    static let eyesShiftRed_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_3")
+    /// Image `eyes-shift-red_4`.
+    static let eyesShiftRed_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_4")
+    /// Image `eyes-shift-red_5`.
+    static let eyesShiftRed_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_5")
+    /// Image `eyes-shift-red_6`.
+    static let eyesShiftRed_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_6")
+    /// Image `eyes-shift-rgb_1`.
+    static let eyesShiftRgb_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_1")
+    /// Image `eyes-shift-rgb_2`.
+    static let eyesShiftRgb_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_2")
+    /// Image `eyes-shift-rgb_3`.
+    static let eyesShiftRgb_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_3")
+    /// Image `eyes-shift-rgb_4`.
+    static let eyesShiftRgb_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_4")
+    /// Image `eyes-shift-rgb_5`.
+    static let eyesShiftRgb_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_5")
+    /// Image `eyes-shift-rgb_6`.
+    static let eyesShiftRgb_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_6")
     /// Image `eyes-shift_0`.
     static let eyesShift_0 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_0")
     /// Image `eyes-shift_1`.
@@ -588,6 +648,40 @@ struct R: Rswift.Validatable {
     static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
     /// Image `glasses-frames-square-black`.
     static let glassesFramesSquareBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-frames-square-black")
+    /// Image `glasses-hip-rose`.
+    static let glassesHipRose = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-hip-rose")
+    /// Image `glasses-square-blue-med-saturated`.
+    static let glassesSquareBlueMedSaturated = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-blue-med-saturated")
+    /// Image `glasses-square-blue`.
+    static let glassesSquareBlue = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-blue")
+    /// Image `glasses-square-frog-green`.
+    static let glassesSquareFrogGreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-frog-green")
+    /// Image `glasses-square-green-blue-multi`.
+    static let glassesSquareGreenBlueMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-green-blue-multi")
+    /// Image `glasses-square-grey-light`.
+    static let glassesSquareGreyLight = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-grey-light")
+    /// Image `glasses-square-guava`.
+    static let glassesSquareGuava = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-guava")
+    /// Image `glasses-square-honey`.
+    static let glassesSquareHoney = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-honey")
+    /// Image `glasses-square-magenta`.
+    static let glassesSquareMagenta = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-magenta")
+    /// Image `glasses-square-orange`.
+    static let glassesSquareOrange = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-orange")
+    /// Image `glasses-square-pink-purple-multi`.
+    static let glassesSquarePinkPurpleMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-pink-purple-multi")
+    /// Image `glasses-square-red`.
+    static let glassesSquareRed = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-red")
+    /// Image `glasses-square-smoke`.
+    static let glassesSquareSmoke = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-smoke")
+    /// Image `glasses-square-teal`.
+    static let glassesSquareTeal = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-teal")
+    /// Image `glasses-square-watermelon`.
+    static let glassesSquareWatermelon = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-watermelon")
+    /// Image `glasses-square-yellow-orange-multi`.
+    static let glassesSquareYellowOrangeMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-yellow-orange-multi")
+    /// Image `glasses-square-yellow-saturated`.
+    static let glassesSquareYellowSaturated = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-yellow-saturated")
     /// Image `head-ape-mouth-1`.
     static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
     /// Image `head-ape-mouth-2`.
@@ -2339,6 +2433,90 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_1", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_2", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_3", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_4", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_1", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_2", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_3", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_4", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_1", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_2", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_3", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_4", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "eyes-blink_1", bundle: ..., traitCollection: ...)`
     static func eyesBlink_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_1, compatibleWith: traitCollection)
@@ -2370,6 +2548,132 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-blink_5", bundle: ..., traitCollection: ...)`
     static func eyesBlink_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_1", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_2", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_3", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_4", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_5", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_6", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_1", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_2", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_3", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_4", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_5", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_6", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_1", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_2", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_3", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_4", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_5", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_6", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_6, compatibleWith: traitCollection)
     }
     #endif
 
@@ -2426,6 +2730,125 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "glasses-frames-square-black", bundle: ..., traitCollection: ...)`
     static func glassesFramesSquareBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.glassesFramesSquareBlack, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-hip-rose", bundle: ..., traitCollection: ...)`
+    static func glassesHipRose(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesHipRose, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-blue", bundle: ..., traitCollection: ...)`
+    static func glassesSquareBlue(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareBlue, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-blue-med-saturated", bundle: ..., traitCollection: ...)`
+    static func glassesSquareBlueMedSaturated(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareBlueMedSaturated, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-frog-green", bundle: ..., traitCollection: ...)`
+    static func glassesSquareFrogGreen(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareFrogGreen, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-green-blue-multi", bundle: ..., traitCollection: ...)`
+    static func glassesSquareGreenBlueMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareGreenBlueMulti, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-grey-light", bundle: ..., traitCollection: ...)`
+    static func glassesSquareGreyLight(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareGreyLight, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-guava", bundle: ..., traitCollection: ...)`
+    static func glassesSquareGuava(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareGuava, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-honey", bundle: ..., traitCollection: ...)`
+    static func glassesSquareHoney(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareHoney, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-magenta", bundle: ..., traitCollection: ...)`
+    static func glassesSquareMagenta(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareMagenta, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-orange", bundle: ..., traitCollection: ...)`
+    static func glassesSquareOrange(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareOrange, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-pink-purple-multi", bundle: ..., traitCollection: ...)`
+    static func glassesSquarePinkPurpleMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquarePinkPurpleMulti, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-red", bundle: ..., traitCollection: ...)`
+    static func glassesSquareRed(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareRed, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-smoke", bundle: ..., traitCollection: ...)`
+    static func glassesSquareSmoke(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareSmoke, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-teal", bundle: ..., traitCollection: ...)`
+    static func glassesSquareTeal(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareTeal, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-watermelon", bundle: ..., traitCollection: ...)`
+    static func glassesSquareWatermelon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareWatermelon, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-yellow-orange-multi", bundle: ..., traitCollection: ...)`
+    static func glassesSquareYellowOrangeMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareYellowOrangeMulti, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-yellow-saturated", bundle: ..., traitCollection: ...)`
+    static func glassesSquareYellowSaturated(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareYellowSaturated, compatibleWith: traitCollection)
     }
     #endif
 

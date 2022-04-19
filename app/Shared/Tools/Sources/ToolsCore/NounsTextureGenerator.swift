@@ -1,9 +1,14 @@
 //
-//  Nouns.swift
+//  NounsTextureGenerator.swift
 //  
 //
 //  Created by Ziad Tamim on 12.02.22.
 //
+
+/// This script is to be used to generate a json file describing all the traits and it's additional textures for animation purposes,
+/// such a set of eye blinking frames to match a set of glasses or animated mouth frames to match a noun head.
+///
+/// It uses the
 
 import Foundation
 import TabularData
@@ -39,12 +44,12 @@ struct Trait: Codable {
     data = try container.decode(String.self, forKey: .data)
     name = try container.decode(String.self, forKey: .name)
     
-    guard let headToMouthTexture = decoder.userInfo[.headToMouthTexture] as? [String: [String]], let mouthTexture = headToMouthTexture[name] else {
+    guard let allTextures = decoder.userInfo[.textures] as? [String: [String: [String]]], let traitTextures = allTextures[name] else {
       textures = [:]
       return
     }
     
-    textures = ["mouth": mouthTexture]
+    textures = traitTextures
   }
   
   func encode(to encoder: Encoder) throws {
@@ -66,26 +71,59 @@ public struct NounsTextureGenerator: ParsableCommand {
     let dataFrame = try loadCSV(at: inputFileURL)
     
     // Convert the loaded CSV file to json.
-    var headToMouthTexture = [String: [String]]()
+    var textures = [String: [String: [String]]]()
     
     // Iterate through the CSV data & build the head to mouth structure.
     let fileExtension = "png"
     
+    // Head -> mouth
     for row in dataFrame.rows {
       guard let head = row["head", String.self]?.delete(fileExtension),
             let mouth1 = row["mouth-1", String.self]?.delete(fileExtension),
             let mouth2 = row["mouth-2", String.self]?.delete(fileExtension),
             let mouth3 = row["mouth-3", String.self]?.delete(fileExtension),
             let mouth4 = row["mouth-4", String.self]?.delete(fileExtension)
-      else {
-        fatalError("💥 Couldn't parse mouth texture of \(row)")
+      else { continue }
+      
+      if textures[head] == nil {
+        textures[head] = ["mouth": [mouth1, mouth2, mouth3, mouth4]]
+      } else {
+        textures[head]?["mouth"] = [mouth1, mouth2, mouth3, mouth4]
       }
-      
-      headToMouthTexture[head] = [mouth1, mouth2, mouth3, mouth4]
     }
+    
+    // Glasses -> glasses-frame + eyes
+    for row in dataFrame.rows {
+      guard let glasses = row["glasses", String.self]?.delete(fileExtension),
+            let glassesFrame = row["glasses-frame", String.self]?.delete(fileExtension),
+            let eyesBlink1 = row["eyes-blink-1", String.self]?.delete(fileExtension),
+            let eyesBlink2 = row["eyes-blink-2", String.self]?.delete(fileExtension),
+            let eyesBlink3 = row["eyes-blink-3", String.self]?.delete(fileExtension),
+            let eyesBlink4 = row["eyes-blink-4", String.self]?.delete(fileExtension),
+            let eyesBlink5 = row["eyes-blink-5", String.self]?.delete(fileExtension),
+            let eyesShift1 = row["eyes-shift-1", String.self]?.delete(fileExtension),
+            let eyesShift2 = row["eyes-shift-2", String.self]?.delete(fileExtension),
+            let eyesShift3 = row["eyes-shift-3", String.self]?.delete(fileExtension),
+            let eyesShift4 = row["eyes-shift-4", String.self]?.delete(fileExtension),
+            let eyesShift5 = row["eyes-shift-5", String.self]?.delete(fileExtension),
+            let eyesShift6 = row["eyes-shift-6", String.self]?.delete(fileExtension)
+      else { continue }
       
+      if textures[glasses] == nil {
+        textures[glasses] = [
+          "glasses-frame": [glassesFrame],
+          "eyes-blink": [eyesBlink1, eyesBlink2, eyesBlink3, eyesBlink4, eyesBlink5],
+          "eyes-shift": [eyesShift1, eyesShift2, eyesShift3, eyesShift4, eyesShift5, eyesShift6]
+        ]
+      } else {
+        textures[glasses]?["glasses-frame"] = [glassesFrame]
+        textures[glasses]?["eyes-blink"] = [eyesBlink1, eyesBlink2, eyesBlink3, eyesBlink4, eyesBlink5]
+        textures[glasses]?["eyes-shift"] = [eyesShift1, eyesShift2, eyesShift3, eyesShift4, eyesShift5, eyesShift6]
+      }
+    }
+        
     // Alter the noun layers data to introduce the animation.
-    let layers = try loadNounsLayers(userInfo: headToMouthTexture)
+    let layers = try loadNounsLayers(userInfo: textures)
     
     var outputFileURL = inputFileURL.deletingLastPathComponent()
     outputFileURL.appendPathComponent("nouns-traits-layers.json")
@@ -94,7 +132,7 @@ public struct NounsTextureGenerator: ParsableCommand {
     try decodedData.write(to: outputFileURL)
   }
   
-  private func loadNounsLayers(userInfo: [String: [String]]) throws -> Layer {
+  private func loadNounsLayers(userInfo: [String: [String: [String]]]) throws -> Layer {
     let filename = "nouns-traits-layers"
     let fileExtension = "json"
     
@@ -106,7 +144,7 @@ public struct NounsTextureGenerator: ParsableCommand {
     }
     
     let jsonDecoder = JSONDecoder()
-    jsonDecoder.userInfo = [.headToMouthTexture: userInfo]
+    jsonDecoder.userInfo = [.textures: userInfo]
     
     let data = try Data(contentsOf: url)
     return try jsonDecoder.decode(Layer.self, from: data)
@@ -118,7 +156,7 @@ public struct NounsTextureGenerator: ParsableCommand {
     let readingOptions = CSVReadingOptions(
       hasHeaderRow: true,
       ignoresEmptyLines: true,
-      delimiter: ";"
+      delimiter: ","
     )
     
     return try DataFrame(
@@ -129,5 +167,5 @@ public struct NounsTextureGenerator: ParsableCommand {
 }
 
 extension CodingUserInfoKey {
-    static let headToMouthTexture = CodingUserInfoKey(rawValue: "HeadToMouthTexture")!
+    static let textures = CodingUserInfoKey(rawValue: "textures")!
 }

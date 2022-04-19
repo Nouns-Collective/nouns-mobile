@@ -8,6 +8,7 @@
 import SwiftUI
 import UIComponents
 import Services
+import SpriteKit
 
 struct NounProfileInfo: View {
   @StateObject var viewModel: ViewModel
@@ -58,11 +59,45 @@ struct NounProfileInfo: View {
     }
   }
   
+  /// A view that displays an animated noun.
+  ///
+  /// - Returns: This view contains the play scene to animate the Noun's eyes.
+  private let talkingNoun: TalkingNoun
+  
+  @State private var width: CGFloat = 100 
+  
+  public init(viewModel: ViewModel) {
+    self._viewModel = StateObject(wrappedValue: viewModel)
+    talkingNoun = TalkingNoun(seed: viewModel.auction.noun.seed)
+  }
+  
   var body: some View {
     NavigationView {
       VStack(spacing: 0) {
         Spacer()
-        NounPuzzle(seed: viewModel.nounTraits)
+        
+        if !viewModel.isAuctionSettled {
+          SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+            .background(
+              GeometryReader { proxy in
+                Color.clear
+                  .onAppear {
+                    self.width = proxy.size.width
+                  }
+              }
+            )
+            .frame(
+              minWidth: 100,
+              idealWidth: self.width,
+              maxWidth: .infinity,
+              minHeight: 100,
+              idealHeight: self.width,
+              maxHeight: .infinity,
+              alignment: .center
+            )
+        } else {
+          NounPuzzle(seed: viewModel.nounTraits)
+        }
         
         PlainCell(length: 20) {
           toolbarContent
