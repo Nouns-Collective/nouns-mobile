@@ -35,8 +35,7 @@ extension NounCreator {
     
     var body: some View {
       ActionSheet(
-        title: R.string.nounDeleteDialog.title(),
-        borderColor: nil
+        title: R.string.nounDeleteDialog.title()
       ) {
         VStack(alignment: .leading) {
           Text(R.string.nounDeleteDialog.message())
@@ -79,8 +78,7 @@ extension NounCreator {
     
     var body: some View {
       ActionSheet(
-        title: R.string.nounDiscardEditDialog.title(),
-        borderColor: nil
+        title: R.string.nounDiscardEditDialog.title()
       ) {
         VStack(alignment: .leading) {
           Text(R.string.nounDiscardEditDialog.message())

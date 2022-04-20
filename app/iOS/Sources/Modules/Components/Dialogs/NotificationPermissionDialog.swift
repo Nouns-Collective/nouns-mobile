@@ -27,8 +27,7 @@ struct NotificationPermissionDialog: View {
   var body: some View {
     ActionSheet(
       icon: Image(R.image.bellNoun.name),
-      title: R.string.notificationPermission.title(),
-      borderColor: nil
+      title: R.string.notificationPermission.title()
     ) {
       
       Text(R.string.notificationPermission.body())

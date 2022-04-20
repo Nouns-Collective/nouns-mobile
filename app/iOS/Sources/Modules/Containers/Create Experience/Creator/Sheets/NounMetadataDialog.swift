@@ -20,7 +20,6 @@ extension NounCreator {
         title: "Beets Battlestar Galactica",
         isEditing: true,
         placeholder: R.string.createNounDialog.inputPlaceholder(),
-        borderColor: nil,
         text: $viewModel.nounName
       ) {
         VStack(alignment: .leading) {

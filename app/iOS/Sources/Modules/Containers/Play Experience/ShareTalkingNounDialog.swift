@@ -26,8 +26,7 @@ struct ShareTalkingNounDialog: View {
   
   var body: some View {
     ActionSheet(
-      title: "Share it!",
-      borderColor: nil
+      title: "Share it!"
     ) {
       Text("Get ready! Your video will be ready soon.")
         .font(.custom(.regular, relativeTo: .subheadline))

@@ -20,8 +20,7 @@ extension OffChainNounProfile {
     
     var body: some View {
       ActionSheet(
-        title: R.string.nounDeleteDialog.title(),
-        borderColor: nil
+        title: R.string.nounDeleteDialog.title()
       ) {
         Text(R.string.nounDeleteDialog.message())
           .font(.custom(.regular, relativeTo: .subheadline))

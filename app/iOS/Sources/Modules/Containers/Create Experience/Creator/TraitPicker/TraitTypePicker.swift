@@ -45,7 +45,7 @@ extension NounCreator {
     var body: some View {
       PlainCell(
         background: viewModel.isExpanded ? Color.white : nil,
-        borderColor: viewModel.isExpanded ? Color.black : nil
+        borderColor: viewModel.isExpanded ? Color.black : Color.clear
       ) {
         VStack(spacing: 0) {
           VStack(spacing: 0) {
