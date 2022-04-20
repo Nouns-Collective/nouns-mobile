@@ -8,6 +8,4 @@
 
 "title" = "What is this?";
 
-"description" = "Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun %@ was owned by %@, they could vote on proposals to the DAO and this is their voting activity.";
-
-"descriptionNoOwner" = "Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once a noun has an owner, the owner could vote on proposals to the DAO and this page would show their voting activity.";
+"description" = "Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.";

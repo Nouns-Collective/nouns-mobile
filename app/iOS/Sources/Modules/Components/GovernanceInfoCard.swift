@@ -40,12 +40,8 @@ struct GovernanceInfoCard: View {
           })
       }
       
-      if let nounId = nounId, let owner = owner {
-        Text(R.string.nounDAOInfo.description(nounId, domain ?? owner))
-          .font(.custom(.regular, relativeTo: .subheadline))
-          .lineSpacing(5)
-      } else {
-        Text(R.string.nounDAOInfo.descriptionNoOwner())
+      if let nounId = nounId {
+        Text(R.string.nounDAOInfo.description(nounId))
           .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(5)
       }
