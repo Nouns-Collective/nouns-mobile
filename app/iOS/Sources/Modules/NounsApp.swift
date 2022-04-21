@@ -26,11 +26,12 @@ extension EnvironmentValues {
 @main
 struct NounsApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-  private var nounComposer = AppCore.shared.nounComposer
-  
-  let bottomSheetManager = BottomSheetManager()
+  private let nounComposer: NounComposer
+  private let bottomSheetManager = BottomSheetManager()
   
   init() {
+    BackgroundNotifications.configure()
+    nounComposer = AppCore.shared.nounComposer
     UIComponents.configure()
   }
   
@@ -66,5 +67,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     AppCore.shared.messaging.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
+    Task {
+      await BackgroundNotifications.subscribe()
+    }
   }
 }

@@ -53,7 +53,7 @@ public protocol Messaging: AnyObject {
   /// Asynchronously unsubscribe from the provided topic, retrying on failure.
   ///
   /// - Parameters:
-  ///   - topic: The topic name to subscribe to, for example, @"sports".
+  ///   - topic: The topic name to unsubscribe from, for example, @"sports".
   func unsubscribe(fromTopic topic: String) async throws
 
   /// Notifies Analytics that a message was received
