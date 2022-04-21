@@ -292,15 +292,6 @@ public struct Auction: Equatable, Decodable, Identifiable {
   public var hasEnded: Bool {
     Date().timeIntervalSince1970 > endTime
   }
-  
-  /// Calculate the time left for the auction to end.
-  public var timeLeft: DateComponents {
-    Calendar.current.dateComponents(
-      [.hour, .minute, .second],
-      from: .now,
-      to: Date(timeIntervalSince1970: endTime)
-    )
-  }
 }
 
 /// The auction's Bid

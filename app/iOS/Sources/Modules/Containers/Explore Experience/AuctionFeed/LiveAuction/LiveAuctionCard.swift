@@ -60,30 +60,31 @@ struct LiveAuctionCard: View {
       },
       content: {
         HStack {
-          if viewModel.isWinnerAnnounced {
-            // Displays the winner.
-            CompoundLabel({
-              ENSText(token: viewModel.winner)
-                .font(.custom(.medium, relativeTo: .footnote))
-            }, icon: Image.crown, caption: R.string.liveAuction.winner())
-            
-          } else {
-            // Displays remaining time.
-            CompoundLabel({
-              Text(viewModel.remainingTime) },
-                          icon: Image.timeleft,
-                          caption: R.string.liveAuction.timeLeftLabel())
+          Group {
+            if viewModel.isWinnerAnnounced {
+              // Displays the winner.
+              CompoundLabel({
+                ENSText(token: viewModel.winner)
+                  .font(.custom(.medium, relativeTo: .footnote))
+              }, icon: Image.crown, caption: R.string.liveAuction.winner())
+              
+            } else {
+              // Displays remaining time.
+              CompoundLabel({
+                CountdownLabel(endTime: viewModel.auction.endTime)
+              },
+              icon: Image.timeleft,
+              caption: R.string.liveAuction.timeLeftLabel())
+            }
           }
-          
-          Spacer()
+          .frame(maxWidth: .infinity, alignment: .leading)
           
           // Displays Bid Status.
           CompoundLabel({
             SafeLabel(viewModel.lastBid, icon: Image.eth) },
                         icon: Image.currentBid,
                         caption: viewModel.bidStatus)
-          
-          Spacer()
+          .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.top, 20)
       })

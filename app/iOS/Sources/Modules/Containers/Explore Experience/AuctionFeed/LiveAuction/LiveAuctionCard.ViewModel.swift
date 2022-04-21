@@ -17,7 +17,6 @@ extension LiveAuctionCard {
     @Published private(set) var nounBackground: String
     @Published private(set) var bidStatus: String
     @Published private(set) var lastBid: String
-    @Published private(set) var remainingTime: String
     @Published private(set) var winner = ""
     /// Indicate whether the auction time is over.
     @Published private(set) var isWinnerAnnounced = false
@@ -48,22 +47,10 @@ extension LiveAuctionCard {
       if auction.hasEnded {
         bidStatus = localize.winningBid()
         winner = auction.bidder?.id ?? "N/A"
-        remainingTime = "00h:00m:00s"
       } else {
         // Calculating the time left for the auction to end.
-        let timeLeft = Self.formatTimeLeft(auction.timeLeft)
-        remainingTime = timeLeft ?? R.string.shared.notApplicable()
         bidStatus = localize.currentBid()
       }
-    }
-    
-    private static func formatTimeLeft(_ components: DateComponents) -> String? {
-      guard let hour = components.hour,
-            let minute = components.minute,
-            let second = components.second
-      else { return nil }
-      
-      return R.string.liveAuction.timeLeft(hour, minute, second)
     }
   }
 }
