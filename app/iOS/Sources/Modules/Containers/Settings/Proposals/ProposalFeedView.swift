@@ -71,6 +71,7 @@ struct ProposalFeedView: View {
       )
     }
     .onAppear {
+      viewModel.onAppear()
       outlineTabBarVisibility.hide()
     }
   }

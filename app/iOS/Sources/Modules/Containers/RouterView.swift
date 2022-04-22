@@ -60,17 +60,19 @@ struct RouterView: View {
   var body: some View {
     
     ZStack(alignment: .bottom) {
-      TabView(selection: $selectedTab) {
-        ExploreExperience()
-          .tag(Page.explore)
-        
-        CreateExperience()
-          .tag(Page.create)
-        
-        AboutView()
-          .tag(Page.about)
+      if !isOnboardingPresented {
+        TabView(selection: $selectedTab) {
+          ExploreExperience()
+            .tag(Page.explore)
+
+          CreateExperience()
+            .tag(Page.create)
+
+          AboutView()
+            .tag(Page.about)
+        }
+        .ignoresSafeArea(.all)
       }
-      .ignoresSafeArea(.all)
       
       OutlineTabBar(selection: $selectedTab, items)
     }

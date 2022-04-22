@@ -52,5 +52,15 @@ extension NounProfileInfo {
         }
       }
     }
+
+    func onAppear() {
+      let screen = isAuctionSettled ? AnalyticsEvent.Screen.settledNounProfile
+                                    : AnalyticsEvent.Screen.auctionNounProfile
+      AppCore.shared.analytics.logScreenView(withScreen: screen)
+
+      let parameters: [String: Any] = ["noun_id": auction.noun.id, "is_auction_noun": !isAuctionSettled]
+      AppCore.shared.analytics.logEvent(withEvent: AnalyticsEvent.Event.viewNounProfile,
+                                        parameters: parameters)
+    }
   }
 }

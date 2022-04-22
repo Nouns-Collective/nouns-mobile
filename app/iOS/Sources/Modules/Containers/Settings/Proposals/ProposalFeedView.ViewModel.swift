@@ -43,5 +43,9 @@ extension ProposalFeedView {
         isLoading = false
       }
     }
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.proposals)
+    }
   }
 }

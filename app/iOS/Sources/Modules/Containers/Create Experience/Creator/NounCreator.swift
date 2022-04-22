@@ -99,6 +99,8 @@ struct NounCreator: View {
       }
     }
     .onShake {
+      viewModel.onShake()
+
       viewModel.showAllTraits()
 
       withAnimation(.spring(response: 2.0, dampingFraction: 1.0, blendDuration: 1.0)) {
@@ -110,6 +112,7 @@ struct NounCreator: View {
       }
     }
     .onAppear {
+      viewModel.onAppear()
       viewModel.showCoachmarkGuide()
     }
   }

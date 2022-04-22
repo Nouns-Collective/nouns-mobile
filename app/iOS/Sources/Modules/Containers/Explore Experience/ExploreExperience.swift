@@ -47,5 +47,6 @@ struct ExploreExperience: View {
         await viewModel.listenLiveAuctionChanges()
       }
     }
+    .onAppear(perform: viewModel.onAppear)
   }
 }

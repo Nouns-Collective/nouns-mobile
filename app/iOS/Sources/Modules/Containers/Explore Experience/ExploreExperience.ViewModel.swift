@@ -111,5 +111,9 @@ extension ExploreExperience {
         return !keys.contains(auction.id)
       }
     }
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.explore)
+    }
   }
 }

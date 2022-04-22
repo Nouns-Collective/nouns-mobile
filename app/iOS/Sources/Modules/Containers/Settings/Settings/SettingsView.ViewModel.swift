@@ -52,6 +52,9 @@ extension SettingsView {
         
         await settingsStore.setNounOClockNotification(isEnabled: isEnabled)
         await refreshNotificationStates()
+        AppCore.shared.analytics.logEvent(
+          withEvent: AnalyticsEvent.Event.setNounOClockNotificationPermission,
+          parameters: ["enabled": isEnabled])
       }
     }
     
@@ -64,6 +67,9 @@ extension SettingsView {
 
         await settingsStore.setNewNounNotification(isEnabled: isEnabled)
         await refreshNotificationStates()
+        AppCore.shared.analytics.logEvent(
+          withEvent: AnalyticsEvent.Event.setNewNounNotificationPermission,
+          parameters: ["enabled": isEnabled])
       }
     }
     
@@ -85,6 +91,10 @@ extension SettingsView {
       default:
         break
       }
+    }
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.settings)
     }
   }
 }

@@ -43,6 +43,8 @@ struct OnboardingContent: ViewModifier {
 }
 
 struct OnboardingView: View {
+  @StateObject var viewModel = ViewModel()
+
   @State private var selectedPage: Page = .intro
   
   @Binding private var isPresented: Bool
@@ -79,6 +81,7 @@ struct OnboardingView: View {
       .navigationTitle("")
       .navigationBarHidden(true)
       .navigationBarBackButtonHidden(true)
+      .onAppear(perform: viewModel.onAppear)
     }
   }
 }

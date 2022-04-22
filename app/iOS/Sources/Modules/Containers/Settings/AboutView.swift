@@ -9,6 +9,8 @@ import SwiftUI
 import UIComponents
 
 struct AboutView: View {
+  @StateObject var viewModel = ViewModel()
+
   @Environment(\.outlineTabViewHeight) var tabBarHeight
   @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
 
@@ -53,6 +55,7 @@ struct AboutView: View {
         AboutNounsView(isPresented: $isAboutNounsPresented)
       })
       .onAppear {
+        viewModel.onAppear()
         outlineTabBarVisibility.show()
       }
     }

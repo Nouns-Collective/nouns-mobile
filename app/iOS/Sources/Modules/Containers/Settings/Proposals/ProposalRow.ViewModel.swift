@@ -28,5 +28,10 @@ extension ProposalRow {
     var proposalURL: URL? {
       URL(string: "https://nouns.wtf/vote/\(proposal.id)")
     }
+
+    func onPresent() {
+      AppCore.shared.analytics.logEvent(withEvent: AnalyticsEvent.Event.viewProposal,
+                                        parameters: ["proposal_id": proposal.id])
+    }
   }
 }

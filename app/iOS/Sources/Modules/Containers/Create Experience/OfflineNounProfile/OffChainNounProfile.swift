@@ -72,9 +72,15 @@ struct OffChainNounProfile: View {
       
       if let imageData = viewModel.exportImageData,
          let image = UIImage(data: imageData) {
-        ShareSheet(activityItems: [image], imageMetadata: image,
-                   titleMetadata: viewModel.noun.name)
+        ShareSheet(activityItems: [image],
+                   imageMetadata: image,
+                   titleMetadata: viewModel.noun.name
+        )
+        .onAppear(perform: viewModel.onShare)
       }
+    }
+    .onAppear {
+      viewModel.onAppear()
     }
   }
 }

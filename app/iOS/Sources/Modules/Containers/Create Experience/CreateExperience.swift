@@ -62,6 +62,7 @@ struct CreateExperience: View {
       .fullScreenCover(isPresented: $viewModel.isCreatorPresented) {
         NounCreator(viewModel: .init(initialSeed: viewModel.initialSeed))
       }
+      .onAppear(perform: viewModel.onAppear)
       .onDisappear {
         // Randomize noun everytime tab is revisited
         viewModel.randomizeNoun()

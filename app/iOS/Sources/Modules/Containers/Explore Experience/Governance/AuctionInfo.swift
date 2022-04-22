@@ -73,5 +73,6 @@ struct AuctionInfo: View {
         owner: viewModel.auction.bidder?.id
       )
     }
+    .onAppear(perform: viewModel.onAppear)
   }
 }

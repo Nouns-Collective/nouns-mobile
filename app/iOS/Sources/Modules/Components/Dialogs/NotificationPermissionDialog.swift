@@ -40,6 +40,8 @@ struct NotificationPermissionDialog: View {
         largeAccessory: { Image.PointRight.standard },
         action: {
           withAnimation {
+            AppCore.shared.analytics.logEvent(withEvent: AnalyticsEvent.Event.requestNotificationPermission,
+                                              parameters: nil)
             setUpMessaging()
             isPresented.toggle()
           }
@@ -65,10 +67,13 @@ struct NotificationPermissionDialog: View {
     
     Task {
       // Requests APNs authorization.
-      _ = try await messaging.requestAuthorization(
+      let enabled = try await messaging.requestAuthorization(
         UIApplication.shared,
         authorizationOptions: [.alert, .badge, .sound]
       )
+
+      AppCore.shared.analytics.logEvent(withEvent: AnalyticsEvent.Event.setNotificationPermission,
+                                        parameters: ["enabled": enabled])
       
       // Subscribe to topics on APNs registration.
       await settingsStore.setAllNotifications(isEnabled: true)

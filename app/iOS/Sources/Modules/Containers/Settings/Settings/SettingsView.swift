@@ -74,6 +74,7 @@ struct SettingsView: View {
       isPresented: $viewModel.isNotificationPermissionDialogPresented
     )
     .onAppear {
+      viewModel.onAppear()
       outlineTabBarVisibility.hide()
     }
     .onboarding($showOnboarding)

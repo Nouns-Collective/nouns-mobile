@@ -139,6 +139,7 @@ struct NounProfileInfo: View {
     }
     .notificationPermissionDialog(isPresented: $viewModel.isNotificationPermissionDialogPresented)
     .addBottomSheet()
+    .onAppear(perform: viewModel.onAppear)
   }
 }
 

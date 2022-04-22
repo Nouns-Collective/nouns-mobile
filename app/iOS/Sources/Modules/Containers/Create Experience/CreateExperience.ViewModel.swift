@@ -24,5 +24,9 @@ extension CreateExperience {
     func randomizeNoun() {
       initialSeed = AppCore.shared.nounComposer.randomSeed()
     }
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.create)
+    }
   }
 }

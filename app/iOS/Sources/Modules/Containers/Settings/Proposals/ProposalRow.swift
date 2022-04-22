@@ -33,6 +33,7 @@ struct ProposalRow: View {
       }.padding()
     }
     .onTapGesture {
+      viewModel.onPresent()
       isDescriptionPresented.toggle()
     }
     .fullScreenCover(isPresented: $isDescriptionPresented) {
