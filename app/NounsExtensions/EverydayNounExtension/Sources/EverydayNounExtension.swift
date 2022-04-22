@@ -73,7 +73,7 @@ struct EverydayNounEntryView: View {
 }
 
 @main
-struct EverydayNoun: Widget {
+struct EverydayNounExtension: Widget {
   let kind: String = "EverydayNoun"
   
   var body: some WidgetConfiguration {

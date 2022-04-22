@@ -5,7 +5,7 @@ options:
   tabWidth: 2
   bundleIdPrefix: "wtf.nouns"
   groupOrdering:
-    - order: [iOS, iOS Widgets, WatchOS]
+    - order: [iOS, iOS Extensions, WatchOS]
 packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
@@ -45,6 +45,7 @@ targets:
       - package: UIComponents
       - package: Services
       - target: EverydayNounExtension
+      - target: NounOClockNotificationExtension
     scheme:
       testTargets:
         - Nouns iOS Tests
@@ -97,34 +98,52 @@ targets:
     type: app-extension
     platform: iOS
     sources:
-      - path: iOS Widgets/EverydayNoun
+      - path: NounsExtensions/EverydayNounExtension
     settings:
       base:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
         GENERATE_INFOPLIST_FILE: 'YES'
-        INFOPLIST_FILE: iOS Widgets/EverydayNoun/Resources/Info.plist
-        INFOPLIST_KEY_CFBundleDisplayName: EverydayNoun
+        INFOPLIST_FILE: NounsExtensions/EverydayNounExtension/Resources/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Everyday Noun
         INFOPLIST_KEY_NSHumanReadableCopyright: ''
         IPHONEOS_DEPLOYMENT_TARGET: '15.0'
         MARKETING_VERSION: '1.0'
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.EverydayNoun
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.EverydayNounExtension
         SKIP_INSTALL: 'YES'
         TARGETED_DEVICE_FAMILY: 1
     preBuildScripts:
       - name: R.swift
         script: |
-          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS Widgets/EverydayNoun/Resources/R.generated.swift"
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/NounsExtensions/EverydayNounExtension/Resources/R.generated.swift"
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/iOS Widgets/EverydayNoun/Resources/R.generated.swift
+          - $SRCROOT/NounsExtensions/EverydayNounExtension/Resources/R.generated.swift
     dependencies:
       - sdk: SwiftUI.framework
       - sdk: WidgetKit.framework
       - package: UIComponents
       - package: Services
       - package: Rswift
+
+# Noun O'Clock Notification Service
+  NounOClockNotificationExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: NounsExtensions/NounOClockNotificationExtension
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: 'YES'
+        INFOPLIST_FILE: NounsExtensions/NounOClockNotificationExtension/Resources/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Noun Oclock Notification
+        INFOPLIST_KEY_NSHumanReadableCopyright: ''
+        IPHONEOS_DEPLOYMENT_TARGET: '15.0'
+        MARKETING_VERSION: '1.0'
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.OclockRichNotification
+        SKIP_INSTALL: 'YES'
+        TARGETED_DEVICE_FAMILY: 1
 
 # Nouns Watch App
   Nouns Watch:
@@ -146,10 +165,10 @@ targets:
     platform: watchOS
     deploymentTarget: "8.0"
     sources:
-      - path: WatchOS/NounsWatch WatchKit Extension
+      - path: WatchOS/NounsWatchKitExtension
     settings:
       base:
-        INFOPLIST_FILE:  WatchOS/NounsWatch WatchKit Extension/Info.plist
+        INFOPLIST_FILE:  WatchOS/NounsWatchKitExtension/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.watchextension
     dependencies:
       - package: Rswift
@@ -158,12 +177,12 @@ targets:
         - Nouns Watch Tests
     preBuildScripts:
       - script: |
-                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift"
+                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/WatchOS/NounsWatchKitExtension/Utils/R.generated.swift"
         name: R.swift
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift
+          - $SRCROOT/WatchOS/NounsWatchKitExtension/Utils/R.generated.swift
     postBuildScripts:
       - script: |
                 /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
