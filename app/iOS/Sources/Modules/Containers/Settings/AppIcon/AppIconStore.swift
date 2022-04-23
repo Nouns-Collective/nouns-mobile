@@ -10,13 +10,14 @@ import UIComponents
 import os
 
 struct AppIconStore: View {
+  @StateObject var viewModel = ViewModel()
+
   @State private var selectedIcon: String? = UIApplication.shared.alternateIconName
   @Environment(\.dismiss) private var dismiss
   private let localize = R.string.appIcon.self
   
   struct AppIconLibrary: Hashable, Decodable {
     let regular: [AppIcon]
-    let neon: [AppIcon]
   }
   
   struct AppIcon: Hashable, Decodable {
@@ -45,7 +46,7 @@ struct AppIconStore: View {
     do {
       let data = try Data(contentsOf: url)
       let result = try PropertyListDecoder().decode(AppIconLibrary.self, from: data)
-      self.icons = result.regular + result.neon
+      self.icons = result.regular
     } catch {
       logger.error("Failed to load app icon library from plist file")
     }
@@ -72,6 +73,8 @@ struct AppIconStore: View {
     .overlay(.componentUnripeLemon, edge: .top)
     .ignoresSafeArea(edges: .top)
     .onAppear {
+      viewModel.onAppear()
+
       // Do any additional setup after loading the view.
       loadAppIcons()
     }

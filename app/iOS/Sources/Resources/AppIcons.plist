@@ -12,406 +12,195 @@
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Bonsai_Preview</string>
+			<string>AppIcon0_Preview</string>
 			<key>asset</key>
-			<string>Bonsai</string>
+			<string>AppIcon0</string>
 			<key>name</key>
-			<string>Bonsai</string>
+			<string>Noun 1</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>CannedHam_Preview</string>
+			<string>AppIcon1_Preview</string>
 			<key>asset</key>
-			<string>CannedHam</string>
+			<string>AppIcon1</string>
 			<key>name</key>
-			<string>Canned Ham</string>
+			<string>Noun 2</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Cone_Preview</string>
+			<string>AppIcon2_Preview</string>
 			<key>asset</key>
-			<string>Cone</string>
+			<string>AppIcon2</string>
 			<key>name</key>
-			<string>Cone</string>
+			<string>Noun 3</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Cow_Preview</string>
+			<string>AppIcon3_Preview</string>
 			<key>asset</key>
-			<string>Cow</string>
+			<string>AppIcon3</string>
 			<key>name</key>
-			<string>Cow</string>
+			<string>Noun 5</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Crab_Preview</string>
+			<string>AppIcon4_Preview</string>
 			<key>asset</key>
-			<string>Crab</string>
+			<string>AppIcon4</string>
 			<key>name</key>
-			<string>Crab</string>
+			<string>Noun 11</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Dictionary_Preview</string>
+			<string>AppIcon5_Preview</string>
 			<key>asset</key>
-			<string>Dictionary</string>
+			<string>AppIcon5</string>
 			<key>name</key>
-			<string>Dictionary</string>
+			<string>Noun 26</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>DNA_Preview</string>
+			<string>AppIcon6_Preview</string>
 			<key>asset</key>
-			<string>DNA</string>
+			<string>AppIcon6</string>
 			<key>name</key>
-			<string>DNA</string>
+			<string>Noun 42</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Earth_Preview</string>
+			<string>AppIcon7_Preview</string>
 			<key>asset</key>
-			<string>Earth</string>
+			<string>AppIcon7</string>
 			<key>name</key>
-			<string>Earth</string>
+			<string>Noun 47</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Fan_Preview</string>
+			<string>AppIcon8_Preview</string>
 			<key>asset</key>
-			<string>Fan</string>
+			<string>AppIcon8</string>
 			<key>name</key>
-			<string>Fan</string>
+			<string>Noun 72</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Fox_Preview</string>
+			<string>AppIcon9_Preview</string>
 			<key>asset</key>
-			<string>Fox</string>
+			<string>AppIcon9</string>
 			<key>name</key>
-			<string>Fox</string>
+			<string>Noun 73</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Gnome_Preview</string>
+			<string>AppIcon10_Preview</string>
 			<key>asset</key>
-			<string>Gnome</string>
+			<string>AppIcon10</string>
 			<key>name</key>
-			<string>Gnome</string>
+			<string>Noun 74</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>HighHeel_Preview</string>
+			<string>AppIcon11_Preview</string>
 			<key>asset</key>
-			<string>HighHeel</string>
+			<string>AppIcon11</string>
 			<key>name</key>
-			<string>High Heel</string>
+			<string>Noun 78</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Ketchup_Preview</string>
+			<string>AppIcon12_Preview</string>
 			<key>asset</key>
-			<string>Ketchup</string>
+			<string>AppIcon12</string>
 			<key>name</key>
-			<string>Ketchup</string>
+			<string>Noun 99</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Laptop_Preview</string>
+			<string>AppIcon13_Preview</string>
 			<key>asset</key>
-			<string>Laptop</string>
+			<string>AppIcon13</string>
 			<key>name</key>
-			<string>Laptop</string>
+			<string>Noun 117</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Milk_Preview</string>
+			<string>AppIcon14_Preview</string>
 			<key>asset</key>
-			<string>Milk</string>
+			<string>AppIcon14</string>
 			<key>name</key>
-			<string>Milk</string>
+			<string>Noun 141</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Noodles_Preview</string>
+			<string>AppIcon15_Preview</string>
 			<key>asset</key>
-			<string>Noodles</string>
+			<string>AppIcon15</string>
 			<key>name</key>
-			<string>Noodles</string>
+			<string>Noun 149</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Robot_Preview</string>
+			<string>AppIcon16_Preview</string>
 			<key>asset</key>
-			<string>Robot</string>
+			<string>AppIcon16</string>
 			<key>name</key>
-			<string>Robot</string>
+			<string>Noun 151</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Shark_Preview</string>
+			<string>AppIcon17_Preview</string>
 			<key>asset</key>
-			<string>Shark</string>
+			<string>AppIcon17</string>
 			<key>name</key>
-			<string>Shark</string>
+			<string>Noun 159</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Starsparkles_Preview</string>
+			<string>AppIcon18_Preview</string>
 			<key>asset</key>
-			<string>Starsparkles</string>
+			<string>AppIcon18</string>
 			<key>name</key>
-			<string>Starsparkles</string>
+			<string>Noun 195</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Taco_Preview</string>
+			<string>AppIcon19_Preview</string>
 			<key>asset</key>
-			<string>Taco</string>
+			<string>AppIcon19</string>
 			<key>name</key>
-			<string>Taco</string>
+			<string>Noun 197</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>UFO_Preview</string>
+			<string>AppIcon20_Preview</string>
 			<key>asset</key>
-			<string>UFO</string>
+			<string>AppIcon20</string>
 			<key>name</key>
-			<string>UFO</string>
+			<string>Noun 199</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Void_Preview</string>
+			<string>AppIcon21_Preview</string>
 			<key>asset</key>
-			<string>Void</string>
+			<string>AppIcon21</string>
 			<key>name</key>
-			<string>Void</string>
+			<string>Noun 205</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Volcano_Preview</string>
+			<string>AppIcon22_Preview</string>
 			<key>asset</key>
-			<string>Volcano</string>
+			<string>AppIcon22</string>
 			<key>name</key>
-			<string>Volcano</string>
+			<string>Noun 208</string>
 		</dict>
 		<dict>
 			<key>preview</key>
-			<string>Wave_Preview</string>
+			<string>AppIcon23_Preview</string>
 			<key>asset</key>
-			<string>Wave</string>
+			<string>AppIcon23</string>
 			<key>name</key>
-			<string>Wave</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>Weed_Preview</string>
-			<key>asset</key>
-			<string>Weed</string>
-			<key>name</key>
-			<string>Weed</string>
-		</dict>
-	</array>
-	<key>neon</key>
-	<array>
-		<dict>
-			<key>preview</key>
-			<string>BonsaiNeon_Preview</string>
-			<key>asset</key>
-			<string>BonsaiNeon</string>
-			<key>name</key>
-			<string>Bonsai (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>CannedHamNeon_Preview</string>
-			<key>asset</key>
-			<string>CannedHamNeon</string>
-			<key>name</key>
-			<string>Canned Ham (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>ConeNeon_Preview</string>
-			<key>asset</key>
-			<string>ConeNeon</string>
-			<key>name</key>
-			<string>Cone (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>CowNeon_Preview</string>
-			<key>asset</key>
-			<string>CowNeon</string>
-			<key>name</key>
-			<string>Cow (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>CrabNeon_Preview</string>
-			<key>asset</key>
-			<string>CrabNeon</string>
-			<key>name</key>
-			<string>Crab (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>DictionaryNeon_Preview</string>
-			<key>asset</key>
-			<string>DictionaryNeon</string>
-			<key>name</key>
-			<string>Dictionary (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>DNANeon_Preview</string>
-			<key>asset</key>
-			<string>DNANeon</string>
-			<key>name</key>
-			<string>DNA (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>EarthNeon_Preview</string>
-			<key>asset</key>
-			<string>EarthNeon</string>
-			<key>name</key>
-			<string>Earth (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>FanNeon_Preview</string>
-			<key>asset</key>
-			<string>FanNeon</string>
-			<key>name</key>
-			<string>Fan (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>FoxNeon_Preview</string>
-			<key>asset</key>
-			<string>FoxNeon</string>
-			<key>name</key>
-			<string>Fox (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>GnomeNeon_Preview</string>
-			<key>asset</key>
-			<string>GnomeNeon</string>
-			<key>name</key>
-			<string>Gnome (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>HighHeelNeon_Preview</string>
-			<key>asset</key>
-			<string>HighHeelNeon</string>
-			<key>name</key>
-			<string>High Heel (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>KetchupNeon_Preview</string>
-			<key>asset</key>
-			<string>KetchupNeon</string>
-			<key>name</key>
-			<string>Ketchup (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>LaptopNeon_Preview</string>
-			<key>asset</key>
-			<string>LaptopNeon</string>
-			<key>name</key>
-			<string>Laptop (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>MilkNeon_Preview</string>
-			<key>asset</key>
-			<string>MilkNeon</string>
-			<key>name</key>
-			<string>Milk (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>NoodlesNeon_Preview</string>
-			<key>asset</key>
-			<string>NoodlesNeon</string>
-			<key>name</key>
-			<string>Noodles (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>RobotNeon_Preview</string>
-			<key>asset</key>
-			<string>RobotNeon</string>
-			<key>name</key>
-			<string>Robot (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>SharkNeon_Preview</string>
-			<key>asset</key>
-			<string>SharkNeon</string>
-			<key>name</key>
-			<string>Shark (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>StarsparklesNeon_Preview</string>
-			<key>asset</key>
-			<string>StarsparklesNeon</string>
-			<key>name</key>
-			<string>Starsparkles (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>TacoNeon_Preview</string>
-			<key>asset</key>
-			<string>TacoNeon</string>
-			<key>name</key>
-			<string>Taco (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>UFONeon_Preview</string>
-			<key>asset</key>
-			<string>UFONeon</string>
-			<key>name</key>
-			<string>UFO (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>VoidNeon_Preview</string>
-			<key>asset</key>
-			<string>VoidNeon</string>
-			<key>name</key>
-			<string>Void (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>VolcanoNeon_Preview</string>
-			<key>asset</key>
-			<string>VolcanoNeon</string>
-			<key>name</key>
-			<string>Volcano (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>WaveNeon_Preview</string>
-			<key>asset</key>
-			<string>WaveNeon</string>
-			<key>name</key>
-			<string>Wave (Neon)</string>
-		</dict>
-		<dict>
-			<key>preview</key>
-			<string>WeedNeon_Preview</string>
-			<key>asset</key>
-			<string>WeedNeon</string>
-			<key>name</key>
-			<string>Weed (Neon)</string>
+			<string>Noun 268</string>
 		</dict>
 	</array>
 </dict>

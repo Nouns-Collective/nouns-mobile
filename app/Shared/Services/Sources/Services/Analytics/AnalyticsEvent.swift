@@ -20,6 +20,7 @@ public enum AnalyticsEvent {
     case auctionInfo = "AuctionInfo"
     case settings = "SettingsView"
     case proposals = "ProposalFeedView"
+    case appIcon = "AppIconStore"
   }
 
   public enum Event: String {
@@ -32,5 +33,6 @@ public enum AnalyticsEvent {
     case setNotificationPermission = "set_notification_permission"
     case setNounOClockNotificationPermission = "set_noun_oclock_notification_permission"
     case setNewNounNotificationPermission = "set_new_noun_notification_permission"
+    case setAlternateAppIcon = "set_alternate_app_icon"
   }
 }

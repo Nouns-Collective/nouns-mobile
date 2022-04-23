@@ -9,7 +9,7 @@ import Firebase
 
 public struct BackgroundNotifications {
 
-  private static let BACKGROUND_NOTIFICATIONS_TOPIC = "background_auction_did_start"
+  private static let backgroundNotificationsTopic = "background_auction_did_start"
 
   public static func configure() {
     FirebaseApp.configure()
@@ -17,7 +17,9 @@ public struct BackgroundNotifications {
 
   public static func subscribe() async {
     do {
-      try await AppCore.shared.messaging.subscribe(toTopic: Self.BACKGROUND_NOTIFICATIONS_TOPIC)
-    } catch {}
+      try await AppCore.shared.messaging.subscribe(toTopic: Self.backgroundNotificationsTopic)
+    } catch {
+      AppCore.shared.crashReporting.record(error: error)
+    }
   }
 }
