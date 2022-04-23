@@ -43,7 +43,7 @@ struct ProposalsInfoSection: View {
         destination: { ProposalFeedView(viewModel: viewModel) })
     }
     .onAppear {
-      viewModel.loadProposals()
+      viewModel.loadProposals(reload: true)
     }
   }
 }

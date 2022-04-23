@@ -27,14 +27,18 @@ extension ProposalFeedView {
     }
     
     @MainActor
-    func loadProposals() {
+    func loadProposals(reload: Bool = false) {
       Task {
         do {
           isLoading = true
           let proposals = try await onChainNounsService.fetchProposals(
             limit: pageLimit,
-            after: proposals.count
+            after: reload ? 0 : proposals.count
           )
+
+          if reload {
+            self.proposals = []
+          }
           
           self.proposals += proposals.data
           self.shouldLoadMore = proposals.hasNext
