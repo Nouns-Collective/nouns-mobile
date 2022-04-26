@@ -41,3 +41,7 @@
 // MARK: - Links
 
 "nouns.website" = "https://nouns.wtf";
+
+"nouns.profile.website" = "https://nouns.wtf/noun/%@";
+
+"nouns.proposals.website" = "https://nouns.wtf/vote";

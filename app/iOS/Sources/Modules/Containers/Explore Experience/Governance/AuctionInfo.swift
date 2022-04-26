@@ -70,7 +70,8 @@ struct AuctionInfo: View {
       GovernanceInfoCard(
         isPresented: $isGovernanceInfoPresented,
         nounId: viewModel.auction.noun.id,
-        owner: viewModel.auction.bidder?.id
+        owner: viewModel.auction.bidder?.id,
+        page: selectedPage
       )
     }
     .onAppear(perform: viewModel.onAppear)

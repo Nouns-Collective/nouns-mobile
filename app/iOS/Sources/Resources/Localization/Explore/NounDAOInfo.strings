@@ -8,4 +8,6 @@
 
 "title" = "What is this?";
 
-"description" = "Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.";
+"activity.description" = "Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.";
+
+"bid.history.description" = "Ownership of each Noun is determined through an auction. This page shows all bids submitted for Noun %@.";

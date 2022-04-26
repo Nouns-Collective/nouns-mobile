@@ -36,7 +36,7 @@ extension NounProfileInfo {
       isAuctionSettled = auction.settled
       isWinnerAnnounced = auction.hasEnded
       nounTraits = auction.noun.seed
-      nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
+      nounProfileURL = URL(string: R.string.shared.nounsProfileWebsite(auction.noun.id))
       
       Task {
         guard await messaging.authorizationStatus == .notDetermined else {

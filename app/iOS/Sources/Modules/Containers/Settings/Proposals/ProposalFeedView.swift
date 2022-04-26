@@ -67,7 +67,8 @@ struct ProposalFeedView: View {
       GovernanceInfoCard(
         isPresented: $isGovernanceInfoPresented,
         nounId: nil,
-        owner: nil
+        owner: nil,
+        page: nil
       )
     }
     .onAppear {

@@ -17,16 +17,28 @@ struct GovernanceInfoCard: View {
   
   /// The owner of the noun
   let owner: String?
+
+  /// The page for which to show governance help information
+  let page: AuctionInfo.Page?
   
   /// The ENS domain of the noun's owner
   @State private var domain: String?
   
   @State private var isSafariPresented = false
+
+  private let localize = R.string.nounDAOInfo.self
+
+  private var websiteURL: URL? {
+    if let nounId = nounId {
+      return URL(string: R.string.shared.nounsProfileWebsite(nounId))
+    }
+    return URL(string: R.string.shared.nounsProposalsWebsite())
+  }
   
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       HStack {
-        Text(R.string.nounDAOInfo.title())
+        Text(localize.title())
           .font(.custom(.bold, relativeTo: .title2))
         
         Spacer()
@@ -39,13 +51,17 @@ struct GovernanceInfoCard: View {
             }
           })
       }
-      
+
       if let nounId = nounId {
-        Text(R.string.nounDAOInfo.description(nounId))
+        Text(page == .activity ? localize.activityDescription(nounId) : localize.bidHistoryDescription(nounId))
+          .font(.custom(.regular, relativeTo: .subheadline))
+          .lineSpacing(5)
+      } else {
+        Text(R.string.proposal.message())
           .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(5)
       }
-      
+
       SoftButton(
         text: R.string.shared.learnMore(),
         smallAccessory: { Image.squareArrowDown },
@@ -55,7 +71,7 @@ struct GovernanceInfoCard: View {
     .padding()
     .padding(.bottom, 4)
     .fullScreenCover(isPresented: $isSafariPresented) {
-      if let url = URL(string: R.string.shared.nounsWebsite()) {
+      if let url = websiteURL {
         Safari(url: url)
       }
     }

@@ -11364,16 +11364,16 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.documentation` struct is generated, and contains static references to 4 localization keys.
     struct documentation {
-      /// Value: Documentation
+      /// Value: Explore Nouns
       static let title = Rswift.StringResource(key: "title", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Notion Docs
-      static let notionDocs = Rswift.StringResource(key: "notion.docs", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Learn More
+      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Want to dive into the details? Follow the link below to get a more in-depth understanding of the Nouns DAO.
       static let message = Rswift.StringResource(key: "message", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: https://nouns.notion.site/Explore-Nouns-a2a9dceeb1d54e10b9cbf3f931c2266f
-      static let notionLink = Rswift.StringResource(key: "notion.link", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
+      static let documentationLink = Rswift.StringResource(key: "documentation.link", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Documentation
+      /// Value: Explore Nouns
       static func title(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("title", tableName: "Documentation", bundle: hostingBundle, comment: "")
@@ -11386,20 +11386,20 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "Documentation", bundle: bundle, comment: "")
       }
 
-      /// Value: Notion Docs
-      static func notionDocs(preferredLanguages: [String]? = nil) -> String {
+      /// Value: Learn More
+      static func learnMore(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("notion.docs", tableName: "Documentation", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("learn.more", tableName: "Documentation", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "notion.docs"
+          return "learn.more"
         }
 
-        return NSLocalizedString("notion.docs", tableName: "Documentation", bundle: bundle, comment: "")
+        return NSLocalizedString("learn.more", tableName: "Documentation", bundle: bundle, comment: "")
       }
 
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Want to dive into the details? Follow the link below to get a more in-depth understanding of the Nouns DAO.
       static func message(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("message", tableName: "Documentation", bundle: hostingBundle, comment: "")
@@ -11413,16 +11413,16 @@ struct R: Rswift.Validatable {
       }
 
       /// Value: https://nouns.notion.site/Explore-Nouns-a2a9dceeb1d54e10b9cbf3f931c2266f
-      static func notionLink(preferredLanguages: [String]? = nil) -> String {
+      static func documentationLink(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("notion.link", tableName: "Documentation", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("documentation.link", tableName: "Documentation", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "notion.link"
+          return "documentation.link"
         }
 
-        return NSLocalizedString("notion.link", tableName: "Documentation", bundle: bundle, comment: "")
+        return NSLocalizedString("documentation.link", tableName: "Documentation", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
@@ -11695,25 +11695,42 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 2 localization keys.
+    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 3 localization keys.
     struct nounDAOInfo {
       /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
-      static let description = Rswift.StringResource(key: "description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+      static let activityDescription = Rswift.StringResource(key: "activity.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Ownership of each Noun is determined through an auction. This page shows all bids submitted for Noun %@.
+      static let bidHistoryDescription = Rswift.StringResource(key: "bid.history.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: What is this?
       static let title = Rswift.StringResource(key: "title", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
-      static func description(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+      static func activityDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+          let format = NSLocalizedString("activity.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
           return String(format: format, locale: applicationLocale, value1)
         }
 
         guard let (locale, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
-          return "description"
+          return "activity.description"
         }
 
-        let format = NSLocalizedString("description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+        let format = NSLocalizedString("activity.description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      /// Value: Ownership of each Noun is determined through an auction. This page shows all bids submitted for Noun %@.
+      static func bidHistoryDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("bid.history.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
+          return "bid.history.description"
+        }
+
+        let format = NSLocalizedString("bid.history.description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
         return String(format: format, locale: locale, value1)
       }
 
@@ -12411,27 +12428,14 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.proposal` struct is generated, and contains static references to 4 localization keys.
     struct proposal {
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
-      static let message = Rswift.StringResource(key: "message", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Proposal %s
       static let identifier = Rswift.StringResource(key: "identifier", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Proposals
       static let title = Rswift.StringResource(key: "title", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Proposals are used to make changes to the DAO or request use of treasury funds. Here are the latest proposals submitted to the Nouns DAO and their status.
+      static let message = Rswift.StringResource(key: "message", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: See all proposals
       static let seeAll = Rswift.StringResource(key: "see.all", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "Proposal", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "Proposal", bundle: bundle, comment: "")
-      }
 
       /// Value: Proposal %s
       static func identifier(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
@@ -12459,6 +12463,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("title", tableName: "Proposal", bundle: bundle, comment: "")
+      }
+
+      /// Value: Proposals are used to make changes to the DAO or request use of treasury funds. Here are the latest proposals submitted to the Nouns DAO and their status.
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "Proposal", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "Proposal", bundle: bundle, comment: "")
       }
 
       /// Value: See all proposals
@@ -12729,7 +12746,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.shared` struct is generated, and contains static references to 15 localization keys.
+    /// This `R.string.shared` struct is generated, and contains static references to 17 localization keys.
     struct shared {
       /// Value: Accessory
       static let accessory = Rswift.StringResource(key: "accessory", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -12761,6 +12778,10 @@ struct R: Rswift.Validatable {
       static let untitled = Rswift.StringResource(key: "untitled", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: https://nouns.wtf
       static let nounsWebsite = Rswift.StringResource(key: "nouns.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://nouns.wtf/noun/%@
+      static let nounsProfileWebsite = Rswift.StringResource(key: "nouns.profile.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://nouns.wtf/vote
+      static let nounsProposalsWebsite = Rswift.StringResource(key: "nouns.proposals.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Accessory
       static func accessory(preferredLanguages: [String]? = nil) -> String {
@@ -12957,6 +12978,34 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("nouns.website", tableName: "Shared", bundle: bundle, comment: "")
       }
 
+      /// Value: https://nouns.wtf/noun/%@
+      static func nounsProfileWebsite(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("nouns.profile.website", tableName: "Shared", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "nouns.profile.website"
+        }
+
+        let format = NSLocalizedString("nouns.profile.website", tableName: "Shared", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      /// Value: https://nouns.wtf/vote
+      static func nounsProposalsWebsite(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("nouns.proposals.website", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "nouns.proposals.website"
+        }
+
+        return NSLocalizedString("nouns.proposals.website", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
       fileprivate init() {}
     }
 
@@ -12968,9 +13017,9 @@ struct R: Rswift.Validatable {
       static let discourseTitle = Rswift.StringResource(key: "discourse.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Etherscan
       static let etherscanTitle = Rswift.StringResource(key: "etherscan.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Follow the links below to get involved with the Nouns community or to take a look at on-chain data.
       static let message = Rswift.StringResource(key: "message", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Spaces
+      /// Value: Get involved
       static let title = Rswift.StringResource(key: "title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Twitter
       static let twitterTitle = Rswift.StringResource(key: "twitter.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -13022,7 +13071,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("etherscan.title", tableName: "Spaces", bundle: bundle, comment: "")
       }
 
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Follow the links below to get involved with the Nouns community or to take a look at on-chain data.
       static func message(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("message", tableName: "Spaces", bundle: hostingBundle, comment: "")
@@ -13035,7 +13084,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("message", tableName: "Spaces", bundle: bundle, comment: "")
       }
 
-      /// Value: Spaces
+      /// Value: Get involved
       static func title(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("title", tableName: "Spaces", bundle: hostingBundle, comment: "")
