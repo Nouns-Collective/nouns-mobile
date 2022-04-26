@@ -18,7 +18,7 @@ public struct LinkButton<Destination>: View where Destination: View {
     public init(
         isActive: Binding<Bool>,
         leading: String,
-        trailing: String,
+        trailing: String? = nil,
         icon: Image,
         destination: @escaping () -> Destination
     ) {

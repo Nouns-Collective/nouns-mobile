@@ -12588,14 +12588,12 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.settings` struct is generated, and contains static references to 10 localization keys.
+    /// This `R.string.settings` struct is generated, and contains static references to 9 localization keys.
     struct settings {
       /// Value: App Icon
       static let appIconTitle = Rswift.StringResource(key: "app.icon.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: App Intro
       static let appIntroTitle = Rswift.StringResource(key: "app.intro.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Default
-      static let appIconDefault = Rswift.StringResource(key: "app.icon.default", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
       static let notificationNote = Rswift.StringResource(key: "notification.note", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: New Noun
@@ -12635,19 +12633,6 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: bundle, comment: "")
-      }
-
-      /// Value: Default
-      static func appIconDefault(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("app.icon.default", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "app.icon.default"
-        }
-
-        return NSLocalizedString("app.icon.default", tableName: "Settings", bundle: bundle, comment: "")
       }
 
       /// Value: Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
