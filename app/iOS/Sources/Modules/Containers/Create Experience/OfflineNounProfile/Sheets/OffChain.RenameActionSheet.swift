@@ -29,9 +29,7 @@ extension OffChainNounProfile {
           largeAccessory: { Image.save },
           action: {
             viewModel.saveChanges()
-            withAnimation {
-              viewModel.isRenamePresented.toggle()
-            }
+            viewModel.isRenamePresented.toggle()
           })
           .controlSize(.large)
           .padding(.top, 20)
@@ -40,9 +38,7 @@ extension OffChainNounProfile {
             
             // Dismisses the presented sheet.
             SoftButton(icon: { Image.xmark }, action: {
-              withAnimation {
-                viewModel.isRenamePresented.toggle()
-              }
+              viewModel.isRenamePresented.toggle()
             })
           })
       }
