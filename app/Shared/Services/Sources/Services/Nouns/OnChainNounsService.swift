@@ -224,20 +224,37 @@ public class TheGraphOnChainNouns: OnChainNounsService {
             return page
           }
     
-    /// Add one two the end of the list in the case of edge cases, where
-    /// the lastNounId ends with a "9", such as 29. The following settled
-    /// auction page would skip the 10th value and go straight to 31.
-    let nounderOwnedIds = (firstNounId...(lastNounId + 1)).filter { $0 % 10 == 0 }.map { String($0) }
+    /// We add one to the end of the list (lastNounId) in the case of edge cases, where the
+    /// lastNounId ends with a "9", such as 29. The following settled auction page would
+    /// skip the 10th value and go straight to 31. Adding one makes sure to capture "30".
+    ///
+    /// Additionally, we subtract one from the start of the list (firstNounId): if the firstNounId is a "1",
+    /// "0" is skipped - subtracting one makes sure to include "0".
+    let end = (lastNounId + 1) - ((lastNounId + 1) % 10)
+    let start = firstNounId - 1
     
-    for id in nounderOwnedIds {
-      guard var noun = try await fetchNoun(withId: id) else {
-        continue
+    let auctions = try await withThrowingTaskGroup(of: Auction.self, returning: [Auction].self) { [weak self] taskGroup in
+      
+      for nounId in stride(from: end, through: start, by: -10) {
+        taskGroup.addTask { [weak self] in
+          guard var noun = try await self?.fetchNoun(withId: String(nounId)) else {
+            throw "💥 Couldn't fetch noun id \(nounId)"
+          }
+          
+          /// While every 10th noun does automatically go to nounders, the nounders can choose
+          /// to sell/transfer the noun to other people. To match nouns.wtf, we list the owner of every 10th noun
+          /// as belonging to "nounders.eth" but that may not always be accurate based on any exchanges of ownership
+          /// that happened thereafter.
+          noun.isNounderOwned = true
+          return Auction(id: noun.id, noun: noun, amount: "N/A", startTime: .zero, endTime: .zero, settled: true, bidder: noun.owner)
+        }
       }
       
-      noun.isNounderOwned = true
-      let auction = Auction(id: noun.id, noun: noun, amount: "N/A", startTime: .zero, endTime: .zero, settled: true, bidder: noun.owner)
-      newPage.data.append(auction)
+      return try await taskGroup.reduce(into: [Auction](), { $0 += [$1] })
     }
+    
+    // Add auctions to existing page
+    newPage.data.append(contentsOf: auctions)
     
     // Sort page data
     newPage.data = newPage.data.sorted(by: { auctionOne, auctionTwo in

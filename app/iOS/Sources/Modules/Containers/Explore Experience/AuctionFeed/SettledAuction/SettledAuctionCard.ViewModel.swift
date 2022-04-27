@@ -30,6 +30,9 @@ extension SettledAuctionCard {
     /// The nounder token that owns the noun.
     @Published private(set) var nounderToken: String
     
+    /// The state of whether or not the noun is owned by nounders
+    @Published private(set) var isNounderOwned = false
+    
     private let auction: Auction
     private let composer: NounComposer
     
@@ -49,6 +52,7 @@ extension SettledAuctionCard {
       let backgroundIndex = auction.noun.seed.background
       nounBackground = composer.backgroundColors[backgroundIndex]
       
+      isNounderOwned = auction.noun.isNounderOwned
       showENS = auction.noun.isNounderOwned
       nounderToken = auction.noun.owner.id
     }
