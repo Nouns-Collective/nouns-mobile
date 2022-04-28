@@ -186,7 +186,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 439 images.
+  /// This `R.image` struct is generated, and contains static references to 440 images.
   struct image {
     /// Image `AppIcon0_Preview`.
     static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
@@ -1062,6 +1062,8 @@ struct R: Rswift.Validatable {
     static let placeholderEns = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder-ens")
     /// Image `placeholder`.
     static let placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder")
+    /// Image `red_glasses`.
+    static let red_glasses = Rswift.ImageResource(bundle: R.hostingBundle, name: "red_glasses")
     /// Image `shadow`.
     static let shadow = Rswift.ImageResource(bundle: R.hostingBundle, name: "shadow")
     /// Image `shark-noun`.
@@ -4123,6 +4125,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "placeholder-ens", bundle: ..., traitCollection: ...)`
     static func placeholderEns(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.placeholderEns, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "red_glasses", bundle: ..., traitCollection: ...)`
+    static func red_glasses(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.red_glasses, compatibleWith: traitCollection)
     }
     #endif
 
@@ -13204,7 +13213,7 @@ struct _R: Rswift.Validatable {
       let name = "LaunchScreen"
 
       static func validate() throws {
-        if UIKit.UIImage(named: "glasses", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'glasses' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
+        if UIKit.UIImage(named: "red_glasses", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'red_glasses' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
         if #available(iOS 11.0, tvOS 11.0, *) {
           if UIKit.UIColor(named: "launch.screen.background", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Color named 'launch.screen.background' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
         }

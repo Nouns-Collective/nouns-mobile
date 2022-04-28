@@ -22,7 +22,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="glasses" translatesAutoresizingMaskIntoConstraints="NO" id="PVU-qJ-Rc3">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="red_glasses" translatesAutoresizingMaskIntoConstraints="NO" id="PVU-qJ-Rc3">
                                 <rect key="frame" x="143" y="384" width="128" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="Gfx-kh-T15"/>
@@ -47,7 +47,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="glasses" width="110.5" height="40"/>
+        <image name="red_glasses" width="110.5" height="40"/>
         <namedColor name="launch.screen.background">
             <color red="0.9570000171661377" green="0.81999999284744263" blue="0.25099998712539673" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
