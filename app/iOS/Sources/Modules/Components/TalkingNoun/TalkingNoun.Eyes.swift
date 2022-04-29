@@ -29,7 +29,9 @@ extension TalkingNoun {
     let blinkTextures: [SKTexture]
     let shiftTextures: [SKTexture]
 
-    init(seed: Seed, frameSize: CGSize) {
+    let blinkOnly: Bool
+
+    init(seed: Seed, frameSize: CGSize, blinkOnly: Bool = true) {
       guard let blinkTextures = Self.nounComposer.glasses[seed.glasses].textures["eyes-blink"] else {
         fatalError("Couldn't load eye blink textures.")
       }
@@ -49,6 +51,8 @@ extension TalkingNoun {
         texture.filteringMode = .nearest
         return texture
       }
+
+      self.blinkOnly = blinkOnly
       
       guard let glassesFrame = Self.nounComposer.glasses[seed.glasses].textures["glasses-frame"]?.first else {
         fatalError("Couldn't load eye shift textures.")
@@ -68,24 +72,19 @@ extension TalkingNoun {
     required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
     }
-    
-    /// Default eyes
-    /// (wait 1000-3000ms)
-    /// blink sequence
-    /// (wait 1000-3000ms)
-    /// eyes looking around
-    /// …repeat
+
     private func animateEyes() {
       guard action(forKey: State.idle.rawValue) == nil else {
         return
       }
       
-      let pause = SKAction.wait(forDuration: 2, withRange: 2)
+      let pause = SKAction.wait(forDuration: 13, withRange: 3)
+      let shortPause = SKAction.wait(forDuration: 3, withRange: 1)
       let blink = SKAction.run {
         self.eyesNode.run(SKAction.animate(with: self.blinkTextures, timePerFrame: 0.05))
       }
       let goofyEye = SKAction.customAction(withDuration: 0.0, actionBlock: randomEye)
-      let sequence = SKAction.sequence([blink, pause, goofyEye, pause])
+      let sequence = SKAction.sequence(blinkOnly ? [pause, blink] : [shortPause, blink, pause, goofyEye])
       let repeatForever = SKAction.repeatForever(sequence)
       
       run(repeatForever, withKey: State.idle.rawValue)
