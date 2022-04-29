@@ -38,7 +38,7 @@ extension CreateExperience {
 
     var body: some View {
       VStack(alignment: .leading, spacing: 0) {
-        Text(R.string.create.subhealine())
+        Text(R.string.create.subheadline())
           .font(.custom(.regular, relativeTo: .subheadline))
           .padding(.horizontal, 20)
         

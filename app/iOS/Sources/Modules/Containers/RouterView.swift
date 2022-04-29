@@ -9,6 +9,16 @@ import SwiftUI
 import UIComponents
 import Services
 
+enum AppPage: Int {
+  case explore
+  case create
+  case about
+
+  var scrollToTopId: String {
+    "\(self.rawValue)_top"
+  }
+}
+
 extension RouterView {
   
   final class ViewModel: ObservableObject {
@@ -29,16 +39,23 @@ struct RouterView: View {
   
   @StateObject var viewModel = ViewModel()
   
-  @State private var selectedTab: Page = .explore
+  @State private var selectedTab: AppPage = .explore
+  @State private var tappedTwice = false
   
   @StateObject private var tabBarVisibilityManager = OutlineTabBarVisibilityManager()
   
   @State private var isOnboardingPresented = !AppCore.shared.settingsStore.hasCompletedOnboarding
-    
-  private enum Page: Int {
-    case explore
-    case create
-    case about
+
+  private var onTabPress: Binding<AppPage> {
+    Binding(
+      get: { self.selectedTab },
+      set: { tab in
+        if tab == self.selectedTab {
+          tappedTwice = true
+        }
+        self.selectedTab = tab
+      }
+    )
   }
   
   init() {
@@ -52,29 +69,39 @@ struct RouterView: View {
   }
   
   private let items = [
-    OutlineTabItem(normalStateIcon: .exploreOutline, selectedStateIcon: .exploreFill, tag: Page.explore),
-    OutlineTabItem(normalStateIcon: .createOutline, selectedStateIcon: .createFill, tag: Page.create),
-    OutlineTabItem(normalStateIcon: .aboutOutline, selectedStateIcon: .aboutFill, tag: Page.about)
+    OutlineTabItem(normalStateIcon: .exploreOutline, selectedStateIcon: .exploreFill, tag: AppPage.explore),
+    OutlineTabItem(normalStateIcon: .createOutline, selectedStateIcon: .createFill, tag: AppPage.create),
+    OutlineTabItem(normalStateIcon: .aboutOutline, selectedStateIcon: .aboutFill, tag: AppPage.about)
   ]
   
   var body: some View {
     
     ZStack(alignment: .bottom) {
       if !isOnboardingPresented {
-        TabView(selection: $selectedTab) {
-          ExploreExperience()
-            .tag(Page.explore)
+        SwiftUI.ScrollViewReader { proxy in
+          TabView(selection: $selectedTab) {
+            ExploreExperience()
+              .tag(AppPage.explore)
 
-          CreateExperience()
-            .tag(Page.create)
+            CreateExperience()
+              .tag(AppPage.create)
 
-          AboutView()
-            .tag(Page.about)
+            AboutView()
+              .tag(AppPage.about)
+          }
+          .onChange(of: tappedTwice, perform: { _ in
+            if tappedTwice {
+              withAnimation {
+                proxy.scrollTo(selectedTab.scrollToTopId, anchor: .top)
+              }
+            }
+            tappedTwice = false
+          })
+          .ignoresSafeArea(.all)
         }
-        .ignoresSafeArea(.all)
       }
-      
-      OutlineTabBar(selection: $selectedTab, items)
+
+      OutlineTabBar(selection: onTabPress, items)
     }
     .onboarding($isOnboardingPresented) {
       // On completion of onboarding, toggle the local setting store to reflect the completion state so we show the onboarding on the first launch only

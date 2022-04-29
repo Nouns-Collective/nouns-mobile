@@ -11257,23 +11257,23 @@ struct R: Rswift.Validatable {
     /// This `R.string.create` struct is generated, and contains static references to 3 localization keys.
     struct create {
       /// Value: Build a completely custom Noun
-      static let subhealine = Rswift.StringResource(key: "subhealine", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
+      static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Create
       static let title = Rswift.StringResource(key: "title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Get going
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Build a completely custom Noun
-      static func subhealine(preferredLanguages: [String]? = nil) -> String {
+      static func subheadline(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("subhealine", tableName: "Create", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("subheadline", tableName: "Create", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
-          return "subhealine"
+          return "subheadline"
         }
 
-        return NSLocalizedString("subhealine", tableName: "Create", bundle: bundle, comment: "")
+        return NSLocalizedString("subheadline", tableName: "Create", bundle: bundle, comment: "")
       }
 
       /// Value: Create

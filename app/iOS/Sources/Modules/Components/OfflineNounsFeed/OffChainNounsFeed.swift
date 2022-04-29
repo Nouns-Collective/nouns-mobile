@@ -81,6 +81,7 @@ struct OffChainNounsFeed<PlaceholderView: View, RightBarItem: View>: View {
         .softNavigationTitle(navigationTitle, rightAccessory: {
           rightBarItem()
         })
+        .id(AppPage.create.scrollToTopId)
     })
     .scrollable(isScrollable)
     .emptyPlaceholder(when: viewModel.nouns.isEmpty) {

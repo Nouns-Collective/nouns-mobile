@@ -38,6 +38,7 @@ struct ExploreExperience: View {
             .padding()
         }
         .softNavigationTitle(R.string.explore.title())
+        .id(AppPage.explore.scrollToTopId)
       }
       .disabled(viewModel.isLoadingSettledAuctions)
       .background(Gradient.cherrySunset)

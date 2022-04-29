@@ -47,6 +47,7 @@ struct AboutView: View {
             SettingsView()
           })
         })
+        .id(AppPage.about.scrollToTopId)
       }
       .overlay(.componentUnripeLemon, edge: .top)
       .ignoresSafeArea(edges: .top)
