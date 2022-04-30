@@ -95,5 +95,9 @@ struct LiveAuctionCard: View {
       .fullScreenCover(isPresented: $showNounProfile) {
         NounProfileInfo(viewModel: .init(auction: viewModel.auction))
       }
+      .onWidgetOpen {
+        AppCore.shared.analytics.logEvent(withEvent: .openAppFromWidget, parameters: ["noun_id": viewModel.auction.noun.id])
+        showNounProfile = true
+      }
   }
 }

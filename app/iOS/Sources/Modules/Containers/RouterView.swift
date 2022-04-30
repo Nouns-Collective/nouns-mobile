@@ -23,7 +23,23 @@ extension RouterView {
   
   final class ViewModel: ObservableObject {
     
+    @Published public var selectedTab: AppPage = .explore
+
+    @Published public var tappedTwice = false
+    
     private let settingsStore: SettingsStore
+
+    public var onTabPress: Binding<AppPage> {
+      Binding(
+        get: { self.selectedTab },
+        set: { tab in
+          if tab == self.selectedTab {
+            self.tappedTwice = true
+          }
+          self.selectedTab = tab
+        }
+      )
+    }
     
     init(settingsStore: SettingsStore = AppCore.shared.settingsStore) {
       self.settingsStore = settingsStore
@@ -32,31 +48,20 @@ extension RouterView {
     var shouldPresentOnboardingFlow: Bool {
       !settingsStore.hasCompletedOnboarding
     }
+    
+    func didOpenFromWidget() {
+      selectedTab = .explore
+    }
   }
 }
 
 struct RouterView: View {
-  
-  @StateObject var viewModel = ViewModel()
-  
-  @State private var selectedTab: AppPage = .explore
-  @State private var tappedTwice = false
-  
-  @StateObject private var tabBarVisibilityManager = OutlineTabBarVisibilityManager()
-  
-  @State private var isOnboardingPresented = !AppCore.shared.settingsStore.hasCompletedOnboarding
 
-  private var onTabPress: Binding<AppPage> {
-    Binding(
-      get: { self.selectedTab },
-      set: { tab in
-        if tab == self.selectedTab {
-          tappedTwice = true
-        }
-        self.selectedTab = tab
-      }
-    )
-  }
+  @StateObject var viewModel = ViewModel()
+
+  @StateObject private var tabBarVisibilityManager = OutlineTabBarVisibilityManager()
+
+  @State private var isOnboardingPresented = !AppCore.shared.settingsStore.hasCompletedOnboarding
   
   init() {
     // TODO: Theming Should be extracted as it is related to the theme.
@@ -79,7 +84,7 @@ struct RouterView: View {
     ZStack(alignment: .bottom) {
       if !isOnboardingPresented {
         SwiftUI.ScrollViewReader { proxy in
-          TabView(selection: $selectedTab) {
+          TabView(selection: $viewModel.selectedTab) {
             ExploreExperience()
               .tag(AppPage.explore)
 
@@ -89,19 +94,19 @@ struct RouterView: View {
             AboutView()
               .tag(AppPage.about)
           }
-          .onChange(of: tappedTwice, perform: { _ in
+          .onChange(of: viewModel.tappedTwice, perform: { tappedTwice in
             if tappedTwice {
               withAnimation {
-                proxy.scrollTo(selectedTab.scrollToTopId, anchor: .top)
+                proxy.scrollTo(viewModel.selectedTab.scrollToTopId, anchor: .top)
               }
             }
-            tappedTwice = false
+            viewModel.tappedTwice = false
           })
           .ignoresSafeArea(.all)
         }
       }
 
-      OutlineTabBar(selection: onTabPress, items)
+      OutlineTabBar(selection: viewModel.onTabPress, items)
     }
     .onboarding($isOnboardingPresented) {
       // On completion of onboarding, toggle the local setting store to reflect the completion state so we show the onboarding on the first launch only
@@ -109,5 +114,21 @@ struct RouterView: View {
     }
     .addBottomSheet()
     .environment(\.outlineTabBarVisibility, tabBarVisibilityManager)
+    .onWidgetOpen {
+      viewModel.didOpenFromWidget()
+    }
+  }
+}
+
+extension View {
+  
+  /// A view extension that performs an action when the app is opened from iOS widget
+  func onWidgetOpen(_ action: @escaping () -> Void) -> some View {
+    self
+      .onOpenURL { url in
+        if url == URL(string: "nouns:///live-auction") {
+          action()
+        }
+      }
   }
 }
