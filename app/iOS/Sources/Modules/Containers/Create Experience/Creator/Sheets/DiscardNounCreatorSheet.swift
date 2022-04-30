@@ -55,7 +55,7 @@ extension NounCreator {
           
           SoftButton(
             text: R.string.nounDeleteDialog.nounCancelAction(),
-            largeAccessory: { Image.smAbsent },
+            largeAccessory: { Image.later },
             action: {
               withAnimation {
                 viewModel.setMode(to: .creating)
@@ -98,7 +98,7 @@ extension NounCreator {
           
           SoftButton(
             text: R.string.nounDiscardEditDialog.nounCancelAction(),
-            largeAccessory: { Image.smAbsent },
+            largeAccessory: { Image.later },
             action: {
               withAnimation {
                 viewModel.setMode(to: .creating)

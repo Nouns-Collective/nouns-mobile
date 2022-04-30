@@ -80,6 +80,8 @@ extension Image {
   
   public static let notification = Image("notification", bundle: .module)
   
+  public static let nounGlassesIcon = Image("noun-glasses-icon", bundle: .module)
+
   public static let nounLogo = Image("noun-logo", bundle: .module)
   
   public static let options = Image("options", bundle: .module)

@@ -45,7 +45,7 @@ extension OffChainNounProfile {
         /// Dismisses the sheet.
         SoftButton(
           text: R.string.nounDeleteDialog.nounCancelAction(),
-          largeAccessory: { Image.smAbsent },
+          largeAccessory: { Image.later },
           action: {
             withAnimation {
               viewModel.isDeletePresented.toggle()

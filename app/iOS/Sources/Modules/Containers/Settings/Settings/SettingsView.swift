@@ -30,7 +30,7 @@ struct SettingsView: View {
         LinkButton(
           isActive: $isAppIconCollectionPresented,
           leading: localize.appIconTitle(),
-          icon: .nounLogo,
+          icon: .nounGlassesIcon,
           destination: {
             AppIconStore()
           })
