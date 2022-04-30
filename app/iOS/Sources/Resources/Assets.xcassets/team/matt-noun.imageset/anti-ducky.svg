@@ -1,0 +1,79 @@
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3958_92165)">
+<rect width="44" height="44" rx="4" fill="url(#paint0_linear_3958_92165)"/>
+<path d="M12.375 44H27.5V34.375H28.875V44H31.625V28.875H12.375V44Z" fill="#444444"/>
+<rect x="16.5" y="34.375" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="16.5" y="33" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="17.875" y="33" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="19.25" y="33" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="20.625" y="33" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="19.25" y="34.375" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="20.625" y="35.75" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="22" y="34.375" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="17.875" y="37.125" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="17.875" y="38.5" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="22" y="37.125" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="20.625" y="37.125" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="19.25" y="37.125" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="19.9375" y="38.5" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="22" y="35.75" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="23.375" y="35.75" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="23.375" y="34.375" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="23.375" y="33" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="22" y="33" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="19.25" y="31.625" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="17.875" y="31.625" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="20.625" y="31.625" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="22" y="31.625" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="16.5" y="35.75" width="1.375" height="1.375" fill="#EFEBE4"/>
+<rect x="17.875" y="35.75" width="1.375" height="1.375" fill="#EFEBE4"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11 4.125H22V5.5H24.75V6.875H26.125V8.25V9.625V11H24.75V12.375H23.375V13.75H30.25V12.375H34.375V11H37.125V12.375V13.75H38.5V15.125V16.5V17.875V19.25V20.625H37.125V22V23.375H35.75V24.75V26.125H34.375V27.5H31.625V28.875H9.625V27.5H8.25V26.125H6.875V24.75H5.5V23.375V22V20.625V19.25V17.875V16.5H6.875V15.125H8.25V13.75H9.625V12.375H11V11H9.625V9.625V8.25V6.875V5.5H11V4.125Z" fill="#FFD74B"/>
+<path opacity="0.1" fill-rule="evenodd" clip-rule="evenodd" d="M19.25 6.875H9.625V8.25H19.25V6.875ZM24.75 8.25H22V9.625H20.625V11H23.375V9.625H24.75V8.25ZM17.875 13.75H15.125V15.125H17.875V13.75ZM17.875 15.125V16.5H20.625V15.125H17.875ZM35.75 17.875H33V19.25H31.625V22H33V20.625H35.75V17.875ZM28.875 22H26.125H22V23.375H26.125V24.75H28.875V22ZM16.5 22H12.375V23.375H9.625V24.75H13.75V23.375H16.5V22ZM8.25 17.875V19.25H11V17.875H8.25ZM11 15.125H12.375V16.5H11V15.125Z" fill="black"/>
+<rect width="1.375" height="1.375" transform="matrix(-1 0 0 1 15.125 8.25)" fill="black"/>
+<rect width="1.375" height="1.375" transform="matrix(-1 0 0 1 16.5 9.625)" fill="black"/>
+<rect width="1.375" height="1.375" transform="matrix(-1 0 0 1 13.75 9.625)" fill="black"/>
+<rect width="1.375" height="1.375" transform="matrix(-1 0 0 1 16.5 6.875)" fill="black"/>
+<rect width="1.375" height="1.375" transform="matrix(-1 0 0 1 13.75 6.875)" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9.625 8.25H8.25V9.625H5.5V11H6.875V12.375H11V11H9.625V9.625V8.25Z" fill="#A15925"/>
+<path d="M27.5 16.5H22V20.625H27.5V16.5Z" fill="white"/>
+<path d="M19.25 15.125H11V16.5H19.25V15.125Z" fill="black"/>
+<path d="M28.875 15.125H20.625V16.5H28.875V15.125Z" fill="black"/>
+<path d="M17.875 16.5H12.375V20.625H17.875V16.5Z" fill="white"/>
+<path d="M17.875 19.25H12.375V20.625H17.875V19.25Z" fill="black" fill-opacity="0.2"/>
+<path opacity="0.5" d="M17.875 20.625H12.375V22H17.875V20.625Z" fill="black"/>
+<path d="M27.5 19.25H22V20.625H27.5V19.25Z" fill="black" fill-opacity="0.2"/>
+<path d="M24.75 16.5H23.375V17.875H24.75V16.5Z" fill="black"/>
+<path d="M15.125 16.5H13.75V17.875H15.125V16.5Z" fill="black"/>
+<path opacity="0.5" d="M27.5 20.625H22V22H27.5V20.625Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24.75 24.75H13.75V26.125H15.125V27.5H24.75V26.125V24.75Z" fill="black"/>
+<rect x="15.125" y="24.75" width="5.5" height="1.375" fill="#F1EAAD"/>
+<rect x="22" y="24.75" width="1.375" height="1.375" fill="#F1EAAD"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 9.625 26.125)" fill="#654C3A"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 1.375 24.75)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 2.75 26.125)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 1.375 23.375)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 2.75 22)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 2.75 20.625)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 2.75 19.25)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 1.375 20.625)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 1.375 19.25)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 1.375 17.875)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 2.75 16.5)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 1.375 15.125)" fill="white" fill-opacity="0.35"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 8.25 26.125)" fill="#654C3A"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 6.875 26.125)" fill="#654C3A"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 5.5 26.125)" fill="#654C3A"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 12.375 26.125)" fill="#654C3A"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 11 26.125)" fill="#654C3A"/>
+<rect width="1.375" height="1.375" transform="matrix(1 0 0 -1 4.125 26.125)" fill="#FF823C"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_3958_92165" x1="3.25972e-07" y1="-0.599526" x2="10.8653" y2="50.9799" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DDC2F8"/>
+<stop offset="1" stop-color="#939DF5"/>
+</linearGradient>
+<clipPath id="clip0_3958_92165">
+<rect width="44" height="44" rx="4" fill="white"/>
+</clipPath>
+</defs>
+</svg>

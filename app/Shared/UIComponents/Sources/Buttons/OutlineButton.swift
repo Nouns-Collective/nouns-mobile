@@ -120,6 +120,22 @@ public struct OutlineButton<Label>: View where Label: View {
     
     self.action = action
   }
+
+  public init(
+    text: String,
+    @ViewBuilder largeIcon: () -> Image,
+    @ViewBuilder smallAccessory: () -> Image? = { nil },
+    action: @escaping () -> Void
+  ) where Label == AccessoryButtonLabel<EmptyView> {
+    self.label = {
+      return AccessoryButtonLabel(
+        text,
+        largeIcon: largeIcon(),
+        accessoryImage: smallAccessory())
+    }()
+
+    self.action = action
+  }
   
   public init<V>(
     text: String,

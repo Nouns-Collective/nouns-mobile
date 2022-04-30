@@ -186,7 +186,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 440 images.
+  /// This `R.image` struct is generated, and contains static references to 447 images.
   struct image {
     /// Image `AppIcon0_Preview`.
     static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
@@ -480,6 +480,8 @@ struct R: Rswift.Validatable {
     static let nounFetti_00119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00119")
     /// Image `NounsWatermark`.
     static let nounsWatermark = Rswift.ImageResource(bundle: R.hostingBundle, name: "NounsWatermark")
+    /// Image `arslan-noun`.
+    static let arslanNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "arslan-noun")
     /// Image `bell-noun`.
     static let bellNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "bell-noun")
     /// Image `confetti-10`.
@@ -1044,6 +1046,12 @@ struct R: Rswift.Validatable {
     static let headWerewolfMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-werewolf-mouth-4")
     /// Image `home-slice-chat`.
     static let homeSliceChat = Rswift.ImageResource(bundle: R.hostingBundle, name: "home-slice-chat")
+    /// Image `krish-noun`.
+    static let krishNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "krish-noun")
+    /// Image `matt-noun`.
+    static let mattNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "matt-noun")
+    /// Image `mo-noun`.
+    static let moNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "mo-noun")
     /// Image `noun-logo`.
     static let nounLogo = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun-logo")
     /// Image `noun`.
@@ -1064,10 +1072,16 @@ struct R: Rswift.Validatable {
     static let placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder")
     /// Image `red_glasses`.
     static let red_glasses = Rswift.ImageResource(bundle: R.hostingBundle, name: "red_glasses")
+    /// Image `robleh-noun`.
+    static let roblehNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "robleh-noun")
     /// Image `shadow`.
     static let shadow = Rswift.ImageResource(bundle: R.hostingBundle, name: "shadow")
     /// Image `shark-noun`.
     static let sharkNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "shark-noun")
+    /// Image `shawn-noun`.
+    static let shawnNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "shawn-noun")
+    /// Image `ziad-noun`.
+    static let ziadNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "ziad-noun")
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "AppIcon0_Preview", bundle: ..., traitCollection: ...)`
@@ -2088,6 +2102,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "NounsWatermark", bundle: ..., traitCollection: ...)`
     static func nounsWatermark(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.nounsWatermark, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "arslan-noun", bundle: ..., traitCollection: ...)`
+    static func arslanNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.arslanNoun, compatibleWith: traitCollection)
     }
     #endif
 
@@ -4066,6 +4087,27 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "krish-noun", bundle: ..., traitCollection: ...)`
+    static func krishNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.krishNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "matt-noun", bundle: ..., traitCollection: ...)`
+    static func mattNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mattNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mo-noun", bundle: ..., traitCollection: ...)`
+    static func moNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.moNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "noun", bundle: ..., traitCollection: ...)`
     static func noun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.noun, compatibleWith: traitCollection)
@@ -4136,6 +4178,13 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "robleh-noun", bundle: ..., traitCollection: ...)`
+    static func roblehNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.roblehNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "shadow", bundle: ..., traitCollection: ...)`
     static func shadow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.shadow, compatibleWith: traitCollection)
@@ -4146,6 +4195,20 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "shark-noun", bundle: ..., traitCollection: ...)`
     static func sharkNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.sharkNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "shawn-noun", bundle: ..., traitCollection: ...)`
+    static func shawnNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.shawnNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "ziad-noun", bundle: ..., traitCollection: ...)`
+    static func ziadNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ziadNoun, compatibleWith: traitCollection)
     }
     #endif
 
@@ -10620,7 +10683,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 29 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 30 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -13169,6 +13232,89 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("twitter.link", tableName: "Spaces", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
+    /// This `R.string.team` struct is generated, and contains static references to 5 localization keys.
+    struct team {
+      /// Value: Go to nounsapp.wtf
+      static let websiteLink = Rswift.StringResource(key: "website.link", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Made with 🖤
+      static let title = Rswift.StringResource(key: "title", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: The Nouns app was created by a crew of frens from Collective DAO.
+      static let message = Rswift.StringResource(key: "message", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://nounsapp.wtf
+      static let websiteUrl = Rswift.StringResource(key: "website.url", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://twitter.com/%@
+      static let twitterProfileUrl = Rswift.StringResource(key: "twitter.profile.url", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Go to nounsapp.wtf
+      static func websiteLink(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("website.link", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "website.link"
+        }
+
+        return NSLocalizedString("website.link", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: Made with 🖤
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: The Nouns app was created by a crew of frens from Collective DAO.
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: https://nounsapp.wtf
+      static func websiteUrl(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("website.url", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "website.url"
+        }
+
+        return NSLocalizedString("website.url", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: https://twitter.com/%@
+      static func twitterProfileUrl(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("twitter.profile.url", tableName: "Team", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "twitter.profile.url"
+        }
+
+        let format = NSLocalizedString("twitter.profile.url", tableName: "Team", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
       }
 
       fileprivate init() {}

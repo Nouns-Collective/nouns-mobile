@@ -71,6 +71,12 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
   private var onlyText: Bool {
     icon == nil
   }
+
+  private var showLargeIcon: Bool = false
+
+  private var iconSize: CGFloat {
+    showLargeIcon ? 44 : 25
+  }
   
   public init(
     _ text: String,
@@ -79,6 +85,18 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
   ) where Accessory == EmptyView {
     self.text = text
     self.icon = icon
+    self.accessoryImage = accessoryImage
+    self.accessory = EmptyView()
+  }
+
+  public init(
+    _ text: String,
+    largeIcon: Image?,
+    accessoryImage: Image?
+  ) where Accessory == EmptyView {
+    self.text = text
+    self.icon = largeIcon
+    self.showLargeIcon = true
     self.accessoryImage = accessoryImage
     self.accessory = EmptyView()
   }
@@ -104,7 +122,7 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
         icon?
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 25, height: 25, alignment: .center)
+          .frame(width: iconSize, height: iconSize, alignment: .center)
       }
       .labelStyle(.titleAndIcon(spacing: onlyText ? 0 : 12))
       
