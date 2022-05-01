@@ -14,6 +14,8 @@ import SpriteKit
 /// Display the auction of the day in real time.
 struct LiveAuctionCard: View {
   
+  static let liveAuctionMarqueeString = Array(repeating: R.string.shared.liveAuction().uppercased(), count: 10).joined(separator: "       ")
+  
   @ObservedObject var viewModel: ViewModel
   
   @State private var showNounProfile = false
@@ -39,24 +41,30 @@ struct LiveAuctionCard: View {
           .frame(width: 24, height: 24)
       },
       media: {
-        SpriteView(scene: talkingNoun, options: [.allowsTransparency])
-          .background(
-            GeometryReader { proxy in
-              Color(hex: viewModel.nounBackground)
-                .onAppear {
-                  self.width = proxy.size.width
-                }
-            }
-          )
-          .frame(
-            minWidth: 100,
-            idealWidth: self.width,
-            maxWidth: .infinity,
-            minHeight: 100,
-            idealHeight: self.width,
-            maxHeight: .infinity,
-            alignment: .center
-          )
+        VStack(spacing: 0) {
+          SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+            .background(
+              GeometryReader { proxy in
+                Color(hex: viewModel.nounBackground)
+                  .onAppear {
+                    self.width = proxy.size.width
+                  }
+              }
+            )
+            .frame(
+              minWidth: 100,
+              idealWidth: self.width,
+              maxWidth: .infinity,
+              minHeight: 100,
+              idealHeight: self.width,
+              maxHeight: .infinity,
+              alignment: .center
+            )
+            
+          MarqueeText(text: LiveAuctionCard.liveAuctionMarqueeString, alignment: .center)
+            .padding(.vertical, 5)
+            .border(width: 2, edges: [.top], color: .componentNounsBlack)
+        }
       },
       content: {
         HStack {

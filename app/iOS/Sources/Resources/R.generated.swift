@@ -12818,7 +12818,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.shared` struct is generated, and contains static references to 17 localization keys.
+    /// This `R.string.shared` struct is generated, and contains static references to 18 localization keys.
     struct shared {
       /// Value: Accessory
       static let accessory = Rswift.StringResource(key: "accessory", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -12836,6 +12836,8 @@ struct R: Rswift.Validatable {
       static let head = Rswift.StringResource(key: "head", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Learn more
       static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Live Auction
+      static let liveAuction = Rswift.StringResource(key: "live.auction", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: N/A
       static let notApplicable = Rswift.StringResource(key: "not.applicable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Remix
@@ -12957,6 +12959,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("learn.more", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: Live Auction
+      static func liveAuction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("live.auction", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "live.auction"
+        }
+
+        return NSLocalizedString("live.auction", tableName: "Shared", bundle: bundle, comment: "")
       }
 
       /// Value: N/A
