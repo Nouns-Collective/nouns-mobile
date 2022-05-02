@@ -1,6 +1,6 @@
 //
 //  Nouns.swift
-//  Nouns DAO
+//  NounsDAO
 //
 //  Created by Ziad Tamim on 20.10.21.
 //
