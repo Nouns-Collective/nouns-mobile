@@ -299,6 +299,15 @@ fileprivate final class TraitItemCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    if let gradientLayer = gradientView.layer.sublayers?.first as? CAGradientLayer {
+      // Update the bounds of the gradient layer once the subviews have been laid out
+      gradientLayer.frame = gradientView.bounds
+    }
+  }
+  
   func setupViews() {
     backgroundColor = UIColor(Color.componentSoftGrey)
     layer.cornerRadius = 8
