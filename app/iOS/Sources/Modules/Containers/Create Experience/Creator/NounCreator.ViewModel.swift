@@ -335,7 +335,8 @@ extension NounCreator {
     /// Calculates the offset needed to display the currently selected
     /// background in the background picker
     func backgroundOffset(width: CGFloat, offset: CGFloat) -> CGFloat {
-      return (Double(seed.background) * -width) + offset
+      let offset = (Double(seed.background) * -width) + offset
+      return min(0.0, max(offset, Double(NounCreator.backgroundColors.count - 1) * -width))
     }
     
     /// A method invoked everytime the background picker behind the noun has registered a swipe gesture
