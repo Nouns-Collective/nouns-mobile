@@ -85,7 +85,7 @@ public struct ActionSheetStack<T: RawRepresentable & Hashable, Content: View>: V
       }
       .padding()
     }
-    .animation(.spring())
+    .animation(.spring(), value: currentSheet)
     .background {
       /// Content needs to be displayed in entirety in order to set and access preference key values
       content()
