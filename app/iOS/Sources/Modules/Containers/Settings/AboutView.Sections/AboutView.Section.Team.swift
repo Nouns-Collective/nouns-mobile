@@ -23,7 +23,7 @@ struct TeamInfoSection: View {
     TeamMember(id: "shawnrcole", image: R.image.shawnNoun),
     TeamMember(id: "ziad_tamim", image: R.image.ziadNoun),
     TeamMember(id: "mohams2001", image: R.image.moNoun),
-    TeamMember(id: "HDoowop", image: R.image.arslanNoun)
+    TeamMember(id: "_arslanc", image: R.image.arslanNoun)
   ]
 
   /// A boolean to load the Nouns App website using a browser.
