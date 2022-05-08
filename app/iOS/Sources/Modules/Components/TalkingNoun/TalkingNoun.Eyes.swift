@@ -78,7 +78,7 @@ extension TalkingNoun {
         return
       }
       
-      let pause = SKAction.wait(forDuration: 13, withRange: 3)
+      let pause = SKAction.wait(forDuration: 10, withRange: 4)
       let shortPause = SKAction.wait(forDuration: 3, withRange: 1)
       let blink = SKAction.run {
         self.eyesNode.run(SKAction.animate(with: self.blinkTextures, timePerFrame: 0.05))
