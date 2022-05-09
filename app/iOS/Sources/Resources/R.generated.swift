@@ -12005,7 +12005,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounProfile` struct is generated, and contains static references to 11 localization keys.
+    /// This `R.string.nounProfile` struct is generated, and contains static references to 12 localization keys.
     struct nounProfile {
       /// Value: %dh %dm %ds
       static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -12029,6 +12029,8 @@ struct R: Rswift.Validatable {
       static let bidWinner = Rswift.StringResource(key: "bid-winner", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: nounders.eth
       static let noundersEth = Rswift.StringResource(key: "nounders.eth", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: 👋 sup! check out Noun %s
+      static let shareMessage = Rswift.StringResource(key: "share.message", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: %dh %dm %ds
       static func auctionUnsettledTimeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
@@ -12177,10 +12179,25 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("nounders.eth", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
+      /// Value: 👋 sup! check out Noun %s
+      static func shareMessage(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("share.message", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "share.message"
+        }
+
+        let format = NSLocalizedString("share.message", tableName: "NounProfile", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
       fileprivate init() {}
     }
 
-    /// This `R.string.offchainNounActions` struct is generated, and contains static references to 6 localization keys.
+    /// This `R.string.offchainNounActions` struct is generated, and contains static references to 7 localization keys.
     struct offchainNounActions {
       /// Value: Delete your Noun
       static let delete = Rswift.StringResource(key: "delete", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -12194,6 +12211,8 @@ struct R: Rswift.Validatable {
       static let rename = Rswift.StringResource(key: "rename", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Use this dope new name
       static let useName = Rswift.StringResource(key: "use.name", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: 👋 sup! check out this fresh Noun
+      static let shareMessage = Rswift.StringResource(key: "share.message", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Delete your Noun
       static func delete(preferredLanguages: [String]? = nil) -> String {
@@ -12271,6 +12290,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("use.name", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
+      /// Value: 👋 sup! check out this fresh Noun
+      static func shareMessage(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("share.message", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "share.message"
+        }
+
+        return NSLocalizedString("share.message", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

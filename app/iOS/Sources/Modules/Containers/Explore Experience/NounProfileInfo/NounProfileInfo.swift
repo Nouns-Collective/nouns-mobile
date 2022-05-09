@@ -138,7 +138,10 @@ struct NounProfileInfo: View {
     }
     .sheet(isPresented: $isShareSheetPresented) {
       if let url = viewModel.nounProfileURL {
-        ShareSheet(activityItems: [url])
+        let message = R.string.nounProfile.shareMessage(viewModel.auction.noun.id)
+        ShareSheet(activityItems: [],
+                   titleMetadata: message,
+                   urlMetadata: url)
       }
     }
     .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {

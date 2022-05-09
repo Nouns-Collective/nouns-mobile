@@ -28,6 +28,9 @@ public struct ShareSheet: UIViewControllerRepresentable {
   
   /// Optional text metadata to manually set the title of the share sheet
   let titleMetadata: String?
+
+  /// Optional URL metadata that can be sent along with a message using titleMetadata
+  let urlMetadata: URL?
   
   public init(
     activityItems: [Any],
@@ -35,10 +38,12 @@ public struct ShareSheet: UIViewControllerRepresentable {
     excludedActivityTypes: [UIActivity.ActivityType]? = nil,
     imageMetadata: UIImage? = nil,
     titleMetadata: String? = nil,
+    urlMetadata: URL? = nil,
     callback: Callback? = nil
   ) {
     self.imageMetadata = imageMetadata
     self.titleMetadata = titleMetadata
+    self.urlMetadata = urlMetadata
     self.activityItems = activityItems
     self.applicationActivities = applicationActivities
     self.excludedActivityTypes = excludedActivityTypes
@@ -47,12 +52,22 @@ public struct ShareSheet: UIViewControllerRepresentable {
   
   public func makeUIViewController(context: Context) -> UIActivityViewController {
     var activityItems = activityItems
-    
-    if let imageMetadata = imageMetadata, let titleMetadata = titleMetadata {
-      let itemSource = ShareActivityMetadataSource(image: imageMetadata, title: titleMetadata)
-      activityItems.append(itemSource)
+
+    if let titleMetadata = titleMetadata {
+      if let imageMetadata = imageMetadata {
+        let imageItem = ShareActivityImageSource(image: imageMetadata, title: titleMetadata)
+        activityItems.append(imageItem)
+      }
+
+      if let urlMetaData = urlMetadata {
+        let urlItem = ShareActivityURLSource(url: urlMetaData, message: titleMetadata)
+        activityItems.append(urlItem)
+      }
+
+      let messageItem = ShareActivityTextSource(titleMetadata)
+      activityItems.append(messageItem)
     }
-    
+
     let controller = UIActivityViewController(
       activityItems: activityItems,
       applicationActivities: applicationActivities
@@ -66,7 +81,7 @@ public struct ShareSheet: UIViewControllerRepresentable {
   
 }
 
-internal class ShareActivityMetadataSource: NSObject, UIActivityItemSource {
+internal class ShareActivityImageSource: NSObject, UIActivityItemSource {
 
   /// The preview icon to show in the share sheet
   private var image: UIImage
@@ -81,11 +96,15 @@ internal class ShareActivityMetadataSource: NSObject, UIActivityItemSource {
   }
 
   func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-    return String()
+    return title
   }
 
   func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-    return nil
+    return image
+  }
+
+  func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType: UIActivity.ActivityType?) -> String {
+    return title
   }
 
   func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
@@ -131,5 +150,51 @@ internal class ShareActivityMetadataSource: NSObject, UIActivityItemSource {
     linkMetaData.originalURL = URL(fileURLWithPath: "\(prefix)\(suffix)")
     
     return linkMetaData
+  }
+}
+
+internal class ShareActivityTextSource: NSObject, UIActivityItemSource {
+
+  internal let message: String
+
+  init(_ message: String) {
+    self.message = message
+  }
+
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+    return message
+  }
+
+  func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+    switch activityType {
+
+    case UIActivity.ActivityType.mail:
+      return nil
+
+    default:
+      return message
+    }
+  }
+}
+
+internal class ShareActivityURLSource: ShareActivityTextSource {
+
+  private let url: URL
+
+  init(url: URL, message: String) {
+    self.url = url
+    super.init(message)
+  }
+
+  override func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+    return url
+  }
+
+  override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+    return url
+  }
+
+  func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType: UIActivity.ActivityType?) -> String {
+    return message
   }
 }

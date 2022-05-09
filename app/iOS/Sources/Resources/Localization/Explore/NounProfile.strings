@@ -18,6 +18,8 @@
 
 "nounders.eth" = "nounders.eth";
 
+"share.message" = "👋 sup! check out Noun %s";
+
 // MARK: - Live Auction
 
 "auction.unsettled.governance" = "Bid history";
