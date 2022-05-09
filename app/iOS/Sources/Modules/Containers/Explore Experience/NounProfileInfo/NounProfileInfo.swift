@@ -63,9 +63,7 @@ struct NounProfileInfo: View {
   ///
   /// - Returns: This view contains the play scene to animate the Noun's eyes.
   private let talkingNoun: TalkingNoun
-  
-  @State private var width: CGFloat = 100 
-  
+    
   public init(viewModel: ViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
     talkingNoun = TalkingNoun(seed: viewModel.auction.noun.seed)
@@ -78,23 +76,7 @@ struct NounProfileInfo: View {
         
         if !viewModel.isAuctionSettled {
           SpriteView(scene: talkingNoun, options: [.allowsTransparency])
-            .background(
-              GeometryReader { proxy in
-                Color.clear
-                  .onAppear {
-                    self.width = proxy.size.width
-                  }
-              }
-            )
-            .frame(
-              minWidth: 100,
-              idealWidth: self.width,
-              maxWidth: .infinity,
-              minHeight: 100,
-              idealHeight: self.width,
-              maxHeight: .infinity,
-              alignment: .center
-            )
+            .aspectRatio(1.0, contentMode: .fit)
         } else {
           NounPuzzle(seed: viewModel.nounTraits)
         }

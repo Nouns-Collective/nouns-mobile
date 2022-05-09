@@ -62,7 +62,6 @@ struct LiveAuctionCard: View {
             )
             
           MarqueeText(text: LiveAuctionCard.liveAuctionMarqueeString, alignment: .center)
-            .padding(.vertical, 5)
             .padding(.top, 5)
             .padding(.bottom, 4)
             .border(width: 2, edges: [.top], color: .componentNounsBlack)
