@@ -14,13 +14,19 @@ extension OffChainNounProfile {
   struct RenameActionSheet: View {
     
     @ObservedObject var viewModel: OffChainNounProfile.ViewModel
+    
+    @State private var newName: String
+    
+    init(viewModel: OffChainNounProfile.ViewModel) {
+      self.viewModel = viewModel
+      self.newName = viewModel.noun.name
+    }
 
     var body: some View {
       ActionSheet(
-        title: "Beets Battlestar Galactica",
         isEditing: true,
         placeholder: R.string.createNounDialog.inputPlaceholder(),
-        text: $viewModel.noun.name
+        text: $newName
       ) {
 
         // Saves Noun's changes.
@@ -28,19 +34,19 @@ extension OffChainNounProfile {
           text: R.string.offchainNounActions.useName(),
           largeAccessory: { Image.save },
           action: {
-            viewModel.saveChanges()
+            viewModel.didRename(newName)
+            viewModel.isRenamePresented.toggle()
+          }
+        )
+        .controlSize(.large)
+        .padding(.top, 20)
+        .disabled(newName.isEmpty)
+        .actionSheetLeadingBarItem(id: "rename_action_sheet_close_button", content: {
+          // Dismisses the presented sheet.
+          SoftButton(icon: { Image.xmark }, action: {
             viewModel.isRenamePresented.toggle()
           })
-          .controlSize(.large)
-          .padding(.top, 20)
-          .disabled(viewModel.noun.name.isEmpty)
-          .actionSheetLeadingBarItem(content: {
-            
-            // Dismisses the presented sheet.
-            SoftButton(icon: { Image.xmark }, action: {
-              viewModel.isRenamePresented.toggle()
-            })
-          })
+        })
       }
     }
   }

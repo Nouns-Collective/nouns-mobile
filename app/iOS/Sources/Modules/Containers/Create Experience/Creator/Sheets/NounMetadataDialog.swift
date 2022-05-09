@@ -17,7 +17,6 @@ extension NounCreator {
         
     var body: some View {
       ActionSheet(
-        title: "Beets Battlestar Galactica",
         isEditing: true,
         placeholder: R.string.createNounDialog.inputPlaceholder(),
         text: $viewModel.nounName

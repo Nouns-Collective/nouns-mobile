@@ -52,7 +52,7 @@ extension OffChainNounProfile {
       }
     }
     
-    func saveChanges() {
+    private func saveChanges() {
       do {
         try service.store(noun: noun)
       } catch {
@@ -62,6 +62,11 @@ extension OffChainNounProfile {
     
     func didEdit(seed: Seed) {
       noun.seed = seed
+      saveChanges()
+    }
+
+    func didRename(_ name: String) {
+      noun.name = name
       saveChanges()
     }
 

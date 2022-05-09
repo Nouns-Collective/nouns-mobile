@@ -32,9 +32,7 @@ extension OffChainNounProfile {
           text: R.string.offchainNounActions.rename(),
           largeAccessory: { Image.rename },
           action: {
-            withAnimation {
-              viewModel.isRenamePresented.toggle()
-            }
+            viewModel.isRenamePresented.toggle()
           })
           .controlSize(.large)
         
@@ -44,9 +42,7 @@ extension OffChainNounProfile {
           largeAccessory: { Image.trash },
           color: Color.componentNounRaspberry,
           action: {
-            withAnimation {
-              viewModel.isDeletePresented.toggle()
-            }
+            viewModel.isDeletePresented.toggle()
           })
           .controlSize(.large)
       }

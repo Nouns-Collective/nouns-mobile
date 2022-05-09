@@ -193,7 +193,7 @@ public struct ActionSheetTitleView: View {
 /// An equatable view to hold action sheet bar items as a preference value
 public struct ActionSheetBarItem: View, Equatable {
   
-  let id: String = UUID().uuidString
+  let id: String
   
   let view: AnyView
   
@@ -226,15 +226,15 @@ public struct ActionSheetTrailingBarItemKey: PreferenceKey {
 
 extension View {
   /// An extension to set the leading bar item of the action sheet to a view
-  public func actionSheetLeadingBarItem<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+  public func actionSheetLeadingBarItem<Content: View>(id: String, @ViewBuilder content: @escaping () -> Content) -> some View {
     preference(key: ActionSheetLeadingBarItemKey.self,
-               value: ActionSheetBarItem(view: AnyView(content())))
+               value: ActionSheetBarItem(id: id, view: AnyView(content())))
   }
   
   /// An extension to set the leading bar item of the action sheet to a view
-  public func actionSheetTrailingBarItem<Content: View>(@ViewBuilder view: @escaping () -> Content) -> some View {
+  public func actionSheetTrailingBarItem<Content: View>(id: String, @ViewBuilder content: @escaping () -> Content) -> some View {
     preference(key: ActionSheetTrailingBarItemKey.self,
-               value: ActionSheetBarItem(view: AnyView(view())))
+               value: ActionSheetBarItem(id: id, view: AnyView(content())))
   }
 }
 
@@ -269,7 +269,7 @@ public struct ActionSheet<Content: View>: View {
   
   public init(
     icon: Image? = nil,
-    title: String,
+    title: String = "",
     isEditing: Bool = false,
     placeholder: String = "",
     background: Color? = Color.white,
