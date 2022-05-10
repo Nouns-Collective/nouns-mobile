@@ -5,7 +5,10 @@ options:
   tabWidth: 2
   bundleIdPrefix: "wtf.nouns"
   groupOrdering:
-    - order: [iOS, iOS Extensions, WatchOS]
+    - order: [iOS, NounsExtensions]
+    - pattern: iOS
+      order: [Sources, NounsTests, NounsUITests]
+      
 packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git

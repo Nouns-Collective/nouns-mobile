@@ -6,10 +6,8 @@
   
 */
 
-"introduction" = "This is a Noun";
+"introduction" = "This is a Noun.";
 
-"explore" = "There are many to explore";
+"explore" = "There are many to explore...";
 
-"create" = "You can create your very own";
-
-"play" = "Then give it something to say";
+"create" = "You can create your own!";

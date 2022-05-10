@@ -22,6 +22,8 @@ extension SlotMachine {
     
     let showAllTraits: Bool
     
+    let imageWidth: Double
+    
     /// A utility function to determine the opacity of the trait images
     /// If the type is currently selected (e.g. head) then all traits should be shown which may include images on the left or right of the main centered trait.
     /// If the type is NOT selected, then it should only show the trait that is currently selected in the centre and none on the sides.
@@ -36,7 +38,7 @@ extension SlotMachine {
     }
     
     public var body: some View {
-      GeometryReader { proxy in
+      GeometryReader { _ in
         LazyHStack(spacing: 0) {
           ForEach(0..<type.traits.count, id: \.self) { index in
             
@@ -45,13 +47,13 @@ extension SlotMachine {
               .interpolation(.none)
               .resizable()
               .frame(
-                width: CGFloat(SlotMachine.imageSize),
-                height: CGFloat(SlotMachine.imageSize)
+                width: CGFloat(imageWidth),
+                height: CGFloat(imageWidth)
               )
               .opacity(opacity(forIndex: index))
           }
         }
-        .padding(.horizontal, proxy.size.width * 0.10)
+        .padding(.horizontal, (UIScreen.main.bounds.width - imageWidth) / 2)
         .offset(x: traitOffset(for: type, by: dragOffset))
         .gesture(onDrag)
         .allowsHitTesting(isDraggingEnabled(for: type))
@@ -136,16 +138,16 @@ extension SlotMachine {
         return 0
         
       case .body:
-        return (Double(seed.body) * -imageSize) + offsetX
+        return (Double(seed.body) * -imageWidth) + offsetX
         
       case .accessory:
-        return (Double(seed.accessory) * -imageSize) + offsetX
+        return (Double(seed.accessory) * -imageWidth) + offsetX
         
       case .head:
-        return (Double(seed.head) * -imageSize) + offsetX
+        return (Double(seed.head) * -imageWidth) + offsetX
         
       case .glasses:
-        return (Double(seed.glasses) * -imageSize) + offsetX
+        return (Double(seed.glasses) * -imageWidth) + offsetX
       }
     }
     

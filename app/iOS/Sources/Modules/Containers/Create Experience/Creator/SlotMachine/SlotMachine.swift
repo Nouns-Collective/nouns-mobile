@@ -32,8 +32,11 @@ struct SlotMachine: View {
   
   private let nounComposer: NounComposer = AppCore.shared.nounComposer
   
-  /// `Noun's Trait` image size.
-  public static let imageSize: Double = 320
+  /// `Noun's Trait` default image size.
+  public static let defaultImageSize: Double = 320
+  
+  /// The width of the noun (and height as the slot machine will be placed in a 1:1 aspect ratio)
+  private let imageWidth: Double
   
   /// The threshold at which a swipe is registered as a next/previous advancement. The scroll's direction value
   /// is compared absolutely to this threshold value.
@@ -57,11 +60,13 @@ struct SlotMachine: View {
     initialSeed: Seed = Seed.default,
     currentModifiableTraitType: Binding<TraitType> = .constant(.glasses),
     showShadow: Bool = true,
-    animateEntrance: Bool = false
+    animateEntrance: Bool = false,
+    imageWidth: Double = SlotMachine.defaultImageSize
   ) {
     self.initialSeed = initialSeed
     self.showShadow = showShadow
     self.animateEntrance = animateEntrance
+    self.imageWidth = imageWidth
     self._currentModifiableTraitType = currentModifiableTraitType
     self._showAllTraits = shouldShowAllTraits
     self._seed = seed
@@ -91,11 +96,12 @@ struct SlotMachine: View {
             seed: $seed,
             type: type,
             currentModifiableTraitType: currentModifiableTraitType,
-            showAllTraits: showAllTraits
+            showAllTraits: showAllTraits,
+            imageWidth: imageWidth
           )
         }
       }
-      .frame(maxHeight: Self.imageSize)
+      .frame(maxHeight: imageWidth)
       .drawingGroup()
     }
     .onAppear {
@@ -122,8 +128,6 @@ struct SlotMachine: View {
           withAnimation(.spring().delay(3.0)) {
             self.showAllTraits = false
           }
-        } else {
-          resetToInitialSeed()
         }
       }
     }

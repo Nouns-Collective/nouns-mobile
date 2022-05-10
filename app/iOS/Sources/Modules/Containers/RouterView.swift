@@ -80,7 +80,6 @@ struct RouterView: View {
   ]
   
   var body: some View {
-    
     ZStack(alignment: .bottom) {
       if !isOnboardingPresented {
         SwiftUI.ScrollViewReader { proxy in

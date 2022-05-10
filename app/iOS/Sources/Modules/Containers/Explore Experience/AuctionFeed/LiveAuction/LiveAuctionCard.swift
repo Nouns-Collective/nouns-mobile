@@ -14,7 +14,7 @@ import SpriteKit
 /// Display the auction of the day in real time.
 struct LiveAuctionCard: View {
   
-  static let liveAuctionMarqueeString = Array(repeating: R.string.shared.liveAuction().uppercased(), count: 10).joined(separator: "       ")
+  static let liveAuctionMarqueeString = Array(repeating: R.string.shared.liveAuction().uppercased(), count: 10).joined(separator: "       ").appending("       ")
   
   @ObservedObject var viewModel: ViewModel
   

@@ -84,7 +84,7 @@ extension TalkingNoun {
         self.eyesNode.run(SKAction.animate(with: self.blinkTextures, timePerFrame: 0.05))
       }
       let goofyEye = SKAction.customAction(withDuration: 0.0, actionBlock: randomEye)
-      let sequence = SKAction.sequence(blinkOnly ? [pause, blink] : [shortPause, blink, pause, goofyEye])
+      let sequence = SKAction.sequence(blinkOnly ? [pause, blink] : [shortPause, blink, shortPause, goofyEye])
       let repeatForever = SKAction.repeatForever(sequence)
       
       run(repeatForever, withKey: State.idle.rawValue)

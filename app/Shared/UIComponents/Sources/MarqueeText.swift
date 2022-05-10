@@ -1,14 +1,15 @@
 import SwiftUI
 
 public struct MarqueeText : View {
-  private let font: UIFont = UIFont.custom(.bold, size: 10)
   
   private let text: String
   private let alignment: Alignment
+  private let font: UIFont
   
-  public init(text: String, alignment: Alignment) {
+  public init(text: String, alignment: Alignment, font: UIFont = UIFont.custom(.bold, size: 10)) {
     self.text = text
     self.alignment = alignment
+    self.font = font
   }
   
   @State private var animate = false
@@ -28,7 +29,7 @@ public struct MarqueeText : View {
             Text(self.text)
               .lineLimit(1)
               .font(.init(font))
-              .offset(x: self.animate ? -stringWidth - stringHeight * 2 : 0)
+              .offset(x: self.animate ? -stringWidth : 0)
               .animation(self.animate ? animation : nil, value: self.animate)
               .onAppear {
                 Task.init {
@@ -41,7 +42,7 @@ public struct MarqueeText : View {
             Text(self.text)
               .lineLimit(1)
               .font(.init(font))
-              .offset(x: self.animate ? 0 : stringWidth + stringHeight * 2)
+              .offset(x: self.animate ? 0 : stringWidth)
               .animation(self.animate ? animation : nil, value: self.animate)
               .onAppear {
                 Task.init {
@@ -66,11 +67,6 @@ public struct MarqueeText : View {
       }
     }
     .frame(height: stringHeight)
-  }
-  
-  public init(text: String, alignment: Alignment?) {
-    self.text = text
-    self.alignment = alignment != nil ? alignment! : .topLeading
   }
 }
 

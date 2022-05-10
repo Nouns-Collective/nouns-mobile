@@ -33,7 +33,8 @@ struct AboutView: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, tabBarHeight)
-        // Extra padding between the bottom of the last noun card and the top of the tab view
+        // Extra padding between the bottom of the last noun
+        // card and the top of the tab view
         .padding(.bottom, 40)
         .softNavigationTitle(localize.title(), rightAccessory: {
           Link(isActive: $isSettingsPresented, content: {

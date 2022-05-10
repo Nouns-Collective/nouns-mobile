@@ -44,4 +44,5 @@ excluded:
   - Shared/Services/Sources/GraphQL/Internal
   - Shared/Tools/.build
   - "*.generated.swift"
+  - Shared/Tools/.build
   - DerivedData

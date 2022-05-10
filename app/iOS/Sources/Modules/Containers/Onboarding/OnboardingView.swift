@@ -23,6 +23,7 @@ extension View {
 
 /// A view modifier to conditionally show the onboarding screen above existing content
 struct OnboardingContent: ViewModifier {
+  
   @Binding var isPresented: Bool
   
   let onCompletion: () -> Void
@@ -43,45 +44,24 @@ struct OnboardingContent: ViewModifier {
 }
 
 struct OnboardingView: View {
-  @StateObject var viewModel = ViewModel()
-
-  @State private var selectedPage: Page = .intro
   
+  @StateObject private var viewModel = ViewModel()
+    
   @Binding private var isPresented: Bool
-  
-  private let onCompletion: () -> Void
-  
+    
   init(isPresented: Binding<Bool>, onCompletion: @escaping () -> Void) {
     self._isPresented = isPresented
-    self.onCompletion = onCompletion
+    self.viewModel.onCompletion = onCompletion
     UITabBar.appearance().alpha = 0.0
   }
   
   var body: some View {
     NavigationView {
-      TabView(selection: $selectedPage) {
-
-        IntroductionOnboardingView(
-          selectedPage: $selectedPage
-        )
-          .tag(OnboardingView.Page.intro)
-
-        ExploreOnboardingView(
-          selectedPage: $selectedPage
-        )
-          .tag(OnboardingView.Page.explore)
-
-        CreateOnboardingView(
-          isPresented: $isPresented,
-          onCompletion: onCompletion
-        )
-          .tag(OnboardingView.Page.create)
-      }
-      .ignoresSafeArea()
-      .navigationTitle("")
-      .navigationBarHidden(true)
-      .navigationBarBackButtonHidden(true)
-      .onAppear(perform: viewModel.onAppear)
+      RootOnboardingView(viewModel: viewModel, isPresented: $isPresented)
+        .ignoresSafeArea()
+        .navigationTitle("")
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
   }
 }
@@ -89,42 +69,20 @@ struct OnboardingView: View {
 extension OnboardingView {
   
   /// Lists all Onboarding pages.
-  enum Page: Hashable, CaseIterable {
+  enum Page: Int, Hashable, CaseIterable {
     case intro
     case explore
     case create
     
-    /// The folder in which to find the frames for each onboarding page's image sequence background
-    var assetFolder: String {
+    func nextPage() -> Page? {
       switch self {
       case .intro:
-        return "nouns-onboarding-1"
+        return .explore
       case .explore:
-        return "nouns-onboarding-2"
+        return .create
       case .create:
-        return "nouns-onboarding-3"
+        return nil
       }
-    }
-    
-    /// The number of onboarding images (frames for an image sequence video) each onboarding page has
-    var numberOfAssets: Int {
-      switch self {
-      case .intro, .explore, .create:
-        return 120
-      }
-    }
-    
-    func onboardingImages() -> [String] {
-      let folder = self.assetFolder
-      var images = [String]()
-      
-      for asset in 0..<self.numberOfAssets {
-        let index = String(format: "%03d", asset)
-        let imagePath = "\(folder)/\(folder)_\(index)"
-        images.append(imagePath)
-      }
-      
-      return images
     }
   }
 }
