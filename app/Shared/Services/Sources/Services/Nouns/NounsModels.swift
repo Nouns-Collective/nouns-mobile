@@ -108,6 +108,7 @@ public struct Seed: Equatable, Hashable {
 
 public extension Seed {
   static let `default` = Seed(background: 0, glasses: 0, head: 0, body: 0, accessory: 0)
+  static let pizza = Seed(background: 0, glasses: 11, head: 160, body: 13, accessory: 4)
 }
 
 /// The owner of the Noun

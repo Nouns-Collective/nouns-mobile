@@ -17,7 +17,7 @@ extension OnboardingView {
     @ObservedObject var viewModel: ViewModel
     
     @Binding var isPresented: Bool
-            
+
     @State private var scene: IntroScene = IntroScene(size: .zero)
     
     @State private var size: CGSize = .zero
@@ -60,9 +60,9 @@ extension OnboardingView {
       case .intro:
         return Color.componentRaspberry
       case .explore:
-        return Color(.sRGB, red: 250/255, green: 193/255, blue: 138/255, opacity: 1.0)
+        return Color(.sRGB, red: 250 / 255, green: 193 / 255, blue: 138 / 255, opacity: 1.0)
       case .create:
-        return Color(.sRGB, red: 116/255, green: 227/255, blue: 160/255, opacity: 1.0)
+        return Color(.sRGB, red: 116 / 255, green: 227 / 255, blue: 160 / 255, opacity: 1.0)
       }
     }
     
@@ -94,8 +94,8 @@ extension OnboardingView {
                 }
             }
           }
-          
-          TimelineView(.periodic(from: .now, by: 8)) { context in
+
+          TimelineView(.periodic(from: .now, by: 3.75)) { context in
             RotatingSlotMachine(date: context.date)
           }
           .hidden(viewModel.selectedPage != .create)
@@ -143,10 +143,8 @@ extension OnboardingView {
   struct RotatingSlotMachine: View {
     
     let date: Date
-    
-    @State private var seed: Seed = .default
-    
-    @State private var hasCompletedDelay: Bool = false
+
+    @State private var seed: Seed = .pizza
     
     var body: some View {
       SlotMachine(
@@ -158,16 +156,9 @@ extension OnboardingView {
       )
       .disabled(true)
       .drawingGroup()
-      .animation(.easeInOut(duration: 4.0), value: seed)
-      .onChange(of: date) { newValue in
-        if hasCompletedDelay {
-          seed = AppCore.shared.nounComposer.randomSeed()
-        } else {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            seed = AppCore.shared.nounComposer.randomSeed()
-            hasCompletedDelay = true
-          }
-        }
+      .animation(.timingCurve(1, 0, 0, 1, duration: 1.7).delay(0.8), value: seed)
+      .onChange(of: date) { _ in
+        seed = AppCore.shared.nounComposer.newRandomSeed(previous: seed)
       }
     }
   }
