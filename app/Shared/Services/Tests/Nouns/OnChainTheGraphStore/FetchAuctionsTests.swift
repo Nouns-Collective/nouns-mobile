@@ -25,7 +25,8 @@ final class FetchAuctionsTests: XCTestCase {
     let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     // when
-    let auctions = try await nounsProvider.fetchAuctions(settled: true, includeNounderOwned: false, limit: 10, cursor: 0).data
+    let auctions = try await nounsProvider.fetchAuctions(settled: true, includeNounderOwned: false, limit: 10,
+                                                         cursor: 0, sortDescending: true).data
     
     // then
     XCTAssertFalse(auctions.isEmpty)
@@ -59,7 +60,7 @@ final class FetchAuctionsTests: XCTestCase {
     let nounsProvider = TheGraphOnChainNouns(graphQLClient: graphQLClient)
     
     do {
-      _ = try await nounsProvider.fetchAuctions(settled: true, includeNounderOwned: false, limit: 10, cursor: 0)
+      _ = try await nounsProvider.fetchAuctions(settled: true, includeNounderOwned: false, limit: 10, cursor: 0, sortDescending: true)
       
       // when
       XCTFail("💥 result unexpected")

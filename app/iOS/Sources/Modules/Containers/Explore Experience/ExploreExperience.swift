@@ -44,10 +44,12 @@ struct ExploreExperience: View {
       .background(Gradient.cherrySunset)
       .overlay(.componentPeachy, edge: .top)
       .ignoresSafeArea(edges: .top)
-      .task {
+    }
+    .onAppear {
+      viewModel.onAppear()
+      Task {
         await viewModel.listenLiveAuctionChanges()
       }
     }
-    .onAppear(perform: viewModel.onAppear)
   }
 }

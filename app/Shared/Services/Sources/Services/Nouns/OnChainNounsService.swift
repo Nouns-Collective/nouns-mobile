@@ -52,18 +52,18 @@ public protocol OnChainNounsService: AnyObject {
   ///   - cursor: A cursor for use in pagination.
   ///
   /// - Returns: A list of `Auction` type  instance or throw an error.
-  func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]>
+  func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int, sortDescending: Bool) async throws -> Page<[Auction]>
   
   /// An asynchronous sequence that  produce the live auction and
   /// react to its properties changes
   ///
-  /// - Returns: A `Auction` instance or throw an error.
+  /// - Returns: An `Auction` instance or throw an error.
   func liveAuctionStateDidChange() -> AsyncThrowingStream<Auction, Error>
   
-  /// An asynchronous sequence that  produce the last settled auction added.
+  /// An asynchronous sequence that produces the last settled auction added.
   ///
-  /// - Returns: A `Auction` instance or throw an error.
-  func settledAuctionsDidChange() -> AsyncStream<Auction>
+  /// - Returns: An array of `Auction` instances or throw an error.
+  func settledAuctionsDidChange() -> AsyncThrowingStream<[Auction], Error>
   
   /// Asynchronously fetches the list of Activities of a given Noun from the chain.
   ///
@@ -184,7 +184,7 @@ public class TheGraphOnChainNouns: OnChainNounsService {
     return page
   }
   
-  public func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int) async throws -> Page<[Auction]> {
+  public func fetchAuctions(settled: Bool, includeNounderOwned: Bool, limit: Int, cursor: Int, sortDescending: Bool) async throws -> Page<[Auction]> {
 
     // Deduct the expected number of nounder owned nouns if `includeNounderOwned` is set to true
     let auctionLimit = limit - (includeNounderOwned ? limit / 10 : 0)
@@ -199,7 +199,17 @@ public class TheGraphOnChainNouns: OnChainNounsService {
     if includeNounderOwned {
       page = try await fetchNounderOwnedNouns(within: page)
     }
-    
+
+    // Sort page data
+    page.data = page.data.sorted(by: { auctionOne, auctionTwo in
+      guard let auctionOneId = Int(auctionOne.noun.id), let auctionTwoId = Int(auctionTwo.noun.id) else {
+        return false
+      }
+      if sortDescending {
+        return auctionOneId > auctionTwoId
+      }
+      return auctionOneId < auctionTwoId
+    })
     return page
   }
   
@@ -255,36 +265,34 @@ public class TheGraphOnChainNouns: OnChainNounsService {
     
     // Add auctions to existing page
     newPage.data.append(contentsOf: auctions)
-    
-    // Sort page data
-    newPage.data = newPage.data.sorted(by: { auctionOne, auctionTwo in
-      guard let auctionOneId = Int(auctionOne.noun.id), let auctionTwoId = Int(auctionTwo.noun.id) else {
-        return false
-      }
-      return auctionOneId > auctionTwoId
-    })
-    
+
     return newPage
   }
   
-  public func settledAuctionsDidChange() -> AsyncStream<Auction> {
-    AsyncStream { continuation in
-      let listener = ShortPolling { () -> Auction in
-        // Fetches the unsettled auction from the network.
-        let auctionPage = try await self.fetchAuctions(settled: true, includeNounderOwned: true, limit: 1, cursor: 0)
-        
-        guard let auction = auctionPage.data.first else {
+  public func settledAuctionsDidChange() -> AsyncThrowingStream<[Auction], Error> {
+    AsyncThrowingStream { continuation in
+      let listener = ShortPolling { () -> [Auction] in
+        // Fetches the most recent settled auction(s) from the network. This will return an array of two
+        // auctions if either of the last two settled Nouns is owned by a Nounder.
+        let auctionPage = try await self.fetchAuctions(settled: true, includeNounderOwned: true, limit: 1, cursor: 0,
+                                                       sortDescending: false)
+
+        guard auctionPage.data.count > 0 else {
           throw OnChainNounsRequestError.noData
         }
-        
-        return auction
+
+        return auctionPage.data
       }
       
-      listener.setEventHandler = { auction in
-        continuation.yield(auction)
+      listener.setEventHandler = { auctions in
+        continuation.yield(auctions)
+      }
+
+      listener.setErrorHandler = { error in
+        continuation.finish(throwing: error)
       }
       
-      continuation.onTermination = { @Sendable _  in
+      continuation.onTermination = { @Sendable _ in
         listener.stopPolling()
       }
       

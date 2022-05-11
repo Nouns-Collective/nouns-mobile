@@ -76,6 +76,7 @@ struct NounProfileInfo: View {
         
         if !viewModel.isAuctionSettled {
           SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+            .id(viewModel.auction.id)
             .aspectRatio(1.0, contentMode: .fit)
         } else {
           NounPuzzle(seed: viewModel.nounTraits)

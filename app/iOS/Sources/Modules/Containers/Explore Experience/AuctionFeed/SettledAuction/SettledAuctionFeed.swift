@@ -45,9 +45,6 @@ extension ExploreExperience {
               }
           }
         )
-        .task {
-          await viewModel.watchNewlyAuctions()
-        }
         // Presents more details about the settled auction.
         .fullScreenCover(item: $selectedAuction, onDismiss: {
           selectedAuction = nil
@@ -69,6 +66,9 @@ extension ExploreExperience {
       }
       .onAppear {
         viewModel.loadAuctions()
+        Task {
+          await viewModel.listenSettledAuctionsChanges()
+        }
       }
     }
   }

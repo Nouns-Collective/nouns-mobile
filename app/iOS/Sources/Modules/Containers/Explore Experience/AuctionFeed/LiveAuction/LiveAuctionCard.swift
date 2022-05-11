@@ -43,6 +43,7 @@ struct LiveAuctionCard: View {
       media: {
         VStack(spacing: 0) {
           SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+            .id(viewModel.auction.id)
             .background(
               GeometryReader { proxy in
                 Color(hex: viewModel.nounBackground)
