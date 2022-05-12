@@ -17,11 +17,7 @@ extension OnboardingView {
     
     @Published var seed: Seed = .default
             
-    var onCompletion: () -> Void
-    
-    init(onCompletion: @escaping () -> Void = {}) {
-      self.onCompletion = onCompletion
-    }
+    var onCompletion: () -> Void = {}
 
     func onAppear() {
       AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.onboarding)

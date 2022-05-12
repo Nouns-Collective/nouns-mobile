@@ -48,10 +48,11 @@ struct OnboardingView: View {
   @StateObject private var viewModel = ViewModel()
     
   @Binding private var isPresented: Bool
+  private let onCompletion: () -> Void
     
   init(isPresented: Binding<Bool>, onCompletion: @escaping () -> Void) {
     self._isPresented = isPresented
-    self.viewModel.onCompletion = onCompletion
+    self.onCompletion = onCompletion
     UITabBar.appearance().alpha = 0.0
   }
   
@@ -62,6 +63,9 @@ struct OnboardingView: View {
         .navigationTitle("")
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+          viewModel.onCompletion = self.onCompletion
+        }
     }
   }
 }
