@@ -95,10 +95,11 @@ extension OnboardingView {
             }
           }
 
-          TimelineView(.periodic(from: .now, by: 3.75)) { context in
-            RotatingSlotMachine(date: context.date)
+          if viewModel.selectedPage == .create {
+            TimelineView(.periodic(from: .now, by: 3.75)) { context in
+              RotatingSlotMachine(date: context.date)
+            }
           }
-          .hidden(viewModel.selectedPage != .create)
         }
         
         OnboardingView.Footer(
@@ -120,7 +121,7 @@ extension OnboardingView {
                 Image.mdArrowRight
                   .resizable()
                   .aspectRatio(contentMode: .fit)
-                  .frame(height: 24, alignment: .center)
+                  .frame(height: 28, alignment: .center)
               }
             }
             .padding(16)

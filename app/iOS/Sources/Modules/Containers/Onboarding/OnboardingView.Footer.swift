@@ -21,6 +21,8 @@ extension OnboardingView {
           .font(.custom(.bold, relativeTo: .title2))
           .foregroundColor(Color.componentNounsBlack)
           .multilineTextAlignment(.leading)
+          .minimumScaleFactor(0.5)
+          .frame(height: 90, alignment: .topLeading)
         
         Spacer()
         
