@@ -40,7 +40,7 @@ final class TalkingNoun: SKScene {
   init(seed: Seed) {
     self.seed = seed
     super.init(size: Self.traitSize)
-    scaleMode = .fill
+    scaleMode = .aspectFill
     view?.showsFPS = false
   }
   
