@@ -166,8 +166,12 @@ internal class ShareActivityTextSource: NSObject, UIActivityItemSource {
   }
 
   func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-    switch activityType {
 
+    if activityType?.rawValue == "net.whatsapp.WhatsApp.ShareExtension" {
+      return nil
+    }
+
+    switch activityType {
     case UIActivity.ActivityType.mail:
       return nil
 
