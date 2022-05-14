@@ -43,6 +43,11 @@ extension ExploreExperience {
                   selectedAuction = auction
                 }
               }
+              .onWidgetOpen {
+                if selectedAuction != nil {
+                  selectedAuction = nil
+                }
+              }
           }
         )
         // Presents more details about the settled auction.

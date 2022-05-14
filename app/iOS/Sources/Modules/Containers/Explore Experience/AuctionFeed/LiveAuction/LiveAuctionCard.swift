@@ -108,7 +108,11 @@ struct LiveAuctionCard: View {
       }
       .onWidgetOpen {
         AppCore.shared.analytics.logEvent(withEvent: .openAppFromWidget, parameters: ["noun_id": viewModel.auction.noun.id])
-        showNounProfile = true
+        if !showNounProfile {
+          DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+            showNounProfile = true
+          }
+        }
       }
   }
 }
