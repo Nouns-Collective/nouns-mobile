@@ -55,7 +55,7 @@ public struct ShareSheet: UIViewControllerRepresentable {
 
     if let titleMetadata = titleMetadata {
       if let imageMetadata = imageMetadata {
-        let imageItem = ShareActivityImageSource(image: imageMetadata, title: titleMetadata)
+        let imageItem = ShareActivityImageMetadataSource(image: imageMetadata, title: titleMetadata)
         activityItems.append(imageItem)
       }
 
@@ -81,7 +81,7 @@ public struct ShareSheet: UIViewControllerRepresentable {
   
 }
 
-internal class ShareActivityImageSource: NSObject, UIActivityItemSource {
+internal class ShareActivityImageMetadataSource: NSObject, UIActivityItemSource {
 
   /// The preview icon to show in the share sheet
   private var image: UIImage
@@ -100,18 +100,14 @@ internal class ShareActivityImageSource: NSObject, UIActivityItemSource {
   }
 
   func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
-    return image
-  }
-
-  func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType: UIActivity.ActivityType?) -> String {
-    return title
+    return nil
   }
 
   func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
     let linkMetaData = LPLinkMetadata()
     linkMetaData.imageProvider = NSItemProvider(object: image)
     linkMetaData.title = title
-    
+
     // Temporarily save image locally to retrieve file size and metadata
     // Create a URL in the /tmp directory
     let filename = UUID().uuidString
@@ -123,7 +119,7 @@ internal class ShareActivityImageSource: NSObject, UIActivityItemSource {
       print("🛑 Could not get jpgData from image: \(image)")
       return linkMetaData
     }
-    
+
     do {
       try jpgData.write(to: imageURL)
     } catch {
@@ -134,21 +130,21 @@ internal class ShareActivityImageSource: NSObject, UIActivityItemSource {
     let prefix = "JPEG Image"
 
     let fileSizeResourceValue = try? imageURL.resourceValues(forKeys: [.fileSizeKey])
-    
+
     guard let fileSizeResourceValue = fileSizeResourceValue, let fileSizeInt = fileSizeResourceValue.fileSize else {
       return linkMetaData
     }
-    
+
     // Fetch file size of image and convert to readable string
     let byteCountFormatter = ByteCountFormatter()
     byteCountFormatter.countStyle = .file
     let fileSizeString = byteCountFormatter.string(fromByteCount: Int64(fileSizeInt))
 
     let suffix = "・\(fileSizeString)"
-    
+
     // The fileURLWithPath in originalURL acts as the subtitle
     linkMetaData.originalURL = URL(fileURLWithPath: "\(prefix)\(suffix)")
-    
+
     return linkMetaData
   }
 }
@@ -167,17 +163,12 @@ internal class ShareActivityTextSource: NSObject, UIActivityItemSource {
 
   func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
 
-    if activityType?.rawValue == "net.whatsapp.WhatsApp.ShareExtension" {
+    if activityType?.rawValue == "net.whatsapp.WhatsApp.ShareExtension" ||
+        activityType?.rawValue == "com.tinyspeck.chatlyio.share" {
       return nil
     }
 
-    switch activityType {
-    case UIActivity.ActivityType.mail:
-      return nil
-
-    default:
-      return message
-    }
+    return message
   }
 }
 
