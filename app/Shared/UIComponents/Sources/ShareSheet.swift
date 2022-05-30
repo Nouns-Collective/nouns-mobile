@@ -162,9 +162,12 @@ internal class ShareActivityTextSource: NSObject, UIActivityItemSource {
   }
 
   func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+    if activityType?.rawValue == "net.whatsapp.WhatsApp.ShareExtension" {
+      return nil
+    }
 
-    if activityType?.rawValue == "net.whatsapp.WhatsApp.ShareExtension" ||
-        activityType?.rawValue == "com.tinyspeck.chatlyio.share" {
+    switch activityType {
+    case UIActivity.ActivityType.mail:
       return nil
     }
 
