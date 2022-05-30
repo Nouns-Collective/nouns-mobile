@@ -47,7 +47,7 @@ struct SettledAuctionInfoSheet: View {
         supplementaryView: {
           ENSText(token: viewModel.winner)
             .lineLimit(1)
-            .font(.custom(.medium, relativeTo: .subheadline))
+            .font(.custom(.medium, relativeTo: .footnote))
             .truncationMode(.middle)
             .padding(.leading, 4)
         },
@@ -55,7 +55,7 @@ struct SettledAuctionInfoSheet: View {
           Image.mdArrowRight
         },
         action: {
-          isActivityPresented.toggle()
+          isSafariPresented.toggle()
         }
       )
       

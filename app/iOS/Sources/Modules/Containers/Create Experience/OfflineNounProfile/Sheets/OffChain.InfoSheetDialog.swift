@@ -30,7 +30,7 @@ extension OffChainNounProfile {
     private var nounExportView: some View {
       NounPuzzle(seed: viewModel.noun.seed)
         .frame(width: 512, height: 512, alignment: .center)
-        .background(Gradient(.allCases[viewModel.noun.seed.background]))
+        .background(Gradient(NounCreator.backgroundColors[viewModel.noun.seed.background]))
     }
     
     var body: some View {

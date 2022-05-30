@@ -20,11 +20,10 @@ extension OffChainNounProfile {
     
     var body: some View {
       ActionSheet(
-        title: R.string.nounDeleteDialog.title(),
-        borderColor: nil
+        title: R.string.nounDeleteDialog.title()
       ) {
         Text(R.string.nounDeleteDialog.message())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(6)
           .padding(.bottom, 20)
         
@@ -46,7 +45,7 @@ extension OffChainNounProfile {
         /// Dismisses the sheet.
         SoftButton(
           text: R.string.nounDeleteDialog.nounCancelAction(),
-          largeAccessory: { Image.smAbsent },
+          largeAccessory: { Image.later },
           action: {
             withAnimation {
               viewModel.isDeletePresented.toggle()

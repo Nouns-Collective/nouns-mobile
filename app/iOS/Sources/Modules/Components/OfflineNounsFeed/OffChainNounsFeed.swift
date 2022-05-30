@@ -61,7 +61,7 @@ struct OffChainNounsFeed<PlaceholderView: View, RightBarItem: View>: View {
     VStack(alignment: .leading, spacing: 20) {
       if let title = title {
         Text(title)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
       }
       
       ForEach(viewModel.nouns, id: \.self) { noun in
@@ -75,12 +75,13 @@ struct OffChainNounsFeed<PlaceholderView: View, RightBarItem: View>: View {
     .padding(.horizontal, 20)
     .padding(.bottom, tabBarHeight)
     // Extra padding between the bottom of the last noun card and the top of the tab view
-    .padding(.bottom, 20)
+    .padding(.bottom, 40)
     .if(!navigationTitle.isEmpty, transform: { view in
       view
         .softNavigationTitle(navigationTitle, rightAccessory: {
           rightBarItem()
         })
+        .id(AppPage.create.scrollToTopId)
     })
     .scrollable(isScrollable)
     .emptyPlaceholder(when: viewModel.nouns.isEmpty) {

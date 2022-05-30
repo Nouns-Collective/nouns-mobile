@@ -7,6 +7,7 @@
 
 import Foundation
 import SpriteKit
+import Services
 
 extension TalkingNoun {
   
@@ -18,50 +19,79 @@ extension TalkingNoun {
       case active
     }
     
+    private class var nounComposer: NounComposer {
+      AppCore.shared.nounComposer
+    }
+    
     var state: State = .idle
+    let eyesNode = SKSpriteNode()
     
-    private lazy var blinkTextures: [SKTexture] = {
-      loadTextures(atlas: "eyes-blink", prefix: "eyes-blink_", from: 1, to: 5)
-    }()
-    
-    init() {
-      let texture = SKTexture(imageNamed: R.image.eyesBlink_1.name)
-      texture.filteringMode = .nearest
+    let blinkTextures: [SKTexture]
+    let shiftTextures: [SKTexture]
+
+    let blinkOnly: Bool
+
+    init(seed: Seed, frameSize: CGSize, blinkOnly: Bool = true) {
+      guard let blinkTextures = Self.nounComposer.glasses[seed.glasses].textures["eyes-blink"] else {
+        fatalError("Couldn't load eye blink textures.")
+      }
       
-      super.init(texture: texture, color: SKColor.clear, size: texture.size())
+      self.blinkTextures = blinkTextures.map {
+        let texture = SKTexture(imageNamed: $0)
+        texture.filteringMode = .nearest
+        return texture
+      }
       
-      blink()
+      guard let shiftTextures = Self.nounComposer.glasses[seed.glasses].textures["eyes-shift"] else {
+        fatalError("Couldn't load eye shift textures.")
+      }
+      
+      self.shiftTextures = shiftTextures.map {
+        let texture = SKTexture(imageNamed: $0)
+        texture.filteringMode = .nearest
+        return texture
+      }
+
+      self.blinkOnly = blinkOnly
+      
+      guard let glassesFrame = Self.nounComposer.glasses[seed.glasses].textures["glasses-frame"]?.first else {
+        fatalError("Couldn't load eye shift textures.")
+      }
+      
+      let glassesFrameTexture = SKTexture(imageNamed: glassesFrame)
+      glassesFrameTexture.filteringMode = .nearest
+      super.init(texture: glassesFrameTexture, color: SKColor.clear, size: frameSize)
+
+      eyesNode.texture = self.blinkTextures.first
+      eyesNode.size = frameSize
+      addChild(eyesNode)
+      
+      animateEyes()
     }
     
     required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
     }
-    
-    /// Default eyes
-    /// (wait 500-2500ms)
-    /// blink sequence
-    /// (wait 500-2500ms)
-    /// Default eyes (random left or right)
-    /// …repeat
-    private func blink() {
+
+    private func animateEyes() {
       guard action(forKey: State.idle.rawValue) == nil else {
         return
       }
       
-      let pause = SKAction.wait(forDuration: 1.5, withRange: 2)
-      let blink = SKAction.animate(with: blinkTextures, timePerFrame: 0.05)
+      let pause = SKAction.wait(forDuration: 10, withRange: 4)
+      let shortPause = SKAction.wait(forDuration: 3, withRange: 1)
+      let blink = SKAction.run {
+        self.eyesNode.run(SKAction.animate(with: self.blinkTextures, timePerFrame: 0.05))
+      }
       let goofyEye = SKAction.customAction(withDuration: 0.0, actionBlock: randomEye)
-      let sequence = SKAction.sequence([blink, pause, goofyEye, pause])
+      let sequence = SKAction.sequence(blinkOnly ? [pause, blink] : [shortPause, blink, shortPause, goofyEye])
       let repeatForever = SKAction.repeatForever(sequence)
       
       run(repeatForever, withKey: State.idle.rawValue)
     }
     
     private func randomEye(_ node: SKNode, _ elapsedTime: CGFloat) {
-      let index = state == .active ? 0 : Int.random(in: 0...6)
-      let texture = SKTexture(imageNamed: "eyes-shift_\(index)")
-      texture.filteringMode = .nearest
-      (node as? SKSpriteNode)?.texture = texture
+      eyesNode.texture = state == .active ? shiftTextures.first : shiftTextures.randomElement()
     }
   }
 }

@@ -12,7 +12,7 @@
 
 "new-noun.notification.title" = "New Noun";
 
-"notification.note" = "Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.";
+"notification.note" = "Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.";
 
 "theme.title" = "Theme";
 
@@ -20,6 +20,6 @@
 
 "app.icon.title" = "App Icon";
 
-"app.icon.default" = "Default";
+"app.intro.title" = "App Intro";
 
 "share.friends" = "Share with friends";

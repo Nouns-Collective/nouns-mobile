@@ -18,8 +18,8 @@ extension ExploreExperience {
     @State private var selectedAuction: Auction?
     
     private let gridLayout = [
-      GridItem(.flexible(), spacing: 20),
-      GridItem(.flexible(), spacing: 20),
+      GridItem(.flexible(), spacing: 16),
+      GridItem(.flexible(), spacing: 16),
     ]
     
     var body: some View {
@@ -43,11 +43,13 @@ extension ExploreExperience {
                   selectedAuction = auction
                 }
               }
+              .onWidgetOpen {
+                if selectedAuction != nil {
+                  selectedAuction = nil
+                }
+              }
           }
         )
-        .task {
-          await viewModel.watchNewlyAuctions()
-        }
         // Presents more details about the settled auction.
         .fullScreenCover(item: $selectedAuction, onDismiss: {
           selectedAuction = nil
@@ -61,16 +63,17 @@ extension ExploreExperience {
             message: viewModel.auctions.isEmpty ? R.string.explore.settledErrorEmpty() : R.string.explore.settledErrorLoadMore(),
             buttonText: R.string.shared.tryAgain(),
             retryAction: {
-              Task {
-                await viewModel.loadAuctions()
-              }
+              viewModel.loadAuctions()
             }
           )
           .padding(.bottom, 20)
         }
       }
-      .task {
-        await viewModel.loadAuctions()
+      .onAppear {
+        viewModel.loadAuctions()
+        Task {
+          await viewModel.listenSettledAuctionsChanges()
+        }
       }
     }
   }

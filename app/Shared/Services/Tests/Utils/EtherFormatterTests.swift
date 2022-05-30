@@ -9,13 +9,67 @@ import XCTest
 @testable import Services
 
 final class EtherFormatterTests: XCTestCase {
-  
+
+  /// Tests no conversion (eth to eth)
+  func testNoConversion() {
+    // given
+    let ethValue = "100.23"
+    // represented as a formatted string
+    let expectedEthValue = "100.23"
+
+    let formatter = EtherFormatter(from: .eth)
+    let result = formatter.string(from: ethValue)
+
+    XCTAssertEqual(result, expectedEthValue)
+  }
+
+  /// Tests the default number of digits after the decimal
+  func testDefaultFractionalDigits() {
+    // given
+    let ethValue = "100.2345"
+    // represented as a formatted string
+    let expectedEthValue = "100.23"
+
+    let formatter = EtherFormatter(from: .eth)
+    let result = formatter.string(from: ethValue)
+
+    XCTAssertEqual(result, expectedEthValue)
+  }
+
+  /// Tests the minimum number of digits after the decimal
+  func testMinimumFractionalDigits() {
+    // given
+    let ethValue = "100"
+    // represented as a formatted string
+    let expectedEthValue = "100.0"
+
+    let formatter = EtherFormatter(from: .eth)
+    formatter.minimumFractionDigits = 1
+    let result = formatter.string(from: ethValue)
+
+    XCTAssertEqual(result, expectedEthValue)
+  }
+
+  /// Tests the maximum number of digits after the decimal
+  func testMaximumFractionalDigits() {
+    // given
+    let ethValue = "100.2345"
+    // represented as a formatted string
+    let expectedEthValue = "100.234"
+
+    let formatter = EtherFormatter(from: .eth)
+    formatter.maximumFractionDigits = 3
+    let result = formatter.string(from: ethValue)
+
+    XCTAssertEqual(result, expectedEthValue)
+  }
+
   /// Tests converting from ETH to WEI
   func testConvertingFromEthToWei() throws {
     // given
     let ethValue = "100"
     // represented as a string
-    let expectedWeiValue = "100000000000000000000"
+    let expectedWeiValue = "100,000,000,000,000,000,000"
     
     let formatter = EtherFormatter(from: .eth)
     formatter.unit = .wei
@@ -30,7 +84,7 @@ final class EtherFormatterTests: XCTestCase {
     // given
     let weiValue = "2245320000000000000000"
     // represented as a string
-    let expectedEthValue = "2245.32"
+    let expectedEthValue = "2,245.32"
     
     let formatter = EtherFormatter(from: .wei)
     formatter.unit = .eth

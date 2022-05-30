@@ -16,6 +16,10 @@
 
 "try.again" = "Try Again";
 
+"get.started" = "Get Started";
+
+"live.auction" = "Live Auction";
+
 // MARK: - States
 
 "unavailable" = "Unavailable";
@@ -39,3 +43,7 @@
 // MARK: - Links
 
 "nouns.website" = "https://nouns.wtf";
+
+"nouns.profile.website" = "https://nouns.wtf/noun/%@";
+
+"nouns.proposals.website" = "https://nouns.wtf/vote";

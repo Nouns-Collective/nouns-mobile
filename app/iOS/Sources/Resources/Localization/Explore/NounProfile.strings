@@ -18,6 +18,8 @@
 
 "nounders.eth" = "nounders.eth";
 
+"share.message" = "👋 sup! check out Noun %s";
+
 // MARK: - Live Auction
 
 "auction.unsettled.governance" = "Bid history";
@@ -31,4 +33,4 @@
 // MARK: - Settled Auction
 
 "auction.settled.governance.nounder" = "Activity";
-"auction.settled.governance" = "Bid history & activity";
+"auction.settled.governance" = "Activity & bid history";

@@ -35,12 +35,11 @@ extension NounCreator {
     
     var body: some View {
       ActionSheet(
-        title: R.string.nounDeleteDialog.title(),
-        borderColor: nil
+        title: R.string.nounDeleteDialog.title()
       ) {
         VStack(alignment: .leading) {
           Text(R.string.nounDeleteDialog.message())
-            .font(.custom(.regular, size: 17))
+            .font(.custom(.regular, relativeTo: .subheadline))
             .lineSpacing(6)
             .padding(.bottom, 20)
           
@@ -56,7 +55,7 @@ extension NounCreator {
           
           SoftButton(
             text: R.string.nounDeleteDialog.nounCancelAction(),
-            largeAccessory: { Image.smAbsent },
+            largeAccessory: { Image.later },
             action: {
               withAnimation {
                 viewModel.setMode(to: .creating)
@@ -79,12 +78,11 @@ extension NounCreator {
     
     var body: some View {
       ActionSheet(
-        title: R.string.nounDiscardEditDialog.title(),
-        borderColor: nil
+        title: R.string.nounDiscardEditDialog.title()
       ) {
         VStack(alignment: .leading) {
           Text(R.string.nounDiscardEditDialog.message())
-            .font(.custom(.regular, size: 17))
+            .font(.custom(.regular, relativeTo: .subheadline))
             .lineSpacing(6)
             .padding(.bottom, 20)
           
@@ -100,7 +98,7 @@ extension NounCreator {
           
           SoftButton(
             text: R.string.nounDiscardEditDialog.nounCancelAction(),
-            largeAccessory: { Image.smAbsent },
+            largeAccessory: { Image.later },
             action: {
               withAnimation {
                 viewModel.setMode(to: .creating)

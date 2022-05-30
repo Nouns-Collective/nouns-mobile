@@ -88,6 +88,23 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
 
+  #if os(iOS) || os(tvOS)
+  /// This `R.storyboard` struct is generated, and contains static references to 1 storyboards.
+  struct storyboard {
+    /// Storyboard `LaunchScreen`.
+    static let launchScreen = _R.storyboard.launchScreen()
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "LaunchScreen", bundle: ...)`
+    static func launchScreen(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.launchScreen)
+    }
+    #endif
+
+    fileprivate init() {}
+  }
+  #endif
+
   /// This `R.color` struct is generated, and contains static references to 2 colors.
   struct color {
     /// Color `AccentColor`.
@@ -139,10 +156,20 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.file` struct is generated, and contains static references to 1 files.
+  /// This `R.file` struct is generated, and contains static references to 3 files.
   struct file {
+    /// Resource file `AppIcons.plist`.
+    static let appIconsPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "AppIcons", pathExtension: "plist")
     /// Resource file `GoogleService-Info.plist`.
     static let googleServiceInfoPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "GoogleService-Info", pathExtension: "plist")
+    /// Resource file `nounfetti.json`.
+    static let nounfettiJson = Rswift.FileResource(bundle: R.hostingBundle, name: "nounfetti", pathExtension: "json")
+
+    /// `bundle.url(forResource: "AppIcons", withExtension: "plist")`
+    static func appIconsPlist(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.appIconsPlist
+      return fileResource.bundle.url(forResource: fileResource)
+    }
 
     /// `bundle.url(forResource: "GoogleService-Info", withExtension: "plist")`
     static func googleServiceInfoPlist(_: Void = ()) -> Foundation.URL? {
@@ -150,13 +177,311 @@ struct R: Rswift.Validatable {
       return fileResource.bundle.url(forResource: fileResource)
     }
 
+    /// `bundle.url(forResource: "nounfetti", withExtension: "json")`
+    static func nounfettiJson(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.nounfettiJson
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 246 images.
+  /// This `R.image` struct is generated, and contains static references to 447 images.
   struct image {
+    /// Image `AppIcon0_Preview`.
+    static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
+    /// Image `AppIcon10_Preview`.
+    static let appIcon10_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon10_Preview")
+    /// Image `AppIcon11_Preview`.
+    static let appIcon11_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon11_Preview")
+    /// Image `AppIcon12_Preview`.
+    static let appIcon12_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon12_Preview")
+    /// Image `AppIcon13_Preview`.
+    static let appIcon13_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon13_Preview")
+    /// Image `AppIcon14_Preview`.
+    static let appIcon14_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon14_Preview")
+    /// Image `AppIcon15_Preview`.
+    static let appIcon15_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon15_Preview")
+    /// Image `AppIcon16_Preview`.
+    static let appIcon16_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon16_Preview")
+    /// Image `AppIcon17_Preview`.
+    static let appIcon17_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon17_Preview")
+    /// Image `AppIcon18_Preview`.
+    static let appIcon18_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon18_Preview")
+    /// Image `AppIcon19_Preview`.
+    static let appIcon19_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon19_Preview")
+    /// Image `AppIcon1_Preview`.
+    static let appIcon1_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon1_Preview")
+    /// Image `AppIcon20_Preview`.
+    static let appIcon20_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon20_Preview")
+    /// Image `AppIcon21_Preview`.
+    static let appIcon21_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon21_Preview")
+    /// Image `AppIcon22_Preview`.
+    static let appIcon22_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon22_Preview")
+    /// Image `AppIcon23_Preview`.
+    static let appIcon23_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon23_Preview")
+    /// Image `AppIcon2_Preview`.
+    static let appIcon2_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon2_Preview")
+    /// Image `AppIcon3_Preview`.
+    static let appIcon3_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon3_Preview")
+    /// Image `AppIcon4_Preview`.
+    static let appIcon4_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon4_Preview")
+    /// Image `AppIcon5_Preview`.
+    static let appIcon5_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon5_Preview")
+    /// Image `AppIcon6_Preview`.
+    static let appIcon6_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon6_Preview")
+    /// Image `AppIcon7_Preview`.
+    static let appIcon7_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon7_Preview")
+    /// Image `AppIcon8_Preview`.
+    static let appIcon8_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon8_Preview")
+    /// Image `AppIcon9_Preview`.
+    static let appIcon9_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon9_Preview")
+    /// Image `AppIcon_Preview`.
+    static let appIcon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon_Preview")
+    /// Image `Noun-fetti_00000`.
+    static let nounFetti_00000 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00000")
+    /// Image `Noun-fetti_00001`.
+    static let nounFetti_00001 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00001")
+    /// Image `Noun-fetti_00002`.
+    static let nounFetti_00002 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00002")
+    /// Image `Noun-fetti_00003`.
+    static let nounFetti_00003 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00003")
+    /// Image `Noun-fetti_00004`.
+    static let nounFetti_00004 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00004")
+    /// Image `Noun-fetti_00005`.
+    static let nounFetti_00005 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00005")
+    /// Image `Noun-fetti_00006`.
+    static let nounFetti_00006 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00006")
+    /// Image `Noun-fetti_00007`.
+    static let nounFetti_00007 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00007")
+    /// Image `Noun-fetti_00008`.
+    static let nounFetti_00008 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00008")
+    /// Image `Noun-fetti_00009`.
+    static let nounFetti_00009 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00009")
+    /// Image `Noun-fetti_00010`.
+    static let nounFetti_00010 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00010")
+    /// Image `Noun-fetti_00011`.
+    static let nounFetti_00011 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00011")
+    /// Image `Noun-fetti_00012`.
+    static let nounFetti_00012 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00012")
+    /// Image `Noun-fetti_00013`.
+    static let nounFetti_00013 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00013")
+    /// Image `Noun-fetti_00014`.
+    static let nounFetti_00014 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00014")
+    /// Image `Noun-fetti_00015`.
+    static let nounFetti_00015 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00015")
+    /// Image `Noun-fetti_00016`.
+    static let nounFetti_00016 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00016")
+    /// Image `Noun-fetti_00017`.
+    static let nounFetti_00017 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00017")
+    /// Image `Noun-fetti_00018`.
+    static let nounFetti_00018 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00018")
+    /// Image `Noun-fetti_00019`.
+    static let nounFetti_00019 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00019")
+    /// Image `Noun-fetti_00020`.
+    static let nounFetti_00020 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00020")
+    /// Image `Noun-fetti_00021`.
+    static let nounFetti_00021 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00021")
+    /// Image `Noun-fetti_00022`.
+    static let nounFetti_00022 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00022")
+    /// Image `Noun-fetti_00023`.
+    static let nounFetti_00023 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00023")
+    /// Image `Noun-fetti_00024`.
+    static let nounFetti_00024 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00024")
+    /// Image `Noun-fetti_00025`.
+    static let nounFetti_00025 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00025")
+    /// Image `Noun-fetti_00026`.
+    static let nounFetti_00026 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00026")
+    /// Image `Noun-fetti_00027`.
+    static let nounFetti_00027 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00027")
+    /// Image `Noun-fetti_00028`.
+    static let nounFetti_00028 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00028")
+    /// Image `Noun-fetti_00029`.
+    static let nounFetti_00029 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00029")
+    /// Image `Noun-fetti_00030`.
+    static let nounFetti_00030 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00030")
+    /// Image `Noun-fetti_00031`.
+    static let nounFetti_00031 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00031")
+    /// Image `Noun-fetti_00032`.
+    static let nounFetti_00032 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00032")
+    /// Image `Noun-fetti_00033`.
+    static let nounFetti_00033 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00033")
+    /// Image `Noun-fetti_00034`.
+    static let nounFetti_00034 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00034")
+    /// Image `Noun-fetti_00035`.
+    static let nounFetti_00035 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00035")
+    /// Image `Noun-fetti_00036`.
+    static let nounFetti_00036 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00036")
+    /// Image `Noun-fetti_00037`.
+    static let nounFetti_00037 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00037")
+    /// Image `Noun-fetti_00038`.
+    static let nounFetti_00038 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00038")
+    /// Image `Noun-fetti_00039`.
+    static let nounFetti_00039 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00039")
+    /// Image `Noun-fetti_00040`.
+    static let nounFetti_00040 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00040")
+    /// Image `Noun-fetti_00041`.
+    static let nounFetti_00041 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00041")
+    /// Image `Noun-fetti_00042`.
+    static let nounFetti_00042 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00042")
+    /// Image `Noun-fetti_00043`.
+    static let nounFetti_00043 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00043")
+    /// Image `Noun-fetti_00044`.
+    static let nounFetti_00044 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00044")
+    /// Image `Noun-fetti_00045`.
+    static let nounFetti_00045 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00045")
+    /// Image `Noun-fetti_00046`.
+    static let nounFetti_00046 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00046")
+    /// Image `Noun-fetti_00047`.
+    static let nounFetti_00047 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00047")
+    /// Image `Noun-fetti_00048`.
+    static let nounFetti_00048 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00048")
+    /// Image `Noun-fetti_00049`.
+    static let nounFetti_00049 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00049")
+    /// Image `Noun-fetti_00050`.
+    static let nounFetti_00050 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00050")
+    /// Image `Noun-fetti_00051`.
+    static let nounFetti_00051 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00051")
+    /// Image `Noun-fetti_00052`.
+    static let nounFetti_00052 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00052")
+    /// Image `Noun-fetti_00053`.
+    static let nounFetti_00053 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00053")
+    /// Image `Noun-fetti_00054`.
+    static let nounFetti_00054 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00054")
+    /// Image `Noun-fetti_00055`.
+    static let nounFetti_00055 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00055")
+    /// Image `Noun-fetti_00056`.
+    static let nounFetti_00056 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00056")
+    /// Image `Noun-fetti_00057`.
+    static let nounFetti_00057 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00057")
+    /// Image `Noun-fetti_00058`.
+    static let nounFetti_00058 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00058")
+    /// Image `Noun-fetti_00059`.
+    static let nounFetti_00059 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00059")
+    /// Image `Noun-fetti_00060`.
+    static let nounFetti_00060 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00060")
+    /// Image `Noun-fetti_00061`.
+    static let nounFetti_00061 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00061")
+    /// Image `Noun-fetti_00062`.
+    static let nounFetti_00062 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00062")
+    /// Image `Noun-fetti_00063`.
+    static let nounFetti_00063 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00063")
+    /// Image `Noun-fetti_00064`.
+    static let nounFetti_00064 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00064")
+    /// Image `Noun-fetti_00065`.
+    static let nounFetti_00065 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00065")
+    /// Image `Noun-fetti_00066`.
+    static let nounFetti_00066 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00066")
+    /// Image `Noun-fetti_00067`.
+    static let nounFetti_00067 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00067")
+    /// Image `Noun-fetti_00068`.
+    static let nounFetti_00068 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00068")
+    /// Image `Noun-fetti_00069`.
+    static let nounFetti_00069 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00069")
+    /// Image `Noun-fetti_00070`.
+    static let nounFetti_00070 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00070")
+    /// Image `Noun-fetti_00071`.
+    static let nounFetti_00071 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00071")
+    /// Image `Noun-fetti_00072`.
+    static let nounFetti_00072 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00072")
+    /// Image `Noun-fetti_00073`.
+    static let nounFetti_00073 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00073")
+    /// Image `Noun-fetti_00074`.
+    static let nounFetti_00074 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00074")
+    /// Image `Noun-fetti_00075`.
+    static let nounFetti_00075 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00075")
+    /// Image `Noun-fetti_00076`.
+    static let nounFetti_00076 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00076")
+    /// Image `Noun-fetti_00077`.
+    static let nounFetti_00077 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00077")
+    /// Image `Noun-fetti_00078`.
+    static let nounFetti_00078 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00078")
+    /// Image `Noun-fetti_00079`.
+    static let nounFetti_00079 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00079")
+    /// Image `Noun-fetti_00080`.
+    static let nounFetti_00080 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00080")
+    /// Image `Noun-fetti_00081`.
+    static let nounFetti_00081 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00081")
+    /// Image `Noun-fetti_00082`.
+    static let nounFetti_00082 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00082")
+    /// Image `Noun-fetti_00083`.
+    static let nounFetti_00083 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00083")
+    /// Image `Noun-fetti_00084`.
+    static let nounFetti_00084 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00084")
+    /// Image `Noun-fetti_00085`.
+    static let nounFetti_00085 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00085")
+    /// Image `Noun-fetti_00086`.
+    static let nounFetti_00086 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00086")
+    /// Image `Noun-fetti_00087`.
+    static let nounFetti_00087 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00087")
+    /// Image `Noun-fetti_00088`.
+    static let nounFetti_00088 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00088")
+    /// Image `Noun-fetti_00089`.
+    static let nounFetti_00089 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00089")
+    /// Image `Noun-fetti_00090`.
+    static let nounFetti_00090 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00090")
+    /// Image `Noun-fetti_00091`.
+    static let nounFetti_00091 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00091")
+    /// Image `Noun-fetti_00092`.
+    static let nounFetti_00092 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00092")
+    /// Image `Noun-fetti_00093`.
+    static let nounFetti_00093 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00093")
+    /// Image `Noun-fetti_00094`.
+    static let nounFetti_00094 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00094")
+    /// Image `Noun-fetti_00095`.
+    static let nounFetti_00095 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00095")
+    /// Image `Noun-fetti_00096`.
+    static let nounFetti_00096 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00096")
+    /// Image `Noun-fetti_00097`.
+    static let nounFetti_00097 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00097")
+    /// Image `Noun-fetti_00098`.
+    static let nounFetti_00098 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00098")
+    /// Image `Noun-fetti_00099`.
+    static let nounFetti_00099 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00099")
+    /// Image `Noun-fetti_00100`.
+    static let nounFetti_00100 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00100")
+    /// Image `Noun-fetti_00101`.
+    static let nounFetti_00101 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00101")
+    /// Image `Noun-fetti_00102`.
+    static let nounFetti_00102 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00102")
+    /// Image `Noun-fetti_00103`.
+    static let nounFetti_00103 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00103")
+    /// Image `Noun-fetti_00104`.
+    static let nounFetti_00104 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00104")
+    /// Image `Noun-fetti_00105`.
+    static let nounFetti_00105 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00105")
+    /// Image `Noun-fetti_00106`.
+    static let nounFetti_00106 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00106")
+    /// Image `Noun-fetti_00107`.
+    static let nounFetti_00107 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00107")
+    /// Image `Noun-fetti_00108`.
+    static let nounFetti_00108 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00108")
+    /// Image `Noun-fetti_00109`.
+    static let nounFetti_00109 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00109")
+    /// Image `Noun-fetti_00110`.
+    static let nounFetti_00110 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00110")
+    /// Image `Noun-fetti_00111`.
+    static let nounFetti_00111 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00111")
+    /// Image `Noun-fetti_00112`.
+    static let nounFetti_00112 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00112")
+    /// Image `Noun-fetti_00113`.
+    static let nounFetti_00113 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00113")
+    /// Image `Noun-fetti_00114`.
+    static let nounFetti_00114 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00114")
+    /// Image `Noun-fetti_00115`.
+    static let nounFetti_00115 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00115")
+    /// Image `Noun-fetti_00116`.
+    static let nounFetti_00116 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00116")
+    /// Image `Noun-fetti_00117`.
+    static let nounFetti_00117 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00117")
+    /// Image `Noun-fetti_00118`.
+    static let nounFetti_00118 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00118")
+    /// Image `Noun-fetti_00119`.
+    static let nounFetti_00119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00119")
     /// Image `NounsWatermark`.
     static let nounsWatermark = Rswift.ImageResource(bundle: R.hostingBundle, name: "NounsWatermark")
+    /// Image `arslan-noun`.
+    static let arslanNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "arslan-noun")
     /// Image `bell-noun`.
     static let bellNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "bell-noun")
     /// Image `confetti-10`.
@@ -183,6 +508,30 @@ struct R: Rswift.Validatable {
     static let createNounPizza = Rswift.ImageResource(bundle: R.hostingBundle, name: "create-noun-pizza")
     /// Image `explore-onboarding`.
     static let exploreOnboarding = Rswift.ImageResource(bundle: R.hostingBundle, name: "explore-onboarding")
+    /// Image `eyes-blink-fullblack_1`.
+    static let eyesBlinkFullblack_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_1")
+    /// Image `eyes-blink-fullblack_2`.
+    static let eyesBlinkFullblack_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_2")
+    /// Image `eyes-blink-fullblack_3`.
+    static let eyesBlinkFullblack_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_3")
+    /// Image `eyes-blink-fullblack_4`.
+    static let eyesBlinkFullblack_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_4")
+    /// Image `eyes-blink-red_1`.
+    static let eyesBlinkRed_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_1")
+    /// Image `eyes-blink-red_2`.
+    static let eyesBlinkRed_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_2")
+    /// Image `eyes-blink-red_3`.
+    static let eyesBlinkRed_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_3")
+    /// Image `eyes-blink-red_4`.
+    static let eyesBlinkRed_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_4")
+    /// Image `eyes-blink-rgb_1`.
+    static let eyesBlinkRgb_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_1")
+    /// Image `eyes-blink-rgb_2`.
+    static let eyesBlinkRgb_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_2")
+    /// Image `eyes-blink-rgb_3`.
+    static let eyesBlinkRgb_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_3")
+    /// Image `eyes-blink-rgb_4`.
+    static let eyesBlinkRgb_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_4")
     /// Image `eyes-blink_1`.
     static let eyesBlink_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_1")
     /// Image `eyes-blink_2`.
@@ -193,6 +542,42 @@ struct R: Rswift.Validatable {
     static let eyesBlink_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_4")
     /// Image `eyes-blink_5`.
     static let eyesBlink_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_5")
+    /// Image `eyes-shift-fullblack_1`.
+    static let eyesShiftFullblack_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_1")
+    /// Image `eyes-shift-fullblack_2`.
+    static let eyesShiftFullblack_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_2")
+    /// Image `eyes-shift-fullblack_3`.
+    static let eyesShiftFullblack_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_3")
+    /// Image `eyes-shift-fullblack_4`.
+    static let eyesShiftFullblack_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_4")
+    /// Image `eyes-shift-fullblack_5`.
+    static let eyesShiftFullblack_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_5")
+    /// Image `eyes-shift-fullblack_6`.
+    static let eyesShiftFullblack_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_6")
+    /// Image `eyes-shift-red_1`.
+    static let eyesShiftRed_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_1")
+    /// Image `eyes-shift-red_2`.
+    static let eyesShiftRed_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_2")
+    /// Image `eyes-shift-red_3`.
+    static let eyesShiftRed_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_3")
+    /// Image `eyes-shift-red_4`.
+    static let eyesShiftRed_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_4")
+    /// Image `eyes-shift-red_5`.
+    static let eyesShiftRed_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_5")
+    /// Image `eyes-shift-red_6`.
+    static let eyesShiftRed_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_6")
+    /// Image `eyes-shift-rgb_1`.
+    static let eyesShiftRgb_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_1")
+    /// Image `eyes-shift-rgb_2`.
+    static let eyesShiftRgb_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_2")
+    /// Image `eyes-shift-rgb_3`.
+    static let eyesShiftRgb_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_3")
+    /// Image `eyes-shift-rgb_4`.
+    static let eyesShiftRgb_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_4")
+    /// Image `eyes-shift-rgb_5`.
+    static let eyesShiftRgb_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_5")
+    /// Image `eyes-shift-rgb_6`.
+    static let eyesShiftRgb_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_6")
     /// Image `eyes-shift_0`.
     static let eyesShift_0 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_0")
     /// Image `eyes-shift_1`.
@@ -207,6 +592,42 @@ struct R: Rswift.Validatable {
     static let eyesShift_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_5")
     /// Image `eyes-shift_6`.
     static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
+    /// Image `glasses-frames-square-black`.
+    static let glassesFramesSquareBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-frames-square-black")
+    /// Image `glasses-hip-rose`.
+    static let glassesHipRose = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-hip-rose")
+    /// Image `glasses-square-blue-med-saturated`.
+    static let glassesSquareBlueMedSaturated = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-blue-med-saturated")
+    /// Image `glasses-square-blue`.
+    static let glassesSquareBlue = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-blue")
+    /// Image `glasses-square-frog-green`.
+    static let glassesSquareFrogGreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-frog-green")
+    /// Image `glasses-square-green-blue-multi`.
+    static let glassesSquareGreenBlueMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-green-blue-multi")
+    /// Image `glasses-square-grey-light`.
+    static let glassesSquareGreyLight = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-grey-light")
+    /// Image `glasses-square-guava`.
+    static let glassesSquareGuava = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-guava")
+    /// Image `glasses-square-honey`.
+    static let glassesSquareHoney = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-honey")
+    /// Image `glasses-square-magenta`.
+    static let glassesSquareMagenta = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-magenta")
+    /// Image `glasses-square-orange`.
+    static let glassesSquareOrange = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-orange")
+    /// Image `glasses-square-pink-purple-multi`.
+    static let glassesSquarePinkPurpleMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-pink-purple-multi")
+    /// Image `glasses-square-red`.
+    static let glassesSquareRed = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-red")
+    /// Image `glasses-square-smoke`.
+    static let glassesSquareSmoke = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-smoke")
+    /// Image `glasses-square-teal`.
+    static let glassesSquareTeal = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-teal")
+    /// Image `glasses-square-watermelon`.
+    static let glassesSquareWatermelon = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-watermelon")
+    /// Image `glasses-square-yellow-orange-multi`.
+    static let glassesSquareYellowOrangeMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-yellow-orange-multi")
+    /// Image `glasses-square-yellow-saturated`.
+    static let glassesSquareYellowSaturated = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-yellow-saturated")
     /// Image `head-ape-mouth-1`.
     static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
     /// Image `head-ape-mouth-2`.
@@ -625,33 +1046,1069 @@ struct R: Rswift.Validatable {
     static let headWerewolfMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-werewolf-mouth-4")
     /// Image `home-slice-chat`.
     static let homeSliceChat = Rswift.ImageResource(bundle: R.hostingBundle, name: "home-slice-chat")
+    /// Image `krish-noun`.
+    static let krishNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "krish-noun")
+    /// Image `matt-noun`.
+    static let mattNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "matt-noun")
+    /// Image `mo-noun`.
+    static let moNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "mo-noun")
     /// Image `noun-logo`.
     static let nounLogo = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun-logo")
     /// Image `noun`.
     static let noun = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun")
-    /// Image `onboarding-create-background`.
-    static let onboardingCreateBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-create-background")
-    /// Image `onboarding-explore-background`.
-    static let onboardingExploreBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-explore-background")
-    /// Image `onboarding-noun-background`.
-    static let onboardingNounBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-noun-background")
-    /// Image `onboarding-play-background`.
-    static let onboardingPlayBackground = Rswift.ImageResource(bundle: R.hostingBundle, name: "onboarding-play-background")
+    /// Image `nouns-ios-01-marquee`.
+    static let nounsIos01Marquee = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-ios-01-marquee")
+    /// Image `nouns-ios-02-marquee`.
+    static let nounsIos02Marquee = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-ios-02-marquee")
+    /// Image `nouns-ios-03-marquee`.
+    static let nounsIos03Marquee = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-ios-03-marquee")
+    /// Image `nouns-onboarding-02-cards`.
+    static let nounsOnboarding02Cards = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-02-cards")
     /// Image `pizza-noun`.
     static let pizzaNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "pizza-noun")
     /// Image `placeholder-ens`.
     static let placeholderEns = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder-ens")
     /// Image `placeholder`.
     static let placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder")
+    /// Image `red_glasses`.
+    static let red_glasses = Rswift.ImageResource(bundle: R.hostingBundle, name: "red_glasses")
+    /// Image `robleh-noun`.
+    static let roblehNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "robleh-noun")
     /// Image `shadow`.
     static let shadow = Rswift.ImageResource(bundle: R.hostingBundle, name: "shadow")
     /// Image `shark-noun`.
     static let sharkNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "shark-noun")
+    /// Image `shawn-noun`.
+    static let shawnNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "shawn-noun")
+    /// Image `ziad-noun`.
+    static let ziadNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "ziad-noun")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon0_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon0_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon0_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon10_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon10_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon10_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon11_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon11_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon11_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon12_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon12_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon12_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon13_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon13_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon13_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon14_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon14_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon14_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon15_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon15_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon15_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon16_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon16_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon16_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon17_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon17_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon17_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon18_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon18_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon18_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon19_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon19_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon19_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon1_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon1_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon1_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon20_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon20_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon20_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon21_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon21_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon21_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon22_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon22_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon22_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon23_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon23_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon23_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon2_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon2_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon2_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon3_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon3_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon3_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon4_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon4_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon4_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon5_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon5_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon5_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon6_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon6_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon6_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon7_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon7_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon7_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon8_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon8_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon8_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon9_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon9_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon9_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00000", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00000(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00000, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00001", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00001(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00001, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00002", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00002(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00002, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00003", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00003(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00003, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00004", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00004(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00004, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00005", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00005(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00005, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00006", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00006(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00006, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00007", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00007(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00007, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00008", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00008(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00008, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00009", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00009(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00009, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00010", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00010(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00010, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00011", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00011(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00011, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00012", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00012(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00012, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00013", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00013(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00013, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00014", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00014(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00014, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00015", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00015(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00015, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00016", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00016(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00016, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00017", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00017(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00017, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00018", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00018(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00018, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00019", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00019(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00019, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00020", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00020(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00020, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00021", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00021(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00021, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00022", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00022(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00022, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00023", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00023(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00023, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00024", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00024(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00024, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00025", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00025(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00025, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00026", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00026(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00026, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00027", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00027(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00027, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00028", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00028(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00028, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00029", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00029(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00029, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00030", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00030(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00030, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00031", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00031(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00031, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00032", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00032(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00032, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00033", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00033(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00033, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00034", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00034(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00034, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00035", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00035(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00035, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00036", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00036(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00036, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00037", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00037(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00037, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00038", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00038(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00038, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00039", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00039(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00039, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00040", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00040(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00040, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00041", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00041(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00041, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00042", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00042(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00042, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00043", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00043(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00043, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00044", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00044(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00044, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00045", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00045(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00045, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00046", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00046(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00046, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00047", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00047(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00047, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00048", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00048(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00048, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00049", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00049(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00049, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00050", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00050(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00050, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00051", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00051(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00051, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00052", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00052(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00052, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00053", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00053(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00053, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00054", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00054(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00054, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00055", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00055(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00055, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00056", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00056(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00056, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00057", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00057(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00057, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00058", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00058(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00058, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00059", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00059(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00059, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00060", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00060(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00060, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00061", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00061(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00061, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00062", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00062(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00062, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00063", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00063(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00063, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00064", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00064(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00064, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00065", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00065(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00065, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00066", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00066(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00066, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00067", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00067(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00067, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00068", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00068(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00068, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00069", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00069(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00069, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00070", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00070(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00070, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00071", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00071(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00071, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00072", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00072(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00072, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00073", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00073(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00073, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00074", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00074(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00074, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00075", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00075(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00075, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00076", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00076(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00076, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00077", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00077(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00077, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00078", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00078(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00078, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00079", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00079(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00079, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00080", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00080(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00080, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00081", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00081(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00081, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00082", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00082(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00082, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00083", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00083(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00083, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00084", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00084(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00084, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00085", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00085(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00085, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00086", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00086(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00086, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00087", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00087(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00087, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00088", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00088(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00088, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00089", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00089(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00089, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00090", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00090(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00090, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00091", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00091(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00091, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00092", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00092(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00092, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00093", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00093(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00093, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00094", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00094(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00094, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00095", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00095(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00095, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00096", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00096(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00096, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00097", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00097(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00097, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00098", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00098(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00098, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00099", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00099(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00099, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00100", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00100(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00100, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00101", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00101(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00101, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00102", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00102(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00102, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00103", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00103(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00103, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00104", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00104(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00104, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00105", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00105(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00105, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00106", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00106(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00106, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00107", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00107(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00107, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00108", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00108(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00108, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00109", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00109(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00109, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00110", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00110(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00110, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00111", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00111(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00111, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00112", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00112(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00112, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00113", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00113(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00113, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00114", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00114(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00114, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00115", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00115(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00115, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00116", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00116(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00116, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00117", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00117(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00117, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00118", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00118(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00118, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "Noun-fetti_00119", bundle: ..., traitCollection: ...)`
+    static func nounFetti_00119(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounFetti_00119, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "NounsWatermark", bundle: ..., traitCollection: ...)`
     static func nounsWatermark(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.nounsWatermark, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "arslan-noun", bundle: ..., traitCollection: ...)`
+    static func arslanNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.arslanNoun, compatibleWith: traitCollection)
     }
     #endif
 
@@ -747,6 +2204,90 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_1", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_2", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_3", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-fullblack_4", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkFullblack_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_1", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_2", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_3", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-red_4", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRed_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRed_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_1", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_2", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_3", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-blink-rgb_4", bundle: ..., traitCollection: ...)`
+    static func eyesBlinkRgb_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "eyes-blink_1", bundle: ..., traitCollection: ...)`
     static func eyesBlink_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_1, compatibleWith: traitCollection)
@@ -778,6 +2319,132 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-blink_5", bundle: ..., traitCollection: ...)`
     static func eyesBlink_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesBlink_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_1", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_2", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_3", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_4", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_5", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-fullblack_6", bundle: ..., traitCollection: ...)`
+    static func eyesShiftFullblack_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_1", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_2", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_3", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_4", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_5", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-red_6", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRed_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRed_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_1", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_2", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_3", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_4", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_5", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_5, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "eyes-shift-rgb_6", bundle: ..., traitCollection: ...)`
+    static func eyesShiftRgb_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.eyesShiftRgb_6, compatibleWith: traitCollection)
     }
     #endif
 
@@ -827,6 +2494,132 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "eyes-shift_6", bundle: ..., traitCollection: ...)`
     static func eyesShift_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.eyesShift_6, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-frames-square-black", bundle: ..., traitCollection: ...)`
+    static func glassesFramesSquareBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesFramesSquareBlack, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-hip-rose", bundle: ..., traitCollection: ...)`
+    static func glassesHipRose(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesHipRose, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-blue", bundle: ..., traitCollection: ...)`
+    static func glassesSquareBlue(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareBlue, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-blue-med-saturated", bundle: ..., traitCollection: ...)`
+    static func glassesSquareBlueMedSaturated(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareBlueMedSaturated, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-frog-green", bundle: ..., traitCollection: ...)`
+    static func glassesSquareFrogGreen(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareFrogGreen, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-green-blue-multi", bundle: ..., traitCollection: ...)`
+    static func glassesSquareGreenBlueMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareGreenBlueMulti, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-grey-light", bundle: ..., traitCollection: ...)`
+    static func glassesSquareGreyLight(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareGreyLight, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-guava", bundle: ..., traitCollection: ...)`
+    static func glassesSquareGuava(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareGuava, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-honey", bundle: ..., traitCollection: ...)`
+    static func glassesSquareHoney(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareHoney, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-magenta", bundle: ..., traitCollection: ...)`
+    static func glassesSquareMagenta(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareMagenta, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-orange", bundle: ..., traitCollection: ...)`
+    static func glassesSquareOrange(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareOrange, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-pink-purple-multi", bundle: ..., traitCollection: ...)`
+    static func glassesSquarePinkPurpleMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquarePinkPurpleMulti, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-red", bundle: ..., traitCollection: ...)`
+    static func glassesSquareRed(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareRed, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-smoke", bundle: ..., traitCollection: ...)`
+    static func glassesSquareSmoke(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareSmoke, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-teal", bundle: ..., traitCollection: ...)`
+    static func glassesSquareTeal(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareTeal, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-watermelon", bundle: ..., traitCollection: ...)`
+    static func glassesSquareWatermelon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareWatermelon, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-yellow-orange-multi", bundle: ..., traitCollection: ...)`
+    static func glassesSquareYellowOrangeMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareYellowOrangeMulti, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-yellow-saturated", bundle: ..., traitCollection: ...)`
+    static func glassesSquareYellowSaturated(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareYellowSaturated, compatibleWith: traitCollection)
     }
     #endif
 
@@ -2294,6 +4087,27 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "krish-noun", bundle: ..., traitCollection: ...)`
+    static func krishNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.krishNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "matt-noun", bundle: ..., traitCollection: ...)`
+    static func mattNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.mattNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "mo-noun", bundle: ..., traitCollection: ...)`
+    static func moNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.moNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "noun", bundle: ..., traitCollection: ...)`
     static func noun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.noun, compatibleWith: traitCollection)
@@ -2308,30 +4122,30 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-create-background", bundle: ..., traitCollection: ...)`
-    static func onboardingCreateBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingCreateBackground, compatibleWith: traitCollection)
+    /// `UIImage(named: "nouns-ios-01-marquee", bundle: ..., traitCollection: ...)`
+    static func nounsIos01Marquee(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounsIos01Marquee, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-explore-background", bundle: ..., traitCollection: ...)`
-    static func onboardingExploreBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingExploreBackground, compatibleWith: traitCollection)
+    /// `UIImage(named: "nouns-ios-02-marquee", bundle: ..., traitCollection: ...)`
+    static func nounsIos02Marquee(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounsIos02Marquee, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-noun-background", bundle: ..., traitCollection: ...)`
-    static func onboardingNounBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingNounBackground, compatibleWith: traitCollection)
+    /// `UIImage(named: "nouns-ios-03-marquee", bundle: ..., traitCollection: ...)`
+    static func nounsIos03Marquee(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounsIos03Marquee, compatibleWith: traitCollection)
     }
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "onboarding-play-background", bundle: ..., traitCollection: ...)`
-    static func onboardingPlayBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.onboardingPlayBackground, compatibleWith: traitCollection)
+    /// `UIImage(named: "nouns-onboarding-02-cards", bundle: ..., traitCollection: ...)`
+    static func nounsOnboarding02Cards(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nounsOnboarding02Cards, compatibleWith: traitCollection)
     }
     #endif
 
@@ -2357,6 +4171,20 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "red_glasses", bundle: ..., traitCollection: ...)`
+    static func red_glasses(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.red_glasses, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "robleh-noun", bundle: ..., traitCollection: ...)`
+    static func roblehNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.roblehNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "shadow", bundle: ..., traitCollection: ...)`
     static func shadow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.shadow, compatibleWith: traitCollection)
@@ -2367,6 +4195,20 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "shark-noun", bundle: ..., traitCollection: ...)`
     static func sharkNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.sharkNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "shawn-noun", bundle: ..., traitCollection: ...)`
+    static func shawnNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.shawnNoun, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "ziad-noun", bundle: ..., traitCollection: ...)`
+    static func ziadNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ziadNoun, compatibleWith: traitCollection)
     }
     #endif
 
@@ -4482,4350 +6324,6 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.image.nounsOnboarding1` struct is generated, and contains static references to 120 images.
-    struct nounsOnboarding1 {
-      /// Image `nouns-onboarding-1_000`.
-      static let nounsOnboarding1_000 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_000")
-      /// Image `nouns-onboarding-1_001`.
-      static let nounsOnboarding1_001 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_001")
-      /// Image `nouns-onboarding-1_002`.
-      static let nounsOnboarding1_002 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_002")
-      /// Image `nouns-onboarding-1_003`.
-      static let nounsOnboarding1_003 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_003")
-      /// Image `nouns-onboarding-1_004`.
-      static let nounsOnboarding1_004 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_004")
-      /// Image `nouns-onboarding-1_005`.
-      static let nounsOnboarding1_005 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_005")
-      /// Image `nouns-onboarding-1_006`.
-      static let nounsOnboarding1_006 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_006")
-      /// Image `nouns-onboarding-1_007`.
-      static let nounsOnboarding1_007 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_007")
-      /// Image `nouns-onboarding-1_008`.
-      static let nounsOnboarding1_008 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_008")
-      /// Image `nouns-onboarding-1_009`.
-      static let nounsOnboarding1_009 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_009")
-      /// Image `nouns-onboarding-1_010`.
-      static let nounsOnboarding1_010 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_010")
-      /// Image `nouns-onboarding-1_011`.
-      static let nounsOnboarding1_011 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_011")
-      /// Image `nouns-onboarding-1_012`.
-      static let nounsOnboarding1_012 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_012")
-      /// Image `nouns-onboarding-1_013`.
-      static let nounsOnboarding1_013 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_013")
-      /// Image `nouns-onboarding-1_014`.
-      static let nounsOnboarding1_014 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_014")
-      /// Image `nouns-onboarding-1_015`.
-      static let nounsOnboarding1_015 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_015")
-      /// Image `nouns-onboarding-1_016`.
-      static let nounsOnboarding1_016 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_016")
-      /// Image `nouns-onboarding-1_017`.
-      static let nounsOnboarding1_017 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_017")
-      /// Image `nouns-onboarding-1_018`.
-      static let nounsOnboarding1_018 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_018")
-      /// Image `nouns-onboarding-1_019`.
-      static let nounsOnboarding1_019 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_019")
-      /// Image `nouns-onboarding-1_020`.
-      static let nounsOnboarding1_020 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_020")
-      /// Image `nouns-onboarding-1_021`.
-      static let nounsOnboarding1_021 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_021")
-      /// Image `nouns-onboarding-1_022`.
-      static let nounsOnboarding1_022 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_022")
-      /// Image `nouns-onboarding-1_023`.
-      static let nounsOnboarding1_023 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_023")
-      /// Image `nouns-onboarding-1_024`.
-      static let nounsOnboarding1_024 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_024")
-      /// Image `nouns-onboarding-1_025`.
-      static let nounsOnboarding1_025 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_025")
-      /// Image `nouns-onboarding-1_026`.
-      static let nounsOnboarding1_026 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_026")
-      /// Image `nouns-onboarding-1_027`.
-      static let nounsOnboarding1_027 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_027")
-      /// Image `nouns-onboarding-1_028`.
-      static let nounsOnboarding1_028 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_028")
-      /// Image `nouns-onboarding-1_029`.
-      static let nounsOnboarding1_029 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_029")
-      /// Image `nouns-onboarding-1_030`.
-      static let nounsOnboarding1_030 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_030")
-      /// Image `nouns-onboarding-1_031`.
-      static let nounsOnboarding1_031 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_031")
-      /// Image `nouns-onboarding-1_032`.
-      static let nounsOnboarding1_032 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_032")
-      /// Image `nouns-onboarding-1_033`.
-      static let nounsOnboarding1_033 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_033")
-      /// Image `nouns-onboarding-1_034`.
-      static let nounsOnboarding1_034 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_034")
-      /// Image `nouns-onboarding-1_035`.
-      static let nounsOnboarding1_035 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_035")
-      /// Image `nouns-onboarding-1_036`.
-      static let nounsOnboarding1_036 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_036")
-      /// Image `nouns-onboarding-1_037`.
-      static let nounsOnboarding1_037 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_037")
-      /// Image `nouns-onboarding-1_038`.
-      static let nounsOnboarding1_038 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_038")
-      /// Image `nouns-onboarding-1_039`.
-      static let nounsOnboarding1_039 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_039")
-      /// Image `nouns-onboarding-1_040`.
-      static let nounsOnboarding1_040 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_040")
-      /// Image `nouns-onboarding-1_041`.
-      static let nounsOnboarding1_041 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_041")
-      /// Image `nouns-onboarding-1_042`.
-      static let nounsOnboarding1_042 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_042")
-      /// Image `nouns-onboarding-1_043`.
-      static let nounsOnboarding1_043 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_043")
-      /// Image `nouns-onboarding-1_044`.
-      static let nounsOnboarding1_044 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_044")
-      /// Image `nouns-onboarding-1_045`.
-      static let nounsOnboarding1_045 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_045")
-      /// Image `nouns-onboarding-1_046`.
-      static let nounsOnboarding1_046 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_046")
-      /// Image `nouns-onboarding-1_047`.
-      static let nounsOnboarding1_047 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_047")
-      /// Image `nouns-onboarding-1_048`.
-      static let nounsOnboarding1_048 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_048")
-      /// Image `nouns-onboarding-1_049`.
-      static let nounsOnboarding1_049 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_049")
-      /// Image `nouns-onboarding-1_050`.
-      static let nounsOnboarding1_050 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_050")
-      /// Image `nouns-onboarding-1_051`.
-      static let nounsOnboarding1_051 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_051")
-      /// Image `nouns-onboarding-1_052`.
-      static let nounsOnboarding1_052 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_052")
-      /// Image `nouns-onboarding-1_053`.
-      static let nounsOnboarding1_053 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_053")
-      /// Image `nouns-onboarding-1_054`.
-      static let nounsOnboarding1_054 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_054")
-      /// Image `nouns-onboarding-1_055`.
-      static let nounsOnboarding1_055 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_055")
-      /// Image `nouns-onboarding-1_056`.
-      static let nounsOnboarding1_056 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_056")
-      /// Image `nouns-onboarding-1_057`.
-      static let nounsOnboarding1_057 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_057")
-      /// Image `nouns-onboarding-1_058`.
-      static let nounsOnboarding1_058 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_058")
-      /// Image `nouns-onboarding-1_059`.
-      static let nounsOnboarding1_059 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_059")
-      /// Image `nouns-onboarding-1_060`.
-      static let nounsOnboarding1_060 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_060")
-      /// Image `nouns-onboarding-1_061`.
-      static let nounsOnboarding1_061 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_061")
-      /// Image `nouns-onboarding-1_062`.
-      static let nounsOnboarding1_062 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_062")
-      /// Image `nouns-onboarding-1_063`.
-      static let nounsOnboarding1_063 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_063")
-      /// Image `nouns-onboarding-1_064`.
-      static let nounsOnboarding1_064 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_064")
-      /// Image `nouns-onboarding-1_065`.
-      static let nounsOnboarding1_065 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_065")
-      /// Image `nouns-onboarding-1_066`.
-      static let nounsOnboarding1_066 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_066")
-      /// Image `nouns-onboarding-1_067`.
-      static let nounsOnboarding1_067 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_067")
-      /// Image `nouns-onboarding-1_068`.
-      static let nounsOnboarding1_068 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_068")
-      /// Image `nouns-onboarding-1_069`.
-      static let nounsOnboarding1_069 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_069")
-      /// Image `nouns-onboarding-1_070`.
-      static let nounsOnboarding1_070 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_070")
-      /// Image `nouns-onboarding-1_071`.
-      static let nounsOnboarding1_071 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_071")
-      /// Image `nouns-onboarding-1_072`.
-      static let nounsOnboarding1_072 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_072")
-      /// Image `nouns-onboarding-1_073`.
-      static let nounsOnboarding1_073 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_073")
-      /// Image `nouns-onboarding-1_074`.
-      static let nounsOnboarding1_074 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_074")
-      /// Image `nouns-onboarding-1_075`.
-      static let nounsOnboarding1_075 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_075")
-      /// Image `nouns-onboarding-1_076`.
-      static let nounsOnboarding1_076 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_076")
-      /// Image `nouns-onboarding-1_077`.
-      static let nounsOnboarding1_077 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_077")
-      /// Image `nouns-onboarding-1_078`.
-      static let nounsOnboarding1_078 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_078")
-      /// Image `nouns-onboarding-1_079`.
-      static let nounsOnboarding1_079 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_079")
-      /// Image `nouns-onboarding-1_080`.
-      static let nounsOnboarding1_080 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_080")
-      /// Image `nouns-onboarding-1_081`.
-      static let nounsOnboarding1_081 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_081")
-      /// Image `nouns-onboarding-1_082`.
-      static let nounsOnboarding1_082 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_082")
-      /// Image `nouns-onboarding-1_083`.
-      static let nounsOnboarding1_083 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_083")
-      /// Image `nouns-onboarding-1_084`.
-      static let nounsOnboarding1_084 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_084")
-      /// Image `nouns-onboarding-1_085`.
-      static let nounsOnboarding1_085 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_085")
-      /// Image `nouns-onboarding-1_086`.
-      static let nounsOnboarding1_086 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_086")
-      /// Image `nouns-onboarding-1_087`.
-      static let nounsOnboarding1_087 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_087")
-      /// Image `nouns-onboarding-1_088`.
-      static let nounsOnboarding1_088 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_088")
-      /// Image `nouns-onboarding-1_089`.
-      static let nounsOnboarding1_089 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_089")
-      /// Image `nouns-onboarding-1_090`.
-      static let nounsOnboarding1_090 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_090")
-      /// Image `nouns-onboarding-1_091`.
-      static let nounsOnboarding1_091 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_091")
-      /// Image `nouns-onboarding-1_092`.
-      static let nounsOnboarding1_092 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_092")
-      /// Image `nouns-onboarding-1_093`.
-      static let nounsOnboarding1_093 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_093")
-      /// Image `nouns-onboarding-1_094`.
-      static let nounsOnboarding1_094 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_094")
-      /// Image `nouns-onboarding-1_095`.
-      static let nounsOnboarding1_095 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_095")
-      /// Image `nouns-onboarding-1_096`.
-      static let nounsOnboarding1_096 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_096")
-      /// Image `nouns-onboarding-1_097`.
-      static let nounsOnboarding1_097 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_097")
-      /// Image `nouns-onboarding-1_098`.
-      static let nounsOnboarding1_098 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_098")
-      /// Image `nouns-onboarding-1_099`.
-      static let nounsOnboarding1_099 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_099")
-      /// Image `nouns-onboarding-1_100`.
-      static let nounsOnboarding1_100 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_100")
-      /// Image `nouns-onboarding-1_101`.
-      static let nounsOnboarding1_101 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_101")
-      /// Image `nouns-onboarding-1_102`.
-      static let nounsOnboarding1_102 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_102")
-      /// Image `nouns-onboarding-1_103`.
-      static let nounsOnboarding1_103 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_103")
-      /// Image `nouns-onboarding-1_104`.
-      static let nounsOnboarding1_104 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_104")
-      /// Image `nouns-onboarding-1_105`.
-      static let nounsOnboarding1_105 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_105")
-      /// Image `nouns-onboarding-1_106`.
-      static let nounsOnboarding1_106 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_106")
-      /// Image `nouns-onboarding-1_107`.
-      static let nounsOnboarding1_107 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_107")
-      /// Image `nouns-onboarding-1_108`.
-      static let nounsOnboarding1_108 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_108")
-      /// Image `nouns-onboarding-1_109`.
-      static let nounsOnboarding1_109 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_109")
-      /// Image `nouns-onboarding-1_110`.
-      static let nounsOnboarding1_110 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_110")
-      /// Image `nouns-onboarding-1_111`.
-      static let nounsOnboarding1_111 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_111")
-      /// Image `nouns-onboarding-1_112`.
-      static let nounsOnboarding1_112 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_112")
-      /// Image `nouns-onboarding-1_113`.
-      static let nounsOnboarding1_113 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_113")
-      /// Image `nouns-onboarding-1_114`.
-      static let nounsOnboarding1_114 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_114")
-      /// Image `nouns-onboarding-1_115`.
-      static let nounsOnboarding1_115 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_115")
-      /// Image `nouns-onboarding-1_116`.
-      static let nounsOnboarding1_116 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_116")
-      /// Image `nouns-onboarding-1_117`.
-      static let nounsOnboarding1_117 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_117")
-      /// Image `nouns-onboarding-1_118`.
-      static let nounsOnboarding1_118 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_118")
-      /// Image `nouns-onboarding-1_119`.
-      static let nounsOnboarding1_119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-1/nouns-onboarding-1_119")
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_000", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_000(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_000, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_001", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_001(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_001, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_002", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_002(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_002, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_003", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_003(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_003, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_004", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_004(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_004, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_005", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_005(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_005, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_006", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_006(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_006, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_007", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_007(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_007, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_008", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_008(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_008, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_009", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_009(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_009, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_010", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_010(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_010, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_011", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_011(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_011, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_012", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_012(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_012, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_013", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_013(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_013, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_014", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_014(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_014, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_015", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_015(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_015, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_016", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_016(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_016, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_017", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_017(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_017, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_018", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_018(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_018, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_019", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_019(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_019, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_020", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_020(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_020, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_021", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_021(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_021, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_022", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_022(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_022, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_023", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_023(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_023, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_024", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_024(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_024, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_025", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_025(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_025, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_026", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_026(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_026, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_027", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_027(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_027, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_028", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_028(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_028, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_029", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_029(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_029, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_030", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_030(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_030, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_031", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_031(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_031, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_032", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_032(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_032, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_033", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_033(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_033, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_034", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_034(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_034, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_035", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_035(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_035, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_036", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_036(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_036, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_037", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_037(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_037, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_038", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_038(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_038, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_039", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_039(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_039, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_040", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_040(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_040, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_041", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_041(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_041, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_042", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_042(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_042, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_043", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_043(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_043, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_044", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_044(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_044, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_045", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_045(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_045, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_046", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_046(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_046, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_047", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_047(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_047, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_048", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_048(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_048, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_049", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_049(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_049, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_050", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_050(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_050, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_051", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_051(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_051, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_052", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_052(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_052, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_053", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_053(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_053, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_054", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_054(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_054, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_055", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_055(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_055, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_056", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_056(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_056, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_057", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_057(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_057, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_058", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_058(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_058, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_059", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_059(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_059, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_060", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_060(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_060, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_061", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_061(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_061, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_062", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_062(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_062, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_063", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_063(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_063, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_064", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_064(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_064, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_065", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_065(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_065, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_066", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_066(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_066, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_067", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_067(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_067, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_068", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_068(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_068, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_069", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_069(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_069, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_070", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_070(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_070, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_071", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_071(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_071, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_072", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_072(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_072, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_073", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_073(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_073, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_074", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_074(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_074, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_075", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_075(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_075, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_076", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_076(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_076, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_077", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_077(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_077, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_078", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_078(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_078, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_079", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_079(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_079, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_080", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_080(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_080, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_081", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_081(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_081, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_082", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_082(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_082, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_083", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_083(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_083, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_084", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_084(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_084, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_085", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_085(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_085, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_086", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_086(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_086, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_087", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_087(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_087, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_088", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_088(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_088, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_089", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_089(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_089, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_090", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_090(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_090, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_091", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_091(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_091, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_092", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_092(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_092, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_093", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_093(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_093, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_094", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_094(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_094, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_095", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_095(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_095, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_096", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_096(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_096, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_097", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_097(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_097, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_098", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_098(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_098, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_099", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_099(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_099, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_100", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_100(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_100, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_101", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_101(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_101, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_102", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_102(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_102, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_103", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_103(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_103, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_104", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_104(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_104, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_105", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_105(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_105, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_106", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_106(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_106, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_107", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_107(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_107, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_108", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_108(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_108, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_109", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_109(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_109, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_110", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_110(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_110, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_111", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_111(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_111, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_112", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_112(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_112, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_113", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_113(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_113, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_114", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_114(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_114, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_115", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_115(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_115, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_116", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_116(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_116, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_117", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_117(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_117, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_118", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_118(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_118, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-1_119", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding1_119(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding1.nounsOnboarding1_119, compatibleWith: traitCollection)
-      }
-      #endif
-
-      fileprivate init() {}
-    }
-
-    /// This `R.image.nounsOnboarding2` struct is generated, and contains static references to 120 images.
-    struct nounsOnboarding2 {
-      /// Image `nouns-onboarding-2_000`.
-      static let nounsOnboarding2_000 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_000")
-      /// Image `nouns-onboarding-2_001`.
-      static let nounsOnboarding2_001 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_001")
-      /// Image `nouns-onboarding-2_002`.
-      static let nounsOnboarding2_002 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_002")
-      /// Image `nouns-onboarding-2_003`.
-      static let nounsOnboarding2_003 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_003")
-      /// Image `nouns-onboarding-2_004`.
-      static let nounsOnboarding2_004 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_004")
-      /// Image `nouns-onboarding-2_005`.
-      static let nounsOnboarding2_005 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_005")
-      /// Image `nouns-onboarding-2_006`.
-      static let nounsOnboarding2_006 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_006")
-      /// Image `nouns-onboarding-2_007`.
-      static let nounsOnboarding2_007 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_007")
-      /// Image `nouns-onboarding-2_008`.
-      static let nounsOnboarding2_008 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_008")
-      /// Image `nouns-onboarding-2_009`.
-      static let nounsOnboarding2_009 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_009")
-      /// Image `nouns-onboarding-2_010`.
-      static let nounsOnboarding2_010 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_010")
-      /// Image `nouns-onboarding-2_011`.
-      static let nounsOnboarding2_011 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_011")
-      /// Image `nouns-onboarding-2_012`.
-      static let nounsOnboarding2_012 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_012")
-      /// Image `nouns-onboarding-2_013`.
-      static let nounsOnboarding2_013 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_013")
-      /// Image `nouns-onboarding-2_014`.
-      static let nounsOnboarding2_014 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_014")
-      /// Image `nouns-onboarding-2_015`.
-      static let nounsOnboarding2_015 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_015")
-      /// Image `nouns-onboarding-2_016`.
-      static let nounsOnboarding2_016 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_016")
-      /// Image `nouns-onboarding-2_017`.
-      static let nounsOnboarding2_017 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_017")
-      /// Image `nouns-onboarding-2_018`.
-      static let nounsOnboarding2_018 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_018")
-      /// Image `nouns-onboarding-2_019`.
-      static let nounsOnboarding2_019 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_019")
-      /// Image `nouns-onboarding-2_020`.
-      static let nounsOnboarding2_020 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_020")
-      /// Image `nouns-onboarding-2_021`.
-      static let nounsOnboarding2_021 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_021")
-      /// Image `nouns-onboarding-2_022`.
-      static let nounsOnboarding2_022 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_022")
-      /// Image `nouns-onboarding-2_023`.
-      static let nounsOnboarding2_023 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_023")
-      /// Image `nouns-onboarding-2_024`.
-      static let nounsOnboarding2_024 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_024")
-      /// Image `nouns-onboarding-2_025`.
-      static let nounsOnboarding2_025 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_025")
-      /// Image `nouns-onboarding-2_026`.
-      static let nounsOnboarding2_026 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_026")
-      /// Image `nouns-onboarding-2_027`.
-      static let nounsOnboarding2_027 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_027")
-      /// Image `nouns-onboarding-2_028`.
-      static let nounsOnboarding2_028 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_028")
-      /// Image `nouns-onboarding-2_029`.
-      static let nounsOnboarding2_029 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_029")
-      /// Image `nouns-onboarding-2_030`.
-      static let nounsOnboarding2_030 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_030")
-      /// Image `nouns-onboarding-2_031`.
-      static let nounsOnboarding2_031 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_031")
-      /// Image `nouns-onboarding-2_032`.
-      static let nounsOnboarding2_032 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_032")
-      /// Image `nouns-onboarding-2_033`.
-      static let nounsOnboarding2_033 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_033")
-      /// Image `nouns-onboarding-2_034`.
-      static let nounsOnboarding2_034 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_034")
-      /// Image `nouns-onboarding-2_035`.
-      static let nounsOnboarding2_035 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_035")
-      /// Image `nouns-onboarding-2_036`.
-      static let nounsOnboarding2_036 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_036")
-      /// Image `nouns-onboarding-2_037`.
-      static let nounsOnboarding2_037 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_037")
-      /// Image `nouns-onboarding-2_038`.
-      static let nounsOnboarding2_038 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_038")
-      /// Image `nouns-onboarding-2_039`.
-      static let nounsOnboarding2_039 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_039")
-      /// Image `nouns-onboarding-2_040`.
-      static let nounsOnboarding2_040 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_040")
-      /// Image `nouns-onboarding-2_041`.
-      static let nounsOnboarding2_041 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_041")
-      /// Image `nouns-onboarding-2_042`.
-      static let nounsOnboarding2_042 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_042")
-      /// Image `nouns-onboarding-2_043`.
-      static let nounsOnboarding2_043 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_043")
-      /// Image `nouns-onboarding-2_044`.
-      static let nounsOnboarding2_044 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_044")
-      /// Image `nouns-onboarding-2_045`.
-      static let nounsOnboarding2_045 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_045")
-      /// Image `nouns-onboarding-2_046`.
-      static let nounsOnboarding2_046 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_046")
-      /// Image `nouns-onboarding-2_047`.
-      static let nounsOnboarding2_047 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_047")
-      /// Image `nouns-onboarding-2_048`.
-      static let nounsOnboarding2_048 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_048")
-      /// Image `nouns-onboarding-2_049`.
-      static let nounsOnboarding2_049 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_049")
-      /// Image `nouns-onboarding-2_050`.
-      static let nounsOnboarding2_050 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_050")
-      /// Image `nouns-onboarding-2_051`.
-      static let nounsOnboarding2_051 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_051")
-      /// Image `nouns-onboarding-2_052`.
-      static let nounsOnboarding2_052 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_052")
-      /// Image `nouns-onboarding-2_053`.
-      static let nounsOnboarding2_053 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_053")
-      /// Image `nouns-onboarding-2_054`.
-      static let nounsOnboarding2_054 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_054")
-      /// Image `nouns-onboarding-2_055`.
-      static let nounsOnboarding2_055 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_055")
-      /// Image `nouns-onboarding-2_056`.
-      static let nounsOnboarding2_056 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_056")
-      /// Image `nouns-onboarding-2_057`.
-      static let nounsOnboarding2_057 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_057")
-      /// Image `nouns-onboarding-2_058`.
-      static let nounsOnboarding2_058 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_058")
-      /// Image `nouns-onboarding-2_059`.
-      static let nounsOnboarding2_059 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_059")
-      /// Image `nouns-onboarding-2_060`.
-      static let nounsOnboarding2_060 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_060")
-      /// Image `nouns-onboarding-2_061`.
-      static let nounsOnboarding2_061 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_061")
-      /// Image `nouns-onboarding-2_062`.
-      static let nounsOnboarding2_062 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_062")
-      /// Image `nouns-onboarding-2_063`.
-      static let nounsOnboarding2_063 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_063")
-      /// Image `nouns-onboarding-2_064`.
-      static let nounsOnboarding2_064 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_064")
-      /// Image `nouns-onboarding-2_065`.
-      static let nounsOnboarding2_065 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_065")
-      /// Image `nouns-onboarding-2_066`.
-      static let nounsOnboarding2_066 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_066")
-      /// Image `nouns-onboarding-2_067`.
-      static let nounsOnboarding2_067 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_067")
-      /// Image `nouns-onboarding-2_068`.
-      static let nounsOnboarding2_068 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_068")
-      /// Image `nouns-onboarding-2_069`.
-      static let nounsOnboarding2_069 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_069")
-      /// Image `nouns-onboarding-2_070`.
-      static let nounsOnboarding2_070 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_070")
-      /// Image `nouns-onboarding-2_071`.
-      static let nounsOnboarding2_071 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_071")
-      /// Image `nouns-onboarding-2_072`.
-      static let nounsOnboarding2_072 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_072")
-      /// Image `nouns-onboarding-2_073`.
-      static let nounsOnboarding2_073 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_073")
-      /// Image `nouns-onboarding-2_074`.
-      static let nounsOnboarding2_074 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_074")
-      /// Image `nouns-onboarding-2_075`.
-      static let nounsOnboarding2_075 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_075")
-      /// Image `nouns-onboarding-2_076`.
-      static let nounsOnboarding2_076 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_076")
-      /// Image `nouns-onboarding-2_077`.
-      static let nounsOnboarding2_077 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_077")
-      /// Image `nouns-onboarding-2_078`.
-      static let nounsOnboarding2_078 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_078")
-      /// Image `nouns-onboarding-2_079`.
-      static let nounsOnboarding2_079 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_079")
-      /// Image `nouns-onboarding-2_080`.
-      static let nounsOnboarding2_080 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_080")
-      /// Image `nouns-onboarding-2_081`.
-      static let nounsOnboarding2_081 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_081")
-      /// Image `nouns-onboarding-2_082`.
-      static let nounsOnboarding2_082 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_082")
-      /// Image `nouns-onboarding-2_083`.
-      static let nounsOnboarding2_083 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_083")
-      /// Image `nouns-onboarding-2_084`.
-      static let nounsOnboarding2_084 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_084")
-      /// Image `nouns-onboarding-2_085`.
-      static let nounsOnboarding2_085 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_085")
-      /// Image `nouns-onboarding-2_086`.
-      static let nounsOnboarding2_086 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_086")
-      /// Image `nouns-onboarding-2_087`.
-      static let nounsOnboarding2_087 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_087")
-      /// Image `nouns-onboarding-2_088`.
-      static let nounsOnboarding2_088 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_088")
-      /// Image `nouns-onboarding-2_089`.
-      static let nounsOnboarding2_089 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_089")
-      /// Image `nouns-onboarding-2_090`.
-      static let nounsOnboarding2_090 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_090")
-      /// Image `nouns-onboarding-2_091`.
-      static let nounsOnboarding2_091 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_091")
-      /// Image `nouns-onboarding-2_092`.
-      static let nounsOnboarding2_092 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_092")
-      /// Image `nouns-onboarding-2_093`.
-      static let nounsOnboarding2_093 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_093")
-      /// Image `nouns-onboarding-2_094`.
-      static let nounsOnboarding2_094 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_094")
-      /// Image `nouns-onboarding-2_095`.
-      static let nounsOnboarding2_095 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_095")
-      /// Image `nouns-onboarding-2_096`.
-      static let nounsOnboarding2_096 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_096")
-      /// Image `nouns-onboarding-2_097`.
-      static let nounsOnboarding2_097 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_097")
-      /// Image `nouns-onboarding-2_098`.
-      static let nounsOnboarding2_098 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_098")
-      /// Image `nouns-onboarding-2_099`.
-      static let nounsOnboarding2_099 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_099")
-      /// Image `nouns-onboarding-2_100`.
-      static let nounsOnboarding2_100 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_100")
-      /// Image `nouns-onboarding-2_101`.
-      static let nounsOnboarding2_101 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_101")
-      /// Image `nouns-onboarding-2_102`.
-      static let nounsOnboarding2_102 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_102")
-      /// Image `nouns-onboarding-2_103`.
-      static let nounsOnboarding2_103 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_103")
-      /// Image `nouns-onboarding-2_104`.
-      static let nounsOnboarding2_104 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_104")
-      /// Image `nouns-onboarding-2_105`.
-      static let nounsOnboarding2_105 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_105")
-      /// Image `nouns-onboarding-2_106`.
-      static let nounsOnboarding2_106 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_106")
-      /// Image `nouns-onboarding-2_107`.
-      static let nounsOnboarding2_107 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_107")
-      /// Image `nouns-onboarding-2_108`.
-      static let nounsOnboarding2_108 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_108")
-      /// Image `nouns-onboarding-2_109`.
-      static let nounsOnboarding2_109 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_109")
-      /// Image `nouns-onboarding-2_110`.
-      static let nounsOnboarding2_110 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_110")
-      /// Image `nouns-onboarding-2_111`.
-      static let nounsOnboarding2_111 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_111")
-      /// Image `nouns-onboarding-2_112`.
-      static let nounsOnboarding2_112 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_112")
-      /// Image `nouns-onboarding-2_113`.
-      static let nounsOnboarding2_113 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_113")
-      /// Image `nouns-onboarding-2_114`.
-      static let nounsOnboarding2_114 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_114")
-      /// Image `nouns-onboarding-2_115`.
-      static let nounsOnboarding2_115 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_115")
-      /// Image `nouns-onboarding-2_116`.
-      static let nounsOnboarding2_116 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_116")
-      /// Image `nouns-onboarding-2_117`.
-      static let nounsOnboarding2_117 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_117")
-      /// Image `nouns-onboarding-2_118`.
-      static let nounsOnboarding2_118 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_118")
-      /// Image `nouns-onboarding-2_119`.
-      static let nounsOnboarding2_119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-2/nouns-onboarding-2_119")
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_000", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_000(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_000, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_001", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_001(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_001, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_002", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_002(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_002, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_003", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_003(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_003, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_004", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_004(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_004, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_005", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_005(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_005, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_006", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_006(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_006, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_007", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_007(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_007, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_008", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_008(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_008, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_009", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_009(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_009, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_010", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_010(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_010, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_011", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_011(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_011, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_012", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_012(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_012, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_013", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_013(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_013, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_014", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_014(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_014, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_015", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_015(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_015, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_016", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_016(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_016, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_017", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_017(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_017, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_018", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_018(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_018, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_019", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_019(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_019, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_020", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_020(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_020, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_021", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_021(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_021, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_022", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_022(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_022, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_023", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_023(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_023, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_024", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_024(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_024, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_025", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_025(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_025, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_026", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_026(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_026, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_027", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_027(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_027, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_028", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_028(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_028, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_029", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_029(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_029, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_030", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_030(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_030, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_031", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_031(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_031, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_032", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_032(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_032, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_033", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_033(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_033, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_034", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_034(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_034, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_035", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_035(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_035, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_036", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_036(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_036, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_037", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_037(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_037, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_038", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_038(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_038, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_039", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_039(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_039, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_040", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_040(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_040, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_041", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_041(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_041, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_042", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_042(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_042, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_043", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_043(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_043, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_044", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_044(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_044, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_045", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_045(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_045, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_046", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_046(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_046, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_047", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_047(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_047, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_048", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_048(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_048, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_049", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_049(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_049, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_050", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_050(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_050, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_051", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_051(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_051, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_052", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_052(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_052, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_053", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_053(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_053, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_054", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_054(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_054, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_055", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_055(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_055, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_056", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_056(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_056, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_057", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_057(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_057, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_058", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_058(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_058, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_059", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_059(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_059, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_060", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_060(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_060, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_061", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_061(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_061, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_062", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_062(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_062, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_063", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_063(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_063, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_064", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_064(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_064, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_065", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_065(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_065, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_066", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_066(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_066, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_067", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_067(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_067, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_068", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_068(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_068, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_069", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_069(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_069, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_070", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_070(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_070, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_071", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_071(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_071, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_072", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_072(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_072, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_073", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_073(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_073, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_074", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_074(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_074, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_075", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_075(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_075, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_076", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_076(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_076, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_077", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_077(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_077, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_078", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_078(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_078, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_079", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_079(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_079, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_080", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_080(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_080, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_081", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_081(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_081, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_082", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_082(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_082, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_083", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_083(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_083, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_084", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_084(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_084, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_085", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_085(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_085, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_086", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_086(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_086, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_087", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_087(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_087, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_088", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_088(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_088, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_089", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_089(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_089, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_090", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_090(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_090, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_091", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_091(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_091, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_092", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_092(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_092, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_093", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_093(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_093, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_094", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_094(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_094, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_095", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_095(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_095, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_096", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_096(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_096, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_097", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_097(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_097, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_098", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_098(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_098, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_099", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_099(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_099, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_100", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_100(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_100, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_101", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_101(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_101, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_102", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_102(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_102, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_103", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_103(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_103, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_104", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_104(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_104, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_105", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_105(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_105, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_106", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_106(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_106, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_107", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_107(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_107, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_108", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_108(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_108, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_109", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_109(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_109, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_110", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_110(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_110, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_111", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_111(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_111, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_112", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_112(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_112, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_113", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_113(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_113, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_114", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_114(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_114, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_115", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_115(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_115, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_116", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_116(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_116, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_117", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_117(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_117, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_118", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_118(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_118, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-2_119", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding2_119(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding2.nounsOnboarding2_119, compatibleWith: traitCollection)
-      }
-      #endif
-
-      fileprivate init() {}
-    }
-
-    /// This `R.image.nounsOnboarding3` struct is generated, and contains static references to 120 images.
-    struct nounsOnboarding3 {
-      /// Image `nouns-onboarding-3_000`.
-      static let nounsOnboarding3_000 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_000")
-      /// Image `nouns-onboarding-3_001`.
-      static let nounsOnboarding3_001 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_001")
-      /// Image `nouns-onboarding-3_002`.
-      static let nounsOnboarding3_002 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_002")
-      /// Image `nouns-onboarding-3_003`.
-      static let nounsOnboarding3_003 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_003")
-      /// Image `nouns-onboarding-3_004`.
-      static let nounsOnboarding3_004 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_004")
-      /// Image `nouns-onboarding-3_005`.
-      static let nounsOnboarding3_005 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_005")
-      /// Image `nouns-onboarding-3_006`.
-      static let nounsOnboarding3_006 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_006")
-      /// Image `nouns-onboarding-3_007`.
-      static let nounsOnboarding3_007 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_007")
-      /// Image `nouns-onboarding-3_008`.
-      static let nounsOnboarding3_008 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_008")
-      /// Image `nouns-onboarding-3_009`.
-      static let nounsOnboarding3_009 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_009")
-      /// Image `nouns-onboarding-3_010`.
-      static let nounsOnboarding3_010 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_010")
-      /// Image `nouns-onboarding-3_011`.
-      static let nounsOnboarding3_011 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_011")
-      /// Image `nouns-onboarding-3_012`.
-      static let nounsOnboarding3_012 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_012")
-      /// Image `nouns-onboarding-3_013`.
-      static let nounsOnboarding3_013 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_013")
-      /// Image `nouns-onboarding-3_014`.
-      static let nounsOnboarding3_014 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_014")
-      /// Image `nouns-onboarding-3_015`.
-      static let nounsOnboarding3_015 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_015")
-      /// Image `nouns-onboarding-3_016`.
-      static let nounsOnboarding3_016 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_016")
-      /// Image `nouns-onboarding-3_017`.
-      static let nounsOnboarding3_017 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_017")
-      /// Image `nouns-onboarding-3_018`.
-      static let nounsOnboarding3_018 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_018")
-      /// Image `nouns-onboarding-3_019`.
-      static let nounsOnboarding3_019 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_019")
-      /// Image `nouns-onboarding-3_020`.
-      static let nounsOnboarding3_020 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_020")
-      /// Image `nouns-onboarding-3_021`.
-      static let nounsOnboarding3_021 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_021")
-      /// Image `nouns-onboarding-3_022`.
-      static let nounsOnboarding3_022 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_022")
-      /// Image `nouns-onboarding-3_023`.
-      static let nounsOnboarding3_023 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_023")
-      /// Image `nouns-onboarding-3_024`.
-      static let nounsOnboarding3_024 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_024")
-      /// Image `nouns-onboarding-3_025`.
-      static let nounsOnboarding3_025 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_025")
-      /// Image `nouns-onboarding-3_026`.
-      static let nounsOnboarding3_026 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_026")
-      /// Image `nouns-onboarding-3_027`.
-      static let nounsOnboarding3_027 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_027")
-      /// Image `nouns-onboarding-3_028`.
-      static let nounsOnboarding3_028 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_028")
-      /// Image `nouns-onboarding-3_029`.
-      static let nounsOnboarding3_029 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_029")
-      /// Image `nouns-onboarding-3_030`.
-      static let nounsOnboarding3_030 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_030")
-      /// Image `nouns-onboarding-3_031`.
-      static let nounsOnboarding3_031 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_031")
-      /// Image `nouns-onboarding-3_032`.
-      static let nounsOnboarding3_032 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_032")
-      /// Image `nouns-onboarding-3_033`.
-      static let nounsOnboarding3_033 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_033")
-      /// Image `nouns-onboarding-3_034`.
-      static let nounsOnboarding3_034 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_034")
-      /// Image `nouns-onboarding-3_035`.
-      static let nounsOnboarding3_035 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_035")
-      /// Image `nouns-onboarding-3_036`.
-      static let nounsOnboarding3_036 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_036")
-      /// Image `nouns-onboarding-3_037`.
-      static let nounsOnboarding3_037 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_037")
-      /// Image `nouns-onboarding-3_038`.
-      static let nounsOnboarding3_038 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_038")
-      /// Image `nouns-onboarding-3_039`.
-      static let nounsOnboarding3_039 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_039")
-      /// Image `nouns-onboarding-3_040`.
-      static let nounsOnboarding3_040 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_040")
-      /// Image `nouns-onboarding-3_041`.
-      static let nounsOnboarding3_041 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_041")
-      /// Image `nouns-onboarding-3_042`.
-      static let nounsOnboarding3_042 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_042")
-      /// Image `nouns-onboarding-3_043`.
-      static let nounsOnboarding3_043 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_043")
-      /// Image `nouns-onboarding-3_044`.
-      static let nounsOnboarding3_044 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_044")
-      /// Image `nouns-onboarding-3_045`.
-      static let nounsOnboarding3_045 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_045")
-      /// Image `nouns-onboarding-3_046`.
-      static let nounsOnboarding3_046 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_046")
-      /// Image `nouns-onboarding-3_047`.
-      static let nounsOnboarding3_047 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_047")
-      /// Image `nouns-onboarding-3_048`.
-      static let nounsOnboarding3_048 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_048")
-      /// Image `nouns-onboarding-3_049`.
-      static let nounsOnboarding3_049 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_049")
-      /// Image `nouns-onboarding-3_050`.
-      static let nounsOnboarding3_050 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_050")
-      /// Image `nouns-onboarding-3_051`.
-      static let nounsOnboarding3_051 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_051")
-      /// Image `nouns-onboarding-3_052`.
-      static let nounsOnboarding3_052 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_052")
-      /// Image `nouns-onboarding-3_053`.
-      static let nounsOnboarding3_053 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_053")
-      /// Image `nouns-onboarding-3_054`.
-      static let nounsOnboarding3_054 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_054")
-      /// Image `nouns-onboarding-3_055`.
-      static let nounsOnboarding3_055 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_055")
-      /// Image `nouns-onboarding-3_056`.
-      static let nounsOnboarding3_056 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_056")
-      /// Image `nouns-onboarding-3_057`.
-      static let nounsOnboarding3_057 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_057")
-      /// Image `nouns-onboarding-3_058`.
-      static let nounsOnboarding3_058 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_058")
-      /// Image `nouns-onboarding-3_059`.
-      static let nounsOnboarding3_059 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_059")
-      /// Image `nouns-onboarding-3_060`.
-      static let nounsOnboarding3_060 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_060")
-      /// Image `nouns-onboarding-3_061`.
-      static let nounsOnboarding3_061 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_061")
-      /// Image `nouns-onboarding-3_062`.
-      static let nounsOnboarding3_062 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_062")
-      /// Image `nouns-onboarding-3_063`.
-      static let nounsOnboarding3_063 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_063")
-      /// Image `nouns-onboarding-3_064`.
-      static let nounsOnboarding3_064 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_064")
-      /// Image `nouns-onboarding-3_065`.
-      static let nounsOnboarding3_065 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_065")
-      /// Image `nouns-onboarding-3_066`.
-      static let nounsOnboarding3_066 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_066")
-      /// Image `nouns-onboarding-3_067`.
-      static let nounsOnboarding3_067 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_067")
-      /// Image `nouns-onboarding-3_068`.
-      static let nounsOnboarding3_068 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_068")
-      /// Image `nouns-onboarding-3_069`.
-      static let nounsOnboarding3_069 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_069")
-      /// Image `nouns-onboarding-3_070`.
-      static let nounsOnboarding3_070 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_070")
-      /// Image `nouns-onboarding-3_071`.
-      static let nounsOnboarding3_071 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_071")
-      /// Image `nouns-onboarding-3_072`.
-      static let nounsOnboarding3_072 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_072")
-      /// Image `nouns-onboarding-3_073`.
-      static let nounsOnboarding3_073 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_073")
-      /// Image `nouns-onboarding-3_074`.
-      static let nounsOnboarding3_074 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_074")
-      /// Image `nouns-onboarding-3_075`.
-      static let nounsOnboarding3_075 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_075")
-      /// Image `nouns-onboarding-3_076`.
-      static let nounsOnboarding3_076 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_076")
-      /// Image `nouns-onboarding-3_077`.
-      static let nounsOnboarding3_077 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_077")
-      /// Image `nouns-onboarding-3_078`.
-      static let nounsOnboarding3_078 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_078")
-      /// Image `nouns-onboarding-3_079`.
-      static let nounsOnboarding3_079 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_079")
-      /// Image `nouns-onboarding-3_080`.
-      static let nounsOnboarding3_080 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_080")
-      /// Image `nouns-onboarding-3_081`.
-      static let nounsOnboarding3_081 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_081")
-      /// Image `nouns-onboarding-3_082`.
-      static let nounsOnboarding3_082 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_082")
-      /// Image `nouns-onboarding-3_083`.
-      static let nounsOnboarding3_083 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_083")
-      /// Image `nouns-onboarding-3_084`.
-      static let nounsOnboarding3_084 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_084")
-      /// Image `nouns-onboarding-3_085`.
-      static let nounsOnboarding3_085 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_085")
-      /// Image `nouns-onboarding-3_086`.
-      static let nounsOnboarding3_086 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_086")
-      /// Image `nouns-onboarding-3_087`.
-      static let nounsOnboarding3_087 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_087")
-      /// Image `nouns-onboarding-3_088`.
-      static let nounsOnboarding3_088 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_088")
-      /// Image `nouns-onboarding-3_089`.
-      static let nounsOnboarding3_089 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_089")
-      /// Image `nouns-onboarding-3_090`.
-      static let nounsOnboarding3_090 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_090")
-      /// Image `nouns-onboarding-3_091`.
-      static let nounsOnboarding3_091 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_091")
-      /// Image `nouns-onboarding-3_092`.
-      static let nounsOnboarding3_092 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_092")
-      /// Image `nouns-onboarding-3_093`.
-      static let nounsOnboarding3_093 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_093")
-      /// Image `nouns-onboarding-3_094`.
-      static let nounsOnboarding3_094 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_094")
-      /// Image `nouns-onboarding-3_095`.
-      static let nounsOnboarding3_095 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_095")
-      /// Image `nouns-onboarding-3_096`.
-      static let nounsOnboarding3_096 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_096")
-      /// Image `nouns-onboarding-3_097`.
-      static let nounsOnboarding3_097 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_097")
-      /// Image `nouns-onboarding-3_098`.
-      static let nounsOnboarding3_098 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_098")
-      /// Image `nouns-onboarding-3_099`.
-      static let nounsOnboarding3_099 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_099")
-      /// Image `nouns-onboarding-3_100`.
-      static let nounsOnboarding3_100 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_100")
-      /// Image `nouns-onboarding-3_101`.
-      static let nounsOnboarding3_101 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_101")
-      /// Image `nouns-onboarding-3_102`.
-      static let nounsOnboarding3_102 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_102")
-      /// Image `nouns-onboarding-3_103`.
-      static let nounsOnboarding3_103 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_103")
-      /// Image `nouns-onboarding-3_104`.
-      static let nounsOnboarding3_104 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_104")
-      /// Image `nouns-onboarding-3_105`.
-      static let nounsOnboarding3_105 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_105")
-      /// Image `nouns-onboarding-3_106`.
-      static let nounsOnboarding3_106 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_106")
-      /// Image `nouns-onboarding-3_107`.
-      static let nounsOnboarding3_107 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_107")
-      /// Image `nouns-onboarding-3_108`.
-      static let nounsOnboarding3_108 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_108")
-      /// Image `nouns-onboarding-3_109`.
-      static let nounsOnboarding3_109 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_109")
-      /// Image `nouns-onboarding-3_110`.
-      static let nounsOnboarding3_110 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_110")
-      /// Image `nouns-onboarding-3_111`.
-      static let nounsOnboarding3_111 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_111")
-      /// Image `nouns-onboarding-3_112`.
-      static let nounsOnboarding3_112 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_112")
-      /// Image `nouns-onboarding-3_113`.
-      static let nounsOnboarding3_113 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_113")
-      /// Image `nouns-onboarding-3_114`.
-      static let nounsOnboarding3_114 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_114")
-      /// Image `nouns-onboarding-3_115`.
-      static let nounsOnboarding3_115 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_115")
-      /// Image `nouns-onboarding-3_116`.
-      static let nounsOnboarding3_116 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_116")
-      /// Image `nouns-onboarding-3_117`.
-      static let nounsOnboarding3_117 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_117")
-      /// Image `nouns-onboarding-3_118`.
-      static let nounsOnboarding3_118 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_118")
-      /// Image `nouns-onboarding-3_119`.
-      static let nounsOnboarding3_119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-3/nouns-onboarding-3_119")
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_000", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_000(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_000, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_001", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_001(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_001, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_002", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_002(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_002, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_003", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_003(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_003, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_004", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_004(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_004, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_005", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_005(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_005, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_006", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_006(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_006, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_007", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_007(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_007, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_008", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_008(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_008, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_009", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_009(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_009, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_010", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_010(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_010, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_011", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_011(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_011, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_012", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_012(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_012, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_013", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_013(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_013, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_014", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_014(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_014, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_015", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_015(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_015, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_016", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_016(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_016, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_017", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_017(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_017, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_018", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_018(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_018, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_019", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_019(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_019, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_020", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_020(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_020, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_021", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_021(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_021, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_022", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_022(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_022, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_023", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_023(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_023, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_024", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_024(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_024, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_025", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_025(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_025, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_026", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_026(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_026, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_027", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_027(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_027, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_028", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_028(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_028, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_029", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_029(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_029, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_030", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_030(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_030, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_031", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_031(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_031, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_032", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_032(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_032, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_033", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_033(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_033, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_034", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_034(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_034, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_035", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_035(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_035, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_036", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_036(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_036, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_037", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_037(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_037, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_038", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_038(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_038, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_039", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_039(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_039, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_040", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_040(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_040, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_041", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_041(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_041, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_042", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_042(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_042, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_043", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_043(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_043, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_044", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_044(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_044, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_045", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_045(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_045, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_046", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_046(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_046, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_047", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_047(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_047, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_048", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_048(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_048, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_049", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_049(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_049, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_050", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_050(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_050, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_051", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_051(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_051, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_052", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_052(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_052, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_053", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_053(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_053, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_054", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_054(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_054, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_055", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_055(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_055, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_056", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_056(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_056, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_057", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_057(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_057, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_058", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_058(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_058, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_059", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_059(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_059, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_060", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_060(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_060, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_061", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_061(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_061, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_062", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_062(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_062, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_063", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_063(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_063, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_064", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_064(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_064, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_065", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_065(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_065, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_066", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_066(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_066, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_067", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_067(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_067, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_068", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_068(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_068, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_069", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_069(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_069, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_070", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_070(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_070, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_071", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_071(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_071, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_072", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_072(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_072, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_073", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_073(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_073, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_074", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_074(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_074, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_075", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_075(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_075, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_076", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_076(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_076, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_077", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_077(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_077, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_078", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_078(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_078, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_079", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_079(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_079, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_080", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_080(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_080, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_081", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_081(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_081, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_082", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_082(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_082, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_083", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_083(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_083, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_084", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_084(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_084, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_085", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_085(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_085, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_086", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_086(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_086, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_087", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_087(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_087, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_088", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_088(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_088, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_089", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_089(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_089, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_090", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_090(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_090, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_091", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_091(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_091, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_092", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_092(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_092, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_093", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_093(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_093, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_094", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_094(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_094, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_095", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_095(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_095, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_096", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_096(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_096, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_097", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_097(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_097, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_098", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_098(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_098, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_099", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_099(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_099, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_100", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_100(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_100, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_101", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_101(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_101, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_102", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_102(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_102, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_103", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_103(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_103, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_104", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_104(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_104, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_105", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_105(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_105, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_106", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_106(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_106, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_107", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_107(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_107, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_108", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_108(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_108, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_109", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_109(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_109, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_110", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_110(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_110, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_111", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_111(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_111, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_112", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_112(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_112, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_113", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_113(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_113, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_114", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_114(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_114, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_115", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_115(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_115, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_116", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_116(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_116, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_117", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_117(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_117, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_118", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_118(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_118, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-3_119", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding3_119(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding3.nounsOnboarding3_119, compatibleWith: traitCollection)
-      }
-      #endif
-
-      fileprivate init() {}
-    }
-
-    /// This `R.image.nounsOnboarding4` struct is generated, and contains static references to 120 images.
-    struct nounsOnboarding4 {
-      /// Image `nouns-onboarding-4_000`.
-      static let nounsOnboarding4_000 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_000")
-      /// Image `nouns-onboarding-4_001`.
-      static let nounsOnboarding4_001 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_001")
-      /// Image `nouns-onboarding-4_002`.
-      static let nounsOnboarding4_002 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_002")
-      /// Image `nouns-onboarding-4_003`.
-      static let nounsOnboarding4_003 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_003")
-      /// Image `nouns-onboarding-4_004`.
-      static let nounsOnboarding4_004 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_004")
-      /// Image `nouns-onboarding-4_005`.
-      static let nounsOnboarding4_005 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_005")
-      /// Image `nouns-onboarding-4_006`.
-      static let nounsOnboarding4_006 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_006")
-      /// Image `nouns-onboarding-4_007`.
-      static let nounsOnboarding4_007 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_007")
-      /// Image `nouns-onboarding-4_008`.
-      static let nounsOnboarding4_008 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_008")
-      /// Image `nouns-onboarding-4_009`.
-      static let nounsOnboarding4_009 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_009")
-      /// Image `nouns-onboarding-4_010`.
-      static let nounsOnboarding4_010 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_010")
-      /// Image `nouns-onboarding-4_011`.
-      static let nounsOnboarding4_011 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_011")
-      /// Image `nouns-onboarding-4_012`.
-      static let nounsOnboarding4_012 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_012")
-      /// Image `nouns-onboarding-4_013`.
-      static let nounsOnboarding4_013 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_013")
-      /// Image `nouns-onboarding-4_014`.
-      static let nounsOnboarding4_014 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_014")
-      /// Image `nouns-onboarding-4_015`.
-      static let nounsOnboarding4_015 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_015")
-      /// Image `nouns-onboarding-4_016`.
-      static let nounsOnboarding4_016 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_016")
-      /// Image `nouns-onboarding-4_017`.
-      static let nounsOnboarding4_017 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_017")
-      /// Image `nouns-onboarding-4_018`.
-      static let nounsOnboarding4_018 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_018")
-      /// Image `nouns-onboarding-4_019`.
-      static let nounsOnboarding4_019 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_019")
-      /// Image `nouns-onboarding-4_020`.
-      static let nounsOnboarding4_020 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_020")
-      /// Image `nouns-onboarding-4_021`.
-      static let nounsOnboarding4_021 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_021")
-      /// Image `nouns-onboarding-4_022`.
-      static let nounsOnboarding4_022 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_022")
-      /// Image `nouns-onboarding-4_023`.
-      static let nounsOnboarding4_023 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_023")
-      /// Image `nouns-onboarding-4_024`.
-      static let nounsOnboarding4_024 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_024")
-      /// Image `nouns-onboarding-4_025`.
-      static let nounsOnboarding4_025 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_025")
-      /// Image `nouns-onboarding-4_026`.
-      static let nounsOnboarding4_026 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_026")
-      /// Image `nouns-onboarding-4_027`.
-      static let nounsOnboarding4_027 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_027")
-      /// Image `nouns-onboarding-4_028`.
-      static let nounsOnboarding4_028 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_028")
-      /// Image `nouns-onboarding-4_029`.
-      static let nounsOnboarding4_029 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_029")
-      /// Image `nouns-onboarding-4_030`.
-      static let nounsOnboarding4_030 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_030")
-      /// Image `nouns-onboarding-4_031`.
-      static let nounsOnboarding4_031 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_031")
-      /// Image `nouns-onboarding-4_032`.
-      static let nounsOnboarding4_032 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_032")
-      /// Image `nouns-onboarding-4_033`.
-      static let nounsOnboarding4_033 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_033")
-      /// Image `nouns-onboarding-4_034`.
-      static let nounsOnboarding4_034 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_034")
-      /// Image `nouns-onboarding-4_035`.
-      static let nounsOnboarding4_035 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_035")
-      /// Image `nouns-onboarding-4_036`.
-      static let nounsOnboarding4_036 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_036")
-      /// Image `nouns-onboarding-4_037`.
-      static let nounsOnboarding4_037 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_037")
-      /// Image `nouns-onboarding-4_038`.
-      static let nounsOnboarding4_038 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_038")
-      /// Image `nouns-onboarding-4_039`.
-      static let nounsOnboarding4_039 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_039")
-      /// Image `nouns-onboarding-4_040`.
-      static let nounsOnboarding4_040 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_040")
-      /// Image `nouns-onboarding-4_041`.
-      static let nounsOnboarding4_041 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_041")
-      /// Image `nouns-onboarding-4_042`.
-      static let nounsOnboarding4_042 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_042")
-      /// Image `nouns-onboarding-4_043`.
-      static let nounsOnboarding4_043 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_043")
-      /// Image `nouns-onboarding-4_044`.
-      static let nounsOnboarding4_044 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_044")
-      /// Image `nouns-onboarding-4_045`.
-      static let nounsOnboarding4_045 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_045")
-      /// Image `nouns-onboarding-4_046`.
-      static let nounsOnboarding4_046 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_046")
-      /// Image `nouns-onboarding-4_047`.
-      static let nounsOnboarding4_047 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_047")
-      /// Image `nouns-onboarding-4_048`.
-      static let nounsOnboarding4_048 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_048")
-      /// Image `nouns-onboarding-4_049`.
-      static let nounsOnboarding4_049 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_049")
-      /// Image `nouns-onboarding-4_050`.
-      static let nounsOnboarding4_050 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_050")
-      /// Image `nouns-onboarding-4_051`.
-      static let nounsOnboarding4_051 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_051")
-      /// Image `nouns-onboarding-4_052`.
-      static let nounsOnboarding4_052 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_052")
-      /// Image `nouns-onboarding-4_053`.
-      static let nounsOnboarding4_053 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_053")
-      /// Image `nouns-onboarding-4_054`.
-      static let nounsOnboarding4_054 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_054")
-      /// Image `nouns-onboarding-4_055`.
-      static let nounsOnboarding4_055 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_055")
-      /// Image `nouns-onboarding-4_056`.
-      static let nounsOnboarding4_056 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_056")
-      /// Image `nouns-onboarding-4_057`.
-      static let nounsOnboarding4_057 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_057")
-      /// Image `nouns-onboarding-4_058`.
-      static let nounsOnboarding4_058 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_058")
-      /// Image `nouns-onboarding-4_059`.
-      static let nounsOnboarding4_059 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_059")
-      /// Image `nouns-onboarding-4_060`.
-      static let nounsOnboarding4_060 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_060")
-      /// Image `nouns-onboarding-4_061`.
-      static let nounsOnboarding4_061 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_061")
-      /// Image `nouns-onboarding-4_062`.
-      static let nounsOnboarding4_062 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_062")
-      /// Image `nouns-onboarding-4_063`.
-      static let nounsOnboarding4_063 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_063")
-      /// Image `nouns-onboarding-4_064`.
-      static let nounsOnboarding4_064 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_064")
-      /// Image `nouns-onboarding-4_065`.
-      static let nounsOnboarding4_065 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_065")
-      /// Image `nouns-onboarding-4_066`.
-      static let nounsOnboarding4_066 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_066")
-      /// Image `nouns-onboarding-4_067`.
-      static let nounsOnboarding4_067 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_067")
-      /// Image `nouns-onboarding-4_068`.
-      static let nounsOnboarding4_068 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_068")
-      /// Image `nouns-onboarding-4_069`.
-      static let nounsOnboarding4_069 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_069")
-      /// Image `nouns-onboarding-4_070`.
-      static let nounsOnboarding4_070 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_070")
-      /// Image `nouns-onboarding-4_071`.
-      static let nounsOnboarding4_071 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_071")
-      /// Image `nouns-onboarding-4_072`.
-      static let nounsOnboarding4_072 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_072")
-      /// Image `nouns-onboarding-4_073`.
-      static let nounsOnboarding4_073 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_073")
-      /// Image `nouns-onboarding-4_074`.
-      static let nounsOnboarding4_074 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_074")
-      /// Image `nouns-onboarding-4_075`.
-      static let nounsOnboarding4_075 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_075")
-      /// Image `nouns-onboarding-4_076`.
-      static let nounsOnboarding4_076 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_076")
-      /// Image `nouns-onboarding-4_077`.
-      static let nounsOnboarding4_077 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_077")
-      /// Image `nouns-onboarding-4_078`.
-      static let nounsOnboarding4_078 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_078")
-      /// Image `nouns-onboarding-4_079`.
-      static let nounsOnboarding4_079 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_079")
-      /// Image `nouns-onboarding-4_080`.
-      static let nounsOnboarding4_080 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_080")
-      /// Image `nouns-onboarding-4_081`.
-      static let nounsOnboarding4_081 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_081")
-      /// Image `nouns-onboarding-4_082`.
-      static let nounsOnboarding4_082 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_082")
-      /// Image `nouns-onboarding-4_083`.
-      static let nounsOnboarding4_083 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_083")
-      /// Image `nouns-onboarding-4_084`.
-      static let nounsOnboarding4_084 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_084")
-      /// Image `nouns-onboarding-4_085`.
-      static let nounsOnboarding4_085 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_085")
-      /// Image `nouns-onboarding-4_086`.
-      static let nounsOnboarding4_086 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_086")
-      /// Image `nouns-onboarding-4_087`.
-      static let nounsOnboarding4_087 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_087")
-      /// Image `nouns-onboarding-4_088`.
-      static let nounsOnboarding4_088 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_088")
-      /// Image `nouns-onboarding-4_089`.
-      static let nounsOnboarding4_089 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_089")
-      /// Image `nouns-onboarding-4_090`.
-      static let nounsOnboarding4_090 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_090")
-      /// Image `nouns-onboarding-4_091`.
-      static let nounsOnboarding4_091 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_091")
-      /// Image `nouns-onboarding-4_092`.
-      static let nounsOnboarding4_092 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_092")
-      /// Image `nouns-onboarding-4_093`.
-      static let nounsOnboarding4_093 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_093")
-      /// Image `nouns-onboarding-4_094`.
-      static let nounsOnboarding4_094 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_094")
-      /// Image `nouns-onboarding-4_095`.
-      static let nounsOnboarding4_095 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_095")
-      /// Image `nouns-onboarding-4_096`.
-      static let nounsOnboarding4_096 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_096")
-      /// Image `nouns-onboarding-4_097`.
-      static let nounsOnboarding4_097 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_097")
-      /// Image `nouns-onboarding-4_098`.
-      static let nounsOnboarding4_098 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_098")
-      /// Image `nouns-onboarding-4_099`.
-      static let nounsOnboarding4_099 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_099")
-      /// Image `nouns-onboarding-4_100`.
-      static let nounsOnboarding4_100 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_100")
-      /// Image `nouns-onboarding-4_101`.
-      static let nounsOnboarding4_101 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_101")
-      /// Image `nouns-onboarding-4_102`.
-      static let nounsOnboarding4_102 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_102")
-      /// Image `nouns-onboarding-4_103`.
-      static let nounsOnboarding4_103 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_103")
-      /// Image `nouns-onboarding-4_104`.
-      static let nounsOnboarding4_104 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_104")
-      /// Image `nouns-onboarding-4_105`.
-      static let nounsOnboarding4_105 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_105")
-      /// Image `nouns-onboarding-4_106`.
-      static let nounsOnboarding4_106 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_106")
-      /// Image `nouns-onboarding-4_107`.
-      static let nounsOnboarding4_107 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_107")
-      /// Image `nouns-onboarding-4_108`.
-      static let nounsOnboarding4_108 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_108")
-      /// Image `nouns-onboarding-4_109`.
-      static let nounsOnboarding4_109 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_109")
-      /// Image `nouns-onboarding-4_110`.
-      static let nounsOnboarding4_110 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_110")
-      /// Image `nouns-onboarding-4_111`.
-      static let nounsOnboarding4_111 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_111")
-      /// Image `nouns-onboarding-4_112`.
-      static let nounsOnboarding4_112 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_112")
-      /// Image `nouns-onboarding-4_113`.
-      static let nounsOnboarding4_113 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_113")
-      /// Image `nouns-onboarding-4_114`.
-      static let nounsOnboarding4_114 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_114")
-      /// Image `nouns-onboarding-4_115`.
-      static let nounsOnboarding4_115 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_115")
-      /// Image `nouns-onboarding-4_116`.
-      static let nounsOnboarding4_116 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_116")
-      /// Image `nouns-onboarding-4_117`.
-      static let nounsOnboarding4_117 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_117")
-      /// Image `nouns-onboarding-4_118`.
-      static let nounsOnboarding4_118 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_118")
-      /// Image `nouns-onboarding-4_119`.
-      static let nounsOnboarding4_119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-4/nouns-onboarding-4_119")
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_000", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_000(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_000, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_001", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_001(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_001, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_002", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_002(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_002, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_003", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_003(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_003, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_004", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_004(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_004, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_005", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_005(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_005, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_006", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_006(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_006, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_007", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_007(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_007, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_008", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_008(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_008, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_009", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_009(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_009, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_010", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_010(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_010, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_011", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_011(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_011, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_012", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_012(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_012, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_013", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_013(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_013, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_014", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_014(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_014, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_015", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_015(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_015, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_016", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_016(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_016, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_017", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_017(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_017, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_018", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_018(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_018, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_019", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_019(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_019, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_020", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_020(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_020, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_021", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_021(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_021, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_022", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_022(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_022, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_023", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_023(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_023, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_024", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_024(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_024, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_025", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_025(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_025, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_026", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_026(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_026, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_027", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_027(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_027, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_028", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_028(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_028, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_029", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_029(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_029, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_030", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_030(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_030, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_031", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_031(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_031, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_032", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_032(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_032, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_033", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_033(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_033, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_034", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_034(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_034, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_035", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_035(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_035, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_036", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_036(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_036, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_037", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_037(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_037, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_038", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_038(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_038, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_039", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_039(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_039, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_040", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_040(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_040, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_041", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_041(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_041, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_042", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_042(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_042, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_043", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_043(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_043, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_044", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_044(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_044, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_045", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_045(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_045, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_046", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_046(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_046, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_047", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_047(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_047, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_048", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_048(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_048, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_049", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_049(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_049, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_050", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_050(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_050, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_051", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_051(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_051, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_052", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_052(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_052, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_053", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_053(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_053, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_054", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_054(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_054, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_055", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_055(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_055, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_056", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_056(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_056, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_057", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_057(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_057, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_058", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_058(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_058, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_059", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_059(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_059, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_060", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_060(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_060, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_061", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_061(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_061, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_062", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_062(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_062, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_063", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_063(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_063, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_064", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_064(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_064, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_065", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_065(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_065, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_066", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_066(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_066, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_067", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_067(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_067, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_068", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_068(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_068, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_069", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_069(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_069, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_070", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_070(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_070, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_071", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_071(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_071, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_072", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_072(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_072, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_073", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_073(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_073, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_074", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_074(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_074, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_075", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_075(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_075, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_076", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_076(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_076, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_077", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_077(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_077, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_078", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_078(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_078, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_079", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_079(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_079, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_080", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_080(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_080, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_081", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_081(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_081, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_082", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_082(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_082, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_083", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_083(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_083, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_084", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_084(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_084, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_085", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_085(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_085, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_086", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_086(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_086, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_087", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_087(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_087, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_088", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_088(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_088, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_089", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_089(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_089, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_090", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_090(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_090, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_091", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_091(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_091, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_092", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_092(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_092, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_093", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_093(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_093, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_094", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_094(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_094, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_095", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_095(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_095, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_096", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_096(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_096, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_097", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_097(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_097, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_098", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_098(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_098, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_099", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_099(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_099, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_100", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_100(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_100, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_101", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_101(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_101, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_102", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_102(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_102, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_103", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_103(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_103, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_104", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_104(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_104, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_105", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_105(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_105, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_106", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_106(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_106, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_107", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_107(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_107, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_108", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_108(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_108, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_109", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_109(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_109, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_110", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_110(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_110, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_111", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_111(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_111, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_112", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_112(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_112, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_113", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_113(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_113, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_114", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_114(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_114, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_115", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_115(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_115, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_116", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_116(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_116, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_117", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_117(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_117, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_118", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_118(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_118, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "nouns-onboarding-4_119", bundle: ..., traitCollection: ...)`
-      static func nounsOnboarding4_119(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.nounsOnboarding4.nounsOnboarding4_119, compatibleWith: traitCollection)
-      }
-      #endif
-
-      fileprivate init() {}
-    }
-
     fileprivate init() {}
   }
 
@@ -8841,7 +6339,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 27 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 30 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -9132,7 +6630,7 @@ struct R: Rswift.Validatable {
       static let enable = Rswift.StringResource(key: "enable", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Let's get talkin!
       static let title = Rswift.StringResource(key: "title", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: To make your noun talk, the app needs your permission to use the microphone.
+      /// Value: To make your Noun talk, the app needs your permission to use the microphone.
       static let body = Rswift.StringResource(key: "body", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Do it later
@@ -9174,7 +6672,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
       }
 
-      /// Value: To make your noun talk, the app needs your permission to use the microphone.
+      /// Value: To make your Noun talk, the app needs your permission to use the microphone.
       static func body(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
@@ -9354,17 +6852,55 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
+    /// This `R.string.createCoachmark` struct is generated, and contains static references to 2 localization keys.
+    struct createCoachmark {
+      /// Value: Shake to shuffle
+      static let shake = Rswift.StringResource(key: "shake", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Swipe to pick %@
+      static let swipe = Rswift.StringResource(key: "swipe", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Shake to shuffle
+      static func shake(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "shake"
+        }
+
+        return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+      }
+
+      /// Value: Swipe to pick %@
+      static func swipe(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
+          return "swipe"
+        }
+
+        let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      fileprivate init() {}
+    }
+
     /// This `R.string.createNounDialog` struct is generated, and contains static references to 5 localization keys.
     struct createNounDialog {
       /// Value: Born %s
       static let nounBirthdayLabel = Rswift.StringResource(key: "noun.birthday.label", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Created by you
       static let ownerLabel = Rswift.StringResource(key: "owner.label", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Name your noun!
+      /// Value: Name your Noun!
       static let inputPlaceholder = Rswift.StringResource(key: "input.placeholder", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Save & finish
       static let actionSave = Rswift.StringResource(key: "action.save", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Share your noun
+      /// Value: Share your Noun
       static let actionShare = Rswift.StringResource(key: "action.share", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Born %s
@@ -9395,7 +6931,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("owner.label", tableName: "CreateNounDialog", bundle: bundle, comment: "")
       }
 
-      /// Value: Name your noun!
+      /// Value: Name your Noun!
       static func inputPlaceholder(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("input.placeholder", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
@@ -9421,7 +6957,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("action.save", tableName: "CreateNounDialog", bundle: bundle, comment: "")
       }
 
-      /// Value: Share your noun
+      /// Value: Share your Noun
       static func actionShare(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("action.share", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
@@ -9439,24 +6975,24 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.create` struct is generated, and contains static references to 3 localization keys.
     struct create {
-      /// Value: Build a completely custom noun
-      static let subhealine = Rswift.StringResource(key: "subhealine", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Build a completely custom Noun
+      static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Create
       static let title = Rswift.StringResource(key: "title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Get going
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Build a completely custom noun
-      static func subhealine(preferredLanguages: [String]? = nil) -> String {
+      /// Value: Build a completely custom Noun
+      static func subheadline(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("subhealine", tableName: "Create", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("subheadline", tableName: "Create", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
-          return "subhealine"
+          return "subheadline"
         }
 
-        return NSLocalizedString("subhealine", tableName: "Create", bundle: bundle, comment: "")
+        return NSLocalizedString("subheadline", tableName: "Create", bundle: bundle, comment: "")
       }
 
       /// Value: Create
@@ -9556,16 +7092,16 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.documentation` struct is generated, and contains static references to 4 localization keys.
     struct documentation {
-      /// Value: Documentation
+      /// Value: Explore Nouns
       static let title = Rswift.StringResource(key: "title", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Notion Docs
-      static let notionDocs = Rswift.StringResource(key: "notion.docs", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Learn More
+      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Want to dive into the details? Follow the link below to get a more in-depth understanding of the Nouns DAO.
       static let message = Rswift.StringResource(key: "message", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: https://nouns.notion.site/Explore-Nouns-a2a9dceeb1d54e10b9cbf3f931c2266f
-      static let notionLink = Rswift.StringResource(key: "notion.link", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
+      static let documentationLink = Rswift.StringResource(key: "documentation.link", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Documentation
+      /// Value: Explore Nouns
       static func title(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("title", tableName: "Documentation", bundle: hostingBundle, comment: "")
@@ -9578,20 +7114,20 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "Documentation", bundle: bundle, comment: "")
       }
 
-      /// Value: Notion Docs
-      static func notionDocs(preferredLanguages: [String]? = nil) -> String {
+      /// Value: Learn More
+      static func learnMore(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("notion.docs", tableName: "Documentation", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("learn.more", tableName: "Documentation", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "notion.docs"
+          return "learn.more"
         }
 
-        return NSLocalizedString("notion.docs", tableName: "Documentation", bundle: bundle, comment: "")
+        return NSLocalizedString("learn.more", tableName: "Documentation", bundle: bundle, comment: "")
       }
 
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Want to dive into the details? Follow the link below to get a more in-depth understanding of the Nouns DAO.
       static func message(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("message", tableName: "Documentation", bundle: hostingBundle, comment: "")
@@ -9605,16 +7141,16 @@ struct R: Rswift.Validatable {
       }
 
       /// Value: https://nouns.notion.site/Explore-Nouns-a2a9dceeb1d54e10b9cbf3f931c2266f
-      static func notionLink(preferredLanguages: [String]? = nil) -> String {
+      static func documentationLink(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("notion.link", tableName: "Documentation", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("documentation.link", tableName: "Documentation", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "notion.link"
+          return "documentation.link"
         }
 
-        return NSLocalizedString("notion.link", tableName: "Documentation", bundle: bundle, comment: "")
+        return NSLocalizedString("documentation.link", tableName: "Documentation", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}
@@ -9829,7 +7365,7 @@ struct R: Rswift.Validatable {
       static let body = Rswift.StringResource(key: "body", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Turn on notifications
       static let enable = Rswift.StringResource(key: "enable", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Wanna know when it’s noun o’clock?
+      /// Value: Wanna know when it’s Noun O’Clock?
       static let title = Rswift.StringResource(key: "title", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Do it later
@@ -9871,7 +7407,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("enable", tableName: "NotificationPermission", bundle: bundle, comment: "")
       }
 
-      /// Value: Wanna know when it’s noun o’clock?
+      /// Value: Wanna know when it’s Noun O’Clock?
       static func title(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("title", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
@@ -9887,24 +7423,43 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 2 localization keys.
+    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 3 localization keys.
     struct nounDAOInfo {
-      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.
-      static let description = Rswift.StringResource(key: "description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
+      static let activityDescription = Rswift.StringResource(key: "activity.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Ownership of each Noun is determined through an auction. This page shows all bids submitted for Noun %@.
+      static let bidHistoryDescription = Rswift.StringResource(key: "bid.history.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: What is this?
       static let title = Rswift.StringResource(key: "title", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Each noun is a member of the Nouns DAO and entitled to one vote in all governance matters. This means, once Noun 62 was owned by beautifulpunks.eth, they could vote on proposals to the DAO and this is their voting activity.
-      static func description(preferredLanguages: [String]? = nil) -> String {
+      /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
+      static func activityDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+          let format = NSLocalizedString("activity.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
         }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
-          return "description"
+        guard let (locale, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
+          return "activity.description"
         }
 
-        return NSLocalizedString("description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+        let format = NSLocalizedString("activity.description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      /// Value: Ownership of each Noun is determined through an auction. This page shows all bids submitted for Noun %@.
+      static func bidHistoryDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("bid.history.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
+          return "bid.history.description"
+        }
+
+        let format = NSLocalizedString("bid.history.description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
       }
 
       /// Value: What is this?
@@ -10106,16 +7661,16 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.nounProfile` struct is generated, and contains static references to 11 localization keys.
+    /// This `R.string.nounProfile` struct is generated, and contains static references to 12 localization keys.
     struct nounProfile {
       /// Value: %dh %dm %ds
       static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Activity
       static let auctionSettledGovernanceNounder = Rswift.StringResource(key: "auction.settled.governance.nounder", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Activity & bid history
+      static let auctionSettledGovernance = Rswift.StringResource(key: "auction.settled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Bid history
       static let auctionUnsettledGovernance = Rswift.StringResource(key: "auction.unsettled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Bid history & activity
-      static let auctionSettledGovernance = Rswift.StringResource(key: "auction.settled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Born %s
       static let birthday = Rswift.StringResource(key: "birthday", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Current bid
@@ -10130,6 +7685,8 @@ struct R: Rswift.Validatable {
       static let bidWinner = Rswift.StringResource(key: "bid-winner", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: nounders.eth
       static let noundersEth = Rswift.StringResource(key: "nounders.eth", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: 👋 sup! check out Noun %s
+      static let shareMessage = Rswift.StringResource(key: "share.message", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: %dh %dm %ds
       static func auctionUnsettledTimeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
@@ -10159,6 +7716,19 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
+      /// Value: Activity & bid history
+      static func auctionSettledGovernance(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "auction.settled.governance"
+        }
+
+        return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
+      }
+
       /// Value: Bid history
       static func auctionUnsettledGovernance(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
@@ -10170,19 +7740,6 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("auction.unsettled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
-
-      /// Value: Bid history & activity
-      static func auctionSettledGovernance(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.settled.governance"
-        }
-
-        return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
       /// Value: Born %s
@@ -10278,25 +7835,42 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("nounders.eth", tableName: "NounProfile", bundle: bundle, comment: "")
       }
 
+      /// Value: 👋 sup! check out Noun %s
+      static func shareMessage(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("share.message", tableName: "NounProfile", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
+          return "share.message"
+        }
+
+        let format = NSLocalizedString("share.message", tableName: "NounProfile", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
       fileprivate init() {}
     }
 
-    /// This `R.string.offchainNounActions` struct is generated, and contains static references to 6 localization keys.
+    /// This `R.string.offchainNounActions` struct is generated, and contains static references to 7 localization keys.
     struct offchainNounActions {
-      /// Value: Delete your noun
+      /// Value: Delete your Noun
       static let delete = Rswift.StringResource(key: "delete", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Edit your noun
+      /// Value: Edit your Noun
       static let edit = Rswift.StringResource(key: "edit", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: More Actions
       static let title = Rswift.StringResource(key: "title", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Play with you noun
+      /// Value: Play with you Noun
       static let play = Rswift.StringResource(key: "play", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Rename your noun
+      /// Value: Rename your Noun
       static let rename = Rswift.StringResource(key: "rename", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Use this dope new name
       static let useName = Rswift.StringResource(key: "use.name", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: 👋 sup! check out this fresh Noun
+      static let shareMessage = Rswift.StringResource(key: "share.message", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Delete your noun
+      /// Value: Delete your Noun
       static func delete(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
@@ -10309,7 +7883,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
       }
 
-      /// Value: Edit your noun
+      /// Value: Edit your Noun
       static func edit(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("edit", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
@@ -10335,7 +7909,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
       }
 
-      /// Value: Play with you noun
+      /// Value: Play with you Noun
       static func play(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
@@ -10348,7 +7922,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
       }
 
-      /// Value: Rename your noun
+      /// Value: Rename your Noun
       static func rename(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("rename", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
@@ -10374,34 +7948,32 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("use.name", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
       }
 
+      /// Value: 👋 sup! check out this fresh Noun
+      static func shareMessage(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("share.message", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
+          return "share.message"
+        }
+
+        return NSLocalizedString("share.message", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
+      }
+
       fileprivate init() {}
     }
 
-    /// This `R.string.onboarding` struct is generated, and contains static references to 4 localization keys.
+    /// This `R.string.onboarding` struct is generated, and contains static references to 3 localization keys.
     struct onboarding {
-      /// Value: Then give it something to say
-      static let play = Rswift.StringResource(key: "play", tableName: "Onboarding", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: There are many to explore
+      /// Value: There are many to explore...
       static let explore = Rswift.StringResource(key: "explore", tableName: "Onboarding", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: This is a noun
+      /// Value: This is a Noun.
       static let introduction = Rswift.StringResource(key: "introduction", tableName: "Onboarding", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: You can create your very own
+      /// Value: You can create your own!
       static let create = Rswift.StringResource(key: "create", tableName: "Onboarding", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Then give it something to say
-      static func play(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("play", tableName: "Onboarding", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Onboarding", preferredLanguages: preferredLanguages) else {
-          return "play"
-        }
-
-        return NSLocalizedString("play", tableName: "Onboarding", bundle: bundle, comment: "")
-      }
-
-      /// Value: There are many to explore
+      /// Value: There are many to explore...
       static func explore(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("explore", tableName: "Onboarding", bundle: hostingBundle, comment: "")
@@ -10414,7 +7986,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("explore", tableName: "Onboarding", bundle: bundle, comment: "")
       }
 
-      /// Value: This is a noun
+      /// Value: This is a Noun.
       static func introduction(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("introduction", tableName: "Onboarding", bundle: hostingBundle, comment: "")
@@ -10427,7 +7999,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("introduction", tableName: "Onboarding", bundle: bundle, comment: "")
       }
 
-      /// Value: You can create your very own
+      /// Value: You can create your own!
       static func create(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("create", tableName: "Onboarding", bundle: hostingBundle, comment: "")
@@ -10445,28 +8017,28 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.playExperience` struct is generated, and contains static references to 10 localization keys.
     struct playExperience {
-      /// Value: Create a noun
+      /// Value: Create a Noun
       static let createNoun = Rswift.StringResource(key: "create.noun", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Get going
       static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Give your noun something to say!
+      /// Value: Give your Noun something to say!
       static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: New
       static let createNounAction = Rswift.StringResource(key: "create-noun.action", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Pick a noun, yo
+      /// Value: Pick a Noun, yo
       static let chooseNoun = Rswift.StringResource(key: "choose.noun", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Play
       static let title = Rswift.StringResource(key: "title", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Swipe to pick a noun
+      /// Value: Swipe to pick a Noun
       static let chooseCoachmark = Rswift.StringResource(key: "choose.coachmark", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Yo, you don't have any nouns. Create one and give it something to say!
+      /// Value: Yo, you don't have any Nouns. Create one and give it something to say!
       static let createNounSpeechBubble = Rswift.StringResource(key: "create.noun.speech.bubble", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: You need a noun!
+      /// Value: You need a Noun!
       static let noNouns = Rswift.StringResource(key: "no.nouns", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: sup home slice
       static let speechBubble = Rswift.StringResource(key: "speech.bubble", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Create a noun
+      /// Value: Create a Noun
       static func createNoun(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("create.noun", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
@@ -10492,7 +8064,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("proceed.title", tableName: "PlayExperience", bundle: bundle, comment: "")
       }
 
-      /// Value: Give your noun something to say!
+      /// Value: Give your Noun something to say!
       static func subheadline(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("subheadline", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
@@ -10518,7 +8090,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("create-noun.action", tableName: "PlayExperience", bundle: bundle, comment: "")
       }
 
-      /// Value: Pick a noun, yo
+      /// Value: Pick a Noun, yo
       static func chooseNoun(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("choose.noun", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
@@ -10544,7 +8116,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "PlayExperience", bundle: bundle, comment: "")
       }
 
-      /// Value: Swipe to pick a noun
+      /// Value: Swipe to pick a Noun
       static func chooseCoachmark(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("choose.coachmark", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
@@ -10557,7 +8129,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("choose.coachmark", tableName: "PlayExperience", bundle: bundle, comment: "")
       }
 
-      /// Value: Yo, you don't have any nouns. Create one and give it something to say!
+      /// Value: Yo, you don't have any Nouns. Create one and give it something to say!
       static func createNounSpeechBubble(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("create.noun.speech.bubble", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
@@ -10570,7 +8142,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("create.noun.speech.bubble", tableName: "PlayExperience", bundle: bundle, comment: "")
       }
 
-      /// Value: You need a noun!
+      /// Value: You need a Noun!
       static func noNouns(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("no.nouns", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
@@ -10601,27 +8173,14 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.proposal` struct is generated, and contains static references to 4 localization keys.
     struct proposal {
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
-      static let message = Rswift.StringResource(key: "message", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Proposal %s
       static let identifier = Rswift.StringResource(key: "identifier", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Proposals
       static let title = Rswift.StringResource(key: "title", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Proposals are used to make changes to the DAO or request use of treasury funds. Here are the latest proposals submitted to the Nouns DAO and their status.
+      static let message = Rswift.StringResource(key: "message", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: See all proposals
       static let seeAll = Rswift.StringResource(key: "see.all", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "Proposal", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "Proposal", bundle: bundle, comment: "")
-      }
 
       /// Value: Proposal %s
       static func identifier(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
@@ -10651,6 +8210,19 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "Proposal", bundle: bundle, comment: "")
       }
 
+      /// Value: Proposals are used to make changes to the DAO or request use of treasury funds. Here are the latest proposals submitted to the Nouns DAO and their status.
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "Proposal", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "Proposal", bundle: bundle, comment: "")
+      }
+
       /// Value: See all proposals
       static func seeAll(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
@@ -10667,13 +8239,124 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
+    /// This `R.string.settingsNotificationPermission` struct is generated, and contains static references to 7 localization keys.
+    struct settingsNotificationPermission {
+      /// Value: Go to iOS Settings
+      static let enableNotificationAction = Rswift.StringResource(key: "enable-notification.action", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Here’s how:
+      static let instructionTitle = Rswift.StringResource(key: "instruction.title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Push Notifications
+      static let title = Rswift.StringResource(key: "title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Tap “Notifications”
+      static let instructionStep1 = Rswift.StringResource(key: "instruction.step.1", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: To get notifications about Nouns, you’ll need to turn them on in your iOS settings.
+      static let motivationContent = Rswift.StringResource(key: "motivation.content", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Turn on notifications?
+      static let motivationTitle = Rswift.StringResource(key: "motivation.title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Turn “Allow Notifications” on
+      static let instructionStep2 = Rswift.StringResource(key: "instruction.step.2", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Go to iOS Settings
+      static func enableNotificationAction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("enable-notification.action", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "enable-notification.action"
+        }
+
+        return NSLocalizedString("enable-notification.action", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Here’s how:
+      static func instructionTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("instruction.title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "instruction.title"
+        }
+
+        return NSLocalizedString("instruction.title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Push Notifications
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Tap “Notifications”
+      static func instructionStep1(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("instruction.step.1", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "instruction.step.1"
+        }
+
+        return NSLocalizedString("instruction.step.1", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: To get notifications about Nouns, you’ll need to turn them on in your iOS settings.
+      static func motivationContent(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("motivation.content", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "motivation.content"
+        }
+
+        return NSLocalizedString("motivation.content", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Turn on notifications?
+      static func motivationTitle(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("motivation.title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "motivation.title"
+        }
+
+        return NSLocalizedString("motivation.title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      /// Value: Turn “Allow Notifications” on
+      static func instructionStep2(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("instruction.step.2", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
+          return "instruction.step.2"
+        }
+
+        return NSLocalizedString("instruction.step.2", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
     /// This `R.string.settings` struct is generated, and contains static references to 9 localization keys.
     struct settings {
       /// Value: App Icon
       static let appIconTitle = Rswift.StringResource(key: "app.icon.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Default
-      static let appIconDefault = Rswift.StringResource(key: "app.icon.default", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
+      /// Value: App Intro
+      static let appIntroTitle = Rswift.StringResource(key: "app.intro.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
       static let notificationNote = Rswift.StringResource(key: "notification.note", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: New Noun
       static let newNounNotificationTitle = Rswift.StringResource(key: "new-noun.notification.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -10701,20 +8384,20 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("app.icon.title", tableName: "Settings", bundle: bundle, comment: "")
       }
 
-      /// Value: Default
-      static func appIconDefault(preferredLanguages: [String]? = nil) -> String {
+      /// Value: App Intro
+      static func appIntroTitle(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("app.icon.default", tableName: "Settings", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "app.icon.default"
+          return "app.intro.title"
         }
 
-        return NSLocalizedString("app.icon.default", tableName: "Settings", bundle: bundle, comment: "")
+        return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: bundle, comment: "")
       }
 
-      /// Value: Every day a new noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
+      /// Value: Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
       static func notificationNote(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("notification.note", tableName: "Settings", bundle: hostingBundle, comment: "")
@@ -10808,7 +8491,7 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.shared` struct is generated, and contains static references to 14 localization keys.
+    /// This `R.string.shared` struct is generated, and contains static references to 18 localization keys.
     struct shared {
       /// Value: Accessory
       static let accessory = Rswift.StringResource(key: "accessory", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -10818,12 +8501,16 @@ struct R: Rswift.Validatable {
       static let body = Rswift.StringResource(key: "body", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Done
       static let done = Rswift.StringResource(key: "done", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Get Started
+      static let getStarted = Rswift.StringResource(key: "get.started", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Glasses
       static let glasses = Rswift.StringResource(key: "glasses", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Head
       static let head = Rswift.StringResource(key: "head", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Learn more
       static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Live Auction
+      static let liveAuction = Rswift.StringResource(key: "live.auction", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: N/A
       static let notApplicable = Rswift.StringResource(key: "not.applicable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Remix
@@ -10838,6 +8525,10 @@ struct R: Rswift.Validatable {
       static let untitled = Rswift.StringResource(key: "untitled", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: https://nouns.wtf
       static let nounsWebsite = Rswift.StringResource(key: "nouns.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://nouns.wtf/noun/%@
+      static let nounsProfileWebsite = Rswift.StringResource(key: "nouns.profile.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://nouns.wtf/vote
+      static let nounsProposalsWebsite = Rswift.StringResource(key: "nouns.proposals.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Accessory
       static func accessory(preferredLanguages: [String]? = nil) -> String {
@@ -10891,6 +8582,19 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("done", tableName: "Shared", bundle: bundle, comment: "")
       }
 
+      /// Value: Get Started
+      static func getStarted(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("get.started", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "get.started"
+        }
+
+        return NSLocalizedString("get.started", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
       /// Value: Glasses
       static func glasses(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
@@ -10928,6 +8632,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("learn.more", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: Live Auction
+      static func liveAuction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("live.auction", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "live.auction"
+        }
+
+        return NSLocalizedString("live.auction", tableName: "Shared", bundle: bundle, comment: "")
       }
 
       /// Value: N/A
@@ -11021,6 +8738,34 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("nouns.website", tableName: "Shared", bundle: bundle, comment: "")
       }
 
+      /// Value: https://nouns.wtf/noun/%@
+      static func nounsProfileWebsite(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("nouns.profile.website", tableName: "Shared", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "nouns.profile.website"
+        }
+
+        let format = NSLocalizedString("nouns.profile.website", tableName: "Shared", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      /// Value: https://nouns.wtf/vote
+      static func nounsProposalsWebsite(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("nouns.proposals.website", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "nouns.proposals.website"
+        }
+
+        return NSLocalizedString("nouns.proposals.website", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
       fileprivate init() {}
     }
 
@@ -11032,9 +8777,9 @@ struct R: Rswift.Validatable {
       static let discourseTitle = Rswift.StringResource(key: "discourse.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Etherscan
       static let etherscanTitle = Rswift.StringResource(key: "etherscan.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Follow the links below to get involved with the Nouns community or to take a look at on-chain data.
       static let message = Rswift.StringResource(key: "message", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Spaces
+      /// Value: Get involved
       static let title = Rswift.StringResource(key: "title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Twitter
       static let twitterTitle = Rswift.StringResource(key: "twitter.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -11086,7 +8831,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("etherscan.title", tableName: "Spaces", bundle: bundle, comment: "")
       }
 
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities
+      /// Value: Follow the links below to get involved with the Nouns community or to take a look at on-chain data.
       static func message(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("message", tableName: "Spaces", bundle: hostingBundle, comment: "")
@@ -11099,7 +8844,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("message", tableName: "Spaces", bundle: bundle, comment: "")
       }
 
-      /// Value: Spaces
+      /// Value: Get involved
       static func title(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("title", tableName: "Spaces", bundle: hostingBundle, comment: "")
@@ -11180,12 +8925,95 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
+    /// This `R.string.team` struct is generated, and contains static references to 5 localization keys.
+    struct team {
+      /// Value: Go to nounsapp.wtf
+      static let websiteLink = Rswift.StringResource(key: "website.link", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Made with 🖤
+      static let title = Rswift.StringResource(key: "title", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: The Nouns app was created by a crew of frens from Nouns Collective.
+      static let message = Rswift.StringResource(key: "message", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://nounsapp.wtf
+      static let websiteUrl = Rswift.StringResource(key: "website.url", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://twitter.com/%@
+      static let twitterProfileUrl = Rswift.StringResource(key: "twitter.profile.url", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Go to nounsapp.wtf
+      static func websiteLink(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("website.link", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "website.link"
+        }
+
+        return NSLocalizedString("website.link", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: Made with 🖤
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: The Nouns app was created by a crew of frens from Nouns Collective.
+      static func message(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("message", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "message"
+        }
+
+        return NSLocalizedString("message", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: https://nounsapp.wtf
+      static func websiteUrl(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("website.url", tableName: "Team", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "website.url"
+        }
+
+        return NSLocalizedString("website.url", tableName: "Team", bundle: bundle, comment: "")
+      }
+
+      /// Value: https://twitter.com/%@
+      static func twitterProfileUrl(_ value1: String, preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          let format = NSLocalizedString("twitter.profile.url", tableName: "Team", bundle: hostingBundle, comment: "")
+          return String(format: format, locale: applicationLocale, value1)
+        }
+
+        guard let (locale, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
+          return "twitter.profile.url"
+        }
+
+        let format = NSLocalizedString("twitter.profile.url", tableName: "Team", bundle: bundle, comment: "")
+        return String(format: format, locale: locale, value1)
+      }
+
+      fileprivate init() {}
+    }
+
     fileprivate init() {}
   }
 
   fileprivate struct intern: Rswift.Validatable {
     fileprivate static func validate() throws {
-      // There are no resources to validate
+      try _R.validate()
     }
 
     fileprivate init() {}
@@ -11196,6 +9024,42 @@ struct R: Rswift.Validatable {
   fileprivate init() {}
 }
 
-struct _R {
+struct _R: Rswift.Validatable {
+  static func validate() throws {
+    #if os(iOS) || os(tvOS)
+    try storyboard.validate()
+    #endif
+  }
+
+  #if os(iOS) || os(tvOS)
+  struct storyboard: Rswift.Validatable {
+    static func validate() throws {
+      #if os(iOS) || os(tvOS)
+      try launchScreen.validate()
+      #endif
+    }
+
+    #if os(iOS) || os(tvOS)
+    struct launchScreen: Rswift.StoryboardResourceWithInitialControllerType, Rswift.Validatable {
+      typealias InitialController = UIKit.UIViewController
+
+      let bundle = R.hostingBundle
+      let name = "LaunchScreen"
+
+      static func validate() throws {
+        if UIKit.UIImage(named: "red_glasses", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'red_glasses' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
+        if #available(iOS 11.0, tvOS 11.0, *) {
+          if UIKit.UIColor(named: "launch.screen.background", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Color named 'launch.screen.background' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
+        }
+      }
+
+      fileprivate init() {}
+    }
+    #endif
+
+    fileprivate init() {}
+  }
+  #endif
+
   fileprivate init() {}
 }

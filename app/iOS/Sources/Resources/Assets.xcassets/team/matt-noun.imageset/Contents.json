@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "anti-ducky.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

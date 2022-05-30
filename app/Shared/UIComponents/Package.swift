@@ -11,11 +11,13 @@ let package = Package(
             name: "UIComponents",
             targets: ["UIComponents"]),
     ],
-    dependencies: [ ],
+    dependencies: [
+      .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.2")
+    ],
     targets: [
         .target(
             name: "UIComponents",
-            dependencies: [],
+            dependencies: ["Introspect"],
             path: "Sources",
             resources: [.process("Resources/Fonts")]
         ),

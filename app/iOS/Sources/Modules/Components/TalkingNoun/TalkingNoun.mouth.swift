@@ -23,7 +23,7 @@ extension TalkingNoun {
       guard let mouthAssets = Self.nounComposer.heads[seed.head].textures["mouth"] else {
         fatalError("Couldn't load mouth textures.")
       }
-
+      
       mouthTextures = Self.loadTextures(atlases: mouthAssets)
       
       super.init(texture: mouthTextures.first,

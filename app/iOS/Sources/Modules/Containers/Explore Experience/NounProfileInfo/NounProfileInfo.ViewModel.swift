@@ -7,34 +7,22 @@
 
 import Foundation
 import Services
-import UIKit
 
 extension NounProfileInfo {
   
-  class ViewModel: ObservableObject {
+  final class ViewModel: ObservableObject {
     @Published private(set) var title: String
     @Published private(set) var nounTraits: Seed
     @Published private(set) var isAuctionSettled: Bool
     @Published private(set) var nounProfileURL: URL?
-    @Published public var shouldShowNounCreator: Bool = false
+    @Published var shouldShowNounCreator: Bool = false
     
     /// Indicate whether the auction time is over.
-    @Published private(set) var isWinnerAnounced = false
+    @Published private(set) var isWinnerAnnounced = false
     
     /// A boolean to indicate whether the notification permission
     /// dialog is presented only on `notDetermined` state.
-    @Published private(set) var isNotificationPermissionDialogPresented = false
-    
-    /// A boolean to indicate whether the user chose the option to enable the notification or dismiss it.
-    @Published var isNotificationPermissionEnabled = false {
-      didSet {
-        if isNotificationPermissionEnabled {
-          setUpMessaging()
-        }
-        // Dismisses the dialog currently presented.
-        isNotificationPermissionDialogPresented = false
-      }
-    }
+    @Published var isNotificationPermissionDialogPresented = false
     
     let auction: Auction
     
@@ -46,9 +34,9 @@ extension NounProfileInfo {
       
       title = R.string.explore.noun(auction.noun.id)
       isAuctionSettled = auction.settled
-      isWinnerAnounced = auction.hasEnded
+      isWinnerAnnounced = auction.hasEnded
       nounTraits = auction.noun.seed
-      nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
+      nounProfileURL = URL(string: R.string.shared.nounsProfileWebsite(auction.noun.id))
       
       Task {
         guard await messaging.authorizationStatus == .notDetermined else {
@@ -64,22 +52,15 @@ extension NounProfileInfo {
         }
       }
     }
-    
-    func setUpMessaging() {
-      let messaging = AppCore.shared.messaging
-      let settingsStore = AppCore.shared.settingsStore
-      // Subscribe to topics on APNs registration.
-      messaging.onRegistrationCompletion = {
-        settingsStore.syncMessagingTopicsSubscription()
-      }
-      
-      Task {
-        // Requests APNs authorization.
-        _ = try await messaging.requestAuthorization(
-          UIApplication.shared,
-          authorizationOptions: [.alert, .badge, .sound]
-        )
-      }
+
+    func onAppear() {
+      let screen = isAuctionSettled ? AnalyticsEvent.Screen.settledNounProfile
+                                    : AnalyticsEvent.Screen.auctionNounProfile
+      AppCore.shared.analytics.logScreenView(withScreen: screen)
+
+      let parameters: [String: Any] = ["noun_id": auction.noun.id, "is_auction_noun": !isAuctionSettled]
+      AppCore.shared.analytics.logEvent(withEvent: AnalyticsEvent.Event.viewNounProfile,
+                                        parameters: parameters)
     }
   }
 }

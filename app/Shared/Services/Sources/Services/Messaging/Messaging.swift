@@ -35,7 +35,7 @@ public protocol Messaging: AnyObject {
   var authorizationStatus: MessagingAuthorizationStatus { get async }
   
   /// Asynchronously sets the event handler work item on received registration token.
-  var onRegistrationCompletion: (() async throws -> Void)? { get set }
+  var notificationStateDidChange: NotificationCenter.Notifications { get }
   
   /// Requests authorization to interact with the user when local and remote
   /// notifications are delivered to the user’s device.
@@ -53,13 +53,16 @@ public protocol Messaging: AnyObject {
   /// Asynchronously unsubscribe from the provided topic, retrying on failure.
   ///
   /// - Parameters:
-  ///   - topic: The topic name to subscribe to, for example, @"sports".
+  ///   - topic: The topic name to unsubscribe from, for example, @"sports".
   func unsubscribe(fromTopic topic: String) async throws
+
+  /// Notifies Analytics that a message was received
+  func appDidReceiveNotification(_ payload: [AnyHashable: Any])
+  
+  func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data)
 }
 
 public class FirebaseMessaging: NSObject {
-  
-  public var onRegistrationCompletion: (() async throws -> Void)?
   
   private let logger = Logger(
     subsystem: "wtf.nouns.ios.services",
@@ -73,13 +76,27 @@ public class FirebaseMessaging: NSObject {
       FirebaseApp.configure()
     }
     
-    // Use Firebase library to configure APIs
     Firebase.Messaging.messaging().delegate = self
+
+    // Receive APNs events via the Notification Center delegate
+    UNUserNotificationCenter.current().delegate = self
   }
   
 }
 
 extension FirebaseMessaging: Messaging {
+  
+  public func update(token: Data) {
+    Firebase.Messaging.messaging().apnsToken = token
+  }
+  
+  public func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {
+    Firebase.Messaging.messaging().apnsToken = deviceToken
+  }
+  
+  public var notificationStateDidChange: NotificationCenter.Notifications {
+    NotificationCenter.default.notifications(named: .MessagingRegistrationTokenRefreshed)
+  }
   
   public var authorizationStatus: MessagingAuthorizationStatus {
     get async {
@@ -105,36 +122,35 @@ extension FirebaseMessaging: Messaging {
             
           @unknown default:
             self?.logger.error("💥 🔊 unknown authorization status for remote notifications.")
-            break
           }
         }
       }
     }
   }
+
+  public func appDidReceiveNotification(_ payload: [AnyHashable: Any]) {
+    Firebase.Messaging.messaging().appDidReceiveMessage(payload)
+  }
   
   @MainActor
   public func requestAuthorization(_ application: UIApplication, authorizationOptions: UNAuthorizationOptions) async throws -> Bool {
+
     let center = UNUserNotificationCenter.current()
-    
-    // Display notification (sent via APNS)
-    center.delegate = self
-    
+
     let authOptions: UNAuthorizationOptions = authorizationOptions
     async let requestAuthorization = center.requestAuthorization(options: authOptions)
-    
-    // Register for remote notification at all time in case
-    // the user has authorized notification from the settings.
-    application.registerForRemoteNotifications()
-    
+
     return try await requestAuthorization
   }
   
   public func subscribe(toTopic topic: String) async throws {
     try await Firebase.Messaging.messaging().subscribe(toTopic: topic)
+    logger.debug("🏁 Subscribed to topic: \(topic)")
   }
   
   public func unsubscribe(fromTopic topic: String) async throws {
     try await Firebase.Messaging.messaging().unsubscribe(fromTopic: topic)
+    logger.debug("🏁 Unsubscribed from topic: \(topic)")
   }
 }
 
@@ -142,7 +158,9 @@ extension FirebaseMessaging: UNUserNotificationCenterDelegate {
   
   // Receive displayed notifications for iOS 10 devices.
   public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    
+
+    appDidReceiveNotification(notification.request.content.userInfo)
+
     // Change this to your preferred presentation option
     completionHandler([[.banner, .list, .sound]])
   }
@@ -153,13 +171,9 @@ extension FirebaseMessaging: UNUserNotificationCenterDelegate {
   }
 }
 
-// MARK: - Firebase.MessagingDelegate
-
 extension FirebaseMessaging: Firebase.MessagingDelegate {
   
   public func messaging(_ messaging: Firebase.Messaging, didReceiveRegistrationToken fcmToken: String?) {
     logger.debug("🏁 🆔 Firebase registration token: \(fcmToken ?? "⚠️ Unavailable")")
-    
-    Task { try await onRegistrationCompletion?() }
   }
 }

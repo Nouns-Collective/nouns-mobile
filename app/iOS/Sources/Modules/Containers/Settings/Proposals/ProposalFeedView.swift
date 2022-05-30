@@ -13,6 +13,7 @@ import Services
 struct ProposalFeedView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
   
   @StateObject var viewModel: ViewModel
   
@@ -21,7 +22,7 @@ struct ProposalFeedView: View {
   private let localize = R.string.proposal.self
   
   private let gridLayout = [
-    GridItem(.flexible(), spacing: 20),
+    GridItem(.flexible(), spacing: 10),
   ]
   
   var body: some View {
@@ -29,6 +30,7 @@ struct ProposalFeedView: View {
       VPageGrid(
         viewModel.proposals,
         columns: gridLayout,
+        spacing: 10,
         isLoading: viewModel.isLoading,
         loadMoreAction: {
           await viewModel.loadProposals()
@@ -42,7 +44,6 @@ struct ProposalFeedView: View {
       .padding(.bottom, tabBarHeight)
       // Extra padding between the bottom of the last noun card and the top of the tab view
       .padding(.bottom, 20)
-      .ignoresSafeArea()
       .softNavigationTitle(localize.title(), leftAccessory: {
         SoftButton(
           icon: { Image.back },
@@ -57,10 +58,22 @@ struct ProposalFeedView: View {
             }
           })
       })
+      .padding(.top, 50)
     }
     .background(Gradient.lemonDrop)
+    .overlay(.componentUnripeLemon, edge: .top)
+    .ignoresSafeArea(edges: .top)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
-      GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
+      GovernanceInfoCard(
+        isPresented: $isGovernanceInfoPresented,
+        nounId: nil,
+        owner: nil,
+        page: nil
+      )
+    }
+    .onAppear {
+      viewModel.onAppear()
+      outlineTabBarVisibility.hide()
     }
   }
 }

@@ -11,23 +11,25 @@ import UIComponents
 extension OnboardingView {
   
   struct Footer<Trailing: View>: View {
-    @ObservedObject var viewModel: OnboardingView.ViewModel
+    let page: Page
     let title: String
     let trailing: () -> Trailing
     
     var body: some View {
       VStack(alignment: .leading, spacing: 20) {
         Text(title)
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
           .foregroundColor(Color.componentNounsBlack)
           .multilineTextAlignment(.leading)
+          .minimumScaleFactor(0.5)
+          .frame(height: 90, alignment: .topLeading)
         
         Spacer()
         
         HStack(alignment: .bottom) {
           PageIndicator(
             pages: OnboardingView.Page.allCases,
-            selection: viewModel.selectedPage
+            selection: page
           )
           
           Spacer()

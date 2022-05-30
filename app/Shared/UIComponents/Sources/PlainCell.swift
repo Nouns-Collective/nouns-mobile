@@ -19,7 +19,7 @@ public struct PlainCell<Content: View>: View {
     let background: Color?
     
     /// The border color of the cell
-    let borderColor: Color?
+    let borderColor: Color
     
     /// The edges to apply padding to
     let edges: Edge.Set
@@ -55,7 +55,7 @@ public struct PlainCell<Content: View>: View {
         edges: Edge.Set = .all,
         length: CGFloat? = 0,
         background: Color? = Color.white,
-        borderColor: Color? = Color.black,
+        borderColor: Color = Color.black,
         @ViewBuilder content: () -> Content
     ) {
         self.content = content()
@@ -74,10 +74,8 @@ public struct PlainCell<Content: View>: View {
         .background(background ?? Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay {
-            if let borderColor = borderColor {
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(borderColor, lineWidth: 2.0)
-            }
+          RoundedRectangle(cornerRadius: 12)
+              .stroke(borderColor, lineWidth: 2.0)
         }
         .opacity(isLoading ? 0.05 : 1.0)
     }

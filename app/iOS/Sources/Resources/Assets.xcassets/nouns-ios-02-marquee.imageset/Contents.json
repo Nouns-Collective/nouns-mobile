@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "nouns-ios-02-marquee.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

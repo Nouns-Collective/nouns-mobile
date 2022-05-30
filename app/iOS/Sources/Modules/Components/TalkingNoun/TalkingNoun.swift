@@ -40,7 +40,7 @@ final class TalkingNoun: SKScene {
   init(seed: Seed) {
     self.seed = seed
     super.init(size: Self.traitSize)
-    scaleMode = .fill
+    scaleMode = .aspectFill
     view?.showsFPS = false
   }
   
@@ -50,8 +50,9 @@ final class TalkingNoun: SKScene {
   
   private lazy var head: Trait? = {
     let headAsset = nounComposer.heads[seed.head].assetImage
-    let traitAssetName = "heads-less-mouth/" + headAsset
-    let head = Trait(nounTraitName: traitAssetName)
+    // For the time being, we are not adding mouths on top of the head but instead just using the head itself as is
+    // The heads without mouths are only needed for the play experience or whenever we want to animate the mouth
+    let head = Trait(nounTraitName: headAsset)
     return head
   }()
   
@@ -66,9 +67,9 @@ final class TalkingNoun: SKScene {
     let accessory = Trait(nounTraitName: accessoryAsset)
     return accessory
   }()
+
+  private lazy var eyes = Eyes(seed: seed, frameSize: Self.traitSize)
   
-  private lazy var glasses = Trait(nounTraitName: "glasses-square-red")
-  private lazy var eyes = Eyes()
   private lazy var mouth = Mouth(seed: seed)
   
   override func didMove(to view: SKView) {
@@ -85,7 +86,7 @@ final class TalkingNoun: SKScene {
     // a `RecordingView` wrapper is created.
     guard mouth.parent == nil else { return }
     
-    [body, accessory, head, glasses, eyes, mouth].compactMap { trait in
+    [body, accessory, head, eyes].compactMap { trait in
       trait?.position = CGPoint(x: frame.midX, y: frame.midY)
       trait?.size = Self.traitSize
       return trait

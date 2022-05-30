@@ -6,12 +6,12 @@
   
 */
 
-"input.placeholder" = "Name your noun!";
+"input.placeholder" = "Name your Noun!";
 
 "noun.birthday.label" = "Born %s";
 
 "owner.label" = "Created by you";
 
-"action.share" = "Share your noun";
+"action.share" = "Share your Noun";
 
 "action.save" = "Save & finish";

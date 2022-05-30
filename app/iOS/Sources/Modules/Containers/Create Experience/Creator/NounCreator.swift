@@ -14,55 +14,65 @@ struct NounCreator: View {
   
   @Namespace private var nsTraitPicker
   @Environment(\.dismiss) private var dismiss
-  
-  /// Boolean value to determine if the trait picker grid is expanded
-  @State private var isExpanded: Bool = false
-  
+    
   var body: some View {
     ZStack {
+      BackgroundPicker(viewModel: viewModel)
+        .ignoresSafeArea(.all)
+        
       VStack(spacing: 0) {
         ConditionalSpacer(viewModel.mode == .creating)
         
-        SlotMachine(viewModel: .init(initialSeed: viewModel.initialSeed))
+        SlotMachine(
+          seed: $viewModel.seed,
+          shouldShowAllTraits: $viewModel.shouldShowAllTraits,
+          initialSeed: viewModel.initialSeed,
+          currentModifiableTraitType: $viewModel.currentModifiableTraitType
+        )
         
-        ConditionalSpacer(!isExpanded || viewModel.mode != .creating)
+        ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
+        
+        if !viewModel.isExpanded {
+          Group {
+            CreateCoachmarks(viewModel: viewModel)
+            ConditionalSpacer(!viewModel.isExpanded || viewModel.mode != .creating)
+          }
+        }
         
         if viewModel.mode != .done {
           TraitTypePicker(
             viewModel: viewModel,
-            animation: nsTraitPicker,
-            isExpanded: $isExpanded
+            animation: nsTraitPicker
           )
         }
       }
+      .modifier(AccessoryItems(viewModel: viewModel, done: {
+        withAnimation {
+          viewModel.didFinish()
+          
+          // Dismiss the view automatically when finished editing
+          if viewModel.isEditing {
+            dismiss()
+          }
+        }
+      }, cancel: {
+        withAnimation {
+          if viewModel.mode == .done {
+            viewModel.setMode(to: .creating)
+          } else {
+            viewModel.setMode(to: .cancel)
+          }
+        }
+      }))
     }
-    .modifier(AccessoryItems(viewModel: viewModel, done: {
-      withAnimation {
-        viewModel.didFinish()
-        
-        // Dismiss the view automatically when finished editing
-        if viewModel.isEditing {
-          dismiss()
-        }
-      }
-    }, cancel: {
-      withAnimation {
-        if viewModel.mode == .done {
-          viewModel.setMode(to: .creating)
-        } else {
-          viewModel.setMode(to: .cancel)
-        }
-      }
-    }))
     .addBottomSheet()
-    .background(Gradient(.allCases[viewModel.seed.background]))
     .overlay {
-      EmitterView()
-        .zIndex(100)
-        .scaleEffect(viewModel.showConfetti ? 1 : 0, anchor: .top)
-        .opacity(viewModel.showConfetti && !viewModel.finishedConfetti ? 1 : 0)
-        .ignoresSafeArea()
-        .allowsHitTesting(false)
+      if viewModel.showConfetti && !viewModel.finishedConfetti {
+        NounfettiView()
+          .zIndex(100)
+          .ignoresSafeArea()
+          .allowsHitTesting(false)
+      }
     }
     .onChange(of: viewModel.mode) { mode in
       switch mode {
@@ -87,6 +97,23 @@ struct NounCreator: View {
       case .creating:
         bottomSheetManager.closeBottomSheet()
       }
+    }
+    .onShake {
+      viewModel.onShake()
+
+      viewModel.showAllTraits()
+
+      withAnimation(.spring(response: 2.0, dampingFraction: 1.0, blendDuration: 1.0)) {
+        viewModel.randomizeNoun()
+      }
+      
+      withAnimation(.spring().delay(3.0)) {
+        viewModel.hideAllTraits()
+      }
+    }
+    .onAppear {
+      viewModel.onAppear()
+      viewModel.showCoachmarkGuide()
     }
   }
 }

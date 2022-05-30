@@ -21,6 +21,7 @@ extension ExploreExperience {
     // MARK: - Live Auction
     @Published var liveAuction: Auction?
     @Published var failedToLoadLiveAuction: Bool = false
+    private var isStreamingLiveAuction: Bool = false
     
     /// Boolean value to determine if both live auction and settled auctions are failing to load
     var failedToLoadExplore: Bool {
@@ -30,14 +31,25 @@ extension ExploreExperience {
     /// Listens to changes for the live auction's bid information and completion status
     @MainActor
     func listenLiveAuctionChanges() async {
+      guard isStreamingLiveAuction == false else {
+        return
+      }
       failedToLoadLiveAuction = false
+      isStreamingLiveAuction = true
       
       do {
         for try await auction in service.liveAuctionStateDidChange() {
-          self.liveAuction = auction
+          liveAuction = auction
         }
       } catch {
         failedToLoadLiveAuction = true
+        isStreamingLiveAuction = false
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+          Task {
+            await self.listenLiveAuctionChanges()
+          }
+        })
       }
     }
     
@@ -46,6 +58,7 @@ extension ExploreExperience {
     @Published var failedToLoadSettledAuctions: Bool = false
     @Published var shouldLoadMore: Bool = false
     @Published var isLoadingSettledAuctions: Bool = false
+    private var isStreamingSettledAuctions: Bool = false
     
     private let pageLimit = 20
     
@@ -60,42 +73,79 @@ extension ExploreExperience {
       auctions.filter { $0.noun.isNounderOwned == false }.count
     }
     
-    /// Watches for newly added settled auctions (whenever a live auction ends) and adds it to the feed
+    /// Listens for recently-settled auctions and adds them to the feed
     @MainActor
-    func watchNewlyAuctions() async {
-      for await auction in service.settledAuctionsDidChange() {
-        if !auctions.isEmpty && auctions.first?.id != auction.id {
-          auctions.insert(auction, at: 0)
+    func listenSettledAuctionsChanges() async {
+      guard isStreamingSettledAuctions == false else {
+        return
+      }
+      isStreamingSettledAuctions = true
+
+      do {
+        for try await settledAuctions in service.settledAuctionsDidChange() {
+          settledAuctions.forEach { settledAuction in
+            if !auctions.contains(where: { auction in
+              auction.id == settledAuction.id
+            }) {
+              auctions.insert(settledAuction, at: 0)
+            }
+          }
         }
+      } catch {
+        isStreamingSettledAuctions = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+          Task {
+            await self.listenSettledAuctionsChanges()
+          }
+        })
       }
     }
     
     /// Loads settled auctions
     @MainActor
-    func loadAuctions() async {
-      failedToLoadSettledAuctions = false
-      
-      do {
-        isLoadingSettledAuctions = true
-        // Load next batch of the settled auctions from the network.
-        // The cursor should be set to the amount of non-nounder owned
-        // nouns in the view model as nounder owned nouns are not considered "auctions"
-        let auctions = try await service.fetchAuctions(
-          settled: true,
-          includeNounderOwned: true,
-          limit: pageLimit,
-          cursor: notNounderOwnedCount
-        )
+    func loadAuctions() {
+      Task {
+        failedToLoadSettledAuctions = false
         
-        shouldLoadMore = auctions.hasNext
-                        
-        self.auctions += auctions.data
+        do {
+          isLoadingSettledAuctions = true
+          // Load next batch of the settled auctions from the network.
+          // The cursor should be set to the amount of non-nounder owned
+          // nouns in the view model as nounder owned nouns are not considered "auctions"
+          let auctions = try await service.fetchAuctions(
+            settled: true,
+            includeNounderOwned: true,
+            limit: pageLimit,
+            cursor: notNounderOwnedCount,
+            sortDescending: true
+          )
+          
+          shouldLoadMore = auctions.hasNext
+                          
+          self.auctions += uniqueAuctions(auctions.data)
+          
+        } catch {
+          failedToLoadSettledAuctions = true
+        }
         
-      } catch {
-        failedToLoadSettledAuctions = true
+        isLoadingSettledAuctions = false
       }
+    }
+    
+    /// Helper function to prevent duplicate auctions from being shown in the feed
+    ///
+    /// This can be caused randomly be race conditions, espeically on initial launch of the app
+    /// where `onAppear` can be called more than once invoking the `loadAuctions` method twice.
+    private func uniqueAuctions(_ fetchedAuctions: [Auction]) -> [Auction] {
+      let keys = self.auctions.map { $0.id }
       
-      isLoadingSettledAuctions = false
+      return fetchedAuctions.filter { auction in
+        return !keys.contains(auction.id)
+      }
+    }
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.explore)
     }
   }
 }

@@ -2,80 +2,25 @@
 //  OnboardingView.ViewModel.swift
 //  Nouns
 //
-//  Created by Ziad Tamim on 16.12.21.
+//  Created by Krishna Satyanarayana on 2022-04-21.
 //
 
 import Foundation
 import Services
-import SwiftUI
+import UIKit
 
 extension OnboardingView {
   
-  /// Lists all Onboarding pages.
-  enum Page: Hashable, CaseIterable {
-    case intro
-    case explore
-    case create
-    case play
+  final class ViewModel: ObservableObject {
     
-    fileprivate var assetFolder: String {
-      switch self {
-      case .intro:
-        return "nouns-onboarding-1"
-      case .explore:
-        return "nouns-onboarding-2"
-      case .create:
-        return "nouns-onboarding-3"
-      case .play:
-        return "nouns-onboarding-4"
-      }
-    }
-    
-    fileprivate var numberOfAssets: Int {
-      switch self {
-      case .intro, .explore, .create, .play:
-        return 120
-      }
-    }
-  }
-  
-  class ViewModel: ObservableObject {
-    
-    /// Verify whether to show the Onboarding flow.
-    @Published var showOnboarding: Bool
-    
-    /// The currently presented onboarding screen
     @Published var selectedPage: Page = .intro
     
-    /// A namespace to define the animation between shared elements in the onboarding views
-    @Namespace var onboardingAnimation
-    
-    /// Store where app configuration is persisted.
-    private var settingsStore: SettingsStore
-    
-    init(settingsStore: SettingsStore = AppCore.shared.settingsStore) {
-      self.settingsStore = settingsStore
-      showOnboarding = !settingsStore.hasCompletedOnboarding
-    }
-    
-    func toggleCompletionState() {
-      settingsStore.hasCompletedOnboarding = true
-      
-      showOnboarding.toggle()
-    }
-    
-    func onboardingImages() -> [UIImage] {
-      let folder = selectedPage.assetFolder
-      var images = [UIImage]()
-      
-      for asset in 0..<selectedPage.numberOfAssets {
-        let index = String(format: "%03d", asset)
-        let imagePath = "\(folder)/\(folder)_\(index)"
-        guard let image = UIImage(named: imagePath) else { continue }
-        images.append(image)
-      }
-      
-      return images
+    @Published var seed: Seed = .default
+            
+    var onCompletion: () -> Void = {}
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.onboarding)
     }
   }
 }

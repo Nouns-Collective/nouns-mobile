@@ -18,15 +18,6 @@ extension OffChainNounProfile {
     var body: some View {
       VStack(alignment: .leading, spacing: 10) {
         
-        // Switches to the play experience using the built Noun.
-        SoftButton(
-          text: R.string.offchainNounActions.play(),
-          largeAccessory: { Image.playOutline },
-          action: {
-            viewModel.isPlayPresented.toggle()
-          })
-          .controlSize(.large)
-        
         // Edit the noun.
         SoftButton(
           text: R.string.offchainNounActions.edit(),
@@ -41,9 +32,7 @@ extension OffChainNounProfile {
           text: R.string.offchainNounActions.rename(),
           largeAccessory: { Image.rename },
           action: {
-            withAnimation {
-              viewModel.isRenamePresented.toggle()
-            }
+            viewModel.isRenamePresented.toggle()
           })
           .controlSize(.large)
         
@@ -53,9 +42,7 @@ extension OffChainNounProfile {
           largeAccessory: { Image.trash },
           color: Color.componentNounRaspberry,
           action: {
-            withAnimation {
-              viewModel.isDeletePresented.toggle()
-            }
+            viewModel.isDeletePresented.toggle()
           })
           .controlSize(.large)
       }

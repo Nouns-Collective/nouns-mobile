@@ -108,6 +108,7 @@ public struct Seed: Equatable, Hashable {
 
 public extension Seed {
   static let `default` = Seed(background: 0, glasses: 0, head: 0, body: 0, accessory: 0)
+  static let pizza = Seed(background: 0, glasses: 11, head: 160, body: 13, accessory: 4)
 }
 
 /// The owner of the Noun
@@ -291,15 +292,6 @@ public struct Auction: Equatable, Decodable, Identifiable {
   /// Whether the auction is over and bidding is stopped.
   public var hasEnded: Bool {
     Date().timeIntervalSince1970 > endTime
-  }
-  
-  /// Calculate the time left for the auction to end.
-  public var timeLeft: DateComponents {
-    Calendar.current.dateComponents(
-      [.hour, .minute, .second],
-      from: .now,
-      to: Date(timeIntervalSince1970: endTime)
-    )
   }
 }
 

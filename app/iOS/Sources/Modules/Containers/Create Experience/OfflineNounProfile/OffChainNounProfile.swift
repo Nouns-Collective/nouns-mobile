@@ -29,6 +29,7 @@ struct OffChainNounProfile: View {
     VStack(spacing: 0) {
       // Build & Display the Noun.
       NounPuzzle(seed: viewModel.noun.seed)
+        .fixedSize(horizontal: false, vertical: !viewModel.isRenamePresented)
       
       ActionSheetStack(selection: $sheetState) {
         
@@ -55,7 +56,7 @@ struct OffChainNounProfile: View {
       .padding(.bottom, 40)
       .padding(.horizontal, 20)
     }
-    .background(Gradient(.allCases[viewModel.noun.seed.background]))
+    .background(Gradient(NounCreator.backgroundColors[viewModel.noun.seed.background]))
     .ignoresSafeArea(.keyboard, edges: .bottom)
     .addBottomSheet()
     // Option to delete the current build progress.
@@ -71,9 +72,15 @@ struct OffChainNounProfile: View {
       
       if let imageData = viewModel.exportImageData,
          let image = UIImage(data: imageData) {
-        ShareSheet(activityItems: [image], imageMetadata: image,
-                   titleMetadata: viewModel.noun.name)
+        ShareSheet(activityItems: [],
+                   imageMetadata: image,
+                   titleMetadata: R.string.offchainNounActions.shareMessage()
+        )
+        .onAppear(perform: viewModel.onShare)
       }
+    }
+    .onAppear {
+      viewModel.onAppear()
     }
   }
 }

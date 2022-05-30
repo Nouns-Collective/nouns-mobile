@@ -16,37 +16,47 @@ extension CreateExperience {
     
     @Environment(\.outlineTabViewHeight) private var tabBarHeight
     
-    private let action: () -> Void
+    @State private var seed: Seed = .default
     
+    @State private var shouldShowAllTraits: Bool = false
+
     private let initialSeed: Seed
+    
+    private let action: () -> Void
     
     @Binding var isCreatorPresented: Bool
         
     init(
-      initialSeed: Seed,
+      initialSeed: Seed = Seed.default,
       isCreatorPresented: Binding<Bool>,
       action: @escaping () -> Void
     ) {
       self.initialSeed = initialSeed
-      self.action = action
       self._isCreatorPresented = isCreatorPresented
+      self.action = action
     }
 
     var body: some View {
       VStack(alignment: .leading, spacing: 0) {
-        Text(R.string.create.subhealine())
-          .font(.custom(.regular, size: 17))
+        Text(R.string.create.subheadline())
+          .font(.custom(.regular, relativeTo: .subheadline))
           .padding(.horizontal, 20)
         
         Spacer()
                   
-        SlotMachine(viewModel: .init(initialSeed: initialSeed, showShadow: false, animateEntrance: true))
+        SlotMachine(
+          seed: $seed,
+          shouldShowAllTraits: $shouldShowAllTraits,
+          initialSeed: initialSeed,
+          showShadow: false,
+          animateEntrance: true
+        )
           .disabled(true)
           .drawingGroup()
 
         OutlineButton(
           text: R.string.create.proceedTitle(),
-          largeAccessory: { Image.fingergunsRight },
+          largeAccessory: { Image.fingergunsRight.shakeRepeatedly() },
           action: action)
           .controlSize(.large)
           .padding(.horizontal, 40)

@@ -24,18 +24,20 @@ struct SettledAuctionCard: View {
       },
       content: {
         // Displays the domain if it is a nounder noun.
-        if viewModel.showENS {
+        if viewModel.isNounderOwned {
+          ENSText(token: "nounders.eth")
+            .font(.custom(.bold, relativeTo: .caption))
+            .padding(.top, 4)
+        } else if viewModel.showENS {
           ENSText(token: viewModel.nounderToken)
-            .padding(.top, 8)
-            .hidden(!viewModel.showENS)
-          
+            .font(.custom(.bold, relativeTo: .caption))
+            .padding(.top, 4)
         } else {
           // Displays the winning bid on auction.
           SafeLabel(
             viewModel.winnerBid,
             icon: Image.eth)
-            .padding(.top, 8)
-            .hidden(viewModel.showENS)
+            .padding(.top, 4)
         }
       })
       .headerStyle(.small)

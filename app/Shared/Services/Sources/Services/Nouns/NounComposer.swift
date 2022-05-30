@@ -47,16 +47,10 @@ public protocol NounComposer {
   
   /// Generates a random seed, given the number of each trait type
   func randomSeed() -> Seed
-  
-}
 
-extension NounComposer {
+  /// Generates a new random seed, with no trait values in common with the `previous` seed
+  func newRandomSeed(previous seed: Seed) -> Seed
   
-  func randomSeed() -> Seed {
-    
-    // Default implementation
-    return Seed(background: 0, glasses: 0, head: 0, body: 0, accessory: 0)
-  }
 }
 
 /// A Flavour of the NounComposer to load local Nouns' trait.
@@ -123,6 +117,19 @@ public class OfflineNounComposer: NounComposer {
           }
     
     return Seed(background: background, glasses: glasses, head: head, body: body, accessory: accessory)
+  }
+
+  public func newRandomSeed(previous seed: Seed) -> Seed {
+    var result: Seed
+    repeat {
+      result = randomSeed()
+    } while result.background == seed.background
+    || result.body == seed.body
+    || result.accessory == seed.accessory
+    || result.head == seed.head
+    || result.glasses == seed.glasses
+
+    return result
   }
 }
 

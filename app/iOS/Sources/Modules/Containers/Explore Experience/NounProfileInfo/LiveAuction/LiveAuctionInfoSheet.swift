@@ -20,9 +20,15 @@ struct LiveAuctionInfoSheet: View {
         text: R.string.nounProfile.auctionUnsettledTimeLeftLabel(),
         icon: { Image.timeleft },
         supplementaryView: {
-          Text(viewModel.remainingTime)
-            .font(.custom(.medium, relativeTo: .subheadline))
-            .padding(.leading, 4)
+          if viewModel.auction.hasEnded {
+            Text("00h:00m:00s")
+              .font(.custom(.medium, relativeTo: .footnote))
+              .padding(.leading, 4)
+          } else {
+            CountdownLabel(endTime: viewModel.auction.endTime)
+              .font(.custom(.medium, relativeTo: .footnote))
+              .padding(.leading, 4)
+          }
         })
       
       // Displays the date when the auction was created.

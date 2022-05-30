@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponents
 
 struct DocumentationInfoSection: View {
-  @State private var isNotionDocsPresented = false
+  @State private var isDocsPresented = false
   private let localize = R.string.documentation.self
   
   var body: some View {
@@ -19,13 +19,13 @@ struct DocumentationInfoSection: View {
         subtitle: localize.message())
       
       OutlineButton(
-        text: localize.notionDocs(),
+        text: localize.learnMore(),
         smallAccessory: { Image.smArrowOut },
-        action: { isNotionDocsPresented.toggle() })
+        action: { isDocsPresented.toggle() })
         .controlSize(.large)
     }
-    .fullScreenCover(isPresented: $isNotionDocsPresented) {
-      if let url = URL(string: localize.notionLink()) {
+    .fullScreenCover(isPresented: $isDocsPresented) {
+      if let url = URL(string: localize.documentationLink()) {
         Safari(url: url)
       }
     }

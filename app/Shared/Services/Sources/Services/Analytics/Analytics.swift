@@ -21,6 +21,23 @@ public protocol Analytics {
   ///     alphabetic character and contain only alphanumeric characters and underscores.
   ///
   func logEvent(withName name: String, parameters: [String: Any]?)
+
+  /// Logs an app event given a predefined Event enum value.
+  ///
+  /// - Parameters:
+  ///   - event: The event enum value.
+  ///   - parameters: The dictionary of event parameters. Passing nil indicates that the event has
+  ///     no parameters. Parameter names can be up to 40 characters long and must start with an
+  ///     alphabetic character and contain only alphanumeric characters and underscores.
+  ///
+  func logEvent(withEvent event: AnalyticsEvent.Event, parameters: [String: Any]?)
+
+  /// Logs a screen transition to track user engagement on various screens throughout the app.
+  ///
+  /// - Parameters:
+  ///   - screen: The screen enum value for the screen that is being transitioned to.
+  ///
+  func logScreenView(withScreen screen: AnalyticsEvent.Screen)
   
   /// Sets a user property to a given value. Up to 25 user property names are supported. Once set,
   /// user property values persist throughout the app lifecycle and across sessions.
@@ -40,9 +57,19 @@ public class FirebaseAnalytics: Analytics {
       FirebaseApp.configure()
     }
   }
-  
+
+  public func logEvent(withEvent event: AnalyticsEvent.Event, parameters: [String : Any]?) {
+    logEvent(withName: event.rawValue, parameters: parameters)
+  }
+
   public func logEvent(withName name: String, parameters: [String: Any]?) {
     Firebase.Analytics.logEvent(name, parameters: parameters)
+  }
+
+  public func logScreenView(withScreen screen: AnalyticsEvent.Screen) {
+    Firebase.Analytics.logEvent(AnalyticsEventScreenView,
+                                parameters: [AnalyticsParameterScreenName: screen.rawValue,
+                                            AnalyticsParameterScreenClass: screen.rawValue])
   }
   
   public func setUserPropertyString(_ value: String?, forName name: String) {

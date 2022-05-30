@@ -67,7 +67,13 @@ struct AuctionInfo: View {
     .ignoresSafeArea(.all, edges: .bottom)
     .background(Gradient.warmGreydient)
     .bottomSheet(isPresented: $isGovernanceInfoPresented) {
-      GovernanceInfoCard(isPresented: $isGovernanceInfoPresented)
+      GovernanceInfoCard(
+        isPresented: $isGovernanceInfoPresented,
+        nounId: viewModel.auction.noun.id,
+        owner: viewModel.auction.bidder?.id,
+        page: selectedPage
+      )
     }
+    .onAppear(perform: viewModel.onAppear)
   }
 }

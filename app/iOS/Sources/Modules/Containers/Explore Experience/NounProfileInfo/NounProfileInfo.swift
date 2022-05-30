@@ -8,6 +8,7 @@
 import SwiftUI
 import UIComponents
 import Services
+import SpriteKit
 
 struct NounProfileInfo: View {
   @StateObject var viewModel: ViewModel
@@ -58,16 +59,40 @@ struct NounProfileInfo: View {
     }
   }
   
+  /// A view that displays an animated noun.
+  ///
+  /// - Returns: This view contains the play scene to animate the Noun's eyes.
+  private let talkingNoun: TalkingNoun
+    
+  public init(viewModel: ViewModel) {
+    self._viewModel = StateObject(wrappedValue: viewModel)
+    talkingNoun = TalkingNoun(seed: viewModel.auction.noun.seed)
+  }
+  
   var body: some View {
     NavigationView {
       VStack(spacing: 0) {
         Spacer()
-        NounPuzzle(seed: viewModel.nounTraits)
+        
+        if !viewModel.isAuctionSettled {
+          SpriteView(scene: talkingNoun, options: [.allowsTransparency])
+            .id(viewModel.auction.id)
+            .aspectRatio(1.0, contentMode: .fit)
+        } else {
+          NounPuzzle(seed: viewModel.nounTraits)
+        }
         
         PlainCell(length: 20) {
+          if !viewModel.isAuctionSettled {
+            MarqueeText(text: LiveAuctionCard.liveAuctionMarqueeString, alignment: .center)
+              .padding(.vertical, 5)
+              .border(width: 2, edges: [.bottom], color: .componentNounsBlack)
+              .padding([.top, .horizontal], -20)
+          }
+
           toolbarContent
           
-          if viewModel.isAuctionSettled || viewModel.isWinnerAnounced {
+          if viewModel.isAuctionSettled || viewModel.isWinnerAnnounced {
             SettledAuctionInfoSheet(
               viewModel: .init(auction: viewModel.auction),
               isActivityPresented: $isActivityPresented
@@ -96,34 +121,18 @@ struct NounProfileInfo: View {
     }
     .sheet(isPresented: $isShareSheetPresented) {
       if let url = viewModel.nounProfileURL {
-        ShareSheet(activityItems: [url])
+        let message = R.string.nounProfile.shareMessage(viewModel.auction.noun.id)
+        ShareSheet(activityItems: [],
+                   titleMetadata: message,
+                   urlMetadata: url)
       }
     }
     .fullScreenCover(isPresented: $viewModel.shouldShowNounCreator) {
       NounCreator(viewModel: .init(initialSeed: viewModel.nounTraits))
     }
+    .notificationPermissionDialog(isPresented: $viewModel.isNotificationPermissionDialogPresented)
     .addBottomSheet()
-  }
-}
-
-extension NounProfileInfo {
-  
-  struct CardToolBar: View {
-    @ObservedObject var viewModel: ViewModel
-    let dismiss: DismissAction
-    
-    var body: some View {
-      HStack {
-        Text(viewModel.title)
-          .font(.custom(.bold, relativeTo: .title2))
-        
-        Spacer()
-        
-        SoftButton(
-          icon: { Image.xmark },
-          action: { dismiss() })
-      }
-    }
+    .onAppear(perform: viewModel.onAppear)
   }
 }
 

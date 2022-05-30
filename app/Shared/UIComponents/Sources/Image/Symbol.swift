@@ -10,6 +10,8 @@ import SwiftUI
 /// Creates a labeled image that you can use as content for controls.
 extension Image {
   
+  public static let appIntro = Image("app-intro", bundle: .module)
+  
   public static let crown = Image("crown", bundle: .module)
   
   public static let active = Image("sm-active", bundle: .module)
@@ -78,6 +80,8 @@ extension Image {
   
   public static let notification = Image("notification", bundle: .module)
   
+  public static let nounGlassesIcon = Image("noun-glasses-icon", bundle: .module)
+
   public static let nounLogo = Image("noun-logo", bundle: .module)
   
   public static let options = Image("options", bundle: .module)
@@ -145,4 +149,24 @@ extension Image {
   public static let aboutFill = Image("about-fill", bundle: .module)
   
   public static let aboutOutline = Image("about-outline", bundle: .module)
+  
+  public static let enabled = Image("enabled", bundle: .module)
+  
+  public static let notificationSettings = Image("notification-settings", bundle: .module)
+}
+
+extension UIImage {
+  
+  public static let checkmark = UIImage(named: "checkmark", in: .module, with: nil)
+}
+
+struct Symbol_Preview: PreviewProvider {
+  static var previews: some View {
+    VStack {
+      HStack {
+        Image.enabled
+        Image.notificationSettings
+      }
+    }
+  }
 }

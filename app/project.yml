@@ -4,8 +4,11 @@ options:
   indentWidth: 2
   tabWidth: 2
   bundleIdPrefix: "wtf.nouns"
-  groupOrdering: 
-    - order: [iOS, WatchOS]
+  groupOrdering:
+    - order: [iOS, NounsExtensions]
+    - pattern: iOS
+      order: [Sources, NounsTests, NounsUITests]
+      
 packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
@@ -14,11 +17,11 @@ packages:
     path: Shared/UIComponents
   Services:
     path: Shared/Services
-  
+
 settings:
   base:
-    MARKETING_VERSION: 0.1.0
-    CURRENT_PROJECT_VERSION: 15
+    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 2
     DEVELOPMENT_TEAM: 9XX3PA6349
 
 targets:
@@ -34,6 +37,8 @@ targets:
         INFOPLIST_FILE: iOS/Sources/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
         DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIcon0 AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5 AppIcon6 AppIcon7 AppIcon8 AppIcon9 AppIcon10 AppIcon11 AppIcon12 AppIcon13 AppIcon14 AppIcon15 AppIcon16 AppIcon17 AppIcon18 AppIcon19 AppIcon20 AppIcon21 AppIcon22 AppIcon23
+        TARGETED_DEVICE_FAMILY: 1
     entitlements:
       path: iOS/Nouns.entitlements
       properties:
@@ -42,13 +47,16 @@ targets:
       - package: Rswift
       - package: UIComponents
       - package: Services
+      - target: EverydayNounExtension
+      - target: NounOClockNotificationExtension
     scheme:
       testTargets:
         - Nouns iOS Tests
         - Nouns iOS UITests
     preBuildScripts:
-      - path: scripts/rswift.sh
-        name: R.swift
+      - name: R.swift
+        script: |
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Sources/Resources/R.generated.swift"
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
@@ -88,75 +96,54 @@ targets:
     dependencies:
       - target: Nouns
 
-# Nouns Watch App
-  Nouns Watch:
-    type: application.watchapp2
-    platform: watchOS
-    deploymentTarget: "8.0"
+# Noun Everyday (iOS Widget)
+  EverydayNounExtension:
+    type: app-extension
+    platform: iOS
     sources:
-      - path: WatchOS/NounsWatch
-    dependencies:
-      - target: "Nouns WatchKit Extension"
+      - path: NounsExtensions/EverydayNounExtension
     settings:
       base:
-        INFOPLIST_FILE: WatchOS/NounsWatch/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp
-  
-  # Nouns WatchKit Extension
-  Nouns WatchKit Extension:
-    type: watchkit2-extension
-    platform: watchOS
-    deploymentTarget: "8.0"
-    sources:
-      - path: WatchOS/NounsWatch WatchKit Extension
-    settings:
-      base:
-        INFOPLIST_FILE:  WatchOS/NounsWatch WatchKit Extension/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.watchextension
-    dependencies:
-      - package: Rswift
-    scheme:
-      testTargets:
-        - Nouns Watch Tests
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
+        GENERATE_INFOPLIST_FILE: 'YES'
+        INFOPLIST_FILE: NounsExtensions/EverydayNounExtension/Resources/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Everyday Noun
+        INFOPLIST_KEY_NSHumanReadableCopyright: ''
+        IPHONEOS_DEPLOYMENT_TARGET: '15.0'
+        MARKETING_VERSION: '1.0'
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.EverydayNounExtension
+        SKIP_INSTALL: 'YES'
+        TARGETED_DEVICE_FAMILY: 1
     preBuildScripts:
-      - script: |
-                /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift"
-        name: R.swift
+      - name: R.swift
+        script: |
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/NounsExtensions/EverydayNounExtension/Resources/R.generated.swift"
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/WatchOS/NounsWatch WatchKit Extension/Utils/R.generated.swift
-    postBuildScripts:
-      - script: |
-                /usr/bin/xcrun --sdk macosx swift run swiftlint lint "$SRCROOT"
-        name: SwiftLint
+          - $SRCROOT/NounsExtensions/EverydayNounExtension/Resources/R.generated.swift
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
+      - package: UIComponents
+      - package: Services
+      - package: Rswift
 
-# Nouns Watch Unit Tests
-  Nouns Watch Tests:
-    type: bundle.unit-test
-    platform: watchOS
-    deploymentTarget: "8.0"
+# Noun O'Clock Notification Service
+  NounOClockNotificationExtension:
+    type: app-extension
+    platform: iOS
     sources:
-      - path: WatchOS/NounsWatchTests
+      - path: NounsExtensions/NounOClockNotificationExtension
     settings:
       base:
-        INFOPLIST_FILE:  WatchOS/NounsWatchTests/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.tests
-        TEST_HOST: Nouns WatchKit Extension
-    dependencies:
-      - target: Nouns WatchKit Extension
-
-# Nouns Watch UI Tests
-  Nouns Watch UITests:
-    type: bundle.ui-testing
-    platform: watchOS
-    deploymentTarget: "8.0"
-    sources:
-      - path: WatchOS/NounsWatchUITests
-    settings:
-      base:
-        INFOPLIST_FILE:  WatchOS/NounsWatchUITests/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.watchkitapp.uitest
-        TEST_TARGET_NAME: Nouns Watch
-    dependencies:
-      - target: Nouns Watch
+        GENERATE_INFOPLIST_FILE: 'YES'
+        INFOPLIST_FILE: NounsExtensions/NounOClockNotificationExtension/Resources/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Noun Oclock Notification
+        INFOPLIST_KEY_NSHumanReadableCopyright: ''
+        IPHONEOS_DEPLOYMENT_TARGET: '15.0'
+        MARKETING_VERSION: '1.0'
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.OclockRichNotification
+        SKIP_INSTALL: 'YES'
+        TARGETED_DEVICE_FAMILY: 1

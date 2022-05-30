@@ -1,0 +1,11 @@
+/* 
+  CreateCoachmark.strings
+  Nouns
+
+  Created by Mohammed Ibrahim on 2022-03-24.
+  
+*/
+
+"shake" = "Shake to shuffle";
+
+"swipe" = "Swipe to pick %@";

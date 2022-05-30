@@ -19,7 +19,7 @@ struct ExploreExperience: View {
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
           if let auction = viewModel.liveAuction {
             LiveAuctionCard(viewModel: .init(auction: auction))
           } else if viewModel.failedToLoadLiveAuction {
@@ -38,11 +38,16 @@ struct ExploreExperience: View {
             .padding()
         }
         .softNavigationTitle(R.string.explore.title())
+        .id(AppPage.explore.scrollToTopId)
       }
       .disabled(viewModel.isLoadingSettledAuctions)
       .background(Gradient.cherrySunset)
+      .overlay(.componentPeachy, edge: .top)
       .ignoresSafeArea(edges: .top)
-      .task {
+    }
+    .onAppear {
+      viewModel.onAppear()
+      Task {
         await viewModel.listenLiveAuctionChanges()
       }
     }

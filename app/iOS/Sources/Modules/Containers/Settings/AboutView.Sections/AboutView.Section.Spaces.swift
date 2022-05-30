@@ -23,6 +23,11 @@ struct SpacesInfoSection: View {
       SpaceRow(localize.discordTitle(), action: {
         selectedURL = URL(string: localize.discordLink())
       })
+
+      // Discourse
+      SpaceRow(localize.discourseTitle(), action: {
+        selectedURL = URL(string: localize.discourseLink())
+      })
       
       // Twitter
       SpaceRow(localize.twitterTitle(), action: {
@@ -32,11 +37,6 @@ struct SpacesInfoSection: View {
       // Etherscan
       SpaceRow(localize.etherscanTitle(), action: {
         selectedURL = URL(string: localize.etherscanLink())
-      })
-      
-      // Discourse
-      SpaceRow(localize.discourseTitle(), action: {
-        selectedURL = URL(string: localize.discourseLink())
       })
     }
     .onChange(of: selectedURL) { newSelectedURL in

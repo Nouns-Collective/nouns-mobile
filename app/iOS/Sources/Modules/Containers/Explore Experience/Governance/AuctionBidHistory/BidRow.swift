@@ -23,7 +23,7 @@ struct BidRow: View {
               .font(.custom(.bold, relativeTo: .title3))
           } icon: {
             Image.eth
-              .asThumbnail()
+              .asThumbnail(maxWidth: 18, maxHeight: 18)
           }
           .labelStyle(.titleAndIcon(spacing: 4))
           
@@ -31,7 +31,7 @@ struct BidRow: View {
           
           // Timestamp of the bid
           Text(viewModel.bidDate)
-            .font(Font.custom(.medium, relativeTo: .footnote))
+            .font(Font.custom(.medium, relativeTo: .caption))
             .opacity(0.5)
         }
         

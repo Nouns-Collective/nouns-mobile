@@ -20,11 +20,10 @@ extension NounPlayground {
     
     var body: some View {
       ActionSheet(
-        title: R.string.audioPermissionDialog.title(),
-        borderColor: nil
+        title: R.string.audioPermissionDialog.title()
       ) {
         Text(R.string.audioPermissionDialog.body())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(6)
           .padding(.bottom, 20)
         
@@ -62,11 +61,10 @@ extension NounPlayground {
     
     var body: some View {
       ActionSheet(
-        title: R.string.audioSettingsDialog.title(),
-        borderColor: nil
+        title: R.string.audioSettingsDialog.title()
       ) {
         Text(R.string.audioSettingsDialog.body())
-          .font(.custom(.regular, size: 17))
+          .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(6)
           .padding(.bottom, 20)
         

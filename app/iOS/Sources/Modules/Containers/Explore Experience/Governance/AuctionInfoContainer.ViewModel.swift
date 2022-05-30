@@ -36,5 +36,9 @@ extension AuctionInfo {
     var initialVisiblePage: Page {
       isActivityAvailable ? .activity : .bidHitory
     }
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.auctionInfo)
+    }
   }
 }

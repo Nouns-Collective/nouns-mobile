@@ -41,7 +41,7 @@ extension OffChainNounProfile {
       self.noun = noun
       self.service = service
       
-      nounBirthdate = noun.createdAt.formatted()
+      nounBirthdate = noun.createdAt.formatted(dateStyle: .long)
     }
     
     func deleteNoun() {
@@ -52,7 +52,7 @@ extension OffChainNounProfile {
       }
     }
     
-    func saveChanges() {
+    private func saveChanges() {
       do {
         try service.store(noun: noun)
       } catch {
@@ -63,6 +63,20 @@ extension OffChainNounProfile {
     func didEdit(seed: Seed) {
       noun.seed = seed
       saveChanges()
+    }
+
+    func didRename(_ name: String) {
+      noun.name = name
+      saveChanges()
+    }
+
+    func onShare() {
+      AppCore.shared.analytics.logEvent(withEvent: AnalyticsEvent.Event.shareOffchainNoun,
+                                        parameters: ["noun_name": noun.name])
+    }
+
+    func onAppear() {
+      AppCore.shared.analytics.logScreenView(withScreen: AnalyticsEvent.Screen.offchainNounProfile)
     }
   }
 }

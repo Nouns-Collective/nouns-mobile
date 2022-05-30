@@ -27,7 +27,7 @@ extension PlayNounPicker {
     var body: some View {
       VStack(alignment: .leading, spacing: 10) {
         Text(R.string.playExperience.noNouns())
-          .font(.custom(.bold, size: 36))
+          .font(.custom(.bold, relativeTo: .title2))
         
         Spacer()
         

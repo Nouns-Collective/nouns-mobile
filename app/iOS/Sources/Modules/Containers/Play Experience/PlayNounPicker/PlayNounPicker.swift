@@ -11,6 +11,8 @@ import Services
 
 struct PlayNounPicker: View {
   @Environment(\.outlineTabViewHeight) private var tabBarHeight
+  @Environment(\.outlineTabBarVisibility) var outlineTabBarVisibility
+  
   @Environment(\.dismiss) private var dismiss
   
   @State private var selectedNoun: Noun?
@@ -43,8 +45,11 @@ struct PlayNounPicker: View {
             largeAccessory: { Image.new },
             action: { isCreatorPresented.toggle() })
         })
+        .padding(.top, 50)
     }
     .background(Gradient.blueberryJam)
+    .overlay(.componentPerriwinkle, edge: .top)
+    .ignoresSafeArea(edges: .top)
     // Gives the ability to create a new noun offline by driving
     // the user to the create experience.
     .fullScreenCover(isPresented: $isCreatorPresented) {
@@ -58,5 +63,8 @@ struct PlayNounPicker: View {
       NounPlayground(viewModel: .init(noun: noun))
         .addBottomSheet()
     })
+    .onAppear {
+      outlineTabBarVisibility.hide()
+    }
   }
 }
