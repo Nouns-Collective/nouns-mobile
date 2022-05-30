@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Services
-import UIComponents
+import NounsUI
 
 struct NounComposerKey: EnvironmentKey {
   static var defaultValue: NounComposer = OfflineNounComposer.default()

@@ -58,7 +58,7 @@ public class FirebaseAnalytics: Analytics {
     }
   }
 
-  public func logEvent(withEvent event: AnalyticsEvent.Event, parameters: [String : Any]?) {
+  public func logEvent(withEvent event: AnalyticsEvent.Event, parameters: [String: Any]?) {
     logEvent(withName: event.rawValue, parameters: parameters)
   }
 

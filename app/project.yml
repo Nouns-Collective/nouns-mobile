@@ -7,20 +7,20 @@ options:
   groupOrdering:
     - order: [iOS, NounsExtensions]
     - pattern: iOS
-      order: [Sources, NounsTests, NounsUITests]
+      order: [Nouns, NounsTests, NounsUITests]
       
 packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift.Library.git
     from: 5.4.0
-  UIComponents:
-    path: Shared/UIComponents
+  NounsUI:
+    path: Shared/NounsUI
   Services:
     path: Shared/Services
 
 settings:
   base:
-    MARKETING_VERSION: 0.1.0
+    MARKETING_VERSION: 1.0
     CURRENT_PROJECT_VERSION: 15
     DEVELOPMENT_TEAM: 9XX3PA6349
 
@@ -31,13 +31,15 @@ targets:
     platform: iOS
     deploymentTarget: "15.0"
     sources:
-      - path: iOS/Sources
+      - path: iOS/Nouns
     settings:
       base:
-        INFOPLIST_FILE: iOS/Sources/Resources/Info.plist
+        INFOPLIST_FILE: iOS/Nouns/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
         DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
-        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIcon0 AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5 AppIcon6 AppIcon7 AppIcon8 AppIcon9 AppIcon10 AppIcon11 AppIcon12 AppIcon13 AppIcon14 AppIcon15 AppIcon16 AppIcon17 AppIcon18 AppIcon19 AppIcon20 AppIcon21 AppIcon22 AppIcon23
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIcon0 AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5 
+          AppIcon6 AppIcon7 AppIcon8 AppIcon9 AppIcon10 AppIcon11 AppIcon12 AppIcon13 AppIcon14 AppIcon15 AppIcon16 
+          AppIcon17 AppIcon18 AppIcon19 AppIcon20 AppIcon21 AppIcon22 AppIcon23
         TARGETED_DEVICE_FAMILY: 1
     entitlements:
       path: iOS/Nouns.entitlements
@@ -45,7 +47,7 @@ targets:
         aps-environment: development
     dependencies:
       - package: Rswift
-      - package: UIComponents
+      - package: NounsUI
       - package: Services
       - target: EverydayNounExtension
       - target: NounOClockNotificationExtension
@@ -56,11 +58,11 @@ targets:
     preBuildScripts:
       - name: R.swift
         script: |
-          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Sources/Resources/R.generated.swift"
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Nouns/Resources/R.generated.swift"
         inputFiles:
           - $TEMP_DIR/rswift-lastrun
         outputFiles:
-          - $SRCROOT/iOS/Sources/Resources/R.generated.swift
+          - $SRCROOT/iOS/Nouns/Resources/R.generated.swift
     postBuildScripts:
       - path: scripts/swiftlint.sh
         name: SwiftLint
@@ -111,7 +113,6 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Everyday Noun
         INFOPLIST_KEY_NSHumanReadableCopyright: ''
         IPHONEOS_DEPLOYMENT_TARGET: '15.0'
-        MARKETING_VERSION: '1.0'
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.EverydayNounExtension
         SKIP_INSTALL: 'YES'
         TARGETED_DEVICE_FAMILY: 1
@@ -126,7 +127,7 @@ targets:
     dependencies:
       - sdk: SwiftUI.framework
       - sdk: WidgetKit.framework
-      - package: UIComponents
+      - package: NounsUI
       - package: Services
       - package: Rswift
 
@@ -143,7 +144,6 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Noun Oclock Notification
         INFOPLIST_KEY_NSHumanReadableCopyright: ''
         IPHONEOS_DEPLOYMENT_TARGET: '15.0'
-        MARKETING_VERSION: '1.0'
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.OclockRichNotification
         SKIP_INSTALL: 'YES'
         TARGETED_DEVICE_FAMILY: 1

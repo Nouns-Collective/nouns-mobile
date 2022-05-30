@@ -1,7 +1,7 @@
 ## Build generated
 ios/build/
 DerivedData/
-
+.vscode
 ## Various settings
 *.pbxuser
 !default.pbxuser

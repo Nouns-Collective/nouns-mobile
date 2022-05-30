@@ -167,5 +167,6 @@ public struct NounsTextureGenerator: ParsableCommand {
 }
 
 extension CodingUserInfoKey {
+  
     static let textures = CodingUserInfoKey(rawValue: "textures")!
 }

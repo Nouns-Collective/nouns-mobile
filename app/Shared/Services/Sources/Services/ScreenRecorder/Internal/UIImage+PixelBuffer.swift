@@ -20,7 +20,7 @@ internal extension UIImage {
     let frameSize = CGSize(width: cgImage.width,
                            height: cgImage.height)
     
-    var pixelBuffer: CVPixelBuffer? = nil
+    var pixelBuffer: CVPixelBuffer?
     let status = CVPixelBufferCreate(kCFAllocatorDefault,
                                      Int(frameSize.width),
                                      Int(frameSize.height),
@@ -32,22 +32,24 @@ internal extension UIImage {
       return nil
     }
     
-    CVPixelBufferLockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-    let data = CVPixelBufferGetBaseAddress(pixelBuffer!)
+    guard let pixelBuffer = pixelBuffer else {
+      return nil
+    }
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+    let data = CVPixelBufferGetBaseAddress(pixelBuffer)
     let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
     let bitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue)
     let context = CGContext(data: data,
                             width: Int(frameSize.width),
                             height: Int(frameSize.height),
                             bitsPerComponent: 8,
-                            bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer!),
+                            bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer),
                             space: rgbColorSpace,
                             bitmapInfo: bitmapInfo.rawValue)
     
     context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height))
-    
-    CVPixelBufferUnlockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-    
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
     return pixelBuffer
   }
 }
