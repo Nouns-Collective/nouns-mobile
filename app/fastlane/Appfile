@@ -1,0 +1,7 @@
+app_identifier("wtf.nouns.ios") # The bundle identifier of your app
+apple_id("hey@byziad.com") # Your Apple email address
+team_id("9XX3PA6349")
+itc_team_name("Secret Mission Software Inc.")
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

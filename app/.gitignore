@@ -186,3 +186,8 @@ xcodebuild.json
 
 # Generated Assets
 #*.generated.swift
+
+# Fastlane
+fastlane/report.xml
+fastlane/test_output/
+fastlane/archive/

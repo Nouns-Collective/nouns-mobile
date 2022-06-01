@@ -14,15 +14,16 @@ packages:
     url: https://github.com/mac-cain13/R.swift.Library.git
     from: 5.4.0
   NounsUI:
-    path: Shared/NounsUI
+    path: shared/NounsUI
   Services:
-    path: Shared/Services
+    path: shared/Services
 
 settings:
   base:
     MARKETING_VERSION: 1.0
     CURRENT_PROJECT_VERSION: 15
     DEVELOPMENT_TEAM: 9XX3PA6349
+    VERSIONING_SYSTEM: apple-generic
 
 targets:
 # Nouns iOS App
