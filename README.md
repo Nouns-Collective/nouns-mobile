@@ -1,2 +1,2 @@
-# Collective DAO
+# Nouns Collective
 This repository contains the code for the iOS and WatchOS app for building momentum around Nouns as a cultural phenomenon and helping to reach a wider audience. Along with that, it contains shared code that both apps integrate and use and internally developed libraries. This means that this repository is the central working place for all developers contributing to the iOS and WatchOS app (i.e. a mono repo).
