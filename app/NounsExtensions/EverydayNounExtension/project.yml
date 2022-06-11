@@ -1,0 +1,38 @@
+name: Everyday Noun Extension (iOS Widget)
+options:
+  groupOrdering:
+    - pattern: EverydayNounExtension
+      order: [Sources, Resources]
+
+targets:
+  EverydayNounExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: NounsExtensions/EverydayNounExtension
+        excludes: ["**/*.yml"]
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
+        GENERATE_INFOPLIST_FILE: 'YES'
+        INFOPLIST_KEY_CFBundleDisplayName: Everyday Noun
+        INFOPLIST_KEY_NSHumanReadableCopyright: ''
+        IPHONEOS_DEPLOYMENT_TARGET: '15.0'
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.EverydayNounExtension
+        SKIP_INSTALL: 'YES'
+        TARGETED_DEVICE_FAMILY: 1
+    preBuildScripts:
+      - name: R.swift
+        script: |
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/NounsExtensions/EverydayNounExtension/Resources/R.generated.swift"
+        inputFiles:
+          - $TEMP_DIR/rswift-lastrun
+        outputFiles:
+          - $SRCROOT/NounsExtensions/EverydayNounExtension/Resources/R.generated.swift
+    dependencies:
+      - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
+      - package: NounsUI
+      - package: Services
+      - package: Rswift

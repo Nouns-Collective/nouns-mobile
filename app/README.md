@@ -1,4 +1,4 @@
-# Nouns iOS & WatchOS app
+# Nouns iOS app
 
 ## Getting Started
 
