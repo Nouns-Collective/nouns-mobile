@@ -1,12 +1,21 @@
+// Copyright (C) 2022 Nouns Collective
 //
-//  SettingsStore.swift
-//  Nouns
+// Originally authored by Mohammed Ibrahim
 //
-//  Created by Mohammed Ibrahim on 2021-12-06.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import struct SwiftUI.AppStorage
 
 public protocol SettingsStore {
 
@@ -36,25 +45,46 @@ public protocol SettingsStore {
 }
 
 /// A class to store, read, and update UserDefault values
-public struct UserDefaultsSettingsStore: SettingsStore {
+public class UserDefaultsSettingsStore: SettingsStore {
+  
+  private enum StoreKeys: String {
+    case hasCompletedOnboarding
+    case isNounOClockNotificationEnabled
+    case isNewNounNotificationEnabled
+  }
   
   /// Reference to the APNs service.
   private let messaging: Messaging
   
-  public init(messaging: Messaging) {
+  /// Persistent storage for user preference.
+  private let userDefaults: UserDefaults
+  
+  public convenience init(messaging: Messaging) {
+    self.init(messaging: messaging, userDefaults: .standard)
+  }
+  
+  init(messaging: Messaging, userDefaults: UserDefaults) {
     self.messaging = messaging
+    self.userDefaults = userDefaults
   }
   
   // MARK: - OnBoarding
   
   /// A persisted boolean indicates the onboarding completion state.
-  @AppStorage("hasCompletedOnboarding") public var hasCompletedOnboarding = false
+  public var hasCompletedOnboarding: Bool {
+    get { userDefaults.bool(forKey: StoreKeys.hasCompletedOnboarding.rawValue) }
+    set { userDefaults.set(newValue, forKey: StoreKeys.hasCompletedOnboarding.rawValue) }
+  }
   
   // MARK: - Notification
   
   /// A persisted boolean indicates the noun OClock notification permission.
-  @AppStorage("isNounOClockNotificationEnabled") private var _isNounOClockNotificationEnabled = true {
-    didSet { syncMessagingTopicsSubscription() }
+  private var _isNounOClockNotificationEnabled: Bool {
+    get { userDefaults.bool(forKey: StoreKeys.isNounOClockNotificationEnabled.rawValue) }
+    set {
+      userDefaults.set(newValue, forKey: StoreKeys.isNounOClockNotificationEnabled.rawValue)
+      syncMessagingTopicsSubscription()
+    }
   }
   
   /// A boolean indicates whether the noun OClock notification is authorized. The state check
@@ -74,8 +104,12 @@ public struct UserDefaultsSettingsStore: SettingsStore {
   }
   
   /// A persisted boolean indicates a new noun noticiation permission.
-  @AppStorage("isNewNounNotificationEnabled") private var _isNewNounNotificationEnabled = true {
-    didSet { syncMessagingTopicsSubscription() }
+  private var _isNewNounNotificationEnabled: Bool {
+    get { userDefaults.bool(forKey: StoreKeys.isNewNounNotificationEnabled.rawValue) }
+    set {
+      userDefaults.set(newValue, forKey: StoreKeys.isNewNounNotificationEnabled.rawValue)
+      syncMessagingTopicsSubscription()
+    }
   }
   
   /// A boolean indicates whether the new noun notification is authorized. The state check

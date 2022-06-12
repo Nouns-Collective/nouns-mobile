@@ -1,9 +1,19 @@
+// Copyright (C) 2022 Nouns Collective
 //
-//  UIImage+PixelBuffer.swift
-//  
+// Originally authored by Mohammed Ibrahim
 //
-//  Created by Mohammed Ibrahim on 2022-01-27.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
 
@@ -20,7 +30,7 @@ internal extension UIImage {
     let frameSize = CGSize(width: cgImage.width,
                            height: cgImage.height)
     
-    var pixelBuffer: CVPixelBuffer? = nil
+    var pixelBuffer: CVPixelBuffer?
     let status = CVPixelBufferCreate(kCFAllocatorDefault,
                                      Int(frameSize.width),
                                      Int(frameSize.height),
@@ -32,22 +42,24 @@ internal extension UIImage {
       return nil
     }
     
-    CVPixelBufferLockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-    let data = CVPixelBufferGetBaseAddress(pixelBuffer!)
+    guard let pixelBuffer = pixelBuffer else {
+      return nil
+    }
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+    let data = CVPixelBufferGetBaseAddress(pixelBuffer)
     let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
     let bitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue)
     let context = CGContext(data: data,
                             width: Int(frameSize.width),
                             height: Int(frameSize.height),
                             bitsPerComponent: 8,
-                            bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer!),
+                            bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer),
                             space: rgbColorSpace,
                             bitmapInfo: bitmapInfo.rawValue)
     
     context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height))
-    
-    CVPixelBufferUnlockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-    
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
     return pixelBuffer
   }
 }

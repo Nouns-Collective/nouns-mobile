@@ -1,0 +1,80 @@
+name: Nouns iOS 
+options:
+  groupOrdering:
+    - pattern: iOS
+      order: [Nouns, NounsTests, NounsUITests]
+      
+targets:
+# Nouns iOS App
+  Nouns:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: iOS/Nouns
+        excludes: ["**/*.yml"]
+    settings:
+      base:
+        INFOPLIST_FILE: iOS/Nouns/Resources/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
+        DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIcon0 AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5 
+          AppIcon6 AppIcon7 AppIcon8 AppIcon9 AppIcon10 AppIcon11 AppIcon12 AppIcon13 AppIcon14 AppIcon15 AppIcon16 
+          AppIcon17 AppIcon18 AppIcon19 AppIcon20 AppIcon21 AppIcon22 AppIcon23
+        TARGETED_DEVICE_FAMILY: 1
+    entitlements:
+      path: iOS/Nouns.entitlements
+      properties:
+        aps-environment: development
+    dependencies:
+      - package: Rswift
+      - package: NounsUI
+      - package: Services
+      - target: EverydayNounExtension
+      - target: NounOClockNotificationExtension
+    scheme:
+      testTargets:
+        - Nouns iOS Tests
+        - Nouns iOS UITests
+    preBuildScripts:
+      - name: R.swift
+        script: |
+          /usr/bin/xcrun --sdk macosx swift run rswift generate "$SRCROOT/iOS/Nouns/Resources/R.generated.swift"
+        inputFiles:
+          - $TEMP_DIR/rswift-lastrun
+        outputFiles:
+          - $SRCROOT/iOS/Nouns/Resources/R.generated.swift
+    postBuildScripts:
+      - path: bin/swiftlint.sh
+        name: SwiftLint
+      - path: bin/crashlytics.sh
+        name: Crashlytics
+        inputFiles:
+          - ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}
+          - $(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)
+
+# Nouns iOS Unit Tests
+  Nouns iOS Tests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: iOS/NounsTests
+    settings:
+      base:
+        INFOPLIST_FILE: iOS/NounsTests/Info.plist
+    dependencies:
+      - target: Nouns
+
+# Nouns iOS UI Tests
+  Nouns iOS UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: iOS/NounsUITests
+    settings:
+      base:
+        INFOPLIST_FILE: iOS/NounsUITests/Info.plist
+    dependencies:
+      - target: Nouns

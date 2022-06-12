@@ -1,6 +1,7 @@
 ## Build generated
 ios/build/
 DerivedData/
+.vscode
 
 ## Various settings
 *.pbxuser
@@ -119,7 +120,6 @@ Temporary Items
 *.class
 
 # Generated files
-bin/
 gen/
 out/
 release/
@@ -186,3 +186,8 @@ xcodebuild.json
 
 # Generated Assets
 #*.generated.swift
+
+# Fastlane
+fastlane/report.xml
+fastlane/test_output/
+fastlane/archive/

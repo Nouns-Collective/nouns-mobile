@@ -40,9 +40,8 @@ excluded:
   - NounsWatchTests
   - NounsWatchUITests
   - iOS/NounsTests
-  - Shared/Services/Tests
-  - Shared/Services/Sources/GraphQL/Internal
-  - Shared/Tools/.build
+  - shared/Services/Tests
+  - shared/Services/Sources/GraphQL/Internal
+  - shared/Tools/.build
   - "*.generated.swift"
-  - Shared/Tools/.build
   - DerivedData
