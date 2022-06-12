@@ -45,9 +45,9 @@ targets:
         outputFiles:
           - $SRCROOT/iOS/Nouns/Resources/R.generated.swift
     postBuildScripts:
-      - path: scripts/swiftlint.sh
+      - path: bin/swiftlint.sh
         name: SwiftLint
-      - path: scripts/crashlytics.sh
+      - path: bin/crashlytics.sh
         name: Crashlytics
         inputFiles:
           - ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}
