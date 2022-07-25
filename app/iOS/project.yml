@@ -1,9 +1,9 @@
-name: Nouns iOS 
+name: Nouns iOS
 options:
   groupOrdering:
     - pattern: iOS
       order: [Nouns, NounsTests, NounsUITests]
-      
+
 targets:
 # Nouns iOS App
   Nouns:
@@ -18,9 +18,9 @@ targets:
         INFOPLIST_FILE: iOS/Nouns/Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios
         DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
-        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIcon0 AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5 
-          AppIcon6 AppIcon7 AppIcon8 AppIcon9 AppIcon10 AppIcon11 AppIcon12 AppIcon13 AppIcon14 AppIcon15 AppIcon16 
-          AppIcon17 AppIcon18 AppIcon19 AppIcon20 AppIcon21 AppIcon22 AppIcon23
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIcon0 AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5
+          AppIcon6 AppIcon7 AppIcon8 AppIcon9 AppIcon10 AppIcon11 AppIcon12 AppIcon13 AppIcon14 AppIcon15 AppIcon16
+          AppIcon17 AppIcon18 AppIcon19 AppIcon20 AppIcon21 AppIcon22 AppIcon23 AppIcon24 AppIcon25
         TARGETED_DEVICE_FAMILY: 1
     entitlements:
       path: iOS/Nouns.entitlements

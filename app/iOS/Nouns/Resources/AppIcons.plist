@@ -116,6 +116,14 @@
 		</dict>
 		<dict>
 			<key>preview</key>
+			<string>AppIcon24_Preview</string>
+			<key>asset</key>
+			<string>AppIcon24</string>
+			<key>name</key>
+			<string>Noun 116</string>
+		</dict>
+		<dict>
+			<key>preview</key>
 			<string>AppIcon13_Preview</string>
 			<key>asset</key>
 			<string>AppIcon13</string>
@@ -153,6 +161,14 @@
 			<string>AppIcon17</string>
 			<key>name</key>
 			<string>Noun 159</string>
+		</dict>
+		<dict>
+			<key>preview</key>
+			<string>AppIcon25_Preview</string>
+			<key>asset</key>
+			<string>AppIcon25</string>
+			<key>name</key>
+			<string>Noun 174</string>
 		</dict>
 		<dict>
 			<key>preview</key>

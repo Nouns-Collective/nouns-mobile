@@ -186,7 +186,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 447 images.
+  /// This `R.image` struct is generated, and contains static references to 449 images.
   struct image {
     /// Image `AppIcon0_Preview`.
     static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
@@ -220,6 +220,10 @@ struct R: Rswift.Validatable {
     static let appIcon22_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon22_Preview")
     /// Image `AppIcon23_Preview`.
     static let appIcon23_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon23_Preview")
+    /// Image `AppIcon24_Preview`.
+    static let appIcon24_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon24_Preview")
+    /// Image `AppIcon25_Preview`.
+    static let appIcon25_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon25_Preview")
     /// Image `AppIcon2_Preview`.
     static let appIcon2_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon2_Preview")
     /// Image `AppIcon3_Preview`.
@@ -1192,6 +1196,20 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "AppIcon23_Preview", bundle: ..., traitCollection: ...)`
     static func appIcon23_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.appIcon23_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon24_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon24_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon24_Preview, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "AppIcon25_Preview", bundle: ..., traitCollection: ...)`
+    static func appIcon25_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.appIcon25_Preview, compatibleWith: traitCollection)
     }
     #endif
 
