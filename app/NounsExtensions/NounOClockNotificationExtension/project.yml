@@ -1,0 +1,18 @@
+name: Noun OClock Notification Service
+
+targets:
+  NounOClockNotificationExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: NounsExtensions/NounOClockNotificationExtension
+        excludes: ["**/*.yml"]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: 'YES'
+        INFOPLIST_KEY_CFBundleDisplayName: Noun Oclock Notification
+        INFOPLIST_KEY_NSHumanReadableCopyright: ''
+        IPHONEOS_DEPLOYMENT_TARGET: '15.0'
+        PRODUCT_BUNDLE_IDENTIFIER: wtf.nouns.ios.OclockRichNotification
+        SKIP_INSTALL: 'YES'
+        TARGETED_DEVICE_FAMILY: 1
