@@ -10,7 +10,7 @@ options:
   tabWidth: 2
   bundleIdPrefix: "wtf.nouns"
   groupOrdering:
-    - order: [iOS, NounsExtensions]
+    - order: [ci_scripts, iOS, NounsExtensions]
 
 ############
 # Packages

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "head-index-card.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

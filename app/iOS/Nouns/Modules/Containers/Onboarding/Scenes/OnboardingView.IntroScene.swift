@@ -28,7 +28,7 @@ extension OnboardingView {
     private var traitSize: CGSize { CGSize(width: size.width, height: size.width) }
     
     /// Shark noun
-    private let seed: Seed = .init(background: 0, glasses: 3, head: 187, body: 4, accessory: 7)
+    private let seed: Seed = .shark
     
     private var nounComposer: NounComposer {
       AppCore.shared.nounComposer

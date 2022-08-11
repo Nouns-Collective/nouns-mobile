@@ -42,6 +42,6 @@ excluded:
   - iOS/NounsTests
   - shared/Services/Tests
   - shared/Services/Sources/GraphQL/Internal
-  - shared/Tools/.build
+  - "**/*/.build"
   - "*.generated.swift"
   - DerivedData

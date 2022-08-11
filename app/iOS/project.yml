@@ -12,6 +12,7 @@ targets:
     deploymentTarget: "15.0"
     sources:
       - path: iOS/Nouns
+      - path: ci_scripts
         excludes: ["**/*.yml"]
     settings:
       base:

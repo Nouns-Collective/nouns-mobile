@@ -31,10 +31,13 @@ playground.xcworkspace
 
 ## Xcode UI state
 *.xcuserstate
-xcuserdata
+# xcuserdata
 *.xccheckout
-*.xcodeproj
 *.pbxproj
+*.xcodeproj/xcshareddata
+*.xcodeproj/xcuserdata
+*.xcodeproj/*.xcworkspace/*.xcworkspacedata
+*.xcodeproj/**/*.xcsettings
 
 # Swift Package Manager
 #
@@ -42,9 +45,9 @@ xcuserdata
 # Packages/
 # Package.pins
 # Package.resolved
-.build
+**/.build
 .swiftpm/
-Package.resolved
+!**/*/Package.resolved
 
 # CocoaPods
 #

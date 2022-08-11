@@ -156,12 +156,18 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.file` struct is generated, and contains static references to 3 files.
+  /// This `R.file` struct is generated, and contains static references to 6 files.
   struct file {
     /// Resource file `AppIcons.plist`.
     static let appIconsPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "AppIcons", pathExtension: "plist")
     /// Resource file `GoogleService-Info.plist`.
     static let googleServiceInfoPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "GoogleService-Info", pathExtension: "plist")
+    /// Resource file `ci_post_clone.sh`.
+    static let ci_post_cloneSh = Rswift.FileResource(bundle: R.hostingBundle, name: "ci_post_clone", pathExtension: "sh")
+    /// Resource file `ci_post_xcodebuild.sh`.
+    static let ci_post_xcodebuildSh = Rswift.FileResource(bundle: R.hostingBundle, name: "ci_post_xcodebuild", pathExtension: "sh")
+    /// Resource file `ci_pre_xcodebuild.sh`.
+    static let ci_pre_xcodebuildSh = Rswift.FileResource(bundle: R.hostingBundle, name: "ci_pre_xcodebuild", pathExtension: "sh")
     /// Resource file `nounfetti.json`.
     static let nounfettiJson = Rswift.FileResource(bundle: R.hostingBundle, name: "nounfetti", pathExtension: "json")
 
@@ -177,6 +183,24 @@ struct R: Rswift.Validatable {
       return fileResource.bundle.url(forResource: fileResource)
     }
 
+    /// `bundle.url(forResource: "ci_post_clone", withExtension: "sh")`
+    static func ci_post_cloneSh(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.ci_post_cloneSh
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "ci_post_xcodebuild", withExtension: "sh")`
+    static func ci_post_xcodebuildSh(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.ci_post_xcodebuildSh
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
+    /// `bundle.url(forResource: "ci_pre_xcodebuild", withExtension: "sh")`
+    static func ci_pre_xcodebuildSh(_: Void = ()) -> Foundation.URL? {
+      let fileResource = R.file.ci_pre_xcodebuildSh
+      return fileResource.bundle.url(forResource: fileResource)
+    }
+
     /// `bundle.url(forResource: "nounfetti", withExtension: "json")`
     static func nounfettiJson(_: Void = ()) -> Foundation.URL? {
       let fileResource = R.file.nounfettiJson
@@ -186,7 +210,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 449 images.
+  /// This `R.image` struct is generated, and contains static references to 451 images.
   struct image {
     /// Image `AppIcon0_Preview`.
     static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
@@ -596,10 +620,14 @@ struct R: Rswift.Validatable {
     static let eyesShift_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_5")
     /// Image `eyes-shift_6`.
     static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
-    /// Image `glasses-frames-square-black`.
-    static let glassesFramesSquareBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-frames-square-black")
+    /// Image `glasses-deep-teal`.
+    static let glassesDeepTeal = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-deep-teal")
+    /// Image `glasses-grass`.
+    static let glassesGrass = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-grass")
     /// Image `glasses-hip-rose`.
     static let glassesHipRose = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-hip-rose")
+    /// Image `glasses-square-black`.
+    static let glassesSquareBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-black")
     /// Image `glasses-square-blue-med-saturated`.
     static let glassesSquareBlueMedSaturated = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-blue-med-saturated")
     /// Image `glasses-square-blue`.
@@ -2516,9 +2544,16 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-frames-square-black", bundle: ..., traitCollection: ...)`
-    static func glassesFramesSquareBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesFramesSquareBlack, compatibleWith: traitCollection)
+    /// `UIImage(named: "glasses-deep-teal", bundle: ..., traitCollection: ...)`
+    static func glassesDeepTeal(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesDeepTeal, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-grass", bundle: ..., traitCollection: ...)`
+    static func glassesGrass(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesGrass, compatibleWith: traitCollection)
     }
     #endif
 
@@ -2526,6 +2561,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "glasses-hip-rose", bundle: ..., traitCollection: ...)`
     static func glassesHipRose(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.glassesHipRose, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "glasses-square-black", bundle: ..., traitCollection: ...)`
+    static func glassesSquareBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.glassesSquareBlack, compatibleWith: traitCollection)
     }
     #endif
 

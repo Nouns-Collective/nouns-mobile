@@ -70,25 +70,25 @@ public class OfflineNounComposer: NounComposer {
   public lazy var backgroundColors = layer.bgcolors
   
   /// The color palette used to draw `Nouns` with `RLE` data.
-  public lazy var palette = layer.partcolors
+  public lazy var palette = layer.palette
   
   /// The body list of traits.
-  public lazy var bodies = layer.parts[0]
+  public lazy var bodies = layer.images["bodies"] ?? []
   
   /// The accessory list of traits.
-  public lazy var accessories = layer.parts[1]
+  public lazy var accessories = layer.images["accessories"] ?? []
   
   /// The head list of traits.
-  public lazy var heads = layer.parts[2]
+  public lazy var heads = layer.images["heads"] ?? []
   
   /// The glasses list of traits.
-  public lazy var glasses = layer.parts[3]
+  public lazy var glasses = layer.images["glasses"] ?? []
   
   /// Decodes offline Noun's traits.
   private struct Layer: Decodable {
-    let partcolors: [String]
+    let palette: [String]
     let bgcolors: [String]
-    let parts: [[Trait]]
+    let images: [String: [Trait]]
   }
   
   private let layer: Layer
@@ -103,7 +103,7 @@ public class OfflineNounComposer: NounComposer {
   public static func `default`() -> NounComposer {
     do {
       guard let url = Bundle.module.url(
-        forResource: "nouns-traits-layers",
+        forResource: "nouns-traits-layers_v2",
         withExtension: "json"
       ) else {
         throw URLError(.badURL)
@@ -146,7 +146,7 @@ public class OfflineNounComposer: NounComposer {
 extension Trait: Decodable {
   
   private enum CodingKeys: String, CodingKey {
-    case assetImage = "name"
+    case assetImage = "filename"
     case rleData = "data"
     case textures
   }

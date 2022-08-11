@@ -43,7 +43,7 @@ extension TalkingNoun {
 
     init(seed: Seed, frameSize: CGSize, blinkOnly: Bool = true) {
       guard let blinkTextures = Self.nounComposer.glasses[seed.glasses].textures["eyes-blink"] else {
-        fatalError("Couldn't load eye blink textures.")
+        fatalError("Couldn't load eye blink textures \(Self.nounComposer.glasses[seed.glasses]).")
       }
       
       self.blinkTextures = blinkTextures.map {
