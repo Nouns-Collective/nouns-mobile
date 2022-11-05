@@ -8,11 +8,9 @@
 
 "title" = "Settings";
 
-"noun-oclock.notification.title" = "Noun O’Clock";
+"new-noun.notification.title" = "Noun O’Clock";
 
-"new-noun.notification.title" = "New Noun";
-
-"notification.note" = "Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.";
+"notification.note" = "Every day a new Noun is born. Get notified when this glorious hour approaches.";
 
 "theme.title" = "Theme";
 

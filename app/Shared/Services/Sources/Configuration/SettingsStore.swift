@@ -23,15 +23,8 @@ public protocol SettingsStore {
   /// with the onboarding experience (on first launch).
   var hasCompletedOnboarding: Bool { get set }
 
-  /// A boolean value to determine whether the user has
-  /// enabled APNs for `Noun O'Clock`.
-  var isNewNounNotificationEnabled: Bool { get async }
-
-  /// Changes the `OClock Notification` state persisted to the disk.
-  func setNounOClockNotification(isEnabled: Bool) async
-  
   /// A boolean value to determine whether the user has enabled APNs for `New Noun`.
-  var isNounOClockNotificationEnabled: Bool { get async }
+  var isNewNounNotificationEnabled: Bool { get async }
   
   /// Changes the `New Noun` notification state persisted to the disk.
   func setNewNounNotification(isEnabled: Bool) async
@@ -49,7 +42,6 @@ public class UserDefaultsSettingsStore: SettingsStore {
   
   private enum StoreKeys: String {
     case hasCompletedOnboarding
-    case isNounOClockNotificationEnabled
     case isNewNounNotificationEnabled
   }
   
@@ -78,32 +70,7 @@ public class UserDefaultsSettingsStore: SettingsStore {
   
   // MARK: - Notification
   
-  /// A persisted boolean indicates the noun OClock notification permission.
-  private var _isNounOClockNotificationEnabled: Bool {
-    get { userDefaults.bool(forKey: StoreKeys.isNounOClockNotificationEnabled.rawValue) }
-    set {
-      userDefaults.set(newValue, forKey: StoreKeys.isNounOClockNotificationEnabled.rawValue)
-      syncMessagingTopicsSubscription()
-    }
-  }
-  
-  /// A boolean indicates whether the noun OClock notification is authorized. The state check
-  /// validates whether the notification permission is allowed first for the app. Then check
-  /// if persistent state `_isNewNounNotificationEnabled` is enabled.
-  public var isNounOClockNotificationEnabled: Bool {
-    get async {
-      guard await isNotificationPermissionAuthorized else { return false }
-      return _isNounOClockNotificationEnabled
-    }
-  }
-  
-  public func setNounOClockNotification(isEnabled: Bool) async {
-    guard await isNotificationPermissionAuthorized else { return }
-    
-    _isNounOClockNotificationEnabled = isEnabled
-  }
-  
-  /// A persisted boolean indicates a new noun noticiation permission.
+  /// A persisted boolean indicates a new noun notification permission.
   private var _isNewNounNotificationEnabled: Bool {
     get { userDefaults.bool(forKey: StoreKeys.isNewNounNotificationEnabled.rawValue) }
     set {
@@ -131,18 +98,11 @@ public class UserDefaultsSettingsStore: SettingsStore {
   /// Lists the various available APNs topics.
   private enum MessagingTopic {
     static let auctionDidStart = "auction_did_start"
-    static let auctionWillEnd = "auction_will_end"
   }
   
   public func syncMessagingTopicsSubscription() {
     Task {
       do {
-        if await isNounOClockNotificationEnabled {
-          try await messaging.subscribe(toTopic: MessagingTopic.auctionWillEnd)
-        } else {
-          try await messaging.unsubscribe(fromTopic: MessagingTopic.auctionWillEnd)
-        }
-        
         if await isNewNounNotificationEnabled {
           try await messaging.subscribe(toTopic: MessagingTopic.auctionDidStart)
         } else {
@@ -167,8 +127,7 @@ public class UserDefaultsSettingsStore: SettingsStore {
   
   public func setAllNotifications(isEnabled: Bool) async {
     guard await isNotificationPermissionAuthorized else { return }
-    
+
     _isNewNounNotificationEnabled = isEnabled
-    _isNounOClockNotificationEnabled = isEnabled
   }
 }

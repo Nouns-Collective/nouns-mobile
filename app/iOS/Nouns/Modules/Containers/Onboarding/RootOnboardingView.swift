@@ -102,6 +102,9 @@ extension OnboardingView {
                 .onChange(of: proxy.size) { newSize in
                   self.size = newSize
                 }
+                .onAppear {
+                  self.size = proxy.size
+                }
             }
           }
 

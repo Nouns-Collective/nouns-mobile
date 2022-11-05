@@ -22,9 +22,7 @@ import NounsUI
 struct SettledAuctionInfoSheet: View {
   @StateObject var viewModel: ViewModel
   @Binding var isActivityPresented: Bool
-  
-  @State private var isSafariPresented = false
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       // The date when the auction was created.
@@ -60,12 +58,6 @@ struct SettledAuctionInfoSheet: View {
             .font(.custom(.medium, relativeTo: .footnote))
             .truncationMode(.middle)
             .padding(.leading, 4)
-        },
-        accessory: {
-          Image.mdArrowRight
-        },
-        action: {
-          isSafariPresented.toggle()
         }
       )
       
@@ -78,10 +70,5 @@ struct SettledAuctionInfoSheet: View {
     }
     .labelStyle(.titleAndIcon(spacing: 14))
     .padding(.bottom, 40)
-    .fullScreenCover(isPresented: $isSafariPresented) {
-      if let url = viewModel.nounProfileURL {
-        Safari(url: url)
-      }
-    }
   }
 }

@@ -44,6 +44,8 @@ struct SettingsView: View {
           destination: {
             AppIconStore()
           })
+
+        Spacer()
         
         // Share with friends
         DefaultButton(

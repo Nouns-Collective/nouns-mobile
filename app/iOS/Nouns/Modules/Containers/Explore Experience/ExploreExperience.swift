@@ -37,7 +37,7 @@ struct ExploreExperience: View {
           } else {
             LiveAuctionCardPlaceholder()
           }
-          
+
           SettledAuctionFeed(viewModel: viewModel)
         }
         .padding(.bottom, tabBarHeight)

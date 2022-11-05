@@ -36,9 +36,6 @@ struct TeamInfoSection: View {
     TeamMember(id: "_arslanc", image: R.image.arslanNoun)
   ]
 
-  /// A boolean to load the Nouns App website using a browser.
-  @State private var isNounsAppWebsitePresented = false
-
   /// The team member's Twitter profile to load in a browser.
   @State private var selectedTeamMember: TeamMember?
 
@@ -62,18 +59,6 @@ struct TeamInfoSection: View {
           }
         )
         .controlSize(.large)
-      }
-
-      SoftButton(
-        text: localize.websiteLink(),
-        smallAccessory: { Image.mdArrowRight },
-        action: { isNounsAppWebsitePresented.toggle() }
-      )
-      .controlSize(.large)
-    }
-    .fullScreenCover(isPresented: $isNounsAppWebsitePresented) {
-      if let url = URL(string: localize.websiteUrl()) {
-        Safari(url: url)
       }
     }
     .fullScreenCover(item: $selectedTeamMember, onDismiss: {

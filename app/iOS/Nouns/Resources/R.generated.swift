@@ -6456,7 +6456,7 @@ struct R: Rswift.Validatable {
     struct about {
       /// Value: About
       static let title = Rswift.StringResource(key: "title", tableName: "About", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Learn more at nouns.wtf
+      /// Value: Learn more
       static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "About", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Treasury
       static let treasury = Rswift.StringResource(key: "treasury", tableName: "About", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -6476,7 +6476,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "About", bundle: bundle, comment: "")
       }
 
-      /// Value: Learn more at nouns.wtf
+      /// Value: Learn more
       static func learnMore(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("learn.more", tableName: "About", bundle: hostingBundle, comment: "")
@@ -7421,7 +7421,7 @@ struct R: Rswift.Validatable {
     struct notificationPermission {
       /// Value: Do it later
       static let ignore = Rswift.StringResource(key: "ignore", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Every day a new Noun is randomly created as the previous Noun is auctioned off. Get notified when this glorious hour approaches!
+      /// Value: Every day a new Noun is randomly created as the previous Noun's day comes to an end. Get notified when this glorious hour approaches!
       static let body = Rswift.StringResource(key: "body", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Turn on notifications
       static let enable = Rswift.StringResource(key: "enable", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -7441,7 +7441,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("ignore", tableName: "NotificationPermission", bundle: bundle, comment: "")
       }
 
-      /// Value: Every day a new Noun is randomly created as the previous Noun is auctioned off. Get notified when this glorious hour approaches!
+      /// Value: Every day a new Noun is randomly created as the previous Noun's day comes to an end. Get notified when this glorious hour approaches!
       static func body(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("body", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
@@ -7485,14 +7485,14 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 3 localization keys.
     struct nounDAOInfo {
-      /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
+      /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The holder of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
       static let activityDescription = Rswift.StringResource(key: "activity.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Ownership of each Noun is determined through an auction. This page shows all bids submitted for Noun %@.
+      /// Value: This page shows all bids submitted for Noun %@.
       static let bidHistoryDescription = Rswift.StringResource(key: "bid.history.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: What is this?
       static let title = Rswift.StringResource(key: "title", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The owner of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
+      /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The holder of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
       static func activityDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           let format = NSLocalizedString("activity.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
@@ -7507,7 +7507,7 @@ struct R: Rswift.Validatable {
         return String(format: format, locale: locale, value1)
       }
 
-      /// Value: Ownership of each Noun is determined through an auction. This page shows all bids submitted for Noun %@.
+      /// Value: This page shows all bids submitted for Noun %@.
       static func bidHistoryDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           let format = NSLocalizedString("bid.history.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
@@ -8410,18 +8410,16 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.settings` struct is generated, and contains static references to 9 localization keys.
+    /// This `R.string.settings` struct is generated, and contains static references to 8 localization keys.
     struct settings {
       /// Value: App Icon
       static let appIconTitle = Rswift.StringResource(key: "app.icon.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: App Intro
       static let appIntroTitle = Rswift.StringResource(key: "app.intro.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
+      /// Value: Every day a new Noun is born. Get notified when this glorious hour approaches.
       static let notificationNote = Rswift.StringResource(key: "notification.note", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: New Noun
-      static let newNounNotificationTitle = Rswift.StringResource(key: "new-noun.notification.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Noun O’Clock
-      static let nounOclockNotificationTitle = Rswift.StringResource(key: "noun-oclock.notification.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      static let newNounNotificationTitle = Rswift.StringResource(key: "new-noun.notification.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Settings
       static let title = Rswift.StringResource(key: "title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Share with friends
@@ -8457,7 +8455,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: bundle, comment: "")
       }
 
-      /// Value: Every day a new Noun is released to auction, and as the timer runs down, bidding can get wild. Get notified when this glorious hour approaches.
+      /// Value: Every day a new Noun is born. Get notified when this glorious hour approaches.
       static func notificationNote(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("notification.note", tableName: "Settings", bundle: hostingBundle, comment: "")
@@ -8470,7 +8468,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("notification.note", tableName: "Settings", bundle: bundle, comment: "")
       }
 
-      /// Value: New Noun
+      /// Value: Noun O’Clock
       static func newNounNotificationTitle(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("new-noun.notification.title", tableName: "Settings", bundle: hostingBundle, comment: "")
@@ -8481,19 +8479,6 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("new-noun.notification.title", tableName: "Settings", bundle: bundle, comment: "")
-      }
-
-      /// Value: Noun O’Clock
-      static func nounOclockNotificationTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("noun-oclock.notification.title", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "noun-oclock.notification.title"
-        }
-
-        return NSLocalizedString("noun-oclock.notification.title", tableName: "Settings", bundle: bundle, comment: "")
       }
 
       /// Value: Settings
@@ -8569,10 +8554,10 @@ struct R: Rswift.Validatable {
       static let head = Rswift.StringResource(key: "head", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Learn more
       static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Live Auction
-      static let liveAuction = Rswift.StringResource(key: "live.auction", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: N/A
       static let notApplicable = Rswift.StringResource(key: "not.applicable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: New Noun!
+      static let liveAuction = Rswift.StringResource(key: "live.auction", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Remix
       static let remix = Rswift.StringResource(key: "remix", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Share
@@ -8694,19 +8679,6 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("learn.more", tableName: "Shared", bundle: bundle, comment: "")
       }
 
-      /// Value: Live Auction
-      static func liveAuction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("live.auction", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "live.auction"
-        }
-
-        return NSLocalizedString("live.auction", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
       /// Value: N/A
       static func notApplicable(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
@@ -8718,6 +8690,19 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("not.applicable", tableName: "Shared", bundle: bundle, comment: "")
+      }
+
+      /// Value: New Noun!
+      static func liveAuction(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("live.auction", tableName: "Shared", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
+          return "live.auction"
+        }
+
+        return NSLocalizedString("live.auction", tableName: "Shared", bundle: bundle, comment: "")
       }
 
       /// Value: Remix
@@ -8985,31 +8970,14 @@ struct R: Rswift.Validatable {
       fileprivate init() {}
     }
 
-    /// This `R.string.team` struct is generated, and contains static references to 5 localization keys.
+    /// This `R.string.team` struct is generated, and contains static references to 3 localization keys.
     struct team {
-      /// Value: Go to nounsapp.wtf
-      static let websiteLink = Rswift.StringResource(key: "website.link", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Made with 🖤
       static let title = Rswift.StringResource(key: "title", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: The Nouns app was created by a crew of frens from Nouns Collective.
       static let message = Rswift.StringResource(key: "message", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://nounsapp.wtf
-      static let websiteUrl = Rswift.StringResource(key: "website.url", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: https://twitter.com/%@
       static let twitterProfileUrl = Rswift.StringResource(key: "twitter.profile.url", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Go to nounsapp.wtf
-      static func websiteLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("website.link", tableName: "Team", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
-          return "website.link"
-        }
-
-        return NSLocalizedString("website.link", tableName: "Team", bundle: bundle, comment: "")
-      }
 
       /// Value: Made with 🖤
       static func title(preferredLanguages: [String]? = nil) -> String {
@@ -9035,19 +9003,6 @@ struct R: Rswift.Validatable {
         }
 
         return NSLocalizedString("message", tableName: "Team", bundle: bundle, comment: "")
-      }
-
-      /// Value: https://nounsapp.wtf
-      static func websiteUrl(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("website.url", tableName: "Team", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
-          return "website.url"
-        }
-
-        return NSLocalizedString("website.url", tableName: "Team", bundle: bundle, comment: "")
       }
 
       /// Value: https://twitter.com/%@

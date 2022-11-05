@@ -29,8 +29,6 @@ extension SettingsView {
     /// dialog is presented only on `notDetermined` state.
     @Published var isNotificationPermissionDialogPresented = false
     
-    @Published var isNounOClockNotificationEnabled = false
-    
     @Published var isNewNounNotificationEnabled = false
     
     /// Store where app configuration is persisted.
@@ -53,21 +51,6 @@ extension SettingsView {
     
     // MARK: - Notifications
     
-    func setNounOClockNotification(isEnabled: Bool) {
-      Task {
-        guard case .authorized = await messaging.authorizationStatus else {
-          await handleNotificationPermission()
-          return
-        }
-        
-        await settingsStore.setNounOClockNotification(isEnabled: isEnabled)
-        await refreshNotificationStates()
-        AppCore.shared.analytics.logEvent(
-          withEvent: AnalyticsEvent.Event.setNounOClockNotificationPermission,
-          parameters: ["enabled": isEnabled])
-      }
-    }
-    
     func setNewNounNotification(isEnabled: Bool) {
       Task {
         guard case .authorized = await messaging.authorizationStatus else {
@@ -85,7 +68,6 @@ extension SettingsView {
     
     @MainActor
     func refreshNotificationStates() async {
-      isNounOClockNotificationEnabled = await settingsStore.isNounOClockNotificationEnabled
       isNewNounNotificationEnabled = await settingsStore.isNewNounNotificationEnabled
     }
     

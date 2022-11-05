@@ -8,7 +8,7 @@
 
 "title" = "Wanna know when it’s Noun O’Clock?";
 
-"body" = "Every day a new Noun is randomly created as the previous Noun is auctioned off. Get notified when this glorious hour approaches!";
+"body" = "Every day a new Noun is randomly created as the previous Noun's day comes to an end. Get notified when this glorious hour approaches!";
 
 "enable" = "Turn on notifications";
 

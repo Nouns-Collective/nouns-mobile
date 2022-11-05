@@ -21,8 +21,6 @@ import NounsUI
 struct AboutNounsView: View {
   @Binding var isPresented: Bool
   
-  @State private var isSafariPresented = false
-  
   /// Holds a reference to the localized text.
   private let localize = R.string.aboutNouns.self
   
@@ -53,21 +51,8 @@ struct AboutNounsView: View {
       Text(localize.nounsWtfDescription())
         .font(.custom(.regular, relativeTo: .subheadline))
         .lineSpacing(7)
-      
-      // Opens `nouns.wtf`
-      SoftButton(
-        text: localize.learnMore(),
-        largeAccessory: { Image.web },
-        action: { isSafariPresented.toggle() })
-        .controlSize(.large)
-        .padding(.top, 25)
     }
     .padding(20)
-    .fullScreenCover(isPresented: $isSafariPresented) {
-      if let url = URL(string: R.string.shared.nounsWebsite()) {
-        Safari(url: url)
-      }
-    }
   }
 }
 

@@ -33,8 +33,6 @@ struct GovernanceInfoCard: View {
   
   /// The ENS domain of the noun's owner
   @State private var domain: String?
-  
-  @State private var isSafariPresented = false
 
   private let localize = R.string.nounDAOInfo.self
 
@@ -71,20 +69,9 @@ struct GovernanceInfoCard: View {
           .font(.custom(.regular, relativeTo: .subheadline))
           .lineSpacing(5)
       }
-
-      SoftButton(
-        text: R.string.shared.learnMore(),
-        smallAccessory: { Image.squareArrowDown },
-        action: { isSafariPresented.toggle() })
-        .controlSize(.large)
     }
     .padding()
     .padding(.bottom, 4)
-    .fullScreenCover(isPresented: $isSafariPresented) {
-      if let url = websiteURL {
-        Safari(url: url)
-      }
-    }
     .task {
       if let owner = owner {
         do {

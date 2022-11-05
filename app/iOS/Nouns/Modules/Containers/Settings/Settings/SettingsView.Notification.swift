@@ -30,15 +30,6 @@ extension SettingsView {
     var body: some View {
       VStack {
         ToggleButton(
-          localize.nounOclockNotificationTitle(),
-          icon: .speaker,
-          isOn: Binding(
-            get: { viewModel.isNounOClockNotificationEnabled },
-            set: { viewModel.setNounOClockNotification(isEnabled: $0) }
-          )
-        )
-        
-        ToggleButton(
           localize.newNounNotificationTitle(),
           icon: .speaker,
           isOn: Binding(

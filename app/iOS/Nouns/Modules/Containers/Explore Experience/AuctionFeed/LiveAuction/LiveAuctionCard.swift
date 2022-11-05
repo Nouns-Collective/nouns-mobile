@@ -24,7 +24,7 @@ import SpriteKit
 /// Display the auction of the day in real time.
 struct LiveAuctionCard: View {
   
-  static let liveAuctionMarqueeString = Array(repeating: R.string.shared.liveAuction().uppercased(), count: 10).joined(separator: "       ").appending("       ")
+  static let liveAuctionMarqueeString = Array(repeating: R.string.shared.liveAuction().uppercased(), count: 10).joined(separator: "        ").appending("        ")
   
   @ObservedObject var viewModel: ViewModel
   
@@ -99,7 +99,7 @@ struct LiveAuctionCard: View {
             }
           }
           .frame(maxWidth: .infinity, alignment: .leading)
-          
+
           // Displays Bid Status.
           CompoundLabel({
             SafeLabel(viewModel.lastBid, icon: Image.eth) },

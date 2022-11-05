@@ -24,7 +24,6 @@ extension SettledAuctionInfoSheet {
     @Published private(set) var winner: String
     @Published private(set) var birthdate: String
     @Published private(set) var winningBid: String
-    @Published private(set) var nounProfileURL: URL?
     @Published private(set) var showWinningBid: Bool
     @Published private(set) var showBirthdate: Bool
     @Published private(set) var governanceTitle: String
@@ -47,7 +46,6 @@ extension SettledAuctionInfoSheet {
       winner = auction.noun.owner.id
       let amount = EtherFormatter.eth(from: auction.amount)
       winningBid = amount ?? R.string.shared.notApplicable()
-      nounProfileURL = URL(string: "https://nouns.wtf/noun/\(auction.noun.id)")
       
       let startDate = Date(timeIntervalSince1970: auction.startTime)
       birthdate = localize.birthday(startDate.formatted(dateStyle: .long))

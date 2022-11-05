@@ -22,9 +22,7 @@ import Services
 /// Provides Proposal info.
 struct ProposalRow: View {
   @StateObject var viewModel: ViewModel
-  
-  @State private var isDescriptionPresented = false
-  
+
   var body: some View {
     PlainCell {
       VStack(alignment: .leading, spacing: 20) {
@@ -41,15 +39,6 @@ struct ProposalRow: View {
           .font(.custom(.medium, relativeTo: .subheadline))
         
       }.padding()
-    }
-    .onTapGesture {
-      viewModel.onPresent()
-      isDescriptionPresented.toggle()
-    }
-    .fullScreenCover(isPresented: $isDescriptionPresented) {
-      if let url = viewModel.proposalURL {
-        Safari(url: url)
-      }
     }
   }
 }
