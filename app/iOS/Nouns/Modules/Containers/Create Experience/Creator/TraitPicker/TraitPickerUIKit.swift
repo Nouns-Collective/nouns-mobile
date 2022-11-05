@@ -24,7 +24,7 @@ import Services
 /// A UIKit implementation of `NounCreator.TraitTypeGrid`. The SwiftUI implementation had a few performance issues
 /// when scrolling and when using the scroll view reader. While some of these bugs were fixed in iOS 15.4, some remain on older
 /// devices regardless of iOS version.
-final class TraitPickerUIKitView: UIViewRepresentable {
+struct TraitPickerUIKitView: UIViewRepresentable {
   typealias UIViewType = TraitPickerUIKit
   
   @ObservedObject var viewModel: NounCreator.ViewModel
