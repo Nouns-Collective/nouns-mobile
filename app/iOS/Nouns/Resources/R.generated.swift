@@ -7461,7 +7461,7 @@ struct R: Rswift.Validatable {
       static let title = Rswift.StringResource(key: "title", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health. What began as a singular word has since grown into a community and an ideology.  Madhappy is excited to partner with Nouns DAO to create an exclusive Fleece Crewneck and Hat Capsule.  Feel Together™
       static let description = Rswift.StringResource(key: "description", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://madhappy.com
+      /// Value: https://www.madhappy.com/collections/new-arrivals/
       static let website = Rswift.StringResource(key: "website", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
 
       /// Value: Learn more at Madhappy.com
@@ -7503,7 +7503,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("description", tableName: "Madhappy", bundle: bundle, comment: "")
       }
 
-      /// Value: https://madhappy.com
+      /// Value: https://www.madhappy.com/collections/new-arrivals/
       static func website(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("website", tableName: "Madhappy", bundle: hostingBundle, comment: "")
