@@ -23,6 +23,48 @@ extension TalkingNoun {
   
   final class Eyes: SKSpriteNode {
     
+    /// The speed at which the eyes should blink/move
+    enum Speed {
+      case normal
+      case fast
+      
+      fileprivate var pauseDuration: CGFloat {
+        switch self {
+        case .normal:
+          return 10
+        case .fast:
+          return 4
+        }
+      }
+      
+      fileprivate var pauseRange: CGFloat {
+        switch self {
+        case .normal:
+          return 4
+        case .fast:
+          return 2
+        }
+      }
+      
+      fileprivate var shortPauseDuration: CGFloat {
+        switch self {
+        case .normal:
+          return 3
+        case .fast:
+          return 2
+        }
+      }
+      
+      fileprivate var shortPauseRange: CGFloat {
+        switch self {
+        case .normal:
+          return 1
+        case .fast:
+          return 1
+        }
+      }
+    }
+    
     /// Various eyes states.
     enum State: String {
       case idle
@@ -39,9 +81,19 @@ extension TalkingNoun {
     let blinkTextures: [SKTexture]
     let shiftTextures: [SKTexture]
 
-    let blinkOnly: Bool
+    var blinkOnly: Bool {
+      didSet {
+        animateEyes()
+      }
+    }
+    
+    var animationSpeed: Speed {
+      didSet {
+        animateEyes()
+      }
+    }
 
-    init(seed: Seed, frameSize: CGSize, blinkOnly: Bool = true) {
+    init(seed: Seed, frameSize: CGSize, blinkOnly: Bool = true, speed: Speed = .normal) {
       guard let blinkTextures = Self.nounComposer.glasses[seed.glasses].textures["eyes-blink"] else {
         fatalError("Couldn't load eye blink textures \(Self.nounComposer.glasses[seed.glasses]).")
       }
@@ -64,6 +116,8 @@ extension TalkingNoun {
 
       self.blinkOnly = blinkOnly
       
+      self.animationSpeed = speed
+      
       guard let glassesFrame = Self.nounComposer.glasses[seed.glasses].textures["glasses-frame"]?.first else {
         fatalError("Couldn't load eye shift textures.")
       }
@@ -84,12 +138,14 @@ extension TalkingNoun {
     }
 
     private func animateEyes() {
+      removeAllActions()
+      
       guard action(forKey: State.idle.rawValue) == nil else {
         return
       }
       
-      let pause = SKAction.wait(forDuration: 10, withRange: 4)
-      let shortPause = SKAction.wait(forDuration: 3, withRange: 1)
+      let pause = SKAction.wait(forDuration: animationSpeed.pauseDuration, withRange: animationSpeed.pauseRange)
+      let shortPause = SKAction.wait(forDuration: animationSpeed.shortPauseDuration, withRange: animationSpeed.shortPauseRange)
       let blink = SKAction.run {
         self.eyesNode.run(SKAction.animate(with: self.blinkTextures, timePerFrame: 0.05))
       }

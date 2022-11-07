@@ -35,6 +35,9 @@ public protocol SettingsStore {
   /// Sync locally stored notification states with the cloud to subscribe
   /// or unsubscribe from related topics.
   func syncMessagingTopicsSubscription()
+  
+  /// A persisted boolean indicates whether the Noun Madhappy banner has been interacted with.
+  var hasOpenedMadhappyBannerWebsite: Bool { get set }
 }
 
 /// A class to store, read, and update UserDefault values
@@ -43,6 +46,7 @@ public class UserDefaultsSettingsStore: SettingsStore {
   private enum StoreKeys: String {
     case hasCompletedOnboarding
     case isNewNounNotificationEnabled
+    case hasOpenedMadhappyBannerWebsite
   }
   
   /// Reference to the APNs service.
@@ -129,5 +133,13 @@ public class UserDefaultsSettingsStore: SettingsStore {
     guard await isNotificationPermissionAuthorized else { return }
 
     _isNewNounNotificationEnabled = isEnabled
+  }
+  
+  // MARK: - Promotional
+  
+  /// A persisted boolean indicates whether the Noun Madhappy banner has been interacted with.
+  public var hasOpenedMadhappyBannerWebsite: Bool {
+    get { userDefaults.bool(forKey: StoreKeys.hasOpenedMadhappyBannerWebsite.rawValue) }
+    set { userDefaults.set(newValue, forKey: StoreKeys.hasOpenedMadhappyBannerWebsite.rawValue) }
   }
 }

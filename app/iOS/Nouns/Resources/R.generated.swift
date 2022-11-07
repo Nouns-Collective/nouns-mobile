@@ -210,7 +210,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 451 images.
+  /// This `R.image` struct is generated, and contains static references to 455 images.
   struct image {
     /// Image `AppIcon0_Preview`.
     static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
@@ -1080,6 +1080,14 @@ struct R: Rswift.Validatable {
     static let homeSliceChat = Rswift.ImageResource(bundle: R.hostingBundle, name: "home-slice-chat")
     /// Image `krish-noun`.
     static let krishNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "krish-noun")
+    /// Image `madhappy-noun1`.
+    static let madhappyNoun1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun1")
+    /// Image `madhappy-noun2`.
+    static let madhappyNoun2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun2")
+    /// Image `madhappy-noun3`.
+    static let madhappyNoun3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun3")
+    /// Image `madhappy-noun4`.
+    static let madhappyNoun4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun4")
     /// Image `matt-noun`.
     static let mattNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "matt-noun")
     /// Image `mo-noun`.
@@ -4154,6 +4162,34 @@ struct R: Rswift.Validatable {
     #endif
 
     #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "madhappy-noun1", bundle: ..., traitCollection: ...)`
+    static func madhappyNoun1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.madhappyNoun1, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "madhappy-noun2", bundle: ..., traitCollection: ...)`
+    static func madhappyNoun2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.madhappyNoun2, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "madhappy-noun3", bundle: ..., traitCollection: ...)`
+    static func madhappyNoun3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.madhappyNoun3, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "madhappy-noun4", bundle: ..., traitCollection: ...)`
+    static func madhappyNoun4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.madhappyNoun4, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "matt-noun", bundle: ..., traitCollection: ...)`
     static func mattNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.mattNoun, compatibleWith: traitCollection)
@@ -6399,7 +6435,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 30 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 31 localization tables.
   struct string {
     /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
     struct aboutNouns {
@@ -7414,6 +7450,72 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.localizable` struct is generated, and contains static references to 0 localization keys.
     struct localizable {
+      fileprivate init() {}
+    }
+
+    /// This `R.string.madhappy` struct is generated, and contains static references to 4 localization keys.
+    struct madhappy {
+      /// Value: Learn more at Madhappy.com
+      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Madhappy for Nouns
+      static let title = Rswift.StringResource(key: "title", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health. What began as a singular word has since grown into a community and an ideology.  Madhappy is excited to partner with Nouns DAO to create an exclusive Fleece Crewneck and Hat Capsule.  Feel Together™
+      static let description = Rswift.StringResource(key: "description", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// Value: https://madhappy.com
+      static let website = Rswift.StringResource(key: "website", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
+
+      /// Value: Learn more at Madhappy.com
+      static func learnMore(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("learn.more", tableName: "Madhappy", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
+          return "learn.more"
+        }
+
+        return NSLocalizedString("learn.more", tableName: "Madhappy", bundle: bundle, comment: "")
+      }
+
+      /// Value: Madhappy for Nouns
+      static func title(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("title", tableName: "Madhappy", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
+          return "title"
+        }
+
+        return NSLocalizedString("title", tableName: "Madhappy", bundle: bundle, comment: "")
+      }
+
+      /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health. What began as a singular word has since grown into a community and an ideology.  Madhappy is excited to partner with Nouns DAO to create an exclusive Fleece Crewneck and Hat Capsule.  Feel Together™
+      static func description(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("description", tableName: "Madhappy", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
+          return "description"
+        }
+
+        return NSLocalizedString("description", tableName: "Madhappy", bundle: bundle, comment: "")
+      }
+
+      /// Value: https://madhappy.com
+      static func website(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("website", tableName: "Madhappy", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
+          return "website"
+        }
+
+        return NSLocalizedString("website", tableName: "Madhappy", bundle: bundle, comment: "")
+      }
+
       fileprivate init() {}
     }
 
