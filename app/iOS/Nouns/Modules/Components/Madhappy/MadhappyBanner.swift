@@ -56,7 +56,7 @@ struct MadhappyBanner: View {
     fileprivate static let maxOffset: CGFloat = -30
     
     private let madhappyNoun1: TalkingNoun = {
-      let talkingNoun = TalkingNoun(seed: .init(background: 4, glasses: 17, head: 76, body: 6, accessory: 11))
+      let talkingNoun = TalkingNoun(seed: .init(background: 4, glasses: 3, head: 76, body: 6, accessory: 11))
       talkingNoun.eyes.animationSpeed = .fast
       talkingNoun.eyes.blinkOnly = false
       return talkingNoun
