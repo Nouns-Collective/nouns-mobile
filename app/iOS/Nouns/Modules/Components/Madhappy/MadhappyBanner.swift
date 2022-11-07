@@ -23,9 +23,7 @@ struct MadhappyBanner: View {
   
   @Binding var isBottomSheetPresented: Bool
   
-  static func shouldShowBanner(currentDate: Date) -> Bool {
-    guard !AppCore.shared.settingsStore.hasOpenedMadhappyBannerWebsite else { return false }
-    
+  static func shouldShowBanner(currentDate: Date) -> Bool {    
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = .init(identifier: "America/Los_Angeles") ?? .current
             
@@ -48,6 +46,7 @@ struct MadhappyBanner: View {
       BannerView(now: context.date)
     }
     .onTapGesture {
+      AppCore.shared.analytics.logEvent(withEvent: .openMadhappyAd, parameters: nil)
       isBottomSheetPresented.toggle()
     }
   }

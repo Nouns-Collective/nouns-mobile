@@ -44,5 +44,8 @@ public enum AnalyticsEvent {
     case setNewNounNotificationPermission = "set_new_noun_notification_permission"
     case setAlternateAppIcon = "set_alternate_app_icon"
     case openAppFromWidget = "open_app_from_widget"
+    
+    case openMadhappyAd = "open_madhappy_ad"
+    case openMadhappyWebsite = "open_madhappy_website"
   }
 }

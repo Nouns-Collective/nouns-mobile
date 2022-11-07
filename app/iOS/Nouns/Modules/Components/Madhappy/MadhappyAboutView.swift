@@ -58,7 +58,7 @@ struct MadhappyAboutView: View {
         text: R.string.madhappy.learnMore(),
         largeAccessory: { Image.web },
         action: {
-          AppCore.shared.settingsStore.hasOpenedMadhappyBannerWebsite = true
+          AppCore.shared.analytics.logEvent(withEvent: .openMadhappyWebsite, parameters: nil)
           isSafariPresented.toggle()
         })
         .controlSize(.large)
