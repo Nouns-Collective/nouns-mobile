@@ -83,13 +83,13 @@ extension TalkingNoun {
 
     var blinkOnly: Bool {
       didSet {
-        animateEyes()
+        initializeEyeAnimations()
       }
     }
     
     var animationSpeed: Speed {
       didSet {
-        animateEyes()
+        initializeEyeAnimations()
       }
     }
 
@@ -130,14 +130,14 @@ extension TalkingNoun {
       eyesNode.size = frameSize
       addChild(eyesNode)
       
-      animateEyes()
+      initializeEyeAnimations()
     }
     
     required init?(coder aDecoder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
     }
 
-    private func animateEyes() {
+    private func initializeEyeAnimations() {
       removeAllActions()
       
       guard action(forKey: State.idle.rawValue) == nil else {

@@ -45,7 +45,7 @@ public enum AnalyticsEvent {
     case setAlternateAppIcon = "set_alternate_app_icon"
     case openAppFromWidget = "open_app_from_widget"
     
-    case openMadhappyAd = "open_madhappy_ad"
+    case viewMadhappyAd = "view_madhappy_ad"
     case openMadhappyWebsite = "open_madhappy_website"
   }
 }

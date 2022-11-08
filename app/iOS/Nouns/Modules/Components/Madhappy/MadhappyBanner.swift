@@ -46,12 +46,16 @@ struct MadhappyBanner: View {
       BannerView(now: context.date)
     }
     .onTapGesture {
-      AppCore.shared.analytics.logEvent(withEvent: .openMadhappyAd, parameters: nil)
+      AppCore.shared.analytics.logEvent(withEvent: .viewMadhappyAd, parameters: nil)
       isBottomSheetPresented.toggle()
     }
   }
   
   struct BannerView: View {
+    
+    private func randomTime() -> Double {
+      return Double.random(in: 0...1)
+    }
     
     fileprivate static let maxOffset: CGFloat = -30
     
@@ -83,40 +87,32 @@ struct MadhappyBanner: View {
       return talkingNoun
     }()
     
+    private let nouns: [TalkingNoun]
+    
     @State private var isNounPresented: Bool = true
     
     @State private var presentedNoun: Int = 0
     
     let now: Date
     
+    init(now: Date) {
+      self.now = now
+      self.nouns = [madhappyNoun1, madhappyNoun2, madhappyNoun3, madhappyNoun4]
+    }
+    
     var body: some View {
       ZStack(alignment: .topLeading) {
         HStack {
-          SpriteView(scene: madhappyNoun1, options: [.allowsTransparency])
-            .frame(width: 45, height: 45)
-            .offset(y: presentedNoun == 0 ? MadhappyBanner.BannerView.maxOffset : 0)
-            .animation(.spring(), value: presentedNoun)
-          
-          Spacer()
-          
-          SpriteView(scene: madhappyNoun2, options: [.allowsTransparency])
-            .frame(width: 45, height: 45)
-            .offset(y: presentedNoun == 1 ? MadhappyBanner.BannerView.maxOffset : 0)
-            .animation(.spring(), value: presentedNoun)
-          
-          Spacer()
-          
-          SpriteView(scene: madhappyNoun3, options: [.allowsTransparency])
-            .frame(width: 45, height: 45)
-            .offset(y: presentedNoun == 2 ? MadhappyBanner.BannerView.maxOffset : 0)
-            .animation(.spring(), value: presentedNoun)
-          
-          Spacer()
-          
-          SpriteView(scene: madhappyNoun4, options: [.allowsTransparency])
-            .frame(width: 45, height: 45)
-            .offset(y: presentedNoun == 3 ? MadhappyBanner.BannerView.maxOffset : 0)
-            .animation(.spring(), value: presentedNoun)
+          ForEach(0..<nouns.count, id: \.self) { index in
+            SpriteView(scene: nouns[index], options: [.allowsTransparency])
+              .frame(width: 45, height: 45)
+              .offset(y: presentedNoun == index ? MadhappyBanner.BannerView.maxOffset : 0)
+              .animation(.spring(), value: presentedNoun)
+            
+            if index < (nouns.count - 1) {
+              Spacer()
+            }
+          }
         }
         .padding(.horizontal)
         
@@ -137,12 +133,14 @@ struct MadhappyBanner: View {
         }
       }
       .onChange(of: now) { _ in
-        toggleNoun()
+        DispatchQueue.main.asyncAfter(deadline: .now() + randomTime()) {
+          self.toggleNoun()
+        }
       }
     }
     
     private func toggleNoun() {
-      presentedNoun = Int.random(in: 0..<4)
+      presentedNoun = Int.random(in: 0..<nouns.count)
     }
   }
 }

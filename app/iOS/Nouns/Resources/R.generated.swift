@@ -7455,7 +7455,7 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.madhappy` struct is generated, and contains static references to 4 localization keys.
     struct madhappy {
-      /// Value: Available now on Madhappy.com
+      /// Value: Available now
       static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Madhappy for Nouns
       static let title = Rswift.StringResource(key: "title", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
@@ -7464,7 +7464,7 @@ struct R: Rswift.Validatable {
       /// Value: https://www.madhappy.com/collections/new-arrivals/
       static let website = Rswift.StringResource(key: "website", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Available now on Madhappy.com
+      /// Value: Available now
       static func learnMore(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("learn.more", tableName: "Madhappy", bundle: hostingBundle, comment: "")

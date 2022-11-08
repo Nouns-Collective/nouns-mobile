@@ -27,10 +27,10 @@ struct MadhappyAboutView: View {
       
       HStack(alignment: .top) {
         HStack {
-          Image(R.image.madhappyNoun1.name)
-          Image(R.image.madhappyNoun2.name)
-          Image(R.image.madhappyNoun3.name)
-          Image(R.image.madhappyNoun4.name)
+          NounPuzzle(seed: .init(background: 4, glasses: 3, head: 76, body: 6, accessory: 11))
+          NounPuzzle(seed: .init(background: 6, glasses: 7, head: 184, body: 22, accessory: 31))
+          NounPuzzle(seed: .init(background: 11, glasses: 14, head: 87, body: 14, accessory: 31))
+          NounPuzzle(seed: .init(background: 2, glasses: 7, head: 174, body: 2, accessory: 19))
         }
 
         Spacer()
@@ -56,7 +56,7 @@ struct MadhappyAboutView: View {
       // Opens `https://madhappy.com`
       SoftButton(
         text: R.string.madhappy.learnMore(),
-        largeAccessory: { Image.web },
+        largeAccessory: { Image.smArrowOut },
         action: {
           AppCore.shared.analytics.logEvent(withEvent: .openMadhappyWebsite, parameters: nil)
           isSafariPresented.toggle()
