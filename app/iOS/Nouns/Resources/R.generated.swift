@@ -210,7 +210,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 455 images.
+  /// This `R.image` struct is generated, and contains static references to 451 images.
   struct image {
     /// Image `AppIcon0_Preview`.
     static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
@@ -1080,14 +1080,6 @@ struct R: Rswift.Validatable {
     static let homeSliceChat = Rswift.ImageResource(bundle: R.hostingBundle, name: "home-slice-chat")
     /// Image `krish-noun`.
     static let krishNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "krish-noun")
-    /// Image `madhappy-noun1`.
-    static let madhappyNoun1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun1")
-    /// Image `madhappy-noun2`.
-    static let madhappyNoun2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun2")
-    /// Image `madhappy-noun3`.
-    static let madhappyNoun3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun3")
-    /// Image `madhappy-noun4`.
-    static let madhappyNoun4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "madhappy-noun4")
     /// Image `matt-noun`.
     static let mattNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "matt-noun")
     /// Image `mo-noun`.
@@ -4158,34 +4150,6 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "krish-noun", bundle: ..., traitCollection: ...)`
     static func krishNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.krishNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "madhappy-noun1", bundle: ..., traitCollection: ...)`
-    static func madhappyNoun1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.madhappyNoun1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "madhappy-noun2", bundle: ..., traitCollection: ...)`
-    static func madhappyNoun2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.madhappyNoun2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "madhappy-noun3", bundle: ..., traitCollection: ...)`
-    static func madhappyNoun3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.madhappyNoun3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "madhappy-noun4", bundle: ..., traitCollection: ...)`
-    static func madhappyNoun4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.madhappyNoun4, compatibleWith: traitCollection)
     }
     #endif
 
