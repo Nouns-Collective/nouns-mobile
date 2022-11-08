@@ -7455,16 +7455,16 @@ struct R: Rswift.Validatable {
 
     /// This `R.string.madhappy` struct is generated, and contains static references to 4 localization keys.
     struct madhappy {
-      /// Value: Learn more at Madhappy.com
+      /// Value: Available now on Madhappy.com
       static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: Madhappy for Nouns
       static let title = Rswift.StringResource(key: "title", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health. What began as a singular word has since grown into a community and an ideology.  Madhappy is excited to partner with Nouns DAO to create an exclusive Fleece Crewneck and Hat Capsule.  Feel Together™
+      /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health through products, content, experiences and philanthropy.  Madhappy is excited to partner with Nouns DAO to create an exclusive capsule featuring our Fleece Crewneck and Dad Hat. A portion of proceeds will benefit The Madhappy Foundation™, our non-profit organization with a mission to advance global mental health efforts.  Feel Together™
       static let description = Rswift.StringResource(key: "description", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
       /// Value: https://www.madhappy.com/collections/new-arrivals/
       static let website = Rswift.StringResource(key: "website", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
 
-      /// Value: Learn more at Madhappy.com
+      /// Value: Available now on Madhappy.com
       static func learnMore(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("learn.more", tableName: "Madhappy", bundle: hostingBundle, comment: "")
@@ -7490,7 +7490,7 @@ struct R: Rswift.Validatable {
         return NSLocalizedString("title", tableName: "Madhappy", bundle: bundle, comment: "")
       }
 
-      /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health. What began as a singular word has since grown into a community and an ideology.  Madhappy is excited to partner with Nouns DAO to create an exclusive Fleece Crewneck and Hat Capsule.  Feel Together™
+      /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health through products, content, experiences and philanthropy.  Madhappy is excited to partner with Nouns DAO to create an exclusive capsule featuring our Fleece Crewneck and Dad Hat. A portion of proceeds will benefit The Madhappy Foundation™, our non-profit organization with a mission to advance global mental health efforts.  Feel Together™
       static func description(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
           return NSLocalizedString("description", tableName: "Madhappy", bundle: hostingBundle, comment: "")

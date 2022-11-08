@@ -26,9 +26,7 @@ struct AboutView: View {
 
   @State private var isAboutNounsPresented = false
   @State private var isSettingsPresented = false
-  
-  @State private var isMadhappySheetPresented = false
-  
+    
   /// Holds a reference to the localized text.
   private let localize = R.string.about.self
   
@@ -36,13 +34,6 @@ struct AboutView: View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 20) {
-          if MadhappyBanner.shouldShowBanner(currentDate: Date()) {
-            MadhappyBanner(isBottomSheetPresented: $isMadhappySheetPresented)
-            
-            Divider()
-              .overlay(.componentNounsBlack)
-          }
-          
           GovernanceInfoSection(isAboutNounsPresented: $isAboutNounsPresented)
           ProposalsInfoSection()
           SpacesInfoSection()
@@ -75,9 +66,6 @@ struct AboutView: View {
       .background(Gradient.lemonDrop)
       .bottomSheet(isPresented: $isAboutNounsPresented, content: {
         AboutNounsView(isPresented: $isAboutNounsPresented)
-      })
-      .bottomSheet(isPresented: $isMadhappySheetPresented, content: {
-        MadhappyAboutView(isPresented: $isMadhappySheetPresented)
       })
       .onAppear {
         viewModel.onAppear()

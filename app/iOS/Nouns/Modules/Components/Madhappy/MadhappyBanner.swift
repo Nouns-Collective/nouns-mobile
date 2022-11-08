@@ -23,21 +23,21 @@ struct MadhappyBanner: View {
   
   @Binding var isBottomSheetPresented: Bool
   
-  static func shouldShowBanner(currentDate: Date) -> Bool {    
+  static func shouldShowBanner(currentDate: Date) -> Bool {
     var calendar = Calendar(identifier: .gregorian)
     calendar.timeZone = .init(identifier: "America/Los_Angeles") ?? .current
-            
+
     // November 28, 2022 - 9:00 AM PDT
     let startDateComponents = DateComponents(year: 2022, month: 11, day: 28, hour: 9, minute: 0, second: 0)
-    
+
     // November 29, 2022 - 9:00 AM PDT
     let endDateComponents = DateComponents(year: 2022, month: 11, day: 29, hour: 9, minute: 0, second: 0)
-    
+
     guard let startDate = calendar.date(from: startDateComponents),
           let endDate = calendar.date(from: endDateComponents) else {
       return false
     }
-    
+
     return (startDate...endDate).contains(currentDate)
   }
     

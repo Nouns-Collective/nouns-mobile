@@ -41,8 +41,8 @@ public struct SoftButtonStyle: ButtonStyle {
     configuration
       .label
       .frame(maxWidth: width)
-      .multilineTextAlignment(.center)
-      .lineLimit(1)
+      .multilineTextAlignment(.leading)
+      .lineLimit(nil)
       .foregroundColor(isEnabled ? Color.black : Color.black.opacity(0.4))
       .overlay {
         RoundedRectangle(cornerRadius: 8)
