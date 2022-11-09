@@ -43,11 +43,7 @@ struct MadhappyBanner: View {
     
   var body: some View {
     TimelineView(.periodic(from: .now, by: 2)) { context in
-      BannerView(now: context.date)
-    }
-    .onTapGesture {
-      AppCore.shared.analytics.logEvent(withEvent: .viewMadhappyAd, parameters: nil)
-      isBottomSheetPresented.toggle()
+      BannerView(now: context.date, isBottomSheetPresented: $isBottomSheetPresented)
     }
   }
   
@@ -93,10 +89,13 @@ struct MadhappyBanner: View {
     
     @State private var presentedNoun: Int = 0
     
+    @Binding var isBottomSheetPresented: Bool
+    
     let now: Date
     
-    init(now: Date) {
+    init(now: Date, isBottomSheetPresented: Binding<Bool>) {
       self.now = now
+      self._isBottomSheetPresented = isBottomSheetPresented
       self.nouns = [madhappyNoun1, madhappyNoun2, madhappyNoun3, madhappyNoun4]
     }
     
@@ -116,21 +115,14 @@ struct MadhappyBanner: View {
         }
         .padding(.horizontal)
         
-        PlainCell {
-          HStack(alignment: .center) {
-            Text(R.string.madhappy.title())
-              .font(.custom(.medium, relativeTo: .subheadline))
-            
-            Spacer()
-            
-            Image.smArrowOut
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(width: 16, height: 28, alignment: .center)
-            
-          }
-          .padding()
-        }
+        OutlineButton(
+          text: R.string.madhappy.title(),
+          smallAccessory: { Image.smArrowOut },
+          action: {
+            AppCore.shared.analytics.logEvent(withEvent: .viewMadhappyAd, parameters: nil)
+            isBottomSheetPresented.toggle()
+          })
+          .controlSize(.large)
       }
       .onChange(of: now) { _ in
         DispatchQueue.main.asyncAfter(deadline: .now() + randomTime()) {
