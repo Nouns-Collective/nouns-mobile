@@ -58,7 +58,7 @@ final class TalkingNoun: SKScene {
     fatalError("init(coder:) has not been implemented")
   }
   
-  private lazy var head: Trait? = {
+  lazy var head: Trait? = {
     let headAsset = nounComposer.heads[seed.head].assetImage
     // For the time being, we are not adding mouths on top of the head but instead just using the head itself as is
     // The heads without mouths are only needed for the play experience or whenever we want to animate the mouth
@@ -66,21 +66,21 @@ final class TalkingNoun: SKScene {
     return head
   }()
   
-  private lazy var body: Trait? = {
+  lazy var body: Trait? = {
     let bodyAsset = nounComposer.bodies[seed.body].assetImage
     let body = Trait(nounTraitName: bodyAsset)
     return body
   }()
   
-  private lazy var accessory: Trait? = {
+  lazy var accessory: Trait? = {
     let accessoryAsset = nounComposer.accessories[seed.accessory].assetImage
     let accessory = Trait(nounTraitName: accessoryAsset)
     return accessory
   }()
 
-  private lazy var eyes = Eyes(seed: seed, frameSize: Self.traitSize)
+  lazy var eyes = Eyes(seed: seed, frameSize: Self.traitSize)
   
-  private lazy var mouth = Mouth(seed: seed)
+  lazy var mouth = Mouth(seed: seed)
   
   override func didMove(to view: SKView) {
     setUpInitialState()
