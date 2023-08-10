@@ -103,7 +103,7 @@ public class OfflineNounComposer: NounComposer {
   public static func `default`() -> NounComposer {
     do {
       guard let url = Bundle.module.url(
-        forResource: "nouns-traits-layers_v2",
+        forResource: "nouns-traits-layers_v3",
         withExtension: "json"
       ) else {
         throw URLError(.badURL)
