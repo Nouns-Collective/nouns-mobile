@@ -21,12 +21,12 @@ import XCTest
 final class CloudConfigurationTests: XCTestCase {
     
     func testCloudConfigurationNounQueryURL() {
-        let expectedURL = URL(string: "https://api.goldsky.com/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.1.0/gn")
+        let expectedURL = URL(string: "https://api.goldsky.com/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.2.0/gn")
         XCTAssertEqual(CloudConfiguration.Nouns.query.url, expectedURL)
     }
     
     func testCloudConfigurationNounSubcriptionURL() {
-        let expectedURL = URL(string: "wss://api.goldsky.com/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.1.0/gn")
+        let expectedURL = URL(string: "wss://api.goldsky.com/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.2.0/gn")
         XCTAssertEqual(CloudConfiguration.Nouns.subscription.url, expectedURL)
     }
     
