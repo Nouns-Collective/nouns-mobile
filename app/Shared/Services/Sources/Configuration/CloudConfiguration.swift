@@ -41,7 +41,7 @@ extension CloudConfiguration.Nouns {
             var components = URLComponents()
             components.scheme = "https"
             components.host = "api.goldsky.com"
-            components.path = "/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.1.0/gn"
+            components.path = "/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.2.0/gn"
             return components.url
             
             
@@ -49,7 +49,7 @@ extension CloudConfiguration.Nouns {
             var components = URLComponents()
             components.scheme = "https"
             components.host = "api.goldsky.com"
-            components.path = "/api/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.1.0/gn"
+            components.path = "/api/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.2.0/gn"
             return components.url
         }
     }
