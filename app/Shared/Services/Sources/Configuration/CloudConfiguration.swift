@@ -40,15 +40,16 @@ extension CloudConfiguration.Nouns {
         case .query:
             var components = URLComponents()
             components.scheme = "https"
-            components.host = "api.thegraph.com"
-            components.path = "/subgraphs/name/nounsdao/nouns-subgraph"
+            components.host = "api.goldsky.com"
+            components.path = "/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.2.0/gn"
             return components.url
+            
             
         case .subscription:
             var components = URLComponents()
             components.scheme = "https"
-            components.host = "api.thegraph.com"
-            components.path = "/subgraphs/name/nounsdao/nouns-subgraph"
+            components.host = "api.goldsky.com"
+            components.path = "/api/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/0.2.0/gn"
             return components.url
         }
     }
