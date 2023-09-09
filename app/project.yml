@@ -31,7 +31,7 @@ packages:
 
 settings:
   base:
-    MARKETING_VERSION: 1.4.0
+    MARKETING_VERSION: 1.5.0
     CURRENT_PROJECT_VERSION: 1
     DEVELOPMENT_TEAM: 9XX3PA6349
     VERSIONING_SYSTEM: apple-generic
