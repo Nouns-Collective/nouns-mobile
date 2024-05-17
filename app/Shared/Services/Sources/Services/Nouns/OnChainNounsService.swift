@@ -115,7 +115,7 @@ public class TheGraphOnChainNouns: OnChainNounsService {
   
   /// NounsDAOExecutor contract address.
   private enum Address {
-    static let ethDAOExecutor = "0x0BC3807Ec262cB779b38D65b38158acC3bfedE10"
+    static let ethDAOExecutor = "0xb1a32FC9F9D8b2cf86C068Cae13108809547ef71"
     static let stEthDAOExecutor = "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"
   }
   
