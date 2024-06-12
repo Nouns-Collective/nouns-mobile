@@ -23,7 +23,7 @@ struct TeamInfoSection: View {
 
   struct TeamMember: Identifiable {
     let id: String
-    let image: ImageResource
+    let image: Rswift.ImageResource
   }
 
   let teamMembers = [
