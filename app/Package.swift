@@ -22,7 +22,7 @@ let package = Package(
     name: "BuildTools",
     dependencies: [
         .package(url: "https://github.com/Realm/SwiftLint", from: "0.44.0"),
-        .package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.31.0"),
+        .package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.42.0"),
         .package(url: "https://github.com/mac-cain13/R.swift.git", from: "5.4.0"),
     ]
 )
