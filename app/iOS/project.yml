@@ -29,6 +29,7 @@ targets:
         aps-environment: development
     dependencies:
       - package: Rswift
+        product: RswiftLibrary
       - package: NounsUI
       - package: Services
       - target: EverydayNounExtension

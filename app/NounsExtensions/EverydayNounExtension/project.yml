@@ -36,3 +36,4 @@ targets:
       - package: NounsUI
       - package: Services
       - package: Rswift
+        product: RswiftLibrary

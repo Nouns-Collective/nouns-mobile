@@ -17,13 +17,13 @@
 
 import SwiftUI
 import NounsUI
-import Rswift
+import RswiftResources
 
 struct TeamInfoSection: View {
 
   struct TeamMember: Identifiable {
     let id: String
-    let image: ImageResource
+    let image: RswiftResources.ImageResource
   }
 
   let teamMembers = [

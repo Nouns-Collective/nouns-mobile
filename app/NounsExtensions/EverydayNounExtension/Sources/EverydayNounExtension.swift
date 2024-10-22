@@ -85,7 +85,7 @@ struct EverydayNounEntryView: View {
 @main
 struct EverydayNounExtension: Widget {
   let kind: String = "EverydayNoun"
-  
+
   var body: some WidgetConfiguration {
     StaticConfiguration(kind: kind, provider: Provider()) { entry in
       EverydayNounEntryView(entry: entry)
