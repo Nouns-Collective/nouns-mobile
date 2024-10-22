@@ -194,8 +194,6 @@ public struct ScrollViewProxy {
   fileprivate var coordinator = Coordinator()
   fileprivate var space: UUID = UUID()
   
-  fileprivate init() {}
-  
   /// A publisher that publishes changes to the scroll views offset
   public fileprivate(set) var offset: OffsetPublisher = Just(.zero).eraseToAnyPublisher()
   

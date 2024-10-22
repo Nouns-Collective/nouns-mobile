@@ -44,7 +44,6 @@ extension CloudConfiguration.Nouns {
             components.path = "/api/public/project_cldf2o9pqagp43svvbk5u3kmo/subgraphs/nouns/prod/gn"
             return components.url
             
-            
         case .subscription:
             var components = URLComponents()
             components.scheme = "https"
@@ -82,4 +81,3 @@ extension CloudConfiguration.Infura {
         }
     }
 }
-

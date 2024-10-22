@@ -23,7 +23,7 @@ extension TalkingNoun {
   
   final class Mouth: SKSpriteNode {
     
-    private class var nounComposer: NounComposer {
+    private static var nounComposer: NounComposer {
       AppCore.shared.nounComposer
     }
     

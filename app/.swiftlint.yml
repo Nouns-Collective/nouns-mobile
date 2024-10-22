@@ -1,4 +1,5 @@
 disabled_rules:
+  - attributes
   - line_length
   - file_length
   - function_body_length
@@ -10,10 +11,11 @@ disabled_rules:
   - function_parameter_count
   - trailing_comma
   - nesting
+  - todo
+  - void_function_in_ternary
 
 opt_in_rules:
   - array_init
-  - attributes
   - closure_end_indentation  
   - closure_spacing
   - contains_over_first_not_nil
@@ -43,5 +45,5 @@ excluded:
   - shared/Services/Tests
   - shared/Services/Sources/GraphQL/Internal
   - "**/*/.build"
-  - "*.generated.swift"
+  - "**/*/*.generated.swift"
   - DerivedData

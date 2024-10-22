@@ -19,7 +19,7 @@ import SwiftUI
 
 /// The button style configuration for the StandardButton
 public struct OutlineButtonStyle: ButtonStyle {
-  @Environment (\.controlSize) var controlSize: ControlSize
+  @Environment(\.controlSize) var controlSize: ControlSize
   
   /// The width of the button, determined by the controlSize environment property
   /// The two options are either an automatic width where it expands to fit it's contents (nil)

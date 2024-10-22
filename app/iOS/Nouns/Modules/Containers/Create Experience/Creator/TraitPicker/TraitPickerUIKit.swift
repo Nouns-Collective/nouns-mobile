@@ -255,7 +255,7 @@ extension TraitPickerUIKit: UICollectionViewDelegate, UICollectionViewDataSource
   }
 }
 
-fileprivate final class TraitItemCell: UICollectionViewCell {
+private final class TraitItemCell: UICollectionViewCell {
   
   static let reuseIdentifier = "traitItemCell"
   

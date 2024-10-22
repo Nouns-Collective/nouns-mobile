@@ -70,8 +70,8 @@ final class LiveAuctionStateDidChangeTests: XCTestCase {
   }
   
   /// Asserts whether the short-poll mechanism is not stopped after
-  /// the failure of the live auction retrieval.
-  func testLiveAuctionStateDidChangeContinueAfterAuctionFetchFail() throws  {
+  /// the failure of the live auction retrievals.
+  func testLiveAuctionStateDidChangeContinueAfterAuctionFetchFail() throws {
     
     enum MockDataURLResponder: MockURLResponder {
       /// States the current fake auction state that should be state to the network API.

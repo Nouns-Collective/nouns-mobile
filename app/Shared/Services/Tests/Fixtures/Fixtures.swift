@@ -29,5 +29,3 @@ final class Fixtures {
         return data
     }
 }
-
-

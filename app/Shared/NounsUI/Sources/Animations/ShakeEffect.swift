@@ -57,7 +57,7 @@ private struct ShakeEffect: AnimatableModifier {
   }
   
   private var xOffset: CGFloat {
-    axis.contains(.horizontal) ? sin(shakeNumber * .pi * 2 + centeredPhaseOffset) * offset - centeredOffset: 0
+    axis.contains(.horizontal) ? sin(shakeNumber * .pi * 2 + centeredPhaseOffset) * offset - centeredOffset : 0
   }
   
   private var yOffset: CGFloat {

@@ -179,7 +179,7 @@ internal class ShareActivityTextSource: NSObject, UIActivityItemSource {
     switch activityType {
     case UIActivity.ActivityType.mail:
       return nil
-    case .none, .some(_):
+    case .none, .some:
       return message
     }
   }
