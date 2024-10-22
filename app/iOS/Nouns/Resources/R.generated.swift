@@ -4,9143 +4,3331 @@
 //
 
 import Foundation
-import Rswift
+import RswiftResources
 import UIKit
 
-/// This `R` struct is generated and contains references to static resources.
-struct R: Rswift.Validatable {
-  fileprivate static let applicationLocale = hostingBundle.preferredLocalizations.first.flatMap { Locale(identifier: $0) } ?? Locale.current
-  fileprivate static let hostingBundle = Bundle(for: R.Class.self)
+private class BundleFinder {}
+let R = _R(bundle: Bundle(for: BundleFinder.self))
 
-  /// Find first language and bundle for which the table exists
-  fileprivate static func localeBundle(tableName: String, preferredLanguages: [String]) -> (Foundation.Locale, Foundation.Bundle)? {
-    // Filter preferredLanguages to localizations, use first locale
-    var languages = preferredLanguages
-      .map { Locale(identifier: $0) }
-      .prefix(1)
-      .flatMap { locale -> [String] in
-        if hostingBundle.localizations.contains(locale.identifier) {
-          if let language = locale.languageCode, hostingBundle.localizations.contains(language) {
-            return [locale.identifier, language]
-          } else {
-            return [locale.identifier]
-          }
-        } else if let language = locale.languageCode, hostingBundle.localizations.contains(language) {
-          return [language]
-        } else {
-          return []
-        }
-      }
+struct _R: Sendable {
+  let bundle: Foundation.Bundle
+  var string: string { .init(bundle: bundle, preferredLanguages: nil, locale: nil) }
+  var data: data { .init(bundle: bundle) }
+  var color: color { .init(bundle: bundle) }
+  var image: image { .init(bundle: bundle) }
+  var info: info { .init(bundle: bundle) }
+  var entitlements: entitlements { .init() }
+  var file: file { .init(bundle: bundle) }
+  var storyboard: storyboard { .init(bundle: bundle) }
 
-    // If there's no languages, use development language as backstop
-    if languages.isEmpty {
-      if let developmentLocalization = hostingBundle.developmentLocalization {
-        languages = [developmentLocalization]
-      }
-    } else {
-      // Insert Base as second item (between locale identifier and languageCode)
-      languages.insert("Base", at: 1)
-
-      // Add development language as backstop
-      if let developmentLocalization = hostingBundle.developmentLocalization {
-        languages.append(developmentLocalization)
-      }
-    }
-
-    // Find first language for which table exists
-    // Note: key might not exist in chosen language (in that case, key will be shown)
-    for language in languages {
-      if let lproj = hostingBundle.url(forResource: language, withExtension: "lproj"),
-         let lbundle = Bundle(url: lproj)
-      {
-        let strings = lbundle.url(forResource: tableName, withExtension: "strings")
-        let stringsdict = lbundle.url(forResource: tableName, withExtension: "stringsdict")
-
-        if strings != nil || stringsdict != nil {
-          return (Locale(identifier: language), lbundle)
-        }
-      }
-    }
-
-    // If table is available in main bundle, don't look for localized resources
-    let strings = hostingBundle.url(forResource: tableName, withExtension: "strings", subdirectory: nil, localization: nil)
-    let stringsdict = hostingBundle.url(forResource: tableName, withExtension: "stringsdict", subdirectory: nil, localization: nil)
-
-    if strings != nil || stringsdict != nil {
-      return (applicationLocale, hostingBundle)
-    }
-
-    // If table is not found for requested languages, key will be shown
-    return nil
+  func string(bundle: Foundation.Bundle) -> string {
+    .init(bundle: bundle, preferredLanguages: nil, locale: nil)
+  }
+  func string(locale: Foundation.Locale) -> string {
+    .init(bundle: bundle, preferredLanguages: nil, locale: locale)
+  }
+  func string(preferredLanguages: [String], locale: Locale? = nil) -> string {
+    .init(bundle: bundle, preferredLanguages: preferredLanguages, locale: locale)
+  }
+  func data(bundle: Foundation.Bundle) -> data {
+    .init(bundle: bundle)
+  }
+  func color(bundle: Foundation.Bundle) -> color {
+    .init(bundle: bundle)
+  }
+  func image(bundle: Foundation.Bundle) -> image {
+    .init(bundle: bundle)
+  }
+  func info(bundle: Foundation.Bundle) -> info {
+    .init(bundle: bundle)
+  }
+  func file(bundle: Foundation.Bundle) -> file {
+    .init(bundle: bundle)
+  }
+  func storyboard(bundle: Foundation.Bundle) -> storyboard {
+    .init(bundle: bundle)
+  }
+  func validate() throws {
+    try self.storyboard.validate()
   }
 
-  /// Load string from Info.plist file
-  fileprivate static func infoPlistString(path: [String], key: String) -> String? {
-    var dict = hostingBundle.infoDictionary
-    for step in path {
-      guard let obj = dict?[step] as? [String: Any] else { return nil }
-      dict = obj
-    }
-    return dict?[key] as? String
+  struct project {
+    let developmentRegion = "en"
   }
 
-  static func validate() throws {
-    try intern.validate()
-  }
-
-  #if os(iOS) || os(tvOS)
-  /// This `R.storyboard` struct is generated, and contains static references to 1 storyboards.
-  struct storyboard {
-    /// Storyboard `LaunchScreen`.
-    static let launchScreen = _R.storyboard.launchScreen()
-
-    #if os(iOS) || os(tvOS)
-    /// `UIStoryboard(name: "LaunchScreen", bundle: ...)`
-    static func launchScreen(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.launchScreen)
-    }
-    #endif
-
-    fileprivate init() {}
-  }
-  #endif
-
-  /// This `R.color` struct is generated, and contains static references to 2 colors.
-  struct color {
-    /// Color `AccentColor`.
-    static let accentColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "AccentColor")
-    /// Color `launch.screen.background`.
-    static let launchScreenBackground = Rswift.ColorResource(bundle: R.hostingBundle, name: "launch.screen.background")
-
-    #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "AccentColor", bundle: ..., traitCollection: ...)`
-    @available(tvOS 11.0, *)
-    @available(iOS 11.0, *)
-    static func accentColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.accentColor, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "launch.screen.background", bundle: ..., traitCollection: ...)`
-    @available(tvOS 11.0, *)
-    @available(iOS 11.0, *)
-    static func launchScreenBackground(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.launchScreenBackground, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(watchOS)
-    /// `UIColor(named: "AccentColor", bundle: ..., traitCollection: ...)`
-    @available(watchOSApplicationExtension 4.0, *)
-    static func accentColor(_: Void = ()) -> UIKit.UIColor? {
-      return UIKit.UIColor(named: R.color.accentColor.name)
-    }
-    #endif
-
-    #if os(watchOS)
-    /// `UIColor(named: "launch.screen.background", bundle: ..., traitCollection: ...)`
-    @available(watchOSApplicationExtension 4.0, *)
-    static func launchScreenBackground(_: Void = ()) -> UIKit.UIColor? {
-      return UIKit.UIColor(named: R.color.launchScreenBackground.name)
-    }
-    #endif
-
-    fileprivate init() {}
-  }
-
-  /// This `R.entitlements` struct is generated, and contains static references to 1 properties.
-  struct entitlements {
-    static let apsEnvironment = infoPlistString(path: [], key: "aps-environment") ?? "development"
-
-    fileprivate init() {}
-  }
-
-  /// This `R.file` struct is generated, and contains static references to 6 files.
-  struct file {
-    /// Resource file `AppIcons.plist`.
-    static let appIconsPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "AppIcons", pathExtension: "plist")
-    /// Resource file `GoogleService-Info.plist`.
-    static let googleServiceInfoPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "GoogleService-Info", pathExtension: "plist")
-    /// Resource file `ci_post_clone.sh`.
-    static let ci_post_cloneSh = Rswift.FileResource(bundle: R.hostingBundle, name: "ci_post_clone", pathExtension: "sh")
-    /// Resource file `ci_post_xcodebuild.sh`.
-    static let ci_post_xcodebuildSh = Rswift.FileResource(bundle: R.hostingBundle, name: "ci_post_xcodebuild", pathExtension: "sh")
-    /// Resource file `ci_pre_xcodebuild.sh`.
-    static let ci_pre_xcodebuildSh = Rswift.FileResource(bundle: R.hostingBundle, name: "ci_pre_xcodebuild", pathExtension: "sh")
-    /// Resource file `nounfetti.json`.
-    static let nounfettiJson = Rswift.FileResource(bundle: R.hostingBundle, name: "nounfetti", pathExtension: "json")
-
-    /// `bundle.url(forResource: "AppIcons", withExtension: "plist")`
-    static func appIconsPlist(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.appIconsPlist
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "GoogleService-Info", withExtension: "plist")`
-    static func googleServiceInfoPlist(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.googleServiceInfoPlist
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "ci_post_clone", withExtension: "sh")`
-    static func ci_post_cloneSh(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.ci_post_cloneSh
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "ci_post_xcodebuild", withExtension: "sh")`
-    static func ci_post_xcodebuildSh(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.ci_post_xcodebuildSh
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "ci_pre_xcodebuild", withExtension: "sh")`
-    static func ci_pre_xcodebuildSh(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.ci_pre_xcodebuildSh
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "nounfetti", withExtension: "json")`
-    static func nounfettiJson(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.nounfettiJson
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    fileprivate init() {}
-  }
-
-  /// This `R.image` struct is generated, and contains static references to 451 images.
-  struct image {
-    /// Image `AppIcon0_Preview`.
-    static let appIcon0_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon0_Preview")
-    /// Image `AppIcon10_Preview`.
-    static let appIcon10_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon10_Preview")
-    /// Image `AppIcon11_Preview`.
-    static let appIcon11_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon11_Preview")
-    /// Image `AppIcon12_Preview`.
-    static let appIcon12_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon12_Preview")
-    /// Image `AppIcon13_Preview`.
-    static let appIcon13_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon13_Preview")
-    /// Image `AppIcon14_Preview`.
-    static let appIcon14_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon14_Preview")
-    /// Image `AppIcon15_Preview`.
-    static let appIcon15_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon15_Preview")
-    /// Image `AppIcon16_Preview`.
-    static let appIcon16_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon16_Preview")
-    /// Image `AppIcon17_Preview`.
-    static let appIcon17_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon17_Preview")
-    /// Image `AppIcon18_Preview`.
-    static let appIcon18_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon18_Preview")
-    /// Image `AppIcon19_Preview`.
-    static let appIcon19_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon19_Preview")
-    /// Image `AppIcon1_Preview`.
-    static let appIcon1_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon1_Preview")
-    /// Image `AppIcon20_Preview`.
-    static let appIcon20_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon20_Preview")
-    /// Image `AppIcon21_Preview`.
-    static let appIcon21_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon21_Preview")
-    /// Image `AppIcon22_Preview`.
-    static let appIcon22_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon22_Preview")
-    /// Image `AppIcon23_Preview`.
-    static let appIcon23_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon23_Preview")
-    /// Image `AppIcon24_Preview`.
-    static let appIcon24_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon24_Preview")
-    /// Image `AppIcon25_Preview`.
-    static let appIcon25_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon25_Preview")
-    /// Image `AppIcon2_Preview`.
-    static let appIcon2_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon2_Preview")
-    /// Image `AppIcon3_Preview`.
-    static let appIcon3_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon3_Preview")
-    /// Image `AppIcon4_Preview`.
-    static let appIcon4_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon4_Preview")
-    /// Image `AppIcon5_Preview`.
-    static let appIcon5_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon5_Preview")
-    /// Image `AppIcon6_Preview`.
-    static let appIcon6_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon6_Preview")
-    /// Image `AppIcon7_Preview`.
-    static let appIcon7_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon7_Preview")
-    /// Image `AppIcon8_Preview`.
-    static let appIcon8_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon8_Preview")
-    /// Image `AppIcon9_Preview`.
-    static let appIcon9_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon9_Preview")
-    /// Image `AppIcon_Preview`.
-    static let appIcon_Preview = Rswift.ImageResource(bundle: R.hostingBundle, name: "AppIcon_Preview")
-    /// Image `Noun-fetti_00000`.
-    static let nounFetti_00000 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00000")
-    /// Image `Noun-fetti_00001`.
-    static let nounFetti_00001 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00001")
-    /// Image `Noun-fetti_00002`.
-    static let nounFetti_00002 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00002")
-    /// Image `Noun-fetti_00003`.
-    static let nounFetti_00003 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00003")
-    /// Image `Noun-fetti_00004`.
-    static let nounFetti_00004 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00004")
-    /// Image `Noun-fetti_00005`.
-    static let nounFetti_00005 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00005")
-    /// Image `Noun-fetti_00006`.
-    static let nounFetti_00006 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00006")
-    /// Image `Noun-fetti_00007`.
-    static let nounFetti_00007 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00007")
-    /// Image `Noun-fetti_00008`.
-    static let nounFetti_00008 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00008")
-    /// Image `Noun-fetti_00009`.
-    static let nounFetti_00009 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00009")
-    /// Image `Noun-fetti_00010`.
-    static let nounFetti_00010 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00010")
-    /// Image `Noun-fetti_00011`.
-    static let nounFetti_00011 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00011")
-    /// Image `Noun-fetti_00012`.
-    static let nounFetti_00012 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00012")
-    /// Image `Noun-fetti_00013`.
-    static let nounFetti_00013 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00013")
-    /// Image `Noun-fetti_00014`.
-    static let nounFetti_00014 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00014")
-    /// Image `Noun-fetti_00015`.
-    static let nounFetti_00015 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00015")
-    /// Image `Noun-fetti_00016`.
-    static let nounFetti_00016 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00016")
-    /// Image `Noun-fetti_00017`.
-    static let nounFetti_00017 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00017")
-    /// Image `Noun-fetti_00018`.
-    static let nounFetti_00018 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00018")
-    /// Image `Noun-fetti_00019`.
-    static let nounFetti_00019 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00019")
-    /// Image `Noun-fetti_00020`.
-    static let nounFetti_00020 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00020")
-    /// Image `Noun-fetti_00021`.
-    static let nounFetti_00021 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00021")
-    /// Image `Noun-fetti_00022`.
-    static let nounFetti_00022 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00022")
-    /// Image `Noun-fetti_00023`.
-    static let nounFetti_00023 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00023")
-    /// Image `Noun-fetti_00024`.
-    static let nounFetti_00024 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00024")
-    /// Image `Noun-fetti_00025`.
-    static let nounFetti_00025 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00025")
-    /// Image `Noun-fetti_00026`.
-    static let nounFetti_00026 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00026")
-    /// Image `Noun-fetti_00027`.
-    static let nounFetti_00027 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00027")
-    /// Image `Noun-fetti_00028`.
-    static let nounFetti_00028 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00028")
-    /// Image `Noun-fetti_00029`.
-    static let nounFetti_00029 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00029")
-    /// Image `Noun-fetti_00030`.
-    static let nounFetti_00030 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00030")
-    /// Image `Noun-fetti_00031`.
-    static let nounFetti_00031 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00031")
-    /// Image `Noun-fetti_00032`.
-    static let nounFetti_00032 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00032")
-    /// Image `Noun-fetti_00033`.
-    static let nounFetti_00033 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00033")
-    /// Image `Noun-fetti_00034`.
-    static let nounFetti_00034 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00034")
-    /// Image `Noun-fetti_00035`.
-    static let nounFetti_00035 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00035")
-    /// Image `Noun-fetti_00036`.
-    static let nounFetti_00036 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00036")
-    /// Image `Noun-fetti_00037`.
-    static let nounFetti_00037 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00037")
-    /// Image `Noun-fetti_00038`.
-    static let nounFetti_00038 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00038")
-    /// Image `Noun-fetti_00039`.
-    static let nounFetti_00039 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00039")
-    /// Image `Noun-fetti_00040`.
-    static let nounFetti_00040 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00040")
-    /// Image `Noun-fetti_00041`.
-    static let nounFetti_00041 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00041")
-    /// Image `Noun-fetti_00042`.
-    static let nounFetti_00042 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00042")
-    /// Image `Noun-fetti_00043`.
-    static let nounFetti_00043 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00043")
-    /// Image `Noun-fetti_00044`.
-    static let nounFetti_00044 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00044")
-    /// Image `Noun-fetti_00045`.
-    static let nounFetti_00045 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00045")
-    /// Image `Noun-fetti_00046`.
-    static let nounFetti_00046 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00046")
-    /// Image `Noun-fetti_00047`.
-    static let nounFetti_00047 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00047")
-    /// Image `Noun-fetti_00048`.
-    static let nounFetti_00048 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00048")
-    /// Image `Noun-fetti_00049`.
-    static let nounFetti_00049 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00049")
-    /// Image `Noun-fetti_00050`.
-    static let nounFetti_00050 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00050")
-    /// Image `Noun-fetti_00051`.
-    static let nounFetti_00051 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00051")
-    /// Image `Noun-fetti_00052`.
-    static let nounFetti_00052 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00052")
-    /// Image `Noun-fetti_00053`.
-    static let nounFetti_00053 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00053")
-    /// Image `Noun-fetti_00054`.
-    static let nounFetti_00054 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00054")
-    /// Image `Noun-fetti_00055`.
-    static let nounFetti_00055 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00055")
-    /// Image `Noun-fetti_00056`.
-    static let nounFetti_00056 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00056")
-    /// Image `Noun-fetti_00057`.
-    static let nounFetti_00057 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00057")
-    /// Image `Noun-fetti_00058`.
-    static let nounFetti_00058 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00058")
-    /// Image `Noun-fetti_00059`.
-    static let nounFetti_00059 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00059")
-    /// Image `Noun-fetti_00060`.
-    static let nounFetti_00060 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00060")
-    /// Image `Noun-fetti_00061`.
-    static let nounFetti_00061 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00061")
-    /// Image `Noun-fetti_00062`.
-    static let nounFetti_00062 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00062")
-    /// Image `Noun-fetti_00063`.
-    static let nounFetti_00063 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00063")
-    /// Image `Noun-fetti_00064`.
-    static let nounFetti_00064 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00064")
-    /// Image `Noun-fetti_00065`.
-    static let nounFetti_00065 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00065")
-    /// Image `Noun-fetti_00066`.
-    static let nounFetti_00066 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00066")
-    /// Image `Noun-fetti_00067`.
-    static let nounFetti_00067 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00067")
-    /// Image `Noun-fetti_00068`.
-    static let nounFetti_00068 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00068")
-    /// Image `Noun-fetti_00069`.
-    static let nounFetti_00069 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00069")
-    /// Image `Noun-fetti_00070`.
-    static let nounFetti_00070 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00070")
-    /// Image `Noun-fetti_00071`.
-    static let nounFetti_00071 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00071")
-    /// Image `Noun-fetti_00072`.
-    static let nounFetti_00072 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00072")
-    /// Image `Noun-fetti_00073`.
-    static let nounFetti_00073 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00073")
-    /// Image `Noun-fetti_00074`.
-    static let nounFetti_00074 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00074")
-    /// Image `Noun-fetti_00075`.
-    static let nounFetti_00075 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00075")
-    /// Image `Noun-fetti_00076`.
-    static let nounFetti_00076 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00076")
-    /// Image `Noun-fetti_00077`.
-    static let nounFetti_00077 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00077")
-    /// Image `Noun-fetti_00078`.
-    static let nounFetti_00078 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00078")
-    /// Image `Noun-fetti_00079`.
-    static let nounFetti_00079 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00079")
-    /// Image `Noun-fetti_00080`.
-    static let nounFetti_00080 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00080")
-    /// Image `Noun-fetti_00081`.
-    static let nounFetti_00081 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00081")
-    /// Image `Noun-fetti_00082`.
-    static let nounFetti_00082 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00082")
-    /// Image `Noun-fetti_00083`.
-    static let nounFetti_00083 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00083")
-    /// Image `Noun-fetti_00084`.
-    static let nounFetti_00084 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00084")
-    /// Image `Noun-fetti_00085`.
-    static let nounFetti_00085 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00085")
-    /// Image `Noun-fetti_00086`.
-    static let nounFetti_00086 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00086")
-    /// Image `Noun-fetti_00087`.
-    static let nounFetti_00087 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00087")
-    /// Image `Noun-fetti_00088`.
-    static let nounFetti_00088 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00088")
-    /// Image `Noun-fetti_00089`.
-    static let nounFetti_00089 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00089")
-    /// Image `Noun-fetti_00090`.
-    static let nounFetti_00090 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00090")
-    /// Image `Noun-fetti_00091`.
-    static let nounFetti_00091 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00091")
-    /// Image `Noun-fetti_00092`.
-    static let nounFetti_00092 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00092")
-    /// Image `Noun-fetti_00093`.
-    static let nounFetti_00093 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00093")
-    /// Image `Noun-fetti_00094`.
-    static let nounFetti_00094 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00094")
-    /// Image `Noun-fetti_00095`.
-    static let nounFetti_00095 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00095")
-    /// Image `Noun-fetti_00096`.
-    static let nounFetti_00096 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00096")
-    /// Image `Noun-fetti_00097`.
-    static let nounFetti_00097 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00097")
-    /// Image `Noun-fetti_00098`.
-    static let nounFetti_00098 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00098")
-    /// Image `Noun-fetti_00099`.
-    static let nounFetti_00099 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00099")
-    /// Image `Noun-fetti_00100`.
-    static let nounFetti_00100 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00100")
-    /// Image `Noun-fetti_00101`.
-    static let nounFetti_00101 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00101")
-    /// Image `Noun-fetti_00102`.
-    static let nounFetti_00102 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00102")
-    /// Image `Noun-fetti_00103`.
-    static let nounFetti_00103 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00103")
-    /// Image `Noun-fetti_00104`.
-    static let nounFetti_00104 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00104")
-    /// Image `Noun-fetti_00105`.
-    static let nounFetti_00105 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00105")
-    /// Image `Noun-fetti_00106`.
-    static let nounFetti_00106 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00106")
-    /// Image `Noun-fetti_00107`.
-    static let nounFetti_00107 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00107")
-    /// Image `Noun-fetti_00108`.
-    static let nounFetti_00108 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00108")
-    /// Image `Noun-fetti_00109`.
-    static let nounFetti_00109 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00109")
-    /// Image `Noun-fetti_00110`.
-    static let nounFetti_00110 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00110")
-    /// Image `Noun-fetti_00111`.
-    static let nounFetti_00111 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00111")
-    /// Image `Noun-fetti_00112`.
-    static let nounFetti_00112 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00112")
-    /// Image `Noun-fetti_00113`.
-    static let nounFetti_00113 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00113")
-    /// Image `Noun-fetti_00114`.
-    static let nounFetti_00114 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00114")
-    /// Image `Noun-fetti_00115`.
-    static let nounFetti_00115 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00115")
-    /// Image `Noun-fetti_00116`.
-    static let nounFetti_00116 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00116")
-    /// Image `Noun-fetti_00117`.
-    static let nounFetti_00117 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00117")
-    /// Image `Noun-fetti_00118`.
-    static let nounFetti_00118 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00118")
-    /// Image `Noun-fetti_00119`.
-    static let nounFetti_00119 = Rswift.ImageResource(bundle: R.hostingBundle, name: "Noun-fetti_00119")
-    /// Image `NounsWatermark`.
-    static let nounsWatermark = Rswift.ImageResource(bundle: R.hostingBundle, name: "NounsWatermark")
-    /// Image `arslan-noun`.
-    static let arslanNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "arslan-noun")
-    /// Image `bell-noun`.
-    static let bellNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "bell-noun")
-    /// Image `confetti-10`.
-    static let confetti10 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-10")
-    /// Image `confetti-1`.
-    static let confetti1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-1")
-    /// Image `confetti-2`.
-    static let confetti2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-2")
-    /// Image `confetti-3`.
-    static let confetti3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-3")
-    /// Image `confetti-4`.
-    static let confetti4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-4")
-    /// Image `confetti-5`.
-    static let confetti5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-5")
-    /// Image `confetti-6`.
-    static let confetti6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-6")
-    /// Image `confetti-7`.
-    static let confetti7 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-7")
-    /// Image `confetti-8`.
-    static let confetti8 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-8")
-    /// Image `confetti-9`.
-    static let confetti9 = Rswift.ImageResource(bundle: R.hostingBundle, name: "confetti-9")
-    /// Image `create-noun-pizza`.
-    static let createNounPizza = Rswift.ImageResource(bundle: R.hostingBundle, name: "create-noun-pizza")
-    /// Image `explore-onboarding`.
-    static let exploreOnboarding = Rswift.ImageResource(bundle: R.hostingBundle, name: "explore-onboarding")
-    /// Image `eyes-blink-fullblack_1`.
-    static let eyesBlinkFullblack_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_1")
-    /// Image `eyes-blink-fullblack_2`.
-    static let eyesBlinkFullblack_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_2")
-    /// Image `eyes-blink-fullblack_3`.
-    static let eyesBlinkFullblack_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_3")
-    /// Image `eyes-blink-fullblack_4`.
-    static let eyesBlinkFullblack_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-fullblack_4")
-    /// Image `eyes-blink-red_1`.
-    static let eyesBlinkRed_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_1")
-    /// Image `eyes-blink-red_2`.
-    static let eyesBlinkRed_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_2")
-    /// Image `eyes-blink-red_3`.
-    static let eyesBlinkRed_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_3")
-    /// Image `eyes-blink-red_4`.
-    static let eyesBlinkRed_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-red_4")
-    /// Image `eyes-blink-rgb_1`.
-    static let eyesBlinkRgb_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_1")
-    /// Image `eyes-blink-rgb_2`.
-    static let eyesBlinkRgb_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_2")
-    /// Image `eyes-blink-rgb_3`.
-    static let eyesBlinkRgb_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_3")
-    /// Image `eyes-blink-rgb_4`.
-    static let eyesBlinkRgb_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink-rgb_4")
-    /// Image `eyes-blink_1`.
-    static let eyesBlink_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_1")
-    /// Image `eyes-blink_2`.
-    static let eyesBlink_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_2")
-    /// Image `eyes-blink_3`.
-    static let eyesBlink_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_3")
-    /// Image `eyes-blink_4`.
-    static let eyesBlink_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_4")
-    /// Image `eyes-blink_5`.
-    static let eyesBlink_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-blink_5")
-    /// Image `eyes-shift-fullblack_1`.
-    static let eyesShiftFullblack_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_1")
-    /// Image `eyes-shift-fullblack_2`.
-    static let eyesShiftFullblack_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_2")
-    /// Image `eyes-shift-fullblack_3`.
-    static let eyesShiftFullblack_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_3")
-    /// Image `eyes-shift-fullblack_4`.
-    static let eyesShiftFullblack_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_4")
-    /// Image `eyes-shift-fullblack_5`.
-    static let eyesShiftFullblack_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_5")
-    /// Image `eyes-shift-fullblack_6`.
-    static let eyesShiftFullblack_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-fullblack_6")
-    /// Image `eyes-shift-red_1`.
-    static let eyesShiftRed_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_1")
-    /// Image `eyes-shift-red_2`.
-    static let eyesShiftRed_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_2")
-    /// Image `eyes-shift-red_3`.
-    static let eyesShiftRed_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_3")
-    /// Image `eyes-shift-red_4`.
-    static let eyesShiftRed_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_4")
-    /// Image `eyes-shift-red_5`.
-    static let eyesShiftRed_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_5")
-    /// Image `eyes-shift-red_6`.
-    static let eyesShiftRed_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-red_6")
-    /// Image `eyes-shift-rgb_1`.
-    static let eyesShiftRgb_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_1")
-    /// Image `eyes-shift-rgb_2`.
-    static let eyesShiftRgb_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_2")
-    /// Image `eyes-shift-rgb_3`.
-    static let eyesShiftRgb_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_3")
-    /// Image `eyes-shift-rgb_4`.
-    static let eyesShiftRgb_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_4")
-    /// Image `eyes-shift-rgb_5`.
-    static let eyesShiftRgb_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_5")
-    /// Image `eyes-shift-rgb_6`.
-    static let eyesShiftRgb_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift-rgb_6")
-    /// Image `eyes-shift_0`.
-    static let eyesShift_0 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_0")
-    /// Image `eyes-shift_1`.
-    static let eyesShift_1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_1")
-    /// Image `eyes-shift_2`.
-    static let eyesShift_2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_2")
-    /// Image `eyes-shift_3`.
-    static let eyesShift_3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_3")
-    /// Image `eyes-shift_4`.
-    static let eyesShift_4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_4")
-    /// Image `eyes-shift_5`.
-    static let eyesShift_5 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_5")
-    /// Image `eyes-shift_6`.
-    static let eyesShift_6 = Rswift.ImageResource(bundle: R.hostingBundle, name: "eyes-shift_6")
-    /// Image `glasses-deep-teal`.
-    static let glassesDeepTeal = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-deep-teal")
-    /// Image `glasses-grass`.
-    static let glassesGrass = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-grass")
-    /// Image `glasses-hip-rose`.
-    static let glassesHipRose = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-hip-rose")
-    /// Image `glasses-square-black`.
-    static let glassesSquareBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-black")
-    /// Image `glasses-square-blue-med-saturated`.
-    static let glassesSquareBlueMedSaturated = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-blue-med-saturated")
-    /// Image `glasses-square-blue`.
-    static let glassesSquareBlue = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-blue")
-    /// Image `glasses-square-frog-green`.
-    static let glassesSquareFrogGreen = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-frog-green")
-    /// Image `glasses-square-green-blue-multi`.
-    static let glassesSquareGreenBlueMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-green-blue-multi")
-    /// Image `glasses-square-grey-light`.
-    static let glassesSquareGreyLight = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-grey-light")
-    /// Image `glasses-square-guava`.
-    static let glassesSquareGuava = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-guava")
-    /// Image `glasses-square-honey`.
-    static let glassesSquareHoney = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-honey")
-    /// Image `glasses-square-magenta`.
-    static let glassesSquareMagenta = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-magenta")
-    /// Image `glasses-square-orange`.
-    static let glassesSquareOrange = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-orange")
-    /// Image `glasses-square-pink-purple-multi`.
-    static let glassesSquarePinkPurpleMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-pink-purple-multi")
-    /// Image `glasses-square-red`.
-    static let glassesSquareRed = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-red")
-    /// Image `glasses-square-smoke`.
-    static let glassesSquareSmoke = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-smoke")
-    /// Image `glasses-square-teal`.
-    static let glassesSquareTeal = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-teal")
-    /// Image `glasses-square-watermelon`.
-    static let glassesSquareWatermelon = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-watermelon")
-    /// Image `glasses-square-yellow-orange-multi`.
-    static let glassesSquareYellowOrangeMulti = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-yellow-orange-multi")
-    /// Image `glasses-square-yellow-saturated`.
-    static let glassesSquareYellowSaturated = Rswift.ImageResource(bundle: R.hostingBundle, name: "glasses-square-yellow-saturated")
-    /// Image `head-ape-mouth-1`.
-    static let headApeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-1")
-    /// Image `head-ape-mouth-2`.
-    static let headApeMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-2")
-    /// Image `head-ape-mouth-3`.
-    static let headApeMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-3")
-    /// Image `head-ape-mouth-4`.
-    static let headApeMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ape-mouth-4")
-    /// Image `head-baseball-gameball-mouth-1`.
-    static let headBaseballGameballMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-baseball-gameball-mouth-1")
-    /// Image `head-baseball-gameball-mouth-2`.
-    static let headBaseballGameballMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-baseball-gameball-mouth-2")
-    /// Image `head-baseball-gameball-mouth-3`.
-    static let headBaseballGameballMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-baseball-gameball-mouth-3")
-    /// Image `head-baseball-gameball-mouth-4`.
-    static let headBaseballGameballMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-baseball-gameball-mouth-4")
-    /// Image `head-basketball-mouth-1`.
-    static let headBasketballMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-basketball-mouth-1")
-    /// Image `head-basketball-mouth-2`.
-    static let headBasketballMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-basketball-mouth-2")
-    /// Image `head-basketball-mouth-3`.
-    static let headBasketballMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-basketball-mouth-3")
-    /// Image `head-basketball-mouth-4`.
-    static let headBasketballMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-basketball-mouth-4")
-    /// Image `head-bat-mouth-1`.
-    static let headBatMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bat-mouth-1")
-    /// Image `head-bat-mouth-2`.
-    static let headBatMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bat-mouth-2")
-    /// Image `head-bat-mouth-3`.
-    static let headBatMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bat-mouth-3")
-    /// Image `head-bat-mouth-4`.
-    static let headBatMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bat-mouth-4")
-    /// Image `head-bear-mouth-1`.
-    static let headBearMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bear-mouth-1")
-    /// Image `head-bear-mouth-2`.
-    static let headBearMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bear-mouth-2")
-    /// Image `head-bear-mouth-3`.
-    static let headBearMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bear-mouth-3")
-    /// Image `head-bear-mouth-4`.
-    static let headBearMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-bear-mouth-4")
-    /// Image `head-blueberry-mouth-1`.
-    static let headBlueberryMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-blueberry-mouth-1")
-    /// Image `head-blueberry-mouth-2`.
-    static let headBlueberryMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-blueberry-mouth-2")
-    /// Image `head-blueberry-mouth-3`.
-    static let headBlueberryMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-blueberry-mouth-3")
-    /// Image `head-blueberry-mouth-4`.
-    static let headBlueberryMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-blueberry-mouth-4")
-    /// Image `head-cannedham-mouth-1`.
-    static let headCannedhamMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cannedham-mouth-1")
-    /// Image `head-cannedham-mouth-2`.
-    static let headCannedhamMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cannedham-mouth-2")
-    /// Image `head-cannedham-mouth-3`.
-    static let headCannedhamMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cannedham-mouth-3")
-    /// Image `head-cannedham-mouth-4`.
-    static let headCannedhamMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cannedham-mouth-4")
-    /// Image `head-cash-register-mouth-1`.
-    static let headCashRegisterMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cash-register-mouth-1")
-    /// Image `head-cash-register-mouth-2`.
-    static let headCashRegisterMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cash-register-mouth-2")
-    /// Image `head-cash-register-mouth-3`.
-    static let headCashRegisterMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cash-register-mouth-3")
-    /// Image `head-cash-register-mouth-4`.
-    static let headCashRegisterMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cash-register-mouth-4")
-    /// Image `head-chainsaw-mouth-1`.
-    static let headChainsawMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chainsaw-mouth-1")
-    /// Image `head-chainsaw-mouth-2`.
-    static let headChainsawMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chainsaw-mouth-2")
-    /// Image `head-chainsaw-mouth-3`.
-    static let headChainsawMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chainsaw-mouth-3")
-    /// Image `head-chainsaw-mouth-4`.
-    static let headChainsawMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chainsaw-mouth-4")
-    /// Image `head-chameleon-mouth-1`.
-    static let headChameleonMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chameleon-mouth-1")
-    /// Image `head-chameleon-mouth-2`.
-    static let headChameleonMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chameleon-mouth-2")
-    /// Image `head-chameleon-mouth-3`.
-    static let headChameleonMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chameleon-mouth-3")
-    /// Image `head-chameleon-mouth-4`.
-    static let headChameleonMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chameleon-mouth-4")
-    /// Image `head-chicken-mouth-1`.
-    static let headChickenMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chicken-mouth-1")
-    /// Image `head-chicken-mouth-2`.
-    static let headChickenMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chicken-mouth-2")
-    /// Image `head-chicken-mouth-3`.
-    static let headChickenMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chicken-mouth-3")
-    /// Image `head-chicken-mouth-4`.
-    static let headChickenMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chicken-mouth-4")
-    /// Image `head-chipboard-mouth-1`.
-    static let headChipboardMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chipboard-mouth-1")
-    /// Image `head-chipboard-mouth-2`.
-    static let headChipboardMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chipboard-mouth-2")
-    /// Image `head-chipboard-mouth-3`.
-    static let headChipboardMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chipboard-mouth-3")
-    /// Image `head-chipboard-mouth-4`.
-    static let headChipboardMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-chipboard-mouth-4")
-    /// Image `head-clutch-mouth-1`.
-    static let headClutchMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-clutch-mouth-1")
-    /// Image `head-clutch-mouth-2`.
-    static let headClutchMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-clutch-mouth-2")
-    /// Image `head-clutch-mouth-3`.
-    static let headClutchMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-clutch-mouth-3")
-    /// Image `head-clutch-mouth-4`.
-    static let headClutchMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-clutch-mouth-4")
-    /// Image `head-cow-mouth-1`.
-    static let headCowMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cow-mouth-1")
-    /// Image `head-cow-mouth-2`.
-    static let headCowMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cow-mouth-2")
-    /// Image `head-cow-mouth-3`.
-    static let headCowMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cow-mouth-3")
-    /// Image `head-cow-mouth-4`.
-    static let headCowMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-cow-mouth-4")
-    /// Image `head-croc-hat-mouth-1`.
-    static let headCrocHatMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-croc-hat-mouth-1")
-    /// Image `head-croc-hat-mouth-2`.
-    static let headCrocHatMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-croc-hat-mouth-2")
-    /// Image `head-croc-hat-mouth-3`.
-    static let headCrocHatMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-croc-hat-mouth-3")
-    /// Image `head-croc-hat-mouth-4`.
-    static let headCrocHatMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-croc-hat-mouth-4")
-    /// Image `head-default-mouth-1`.
-    static let headDefaultMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-default-mouth-1")
-    /// Image `head-default-mouth-2`.
-    static let headDefaultMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-default-mouth-2")
-    /// Image `head-default-mouth-3`.
-    static let headDefaultMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-default-mouth-3")
-    /// Image `head-default-mouth-4`.
-    static let headDefaultMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-default-mouth-4")
-    /// Image `head-dino-mouth-1`.
-    static let headDinoMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dino-mouth-1")
-    /// Image `head-dino-mouth-2`.
-    static let headDinoMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dino-mouth-2")
-    /// Image `head-dino-mouth-3`.
-    static let headDinoMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dino-mouth-3")
-    /// Image `head-dino-mouth-4`.
-    static let headDinoMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dino-mouth-4")
-    /// Image `head-dog-mouth-1`.
-    static let headDogMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dog-mouth-1")
-    /// Image `head-dog-mouth-2`.
-    static let headDogMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dog-mouth-2")
-    /// Image `head-dog-mouth-3`.
-    static let headDogMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dog-mouth-3")
-    /// Image `head-dog-mouth-4`.
-    static let headDogMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-dog-mouth-4")
-    /// Image `head-drill-mouth-1`.
-    static let headDrillMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-drill-mouth-1")
-    /// Image `head-drill-mouth-2`.
-    static let headDrillMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-drill-mouth-2")
-    /// Image `head-drill-mouth-3`.
-    static let headDrillMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-drill-mouth-3")
-    /// Image `head-drill-mouth-4`.
-    static let headDrillMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-drill-mouth-4")
-    /// Image `head-duck-mouth-1`.
-    static let headDuckMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-duck-mouth-1")
-    /// Image `head-duck-mouth-2`.
-    static let headDuckMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-duck-mouth-2")
-    /// Image `head-duck-mouth-3`.
-    static let headDuckMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-duck-mouth-3")
-    /// Image `head-duck-mouth-4`.
-    static let headDuckMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-duck-mouth-4")
-    /// Image `head-factory-dark-mouth-1`.
-    static let headFactoryDarkMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-factory-dark-mouth-1")
-    /// Image `head-factory-dark-mouth-2`.
-    static let headFactoryDarkMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-factory-dark-mouth-2")
-    /// Image `head-factory-dark-mouth-3`.
-    static let headFactoryDarkMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-factory-dark-mouth-3")
-    /// Image `head-factory-dark-mouth-4`.
-    static let headFactoryDarkMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-factory-dark-mouth-4")
-    /// Image `head-frog-mouth-1`.
-    static let headFrogMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-frog-mouth-1")
-    /// Image `head-frog-mouth-2`.
-    static let headFrogMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-frog-mouth-2")
-    /// Image `head-frog-mouth-3`.
-    static let headFrogMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-frog-mouth-3")
-    /// Image `head-frog-mouth-4`.
-    static let headFrogMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-frog-mouth-4")
-    /// Image `head-gnome-mouth-1`.
-    static let headGnomeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-gnome-mouth-1")
-    /// Image `head-gnome-mouth-2`.
-    static let headGnomeMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-gnome-mouth-2")
-    /// Image `head-gnome-mouth-3`.
-    static let headGnomeMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-gnome-mouth-3")
-    /// Image `head-gnome-mouth-4`.
-    static let headGnomeMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-gnome-mouth-4")
-    /// Image `head-goat-mouth-1`.
-    static let headGoatMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goat-mouth-1")
-    /// Image `head-goat-mouth-2`.
-    static let headGoatMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goat-mouth-2")
-    /// Image `head-goat-mouth-3`.
-    static let headGoatMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goat-mouth-3")
-    /// Image `head-goat-mouth-4`.
-    static let headGoatMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goat-mouth-4")
-    /// Image `head-goldfish-mouth-1`.
-    static let headGoldfishMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goldfish-mouth-1")
-    /// Image `head-goldfish-mouth-2`.
-    static let headGoldfishMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goldfish-mouth-2")
-    /// Image `head-goldfish-mouth-3`.
-    static let headGoldfishMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goldfish-mouth-3")
-    /// Image `head-goldfish-mouth-4`.
-    static let headGoldfishMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-goldfish-mouth-4")
-    /// Image `head-hardhat-mouth-1`.
-    static let headHardhatMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-hardhat-mouth-1")
-    /// Image `head-hardhat-mouth-2`.
-    static let headHardhatMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-hardhat-mouth-2")
-    /// Image `head-hardhat-mouth-3`.
-    static let headHardhatMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-hardhat-mouth-3")
-    /// Image `head-hardhat-mouth-4`.
-    static let headHardhatMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-hardhat-mouth-4")
-    /// Image `head-horse-deepfried-mouth-1`.
-    static let headHorseDeepfriedMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-horse-deepfried-mouth-1")
-    /// Image `head-horse-deepfried-mouth-2`.
-    static let headHorseDeepfriedMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-horse-deepfried-mouth-2")
-    /// Image `head-horse-deepfried-mouth-3`.
-    static let headHorseDeepfriedMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-horse-deepfried-mouth-3")
-    /// Image `head-horse-deepfried-mouth-4`.
-    static let headHorseDeepfriedMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-horse-deepfried-mouth-4")
-    /// Image `head-jupiter-mouth-1`.
-    static let headJupiterMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-jupiter-mouth-1")
-    /// Image `head-jupiter-mouth-2`.
-    static let headJupiterMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-jupiter-mouth-2")
-    /// Image `head-jupiter-mouth-3`.
-    static let headJupiterMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-jupiter-mouth-3")
-    /// Image `head-jupiter-mouth-4`.
-    static let headJupiterMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-jupiter-mouth-4")
-    /// Image `head-laptop-mouth-1`.
-    static let headLaptopMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-laptop-mouth-1")
-    /// Image `head-laptop-mouth-2`.
-    static let headLaptopMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-laptop-mouth-2")
-    /// Image `head-laptop-mouth-3`.
-    static let headLaptopMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-laptop-mouth-3")
-    /// Image `head-laptop-mouth-4`.
-    static let headLaptopMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-laptop-mouth-4")
-    /// Image `head-moose-mouth-1`.
-    static let headMooseMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-moose-mouth-1")
-    /// Image `head-moose-mouth-2`.
-    static let headMooseMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-moose-mouth-2")
-    /// Image `head-moose-mouth-3`.
-    static let headMooseMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-moose-mouth-3")
-    /// Image `head-moose-mouth-4`.
-    static let headMooseMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-moose-mouth-4")
-    /// Image `head-mushroom-mouth-1`.
-    static let headMushroomMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-mushroom-mouth-1")
-    /// Image `head-mushroom-mouth-2`.
-    static let headMushroomMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-mushroom-mouth-2")
-    /// Image `head-mushroom-mouth-3`.
-    static let headMushroomMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-mushroom-mouth-3")
-    /// Image `head-mushroom-mouth-4`.
-    static let headMushroomMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-mushroom-mouth-4")
-    /// Image `head-orangutan-mouth-1`.
-    static let headOrangutanMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-orangutan-mouth-1")
-    /// Image `head-orangutan-mouth-2`.
-    static let headOrangutanMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-orangutan-mouth-2")
-    /// Image `head-orangutan-mouth-3`.
-    static let headOrangutanMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-orangutan-mouth-3")
-    /// Image `head-orangutan-mouth-4`.
-    static let headOrangutanMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-orangutan-mouth-4")
-    /// Image `head-peyote-mouth-1`.
-    static let headPeyoteMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-peyote-mouth-1")
-    /// Image `head-peyote-mouth-2`.
-    static let headPeyoteMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-peyote-mouth-2")
-    /// Image `head-peyote-mouth-3`.
-    static let headPeyoteMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-peyote-mouth-3")
-    /// Image `head-peyote-mouth-4`.
-    static let headPeyoteMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-peyote-mouth-4")
-    /// Image `head-piano-mouth-1`.
-    static let headPianoMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-piano-mouth-1")
-    /// Image `head-piano-mouth-2`.
-    static let headPianoMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-piano-mouth-2")
-    /// Image `head-piano-mouth-3`.
-    static let headPianoMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-piano-mouth-3")
-    /// Image `head-piano-mouth-4`.
-    static let headPianoMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-piano-mouth-4")
-    /// Image `head-pineapple-mouth-1`.
-    static let headPineappleMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pineapple-mouth-1")
-    /// Image `head-pineapple-mouth-2`.
-    static let headPineappleMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pineapple-mouth-2")
-    /// Image `head-pineapple-mouth-3`.
-    static let headPineappleMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pineapple-mouth-3")
-    /// Image `head-pineapple-mouth-4`.
-    static let headPineappleMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pineapple-mouth-4")
-    /// Image `head-pipe-mouth-1`.
-    static let headPipeMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pipe-mouth-1")
-    /// Image `head-pipe-mouth-2`.
-    static let headPipeMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pipe-mouth-2")
-    /// Image `head-pipe-mouth-3`.
-    static let headPipeMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pipe-mouth-3")
-    /// Image `head-pipe-mouth-4`.
-    static let headPipeMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pipe-mouth-4")
-    /// Image `head-pirateship-mouth-1`.
-    static let headPirateshipMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pirateship-mouth-1")
-    /// Image `head-pirateship-mouth-2`.
-    static let headPirateshipMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pirateship-mouth-2")
-    /// Image `head-pirateship-mouth-3`.
-    static let headPirateshipMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pirateship-mouth-3")
-    /// Image `head-pirateship-mouth-4`.
-    static let headPirateshipMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pirateship-mouth-4")
-    /// Image `head-pufferfish-mouth-1`.
-    static let headPufferfishMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pufferfish-mouth-1")
-    /// Image `head-pufferfish-mouth-2`.
-    static let headPufferfishMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pufferfish-mouth-2")
-    /// Image `head-pufferfish-mouth-3`.
-    static let headPufferfishMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pufferfish-mouth-3")
-    /// Image `head-pufferfish-mouth-4`.
-    static let headPufferfishMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pufferfish-mouth-4")
-    /// Image `head-pumpkin-mouth-1`.
-    static let headPumpkinMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pumpkin-mouth-1")
-    /// Image `head-pumpkin-mouth-2`.
-    static let headPumpkinMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pumpkin-mouth-2")
-    /// Image `head-pumpkin-mouth-3`.
-    static let headPumpkinMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pumpkin-mouth-3")
-    /// Image `head-pumpkin-mouth-4`.
-    static let headPumpkinMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-pumpkin-mouth-4")
-    /// Image `head-rabbit-mouth-1`.
-    static let headRabbitMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-rabbit-mouth-1")
-    /// Image `head-rabbit-mouth-2`.
-    static let headRabbitMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-rabbit-mouth-2")
-    /// Image `head-rabbit-mouth-3`.
-    static let headRabbitMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-rabbit-mouth-3")
-    /// Image `head-rabbit-mouth-4`.
-    static let headRabbitMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-rabbit-mouth-4")
-    /// Image `head-raven-mouth-1`.
-    static let headRavenMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-raven-mouth-1")
-    /// Image `head-raven-mouth-2`.
-    static let headRavenMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-raven-mouth-2")
-    /// Image `head-raven-mouth-3`.
-    static let headRavenMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-raven-mouth-3")
-    /// Image `head-raven-mouth-4`.
-    static let headRavenMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-raven-mouth-4")
-    /// Image `head-retainer-mouth-1`.
-    static let headRetainerMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-retainer-mouth-1")
-    /// Image `head-retainer-mouth-2`.
-    static let headRetainerMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-retainer-mouth-2")
-    /// Image `head-retainer-mouth-3`.
-    static let headRetainerMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-retainer-mouth-3")
-    /// Image `head-retainer-mouth-4`.
-    static let headRetainerMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-retainer-mouth-4")
-    /// Image `head-robot-mouth-1`.
-    static let headRobotMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-robot-mouth-1")
-    /// Image `head-robot-mouth-2`.
-    static let headRobotMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-robot-mouth-2")
-    /// Image `head-robot-mouth-3`.
-    static let headRobotMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-robot-mouth-3")
-    /// Image `head-robot-mouth-4`.
-    static let headRobotMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-robot-mouth-4")
-    /// Image `head-scorpion-mouth-1`.
-    static let headScorpionMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-scorpion-mouth-1")
-    /// Image `head-scorpion-mouth-2`.
-    static let headScorpionMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-scorpion-mouth-2")
-    /// Image `head-scorpion-mouth-3`.
-    static let headScorpionMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-scorpion-mouth-3")
-    /// Image `head-scorpion-mouth-4`.
-    static let headScorpionMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-scorpion-mouth-4")
-    /// Image `head-shark-mouth-1`.
-    static let headSharkMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-shark-mouth-1")
-    /// Image `head-shark-mouth-2`.
-    static let headSharkMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-shark-mouth-2")
-    /// Image `head-shark-mouth-3`.
-    static let headSharkMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-shark-mouth-3")
-    /// Image `head-shark-mouth-4`.
-    static let headSharkMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-shark-mouth-4")
-    /// Image `head-skeleton-hat-mouth-1`.
-    static let headSkeletonHatMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-skeleton-hat-mouth-1")
-    /// Image `head-skeleton-hat-mouth-2`.
-    static let headSkeletonHatMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-skeleton-hat-mouth-2")
-    /// Image `head-skeleton-hat-mouth-3`.
-    static let headSkeletonHatMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-skeleton-hat-mouth-3")
-    /// Image `head-skeleton-hat-mouth-4`.
-    static let headSkeletonHatMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-skeleton-hat-mouth-4")
-    /// Image `head-squid-mouth-1`.
-    static let headSquidMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-squid-mouth-1")
-    /// Image `head-squid-mouth-2`.
-    static let headSquidMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-squid-mouth-2")
-    /// Image `head-squid-mouth-3`.
-    static let headSquidMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-squid-mouth-3")
-    /// Image `head-squid-mouth-4`.
-    static let headSquidMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-squid-mouth-4")
-    /// Image `head-steak-mouth-1`.
-    static let headSteakMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-steak-mouth-1")
-    /// Image `head-steak-mouth-2`.
-    static let headSteakMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-steak-mouth-2")
-    /// Image `head-steak-mouth-3`.
-    static let headSteakMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-steak-mouth-3")
-    /// Image `head-steak-mouth-4`.
-    static let headSteakMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-steak-mouth-4")
-    /// Image `head-toiletpaper-full-mouth-1`.
-    static let headToiletpaperFullMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-toiletpaper-full-mouth-1")
-    /// Image `head-toiletpaper-full-mouth-2`.
-    static let headToiletpaperFullMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-toiletpaper-full-mouth-2")
-    /// Image `head-toiletpaper-full-mouth-3`.
-    static let headToiletpaperFullMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-toiletpaper-full-mouth-3")
-    /// Image `head-toiletpaper-full-mouth-4`.
-    static let headToiletpaperFullMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-toiletpaper-full-mouth-4")
-    /// Image `head-turing-mouth-1`.
-    static let headTuringMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-turing-mouth-1")
-    /// Image `head-turing-mouth-2`.
-    static let headTuringMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-turing-mouth-2")
-    /// Image `head-turing-mouth-3`.
-    static let headTuringMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-turing-mouth-3")
-    /// Image `head-turing-mouth-4`.
-    static let headTuringMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-turing-mouth-4")
-    /// Image `head-ufo-mouth-1`.
-    static let headUfoMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ufo-mouth-1")
-    /// Image `head-ufo-mouth-2`.
-    static let headUfoMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ufo-mouth-2")
-    /// Image `head-ufo-mouth-3`.
-    static let headUfoMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ufo-mouth-3")
-    /// Image `head-ufo-mouth-4`.
-    static let headUfoMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-ufo-mouth-4")
-    /// Image `head-werewolf-mouth-1`.
-    static let headWerewolfMouth1 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-werewolf-mouth-1")
-    /// Image `head-werewolf-mouth-2`.
-    static let headWerewolfMouth2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-werewolf-mouth-2")
-    /// Image `head-werewolf-mouth-3`.
-    static let headWerewolfMouth3 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-werewolf-mouth-3")
-    /// Image `head-werewolf-mouth-4`.
-    static let headWerewolfMouth4 = Rswift.ImageResource(bundle: R.hostingBundle, name: "head-werewolf-mouth-4")
-    /// Image `home-slice-chat`.
-    static let homeSliceChat = Rswift.ImageResource(bundle: R.hostingBundle, name: "home-slice-chat")
-    /// Image `krish-noun`.
-    static let krishNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "krish-noun")
-    /// Image `matt-noun`.
-    static let mattNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "matt-noun")
-    /// Image `mo-noun`.
-    static let moNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "mo-noun")
-    /// Image `noun-logo`.
-    static let nounLogo = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun-logo")
-    /// Image `noun`.
-    static let noun = Rswift.ImageResource(bundle: R.hostingBundle, name: "noun")
-    /// Image `nouns-ios-01-marquee`.
-    static let nounsIos01Marquee = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-ios-01-marquee")
-    /// Image `nouns-ios-02-marquee`.
-    static let nounsIos02Marquee = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-ios-02-marquee")
-    /// Image `nouns-ios-03-marquee`.
-    static let nounsIos03Marquee = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-ios-03-marquee")
-    /// Image `nouns-onboarding-02-cards`.
-    static let nounsOnboarding02Cards = Rswift.ImageResource(bundle: R.hostingBundle, name: "nouns-onboarding-02-cards")
-    /// Image `pizza-noun`.
-    static let pizzaNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "pizza-noun")
-    /// Image `placeholder-ens`.
-    static let placeholderEns = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder-ens")
-    /// Image `placeholder`.
-    static let placeholder = Rswift.ImageResource(bundle: R.hostingBundle, name: "placeholder")
-    /// Image `red_glasses`.
-    static let red_glasses = Rswift.ImageResource(bundle: R.hostingBundle, name: "red_glasses")
-    /// Image `robleh-noun`.
-    static let roblehNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "robleh-noun")
-    /// Image `shadow`.
-    static let shadow = Rswift.ImageResource(bundle: R.hostingBundle, name: "shadow")
-    /// Image `shark-noun`.
-    static let sharkNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "shark-noun")
-    /// Image `shawn-noun`.
-    static let shawnNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "shawn-noun")
-    /// Image `ziad-noun`.
-    static let ziadNoun = Rswift.ImageResource(bundle: R.hostingBundle, name: "ziad-noun")
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon0_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon0_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon0_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon10_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon10_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon10_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon11_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon11_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon11_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon12_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon12_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon12_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon13_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon13_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon13_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon14_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon14_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon14_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon15_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon15_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon15_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon16_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon16_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon16_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon17_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon17_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon17_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon18_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon18_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon18_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon19_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon19_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon19_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon1_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon1_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon1_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon20_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon20_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon20_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon21_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon21_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon21_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon22_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon22_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon22_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon23_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon23_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon23_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon24_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon24_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon24_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon25_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon25_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon25_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon2_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon2_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon2_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon3_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon3_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon3_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon4_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon4_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon4_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon5_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon5_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon5_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon6_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon6_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon6_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon7_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon7_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon7_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon8_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon8_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon8_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon9_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon9_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon9_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "AppIcon_Preview", bundle: ..., traitCollection: ...)`
-    static func appIcon_Preview(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.appIcon_Preview, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00000", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00000(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00000, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00001", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00001(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00001, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00002", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00002(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00002, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00003", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00003(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00003, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00004", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00004(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00004, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00005", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00005(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00005, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00006", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00006(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00006, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00007", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00007(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00007, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00008", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00008(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00008, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00009", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00009(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00009, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00010", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00010(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00010, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00011", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00011(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00011, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00012", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00012(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00012, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00013", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00013(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00013, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00014", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00014(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00014, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00015", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00015(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00015, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00016", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00016(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00016, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00017", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00017(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00017, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00018", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00018(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00018, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00019", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00019(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00019, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00020", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00020(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00020, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00021", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00021(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00021, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00022", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00022(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00022, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00023", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00023(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00023, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00024", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00024(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00024, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00025", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00025(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00025, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00026", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00026(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00026, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00027", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00027(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00027, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00028", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00028(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00028, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00029", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00029(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00029, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00030", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00030(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00030, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00031", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00031(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00031, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00032", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00032(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00032, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00033", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00033(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00033, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00034", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00034(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00034, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00035", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00035(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00035, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00036", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00036(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00036, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00037", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00037(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00037, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00038", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00038(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00038, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00039", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00039(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00039, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00040", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00040(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00040, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00041", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00041(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00041, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00042", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00042(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00042, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00043", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00043(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00043, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00044", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00044(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00044, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00045", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00045(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00045, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00046", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00046(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00046, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00047", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00047(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00047, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00048", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00048(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00048, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00049", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00049(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00049, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00050", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00050(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00050, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00051", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00051(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00051, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00052", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00052(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00052, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00053", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00053(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00053, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00054", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00054(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00054, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00055", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00055(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00055, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00056", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00056(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00056, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00057", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00057(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00057, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00058", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00058(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00058, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00059", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00059(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00059, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00060", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00060(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00060, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00061", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00061(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00061, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00062", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00062(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00062, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00063", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00063(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00063, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00064", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00064(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00064, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00065", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00065(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00065, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00066", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00066(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00066, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00067", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00067(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00067, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00068", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00068(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00068, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00069", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00069(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00069, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00070", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00070(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00070, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00071", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00071(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00071, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00072", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00072(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00072, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00073", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00073(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00073, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00074", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00074(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00074, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00075", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00075(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00075, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00076", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00076(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00076, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00077", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00077(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00077, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00078", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00078(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00078, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00079", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00079(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00079, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00080", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00080(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00080, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00081", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00081(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00081, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00082", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00082(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00082, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00083", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00083(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00083, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00084", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00084(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00084, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00085", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00085(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00085, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00086", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00086(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00086, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00087", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00087(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00087, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00088", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00088(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00088, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00089", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00089(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00089, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00090", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00090(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00090, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00091", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00091(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00091, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00092", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00092(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00092, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00093", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00093(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00093, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00094", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00094(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00094, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00095", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00095(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00095, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00096", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00096(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00096, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00097", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00097(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00097, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00098", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00098(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00098, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00099", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00099(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00099, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00100", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00100(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00100, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00101", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00101(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00101, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00102", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00102(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00102, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00103", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00103(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00103, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00104", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00104(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00104, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00105", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00105(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00105, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00106", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00106(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00106, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00107", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00107(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00107, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00108", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00108(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00108, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00109", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00109(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00109, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00110", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00110(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00110, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00111", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00111(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00111, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00112", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00112(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00112, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00113", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00113(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00113, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00114", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00114(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00114, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00115", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00115(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00115, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00116", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00116(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00116, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00117", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00117(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00117, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00118", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00118(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00118, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "Noun-fetti_00119", bundle: ..., traitCollection: ...)`
-    static func nounFetti_00119(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounFetti_00119, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "NounsWatermark", bundle: ..., traitCollection: ...)`
-    static func nounsWatermark(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounsWatermark, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "arslan-noun", bundle: ..., traitCollection: ...)`
-    static func arslanNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.arslanNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "bell-noun", bundle: ..., traitCollection: ...)`
-    static func bellNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.bellNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-1", bundle: ..., traitCollection: ...)`
-    static func confetti1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-10", bundle: ..., traitCollection: ...)`
-    static func confetti10(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti10, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-2", bundle: ..., traitCollection: ...)`
-    static func confetti2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-3", bundle: ..., traitCollection: ...)`
-    static func confetti3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-4", bundle: ..., traitCollection: ...)`
-    static func confetti4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-5", bundle: ..., traitCollection: ...)`
-    static func confetti5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti5, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-6", bundle: ..., traitCollection: ...)`
-    static func confetti6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti6, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-7", bundle: ..., traitCollection: ...)`
-    static func confetti7(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti7, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-8", bundle: ..., traitCollection: ...)`
-    static func confetti8(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti8, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "confetti-9", bundle: ..., traitCollection: ...)`
-    static func confetti9(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.confetti9, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "create-noun-pizza", bundle: ..., traitCollection: ...)`
-    static func createNounPizza(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.createNounPizza, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "explore-onboarding", bundle: ..., traitCollection: ...)`
-    static func exploreOnboarding(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.exploreOnboarding, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-fullblack_1", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkFullblack_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-fullblack_2", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkFullblack_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-fullblack_3", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkFullblack_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-fullblack_4", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkFullblack_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkFullblack_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-red_1", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRed_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRed_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-red_2", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRed_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRed_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-red_3", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRed_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRed_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-red_4", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRed_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRed_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-rgb_1", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRgb_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-rgb_2", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRgb_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-rgb_3", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRgb_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink-rgb_4", bundle: ..., traitCollection: ...)`
-    static func eyesBlinkRgb_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlinkRgb_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink_1", bundle: ..., traitCollection: ...)`
-    static func eyesBlink_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink_2", bundle: ..., traitCollection: ...)`
-    static func eyesBlink_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink_3", bundle: ..., traitCollection: ...)`
-    static func eyesBlink_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink_4", bundle: ..., traitCollection: ...)`
-    static func eyesBlink_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-blink_5", bundle: ..., traitCollection: ...)`
-    static func eyesBlink_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesBlink_5, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-fullblack_1", bundle: ..., traitCollection: ...)`
-    static func eyesShiftFullblack_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-fullblack_2", bundle: ..., traitCollection: ...)`
-    static func eyesShiftFullblack_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-fullblack_3", bundle: ..., traitCollection: ...)`
-    static func eyesShiftFullblack_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-fullblack_4", bundle: ..., traitCollection: ...)`
-    static func eyesShiftFullblack_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-fullblack_5", bundle: ..., traitCollection: ...)`
-    static func eyesShiftFullblack_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_5, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-fullblack_6", bundle: ..., traitCollection: ...)`
-    static func eyesShiftFullblack_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftFullblack_6, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-red_1", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRed_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRed_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-red_2", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRed_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRed_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-red_3", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRed_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRed_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-red_4", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRed_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRed_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-red_5", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRed_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRed_5, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-red_6", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRed_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRed_6, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-rgb_1", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRgb_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRgb_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-rgb_2", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRgb_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRgb_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-rgb_3", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRgb_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRgb_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-rgb_4", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRgb_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRgb_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-rgb_5", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRgb_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRgb_5, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift-rgb_6", bundle: ..., traitCollection: ...)`
-    static func eyesShiftRgb_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShiftRgb_6, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift_0", bundle: ..., traitCollection: ...)`
-    static func eyesShift_0(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift_0, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift_1", bundle: ..., traitCollection: ...)`
-    static func eyesShift_1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift_1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift_2", bundle: ..., traitCollection: ...)`
-    static func eyesShift_2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift_2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift_3", bundle: ..., traitCollection: ...)`
-    static func eyesShift_3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift_3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift_4", bundle: ..., traitCollection: ...)`
-    static func eyesShift_4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift_4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift_5", bundle: ..., traitCollection: ...)`
-    static func eyesShift_5(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift_5, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "eyes-shift_6", bundle: ..., traitCollection: ...)`
-    static func eyesShift_6(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.eyesShift_6, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-deep-teal", bundle: ..., traitCollection: ...)`
-    static func glassesDeepTeal(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesDeepTeal, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-grass", bundle: ..., traitCollection: ...)`
-    static func glassesGrass(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesGrass, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-hip-rose", bundle: ..., traitCollection: ...)`
-    static func glassesHipRose(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesHipRose, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-black", bundle: ..., traitCollection: ...)`
-    static func glassesSquareBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareBlack, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-blue", bundle: ..., traitCollection: ...)`
-    static func glassesSquareBlue(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareBlue, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-blue-med-saturated", bundle: ..., traitCollection: ...)`
-    static func glassesSquareBlueMedSaturated(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareBlueMedSaturated, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-frog-green", bundle: ..., traitCollection: ...)`
-    static func glassesSquareFrogGreen(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareFrogGreen, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-green-blue-multi", bundle: ..., traitCollection: ...)`
-    static func glassesSquareGreenBlueMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareGreenBlueMulti, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-grey-light", bundle: ..., traitCollection: ...)`
-    static func glassesSquareGreyLight(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareGreyLight, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-guava", bundle: ..., traitCollection: ...)`
-    static func glassesSquareGuava(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareGuava, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-honey", bundle: ..., traitCollection: ...)`
-    static func glassesSquareHoney(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareHoney, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-magenta", bundle: ..., traitCollection: ...)`
-    static func glassesSquareMagenta(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareMagenta, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-orange", bundle: ..., traitCollection: ...)`
-    static func glassesSquareOrange(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareOrange, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-pink-purple-multi", bundle: ..., traitCollection: ...)`
-    static func glassesSquarePinkPurpleMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquarePinkPurpleMulti, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-red", bundle: ..., traitCollection: ...)`
-    static func glassesSquareRed(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareRed, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-smoke", bundle: ..., traitCollection: ...)`
-    static func glassesSquareSmoke(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareSmoke, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-teal", bundle: ..., traitCollection: ...)`
-    static func glassesSquareTeal(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareTeal, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-watermelon", bundle: ..., traitCollection: ...)`
-    static func glassesSquareWatermelon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareWatermelon, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-yellow-orange-multi", bundle: ..., traitCollection: ...)`
-    static func glassesSquareYellowOrangeMulti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareYellowOrangeMulti, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "glasses-square-yellow-saturated", bundle: ..., traitCollection: ...)`
-    static func glassesSquareYellowSaturated(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.glassesSquareYellowSaturated, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headApeMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headApeMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headApeMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ape-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headApeMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headApeMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-baseball-gameball-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headBaseballGameballMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBaseballGameballMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-baseball-gameball-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headBaseballGameballMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBaseballGameballMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-baseball-gameball-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headBaseballGameballMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBaseballGameballMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-baseball-gameball-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headBaseballGameballMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBaseballGameballMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-basketball-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headBasketballMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBasketballMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-basketball-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headBasketballMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBasketballMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-basketball-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headBasketballMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBasketballMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-basketball-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headBasketballMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBasketballMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bat-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headBatMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBatMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bat-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headBatMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBatMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bat-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headBatMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBatMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bat-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headBatMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBatMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bear-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headBearMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBearMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bear-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headBearMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBearMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bear-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headBearMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBearMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-bear-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headBearMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBearMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-blueberry-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headBlueberryMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBlueberryMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-blueberry-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headBlueberryMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBlueberryMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-blueberry-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headBlueberryMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBlueberryMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-blueberry-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headBlueberryMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headBlueberryMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cannedham-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headCannedhamMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCannedhamMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cannedham-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headCannedhamMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCannedhamMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cannedham-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headCannedhamMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCannedhamMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cannedham-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headCannedhamMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCannedhamMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cash-register-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headCashRegisterMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCashRegisterMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cash-register-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headCashRegisterMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCashRegisterMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cash-register-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headCashRegisterMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCashRegisterMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cash-register-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headCashRegisterMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCashRegisterMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chainsaw-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headChainsawMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChainsawMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chainsaw-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headChainsawMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChainsawMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chainsaw-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headChainsawMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChainsawMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chainsaw-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headChainsawMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChainsawMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chameleon-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headChameleonMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChameleonMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chameleon-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headChameleonMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChameleonMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chameleon-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headChameleonMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChameleonMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chameleon-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headChameleonMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChameleonMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chicken-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headChickenMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChickenMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chicken-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headChickenMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChickenMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chicken-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headChickenMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChickenMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chicken-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headChickenMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChickenMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chipboard-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headChipboardMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChipboardMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chipboard-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headChipboardMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChipboardMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chipboard-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headChipboardMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChipboardMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-chipboard-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headChipboardMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headChipboardMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-clutch-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headClutchMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headClutchMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-clutch-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headClutchMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headClutchMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-clutch-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headClutchMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headClutchMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-clutch-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headClutchMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headClutchMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cow-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headCowMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCowMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cow-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headCowMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCowMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cow-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headCowMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCowMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-cow-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headCowMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCowMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-croc-hat-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headCrocHatMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCrocHatMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-croc-hat-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headCrocHatMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCrocHatMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-croc-hat-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headCrocHatMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCrocHatMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-croc-hat-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headCrocHatMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headCrocHatMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-default-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headDefaultMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDefaultMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-default-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headDefaultMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDefaultMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-default-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headDefaultMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDefaultMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-default-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headDefaultMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDefaultMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dino-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headDinoMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDinoMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dino-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headDinoMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDinoMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dino-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headDinoMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDinoMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dino-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headDinoMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDinoMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dog-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headDogMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDogMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dog-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headDogMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDogMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dog-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headDogMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDogMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-dog-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headDogMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDogMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-drill-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headDrillMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDrillMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-drill-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headDrillMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDrillMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-drill-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headDrillMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDrillMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-drill-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headDrillMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDrillMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-duck-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headDuckMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDuckMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-duck-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headDuckMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDuckMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-duck-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headDuckMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDuckMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-duck-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headDuckMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headDuckMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-factory-dark-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headFactoryDarkMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFactoryDarkMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-factory-dark-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headFactoryDarkMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFactoryDarkMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-factory-dark-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headFactoryDarkMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFactoryDarkMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-factory-dark-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headFactoryDarkMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFactoryDarkMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-frog-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headFrogMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFrogMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-frog-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headFrogMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFrogMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-frog-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headFrogMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFrogMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-frog-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headFrogMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headFrogMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-gnome-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headGnomeMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGnomeMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-gnome-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headGnomeMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGnomeMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-gnome-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headGnomeMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGnomeMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-gnome-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headGnomeMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGnomeMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goat-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headGoatMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoatMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goat-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headGoatMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoatMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goat-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headGoatMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoatMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goat-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headGoatMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoatMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goldfish-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headGoldfishMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoldfishMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goldfish-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headGoldfishMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoldfishMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goldfish-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headGoldfishMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoldfishMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-goldfish-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headGoldfishMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headGoldfishMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-hardhat-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headHardhatMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHardhatMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-hardhat-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headHardhatMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHardhatMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-hardhat-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headHardhatMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHardhatMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-hardhat-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headHardhatMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHardhatMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-horse-deepfried-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headHorseDeepfriedMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHorseDeepfriedMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-horse-deepfried-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headHorseDeepfriedMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHorseDeepfriedMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-horse-deepfried-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headHorseDeepfriedMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHorseDeepfriedMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-horse-deepfried-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headHorseDeepfriedMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headHorseDeepfriedMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-jupiter-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headJupiterMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headJupiterMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-jupiter-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headJupiterMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headJupiterMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-jupiter-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headJupiterMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headJupiterMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-jupiter-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headJupiterMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headJupiterMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-laptop-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headLaptopMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headLaptopMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-laptop-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headLaptopMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headLaptopMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-laptop-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headLaptopMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headLaptopMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-laptop-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headLaptopMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headLaptopMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-moose-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headMooseMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMooseMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-moose-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headMooseMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMooseMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-moose-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headMooseMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMooseMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-moose-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headMooseMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMooseMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-mushroom-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headMushroomMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMushroomMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-mushroom-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headMushroomMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMushroomMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-mushroom-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headMushroomMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMushroomMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-mushroom-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headMushroomMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headMushroomMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-orangutan-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headOrangutanMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headOrangutanMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-orangutan-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headOrangutanMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headOrangutanMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-orangutan-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headOrangutanMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headOrangutanMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-orangutan-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headOrangutanMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headOrangutanMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-peyote-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headPeyoteMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPeyoteMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-peyote-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headPeyoteMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPeyoteMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-peyote-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headPeyoteMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPeyoteMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-peyote-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headPeyoteMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPeyoteMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-piano-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headPianoMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPianoMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-piano-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headPianoMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPianoMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-piano-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headPianoMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPianoMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-piano-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headPianoMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPianoMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pineapple-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headPineappleMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPineappleMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pineapple-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headPineappleMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPineappleMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pineapple-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headPineappleMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPineappleMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pineapple-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headPineappleMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPineappleMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pipe-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headPipeMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPipeMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pipe-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headPipeMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPipeMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pipe-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headPipeMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPipeMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pipe-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headPipeMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPipeMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pirateship-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headPirateshipMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPirateshipMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pirateship-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headPirateshipMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPirateshipMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pirateship-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headPirateshipMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPirateshipMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pirateship-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headPirateshipMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPirateshipMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pufferfish-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headPufferfishMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPufferfishMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pufferfish-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headPufferfishMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPufferfishMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pufferfish-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headPufferfishMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPufferfishMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pufferfish-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headPufferfishMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPufferfishMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pumpkin-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headPumpkinMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPumpkinMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pumpkin-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headPumpkinMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPumpkinMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pumpkin-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headPumpkinMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPumpkinMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-pumpkin-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headPumpkinMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headPumpkinMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-rabbit-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headRabbitMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRabbitMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-rabbit-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headRabbitMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRabbitMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-rabbit-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headRabbitMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRabbitMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-rabbit-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headRabbitMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRabbitMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-raven-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headRavenMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRavenMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-raven-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headRavenMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRavenMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-raven-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headRavenMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRavenMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-raven-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headRavenMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRavenMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-retainer-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headRetainerMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRetainerMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-retainer-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headRetainerMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRetainerMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-retainer-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headRetainerMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRetainerMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-retainer-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headRetainerMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRetainerMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-robot-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headRobotMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRobotMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-robot-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headRobotMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRobotMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-robot-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headRobotMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRobotMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-robot-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headRobotMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headRobotMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-scorpion-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headScorpionMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headScorpionMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-scorpion-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headScorpionMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headScorpionMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-scorpion-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headScorpionMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headScorpionMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-scorpion-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headScorpionMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headScorpionMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-shark-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headSharkMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSharkMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-shark-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headSharkMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSharkMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-shark-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headSharkMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSharkMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-shark-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headSharkMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSharkMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-skeleton-hat-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headSkeletonHatMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSkeletonHatMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-skeleton-hat-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headSkeletonHatMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSkeletonHatMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-skeleton-hat-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headSkeletonHatMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSkeletonHatMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-skeleton-hat-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headSkeletonHatMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSkeletonHatMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-squid-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headSquidMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSquidMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-squid-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headSquidMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSquidMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-squid-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headSquidMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSquidMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-squid-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headSquidMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSquidMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-steak-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headSteakMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSteakMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-steak-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headSteakMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSteakMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-steak-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headSteakMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSteakMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-steak-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headSteakMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headSteakMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-toiletpaper-full-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headToiletpaperFullMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headToiletpaperFullMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-toiletpaper-full-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headToiletpaperFullMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headToiletpaperFullMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-toiletpaper-full-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headToiletpaperFullMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headToiletpaperFullMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-toiletpaper-full-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headToiletpaperFullMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headToiletpaperFullMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-turing-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headTuringMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headTuringMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-turing-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headTuringMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headTuringMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-turing-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headTuringMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headTuringMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-turing-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headTuringMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headTuringMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ufo-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headUfoMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headUfoMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ufo-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headUfoMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headUfoMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ufo-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headUfoMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headUfoMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-ufo-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headUfoMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headUfoMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-werewolf-mouth-1", bundle: ..., traitCollection: ...)`
-    static func headWerewolfMouth1(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headWerewolfMouth1, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-werewolf-mouth-2", bundle: ..., traitCollection: ...)`
-    static func headWerewolfMouth2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headWerewolfMouth2, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-werewolf-mouth-3", bundle: ..., traitCollection: ...)`
-    static func headWerewolfMouth3(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headWerewolfMouth3, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "head-werewolf-mouth-4", bundle: ..., traitCollection: ...)`
-    static func headWerewolfMouth4(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.headWerewolfMouth4, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "home-slice-chat", bundle: ..., traitCollection: ...)`
-    static func homeSliceChat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.homeSliceChat, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "krish-noun", bundle: ..., traitCollection: ...)`
-    static func krishNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.krishNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "matt-noun", bundle: ..., traitCollection: ...)`
-    static func mattNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.mattNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "mo-noun", bundle: ..., traitCollection: ...)`
-    static func moNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.moNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "noun", bundle: ..., traitCollection: ...)`
-    static func noun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.noun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "noun-logo", bundle: ..., traitCollection: ...)`
-    static func nounLogo(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounLogo, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "nouns-ios-01-marquee", bundle: ..., traitCollection: ...)`
-    static func nounsIos01Marquee(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounsIos01Marquee, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "nouns-ios-02-marquee", bundle: ..., traitCollection: ...)`
-    static func nounsIos02Marquee(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounsIos02Marquee, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "nouns-ios-03-marquee", bundle: ..., traitCollection: ...)`
-    static func nounsIos03Marquee(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounsIos03Marquee, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "nouns-onboarding-02-cards", bundle: ..., traitCollection: ...)`
-    static func nounsOnboarding02Cards(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.nounsOnboarding02Cards, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "pizza-noun", bundle: ..., traitCollection: ...)`
-    static func pizzaNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.pizzaNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "placeholder", bundle: ..., traitCollection: ...)`
-    static func placeholder(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.placeholder, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "placeholder-ens", bundle: ..., traitCollection: ...)`
-    static func placeholderEns(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.placeholderEns, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "red_glasses", bundle: ..., traitCollection: ...)`
-    static func red_glasses(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.red_glasses, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "robleh-noun", bundle: ..., traitCollection: ...)`
-    static func roblehNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.roblehNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "shadow", bundle: ..., traitCollection: ...)`
-    static func shadow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.shadow, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "shark-noun", bundle: ..., traitCollection: ...)`
-    static func sharkNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.sharkNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "shawn-noun", bundle: ..., traitCollection: ...)`
-    static func shawnNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.shawnNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ziad-noun", bundle: ..., traitCollection: ...)`
-    static func ziadNoun(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ziadNoun, compatibleWith: traitCollection)
-    }
-    #endif
-
-    /// This `R.image.headsLessMouth` struct is generated, and contains static references to 234 images.
-    struct headsLessMouth {
-      /// Image `head-aardvark`.
-      static let headAardvark = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-aardvark")
-      /// Image `head-abstract`.
-      static let headAbstract = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-abstract")
-      /// Image `head-ape`.
-      static let headApe = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-ape")
-      /// Image `head-bag`.
-      static let headBag = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bag")
-      /// Image `head-bagpipe`.
-      static let headBagpipe = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bagpipe")
-      /// Image `head-banana`.
-      static let headBanana = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-banana")
-      /// Image `head-bank`.
-      static let headBank = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bank")
-      /// Image `head-baseball-gameball`.
-      static let headBaseballGameball = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-baseball-gameball")
-      /// Image `head-basketball`.
-      static let headBasketball = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-basketball")
-      /// Image `head-bat`.
-      static let headBat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bat")
-      /// Image `head-bear`.
-      static let headBear = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bear")
-      /// Image `head-beer`.
-      static let headBeer = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-beer")
-      /// Image `head-beet`.
-      static let headBeet = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-beet")
-      /// Image `head-bell`.
-      static let headBell = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bell")
-      /// Image `head-bigfoot-yeti`.
-      static let headBigfootYeti = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bigfoot-yeti")
-      /// Image `head-bigfoot`.
-      static let headBigfoot = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bigfoot")
-      /// Image `head-blackhole`.
-      static let headBlackhole = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-blackhole")
-      /// Image `head-blueberry`.
-      static let headBlueberry = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-blueberry")
-      /// Image `head-bomb`.
-      static let headBomb = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bomb")
-      /// Image `head-bonsai`.
-      static let headBonsai = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bonsai")
-      /// Image `head-boombox`.
-      static let headBoombox = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-boombox")
-      /// Image `head-boot`.
-      static let headBoot = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-boot")
-      /// Image `head-box`.
-      static let headBox = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-box")
-      /// Image `head-boxingglove`.
-      static let headBoxingglove = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-boxingglove")
-      /// Image `head-brain`.
-      static let headBrain = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-brain")
-      /// Image `head-bubble-speech`.
-      static let headBubbleSpeech = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bubble-speech")
-      /// Image `head-bubblegum`.
-      static let headBubblegum = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-bubblegum")
-      /// Image `head-burger-dollarmenu`.
-      static let headBurgerDollarmenu = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-burger-dollarmenu")
-      /// Image `head-cake`.
-      static let headCake = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cake")
-      /// Image `head-calculator`.
-      static let headCalculator = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-calculator")
-      /// Image `head-calendar`.
-      static let headCalendar = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-calendar")
-      /// Image `head-camcorder`.
-      static let headCamcorder = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-camcorder")
-      /// Image `head-cannedham`.
-      static let headCannedham = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cannedham")
-      /// Image `head-car`.
-      static let headCar = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-car")
-      /// Image `head-cash-register`.
-      static let headCashRegister = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cash-register")
-      /// Image `head-cassettetape`.
-      static let headCassettetape = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cassettetape")
-      /// Image `head-cat`.
-      static let headCat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cat")
-      /// Image `head-cd`.
-      static let headCd = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cd")
-      /// Image `head-chain`.
-      static let headChain = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chain")
-      /// Image `head-chainsaw`.
-      static let headChainsaw = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chainsaw")
-      /// Image `head-chameleon`.
-      static let headChameleon = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chameleon")
-      /// Image `head-chart-bars`.
-      static let headChartBars = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chart-bars")
-      /// Image `head-cheese`.
-      static let headCheese = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cheese")
-      /// Image `head-chefhat`.
-      static let headChefhat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chefhat")
-      /// Image `head-cherry`.
-      static let headCherry = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cherry")
-      /// Image `head-chicken`.
-      static let headChicken = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chicken")
-      /// Image `head-chilli`.
-      static let headChilli = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chilli")
-      /// Image `head-chipboard`.
-      static let headChipboard = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chipboard")
-      /// Image `head-chips`.
-      static let headChips = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chips")
-      /// Image `head-chocolate`.
-      static let headChocolate = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-chocolate")
-      /// Image `head-cloud`.
-      static let headCloud = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cloud")
-      /// Image `head-clover`.
-      static let headClover = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-clover")
-      /// Image `head-clutch`.
-      static let headClutch = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-clutch")
-      /// Image `head-coffeebean`.
-      static let headCoffeebean = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-coffeebean")
-      /// Image `head-cone`.
-      static let headCone = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cone")
-      /// Image `head-console-handheld`.
-      static let headConsoleHandheld = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-console-handheld")
-      /// Image `head-cookie`.
-      static let headCookie = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cookie")
-      /// Image `head-cordlessphone`.
-      static let headCordlessphone = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cordlessphone")
-      /// Image `head-cottonball`.
-      static let headCottonball = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cottonball")
-      /// Image `head-cow`.
-      static let headCow = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-cow")
-      /// Image `head-crab`.
-      static let headCrab = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-crab")
-      /// Image `head-crane`.
-      static let headCrane = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-crane")
-      /// Image `head-croc-hat`.
-      static let headCrocHat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-croc-hat")
-      /// Image `head-crown`.
-      static let headCrown = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-crown")
-      /// Image `head-crt-bsod`.
-      static let headCrtBsod = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-crt-bsod")
-      /// Image `head-crystalball`.
-      static let headCrystalball = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-crystalball")
-      /// Image `head-diamond-blue`.
-      static let headDiamondBlue = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-diamond-blue")
-      /// Image `head-diamond-red`.
-      static let headDiamondRed = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-diamond-red")
-      /// Image `head-dictionary`.
-      static let headDictionary = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-dictionary")
-      /// Image `head-dino`.
-      static let headDino = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-dino")
-      /// Image `head-dna`.
-      static let headDna = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-dna")
-      /// Image `head-dog`.
-      static let headDog = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-dog")
-      /// Image `head-doughnut`.
-      static let headDoughnut = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-doughnut")
-      /// Image `head-drill`.
-      static let headDrill = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-drill")
-      /// Image `head-duck`.
-      static let headDuck = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-duck")
-      /// Image `head-ducky`.
-      static let headDucky = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-ducky")
-      /// Image `head-earth`.
-      static let headEarth = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-earth")
-      /// Image `head-egg`.
-      static let headEgg = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-egg")
-      /// Image `head-faberge`.
-      static let headFaberge = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-faberge")
-      /// Image `head-factory-dark`.
-      static let headFactoryDark = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-factory-dark")
-      /// Image `head-fan`.
-      static let headFan = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-fan")
-      /// Image `head-fence`.
-      static let headFence = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-fence")
-      /// Image `head-film-35mm`.
-      static let headFilm35mm = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-film-35mm")
-      /// Image `head-film-strip`.
-      static let headFilmStrip = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-film-strip")
-      /// Image `head-fir`.
-      static let headFir = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-fir")
-      /// Image `head-firehydrant`.
-      static let headFirehydrant = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-firehydrant")
-      /// Image `head-flamingo`.
-      static let headFlamingo = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-flamingo")
-      /// Image `head-flower`.
-      static let headFlower = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-flower")
-      /// Image `head-fox`.
-      static let headFox = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-fox")
-      /// Image `head-frog`.
-      static let headFrog = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-frog")
-      /// Image `head-garlic`.
-      static let headGarlic = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-garlic")
-      /// Image `head-gavel`.
-      static let headGavel = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-gavel")
-      /// Image `head-ghost-B`.
-      static let headGhostB = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-ghost-B")
-      /// Image `head-glasses-big`.
-      static let headGlassesBig = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-glasses-big")
-      /// Image `head-gnome`.
-      static let headGnome = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-gnome")
-      /// Image `head-goat`.
-      static let headGoat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-goat")
-      /// Image `head-goldcoin`.
-      static let headGoldcoin = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-goldcoin")
-      /// Image `head-goldfish`.
-      static let headGoldfish = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-goldfish")
-      /// Image `head-grouper`.
-      static let headGrouper = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-grouper")
-      /// Image `head-hair`.
-      static let headHair = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-hair")
-      /// Image `head-hardhat`.
-      static let headHardhat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-hardhat")
-      /// Image `head-heart`.
-      static let headHeart = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-heart")
-      /// Image `head-helicopter`.
-      static let headHelicopter = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-helicopter")
-      /// Image `head-highheel`.
-      static let headHighheel = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-highheel")
-      /// Image `head-hockeypuck`.
-      static let headHockeypuck = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-hockeypuck")
-      /// Image `head-horse-deepfried`.
-      static let headHorseDeepfried = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-horse-deepfried")
-      /// Image `head-hotdog`.
-      static let headHotdog = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-hotdog")
-      /// Image `head-house`.
-      static let headHouse = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-house")
-      /// Image `head-icepop-b`.
-      static let headIcepopB = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-icepop-b")
-      /// Image `head-igloo`.
-      static let headIgloo = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-igloo")
-      /// Image `head-island`.
-      static let headIsland = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-island")
-      /// Image `head-jellyfish`.
-      static let headJellyfish = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-jellyfish")
-      /// Image `head-jupiter`.
-      static let headJupiter = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-jupiter")
-      /// Image `head-kangaroo`.
-      static let headKangaroo = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-kangaroo")
-      /// Image `head-ketchup`.
-      static let headKetchup = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-ketchup")
-      /// Image `head-laptop`.
-      static let headLaptop = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-laptop")
-      /// Image `head-lightning-bolt`.
-      static let headLightningBolt = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-lightning-bolt")
-      /// Image `head-lint`.
-      static let headLint = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-lint")
-      /// Image `head-lips`.
-      static let headLips = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-lips")
-      /// Image `head-lipstick2`.
-      static let headLipstick2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-lipstick2")
-      /// Image `head-lock`.
-      static let headLock = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-lock")
-      /// Image `head-macaroni`.
-      static let headMacaroni = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-macaroni")
-      /// Image `head-mailbox`.
-      static let headMailbox = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mailbox")
-      /// Image `head-maze`.
-      static let headMaze = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-maze")
-      /// Image `head-microwave`.
-      static let headMicrowave = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-microwave")
-      /// Image `head-milk`.
-      static let headMilk = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-milk")
-      /// Image `head-mirror`.
-      static let headMirror = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mirror")
-      /// Image `head-mixer`.
-      static let headMixer = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mixer")
-      /// Image `head-moon`.
-      static let headMoon = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-moon")
-      /// Image `head-moose`.
-      static let headMoose = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-moose")
-      /// Image `head-mosquito`.
-      static let headMosquito = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mosquito")
-      /// Image `head-mountain-snowcap`.
-      static let headMountainSnowcap = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mountain-snowcap")
-      /// Image `head-mouse`.
-      static let headMouse = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mouse")
-      /// Image `head-mug`.
-      static let headMug = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mug")
-      /// Image `head-mushroom`.
-      static let headMushroom = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mushroom")
-      /// Image `head-mustard`.
-      static let headMustard = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-mustard")
-      /// Image `head-nigiri`.
-      static let headNigiri = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-nigiri")
-      /// Image `head-noodles`.
-      static let headNoodles = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-noodles")
-      /// Image `head-onion`.
-      static let headOnion = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-onion")
-      /// Image `head-orangutan`.
-      static let headOrangutan = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-orangutan")
-      /// Image `head-orca`.
-      static let headOrca = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-orca")
-      /// Image `head-otter`.
-      static let headOtter = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-otter")
-      /// Image `head-outlet`.
-      static let headOutlet = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-outlet")
-      /// Image `head-owl`.
-      static let headOwl = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-owl")
-      /// Image `head-oyster`.
-      static let headOyster = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-oyster")
-      /// Image `head-paintbrush`.
-      static let headPaintbrush = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-paintbrush")
-      /// Image `head-panda`.
-      static let headPanda = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-panda")
-      /// Image `head-paperclip`.
-      static let headPaperclip = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-paperclip")
-      /// Image `head-peanut`.
-      static let headPeanut = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-peanut")
-      /// Image `head-pencil-tip`.
-      static let headPencilTip = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pencil-tip")
-      /// Image `head-peyote`.
-      static let headPeyote = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-peyote")
-      /// Image `head-piano`.
-      static let headPiano = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-piano")
-      /// Image `head-pickle`.
-      static let headPickle = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pickle")
-      /// Image `head-pie`.
-      static let headPie = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pie")
-      /// Image `head-piggybank`.
-      static let headPiggybank = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-piggybank")
-      /// Image `head-pill`.
-      static let headPill = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pill")
-      /// Image `head-pillow`.
-      static let headPillow = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pillow")
-      /// Image `head-pineapple`.
-      static let headPineapple = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pineapple")
-      /// Image `head-pipe`.
-      static let headPipe = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pipe")
-      /// Image `head-pirateship`.
-      static let headPirateship = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pirateship")
-      /// Image `head-pizza`.
-      static let headPizza = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pizza")
-      /// Image `head-plane`.
-      static let headPlane = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-plane")
-      /// Image `head-pop`.
-      static let headPop = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pop")
-      /// Image `head-porkbao`.
-      static let headPorkbao = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-porkbao")
-      /// Image `head-potato`.
-      static let headPotato = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-potato")
-      /// Image `head-pufferfish`.
-      static let headPufferfish = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pufferfish")
-      /// Image `head-pumpkin`.
-      static let headPumpkin = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pumpkin")
-      /// Image `head-pyramid`.
-      static let headPyramid = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-pyramid")
-      /// Image `head-queencrown`.
-      static let headQueencrown = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-queencrown")
-      /// Image `head-rabbit`.
-      static let headRabbit = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-rabbit")
-      /// Image `head-rainbow`.
-      static let headRainbow = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-rainbow")
-      /// Image `head-rangefinder`.
-      static let headRangefinder = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-rangefinder")
-      /// Image `head-raven`.
-      static let headRaven = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-raven")
-      /// Image `head-retainer`.
-      static let headRetainer = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-retainer")
-      /// Image `head-rgb`.
-      static let headRgb = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-rgb")
-      /// Image `head-ring`.
-      static let headRing = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-ring")
-      /// Image `head-road`.
-      static let headRoad = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-road")
-      /// Image `head-robot`.
-      static let headRobot = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-robot")
-      /// Image `head-rock`.
-      static let headRock = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-rock")
-      /// Image `head-rosebud`.
-      static let headRosebud = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-rosebud")
-      /// Image `head-ruler-triangular`.
-      static let headRulerTriangular = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-ruler-triangular")
-      /// Image `head-saguaro`.
-      static let headSaguaro = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-saguaro")
-      /// Image `head-sailboat`.
-      static let headSailboat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-sailboat")
-      /// Image `head-sandwich`.
-      static let headSandwich = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-sandwich")
-      /// Image `head-saturn`.
-      static let headSaturn = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-saturn")
-      /// Image `head-saw`.
-      static let headSaw = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-saw")
-      /// Image `head-scorpion`.
-      static let headScorpion = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-scorpion")
-      /// Image `head-shark`.
-      static let headShark = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-shark")
-      /// Image `head-shower`.
-      static let headShower = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-shower")
-      /// Image `head-skateboard`.
-      static let headSkateboard = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-skateboard")
-      /// Image `head-skeleton-hat`.
-      static let headSkeletonHat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-skeleton-hat")
-      /// Image `head-skilift`.
-      static let headSkilift = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-skilift")
-      /// Image `head-smile`.
-      static let headSmile = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-smile")
-      /// Image `head-snowglobe`.
-      static let headSnowglobe = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-snowglobe")
-      /// Image `head-snowmobile`.
-      static let headSnowmobile = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-snowmobile")
-      /// Image `head-spaghetti`.
-      static let headSpaghetti = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-spaghetti")
-      /// Image `head-sponge`.
-      static let headSponge = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-sponge")
-      /// Image `head-squid`.
-      static let headSquid = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-squid")
-      /// Image `head-stapler`.
-      static let headStapler = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-stapler")
-      /// Image `head-star-sparkles`.
-      static let headStarSparkles = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-star-sparkles")
-      /// Image `head-steak`.
-      static let headSteak = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-steak")
-      /// Image `head-sunset`.
-      static let headSunset = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-sunset")
-      /// Image `head-taco-classic`.
-      static let headTacoClassic = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-taco-classic")
-      /// Image `head-taxi`.
-      static let headTaxi = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-taxi")
-      /// Image `head-thumbsup`.
-      static let headThumbsup = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-thumbsup")
-      /// Image `head-toaster`.
-      static let headToaster = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-toaster")
-      /// Image `head-toiletpaper-full`.
-      static let headToiletpaperFull = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-toiletpaper-full")
-      /// Image `head-tooth`.
-      static let headTooth = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-tooth")
-      /// Image `head-toothbrush-fresh`.
-      static let headToothbrushFresh = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-toothbrush-fresh")
-      /// Image `head-tornado`.
-      static let headTornado = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-tornado")
-      /// Image `head-trashcan`.
-      static let headTrashcan = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-trashcan")
-      /// Image `head-turing`.
-      static let headTuring = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-turing")
-      /// Image `head-ufo`.
-      static let headUfo = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-ufo")
-      /// Image `head-undead`.
-      static let headUndead = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-undead")
-      /// Image `head-unicorn`.
-      static let headUnicorn = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-unicorn")
-      /// Image `head-vent`.
-      static let headVent = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-vent")
-      /// Image `head-void`.
-      static let headVoid = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-void")
-      /// Image `head-volcano`.
-      static let headVolcano = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-volcano")
-      /// Image `head-volleyball`.
-      static let headVolleyball = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-volleyball")
-      /// Image `head-wall`.
-      static let headWall = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-wall")
-      /// Image `head-wallet`.
-      static let headWallet = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-wallet")
-      /// Image `head-wallsafe`.
-      static let headWallsafe = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-wallsafe")
-      /// Image `head-washingmachine`.
-      static let headWashingmachine = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-washingmachine")
-      /// Image `head-watch`.
-      static let headWatch = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-watch")
-      /// Image `head-watermelon`.
-      static let headWatermelon = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-watermelon")
-      /// Image `head-wave`.
-      static let headWave = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-wave")
-      /// Image `head-weed`.
-      static let headWeed = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-weed")
-      /// Image `head-weight`.
-      static let headWeight = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-weight")
-      /// Image `head-werewolf`.
-      static let headWerewolf = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-werewolf")
-      /// Image `head-whale-alive`.
-      static let headWhaleAlive = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-whale-alive")
-      /// Image `head-whale`.
-      static let headWhale = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-whale")
-      /// Image `head-wine`.
-      static let headWine = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-wine")
-      /// Image `head-wizardhat`.
-      static let headWizardhat = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-wizardhat")
-      /// Image `head-zebra`.
-      static let headZebra = Rswift.ImageResource(bundle: R.hostingBundle, name: "heads-less-mouth/head-zebra")
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-aardvark", bundle: ..., traitCollection: ...)`
-      static func headAardvark(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headAardvark, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-abstract", bundle: ..., traitCollection: ...)`
-      static func headAbstract(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headAbstract, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-ape", bundle: ..., traitCollection: ...)`
-      static func headApe(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headApe, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bag", bundle: ..., traitCollection: ...)`
-      static func headBag(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBag, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bagpipe", bundle: ..., traitCollection: ...)`
-      static func headBagpipe(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBagpipe, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-banana", bundle: ..., traitCollection: ...)`
-      static func headBanana(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBanana, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bank", bundle: ..., traitCollection: ...)`
-      static func headBank(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBank, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-baseball-gameball", bundle: ..., traitCollection: ...)`
-      static func headBaseballGameball(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBaseballGameball, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-basketball", bundle: ..., traitCollection: ...)`
-      static func headBasketball(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBasketball, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bat", bundle: ..., traitCollection: ...)`
-      static func headBat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bear", bundle: ..., traitCollection: ...)`
-      static func headBear(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBear, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-beer", bundle: ..., traitCollection: ...)`
-      static func headBeer(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBeer, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-beet", bundle: ..., traitCollection: ...)`
-      static func headBeet(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBeet, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bell", bundle: ..., traitCollection: ...)`
-      static func headBell(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBell, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bigfoot", bundle: ..., traitCollection: ...)`
-      static func headBigfoot(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBigfoot, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bigfoot-yeti", bundle: ..., traitCollection: ...)`
-      static func headBigfootYeti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBigfootYeti, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-blackhole", bundle: ..., traitCollection: ...)`
-      static func headBlackhole(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBlackhole, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-blueberry", bundle: ..., traitCollection: ...)`
-      static func headBlueberry(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBlueberry, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bomb", bundle: ..., traitCollection: ...)`
-      static func headBomb(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBomb, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bonsai", bundle: ..., traitCollection: ...)`
-      static func headBonsai(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBonsai, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-boombox", bundle: ..., traitCollection: ...)`
-      static func headBoombox(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBoombox, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-boot", bundle: ..., traitCollection: ...)`
-      static func headBoot(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBoot, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-box", bundle: ..., traitCollection: ...)`
-      static func headBox(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBox, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-boxingglove", bundle: ..., traitCollection: ...)`
-      static func headBoxingglove(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBoxingglove, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-brain", bundle: ..., traitCollection: ...)`
-      static func headBrain(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBrain, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bubble-speech", bundle: ..., traitCollection: ...)`
-      static func headBubbleSpeech(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBubbleSpeech, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-bubblegum", bundle: ..., traitCollection: ...)`
-      static func headBubblegum(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBubblegum, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-burger-dollarmenu", bundle: ..., traitCollection: ...)`
-      static func headBurgerDollarmenu(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headBurgerDollarmenu, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cake", bundle: ..., traitCollection: ...)`
-      static func headCake(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCake, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-calculator", bundle: ..., traitCollection: ...)`
-      static func headCalculator(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCalculator, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-calendar", bundle: ..., traitCollection: ...)`
-      static func headCalendar(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCalendar, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-camcorder", bundle: ..., traitCollection: ...)`
-      static func headCamcorder(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCamcorder, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cannedham", bundle: ..., traitCollection: ...)`
-      static func headCannedham(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCannedham, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-car", bundle: ..., traitCollection: ...)`
-      static func headCar(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCar, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cash-register", bundle: ..., traitCollection: ...)`
-      static func headCashRegister(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCashRegister, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cassettetape", bundle: ..., traitCollection: ...)`
-      static func headCassettetape(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCassettetape, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cat", bundle: ..., traitCollection: ...)`
-      static func headCat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cd", bundle: ..., traitCollection: ...)`
-      static func headCd(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCd, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chain", bundle: ..., traitCollection: ...)`
-      static func headChain(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChain, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chainsaw", bundle: ..., traitCollection: ...)`
-      static func headChainsaw(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChainsaw, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chameleon", bundle: ..., traitCollection: ...)`
-      static func headChameleon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChameleon, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chart-bars", bundle: ..., traitCollection: ...)`
-      static func headChartBars(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChartBars, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cheese", bundle: ..., traitCollection: ...)`
-      static func headCheese(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCheese, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chefhat", bundle: ..., traitCollection: ...)`
-      static func headChefhat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChefhat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cherry", bundle: ..., traitCollection: ...)`
-      static func headCherry(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCherry, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chicken", bundle: ..., traitCollection: ...)`
-      static func headChicken(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChicken, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chilli", bundle: ..., traitCollection: ...)`
-      static func headChilli(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChilli, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chipboard", bundle: ..., traitCollection: ...)`
-      static func headChipboard(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChipboard, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chips", bundle: ..., traitCollection: ...)`
-      static func headChips(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChips, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-chocolate", bundle: ..., traitCollection: ...)`
-      static func headChocolate(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headChocolate, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cloud", bundle: ..., traitCollection: ...)`
-      static func headCloud(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCloud, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-clover", bundle: ..., traitCollection: ...)`
-      static func headClover(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headClover, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-clutch", bundle: ..., traitCollection: ...)`
-      static func headClutch(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headClutch, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-coffeebean", bundle: ..., traitCollection: ...)`
-      static func headCoffeebean(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCoffeebean, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cone", bundle: ..., traitCollection: ...)`
-      static func headCone(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCone, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-console-handheld", bundle: ..., traitCollection: ...)`
-      static func headConsoleHandheld(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headConsoleHandheld, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cookie", bundle: ..., traitCollection: ...)`
-      static func headCookie(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCookie, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cordlessphone", bundle: ..., traitCollection: ...)`
-      static func headCordlessphone(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCordlessphone, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cottonball", bundle: ..., traitCollection: ...)`
-      static func headCottonball(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCottonball, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-cow", bundle: ..., traitCollection: ...)`
-      static func headCow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCow, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-crab", bundle: ..., traitCollection: ...)`
-      static func headCrab(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCrab, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-crane", bundle: ..., traitCollection: ...)`
-      static func headCrane(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCrane, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-croc-hat", bundle: ..., traitCollection: ...)`
-      static func headCrocHat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCrocHat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-crown", bundle: ..., traitCollection: ...)`
-      static func headCrown(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCrown, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-crt-bsod", bundle: ..., traitCollection: ...)`
-      static func headCrtBsod(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCrtBsod, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-crystalball", bundle: ..., traitCollection: ...)`
-      static func headCrystalball(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headCrystalball, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-diamond-blue", bundle: ..., traitCollection: ...)`
-      static func headDiamondBlue(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDiamondBlue, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-diamond-red", bundle: ..., traitCollection: ...)`
-      static func headDiamondRed(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDiamondRed, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-dictionary", bundle: ..., traitCollection: ...)`
-      static func headDictionary(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDictionary, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-dino", bundle: ..., traitCollection: ...)`
-      static func headDino(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDino, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-dna", bundle: ..., traitCollection: ...)`
-      static func headDna(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDna, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-dog", bundle: ..., traitCollection: ...)`
-      static func headDog(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDog, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-doughnut", bundle: ..., traitCollection: ...)`
-      static func headDoughnut(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDoughnut, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-drill", bundle: ..., traitCollection: ...)`
-      static func headDrill(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDrill, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-duck", bundle: ..., traitCollection: ...)`
-      static func headDuck(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDuck, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-ducky", bundle: ..., traitCollection: ...)`
-      static func headDucky(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headDucky, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-earth", bundle: ..., traitCollection: ...)`
-      static func headEarth(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headEarth, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-egg", bundle: ..., traitCollection: ...)`
-      static func headEgg(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headEgg, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-faberge", bundle: ..., traitCollection: ...)`
-      static func headFaberge(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFaberge, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-factory-dark", bundle: ..., traitCollection: ...)`
-      static func headFactoryDark(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFactoryDark, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-fan", bundle: ..., traitCollection: ...)`
-      static func headFan(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFan, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-fence", bundle: ..., traitCollection: ...)`
-      static func headFence(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFence, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-film-35mm", bundle: ..., traitCollection: ...)`
-      static func headFilm35mm(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFilm35mm, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-film-strip", bundle: ..., traitCollection: ...)`
-      static func headFilmStrip(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFilmStrip, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-fir", bundle: ..., traitCollection: ...)`
-      static func headFir(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFir, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-firehydrant", bundle: ..., traitCollection: ...)`
-      static func headFirehydrant(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFirehydrant, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-flamingo", bundle: ..., traitCollection: ...)`
-      static func headFlamingo(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFlamingo, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-flower", bundle: ..., traitCollection: ...)`
-      static func headFlower(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFlower, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-fox", bundle: ..., traitCollection: ...)`
-      static func headFox(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFox, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-frog", bundle: ..., traitCollection: ...)`
-      static func headFrog(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headFrog, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-garlic", bundle: ..., traitCollection: ...)`
-      static func headGarlic(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGarlic, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-gavel", bundle: ..., traitCollection: ...)`
-      static func headGavel(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGavel, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-ghost-B", bundle: ..., traitCollection: ...)`
-      static func headGhostB(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGhostB, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-glasses-big", bundle: ..., traitCollection: ...)`
-      static func headGlassesBig(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGlassesBig, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-gnome", bundle: ..., traitCollection: ...)`
-      static func headGnome(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGnome, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-goat", bundle: ..., traitCollection: ...)`
-      static func headGoat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGoat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-goldcoin", bundle: ..., traitCollection: ...)`
-      static func headGoldcoin(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGoldcoin, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-goldfish", bundle: ..., traitCollection: ...)`
-      static func headGoldfish(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGoldfish, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-grouper", bundle: ..., traitCollection: ...)`
-      static func headGrouper(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headGrouper, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-hair", bundle: ..., traitCollection: ...)`
-      static func headHair(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHair, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-hardhat", bundle: ..., traitCollection: ...)`
-      static func headHardhat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHardhat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-heart", bundle: ..., traitCollection: ...)`
-      static func headHeart(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHeart, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-helicopter", bundle: ..., traitCollection: ...)`
-      static func headHelicopter(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHelicopter, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-highheel", bundle: ..., traitCollection: ...)`
-      static func headHighheel(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHighheel, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-hockeypuck", bundle: ..., traitCollection: ...)`
-      static func headHockeypuck(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHockeypuck, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-horse-deepfried", bundle: ..., traitCollection: ...)`
-      static func headHorseDeepfried(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHorseDeepfried, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-hotdog", bundle: ..., traitCollection: ...)`
-      static func headHotdog(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHotdog, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-house", bundle: ..., traitCollection: ...)`
-      static func headHouse(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headHouse, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-icepop-b", bundle: ..., traitCollection: ...)`
-      static func headIcepopB(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headIcepopB, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-igloo", bundle: ..., traitCollection: ...)`
-      static func headIgloo(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headIgloo, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-island", bundle: ..., traitCollection: ...)`
-      static func headIsland(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headIsland, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-jellyfish", bundle: ..., traitCollection: ...)`
-      static func headJellyfish(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headJellyfish, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-jupiter", bundle: ..., traitCollection: ...)`
-      static func headJupiter(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headJupiter, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-kangaroo", bundle: ..., traitCollection: ...)`
-      static func headKangaroo(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headKangaroo, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-ketchup", bundle: ..., traitCollection: ...)`
-      static func headKetchup(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headKetchup, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-laptop", bundle: ..., traitCollection: ...)`
-      static func headLaptop(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headLaptop, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-lightning-bolt", bundle: ..., traitCollection: ...)`
-      static func headLightningBolt(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headLightningBolt, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-lint", bundle: ..., traitCollection: ...)`
-      static func headLint(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headLint, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-lips", bundle: ..., traitCollection: ...)`
-      static func headLips(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headLips, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-lipstick2", bundle: ..., traitCollection: ...)`
-      static func headLipstick2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headLipstick2, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-lock", bundle: ..., traitCollection: ...)`
-      static func headLock(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headLock, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-macaroni", bundle: ..., traitCollection: ...)`
-      static func headMacaroni(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMacaroni, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mailbox", bundle: ..., traitCollection: ...)`
-      static func headMailbox(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMailbox, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-maze", bundle: ..., traitCollection: ...)`
-      static func headMaze(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMaze, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-microwave", bundle: ..., traitCollection: ...)`
-      static func headMicrowave(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMicrowave, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-milk", bundle: ..., traitCollection: ...)`
-      static func headMilk(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMilk, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mirror", bundle: ..., traitCollection: ...)`
-      static func headMirror(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMirror, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mixer", bundle: ..., traitCollection: ...)`
-      static func headMixer(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMixer, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-moon", bundle: ..., traitCollection: ...)`
-      static func headMoon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMoon, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-moose", bundle: ..., traitCollection: ...)`
-      static func headMoose(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMoose, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mosquito", bundle: ..., traitCollection: ...)`
-      static func headMosquito(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMosquito, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mountain-snowcap", bundle: ..., traitCollection: ...)`
-      static func headMountainSnowcap(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMountainSnowcap, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mouse", bundle: ..., traitCollection: ...)`
-      static func headMouse(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMouse, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mug", bundle: ..., traitCollection: ...)`
-      static func headMug(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMug, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mushroom", bundle: ..., traitCollection: ...)`
-      static func headMushroom(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMushroom, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-mustard", bundle: ..., traitCollection: ...)`
-      static func headMustard(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headMustard, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-nigiri", bundle: ..., traitCollection: ...)`
-      static func headNigiri(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headNigiri, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-noodles", bundle: ..., traitCollection: ...)`
-      static func headNoodles(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headNoodles, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-onion", bundle: ..., traitCollection: ...)`
-      static func headOnion(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headOnion, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-orangutan", bundle: ..., traitCollection: ...)`
-      static func headOrangutan(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headOrangutan, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-orca", bundle: ..., traitCollection: ...)`
-      static func headOrca(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headOrca, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-otter", bundle: ..., traitCollection: ...)`
-      static func headOtter(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headOtter, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-outlet", bundle: ..., traitCollection: ...)`
-      static func headOutlet(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headOutlet, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-owl", bundle: ..., traitCollection: ...)`
-      static func headOwl(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headOwl, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-oyster", bundle: ..., traitCollection: ...)`
-      static func headOyster(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headOyster, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-paintbrush", bundle: ..., traitCollection: ...)`
-      static func headPaintbrush(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPaintbrush, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-panda", bundle: ..., traitCollection: ...)`
-      static func headPanda(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPanda, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-paperclip", bundle: ..., traitCollection: ...)`
-      static func headPaperclip(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPaperclip, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-peanut", bundle: ..., traitCollection: ...)`
-      static func headPeanut(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPeanut, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pencil-tip", bundle: ..., traitCollection: ...)`
-      static func headPencilTip(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPencilTip, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-peyote", bundle: ..., traitCollection: ...)`
-      static func headPeyote(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPeyote, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-piano", bundle: ..., traitCollection: ...)`
-      static func headPiano(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPiano, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pickle", bundle: ..., traitCollection: ...)`
-      static func headPickle(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPickle, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pie", bundle: ..., traitCollection: ...)`
-      static func headPie(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPie, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-piggybank", bundle: ..., traitCollection: ...)`
-      static func headPiggybank(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPiggybank, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pill", bundle: ..., traitCollection: ...)`
-      static func headPill(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPill, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pillow", bundle: ..., traitCollection: ...)`
-      static func headPillow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPillow, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pineapple", bundle: ..., traitCollection: ...)`
-      static func headPineapple(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPineapple, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pipe", bundle: ..., traitCollection: ...)`
-      static func headPipe(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPipe, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pirateship", bundle: ..., traitCollection: ...)`
-      static func headPirateship(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPirateship, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pizza", bundle: ..., traitCollection: ...)`
-      static func headPizza(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPizza, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-plane", bundle: ..., traitCollection: ...)`
-      static func headPlane(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPlane, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pop", bundle: ..., traitCollection: ...)`
-      static func headPop(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPop, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-porkbao", bundle: ..., traitCollection: ...)`
-      static func headPorkbao(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPorkbao, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-potato", bundle: ..., traitCollection: ...)`
-      static func headPotato(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPotato, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pufferfish", bundle: ..., traitCollection: ...)`
-      static func headPufferfish(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPufferfish, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pumpkin", bundle: ..., traitCollection: ...)`
-      static func headPumpkin(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPumpkin, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-pyramid", bundle: ..., traitCollection: ...)`
-      static func headPyramid(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headPyramid, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-queencrown", bundle: ..., traitCollection: ...)`
-      static func headQueencrown(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headQueencrown, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-rabbit", bundle: ..., traitCollection: ...)`
-      static func headRabbit(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRabbit, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-rainbow", bundle: ..., traitCollection: ...)`
-      static func headRainbow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRainbow, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-rangefinder", bundle: ..., traitCollection: ...)`
-      static func headRangefinder(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRangefinder, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-raven", bundle: ..., traitCollection: ...)`
-      static func headRaven(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRaven, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-retainer", bundle: ..., traitCollection: ...)`
-      static func headRetainer(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRetainer, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-rgb", bundle: ..., traitCollection: ...)`
-      static func headRgb(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRgb, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-ring", bundle: ..., traitCollection: ...)`
-      static func headRing(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRing, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-road", bundle: ..., traitCollection: ...)`
-      static func headRoad(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRoad, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-robot", bundle: ..., traitCollection: ...)`
-      static func headRobot(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRobot, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-rock", bundle: ..., traitCollection: ...)`
-      static func headRock(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRock, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-rosebud", bundle: ..., traitCollection: ...)`
-      static func headRosebud(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRosebud, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-ruler-triangular", bundle: ..., traitCollection: ...)`
-      static func headRulerTriangular(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headRulerTriangular, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-saguaro", bundle: ..., traitCollection: ...)`
-      static func headSaguaro(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSaguaro, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-sailboat", bundle: ..., traitCollection: ...)`
-      static func headSailboat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSailboat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-sandwich", bundle: ..., traitCollection: ...)`
-      static func headSandwich(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSandwich, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-saturn", bundle: ..., traitCollection: ...)`
-      static func headSaturn(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSaturn, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-saw", bundle: ..., traitCollection: ...)`
-      static func headSaw(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSaw, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-scorpion", bundle: ..., traitCollection: ...)`
-      static func headScorpion(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headScorpion, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-shark", bundle: ..., traitCollection: ...)`
-      static func headShark(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headShark, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-shower", bundle: ..., traitCollection: ...)`
-      static func headShower(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headShower, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-skateboard", bundle: ..., traitCollection: ...)`
-      static func headSkateboard(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSkateboard, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-skeleton-hat", bundle: ..., traitCollection: ...)`
-      static func headSkeletonHat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSkeletonHat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-skilift", bundle: ..., traitCollection: ...)`
-      static func headSkilift(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSkilift, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-smile", bundle: ..., traitCollection: ...)`
-      static func headSmile(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSmile, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-snowglobe", bundle: ..., traitCollection: ...)`
-      static func headSnowglobe(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSnowglobe, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-snowmobile", bundle: ..., traitCollection: ...)`
-      static func headSnowmobile(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSnowmobile, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-spaghetti", bundle: ..., traitCollection: ...)`
-      static func headSpaghetti(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSpaghetti, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-sponge", bundle: ..., traitCollection: ...)`
-      static func headSponge(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSponge, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-squid", bundle: ..., traitCollection: ...)`
-      static func headSquid(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSquid, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-stapler", bundle: ..., traitCollection: ...)`
-      static func headStapler(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headStapler, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-star-sparkles", bundle: ..., traitCollection: ...)`
-      static func headStarSparkles(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headStarSparkles, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-steak", bundle: ..., traitCollection: ...)`
-      static func headSteak(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSteak, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-sunset", bundle: ..., traitCollection: ...)`
-      static func headSunset(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headSunset, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-taco-classic", bundle: ..., traitCollection: ...)`
-      static func headTacoClassic(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headTacoClassic, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-taxi", bundle: ..., traitCollection: ...)`
-      static func headTaxi(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headTaxi, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-thumbsup", bundle: ..., traitCollection: ...)`
-      static func headThumbsup(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headThumbsup, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-toaster", bundle: ..., traitCollection: ...)`
-      static func headToaster(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headToaster, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-toiletpaper-full", bundle: ..., traitCollection: ...)`
-      static func headToiletpaperFull(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headToiletpaperFull, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-tooth", bundle: ..., traitCollection: ...)`
-      static func headTooth(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headTooth, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-toothbrush-fresh", bundle: ..., traitCollection: ...)`
-      static func headToothbrushFresh(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headToothbrushFresh, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-tornado", bundle: ..., traitCollection: ...)`
-      static func headTornado(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headTornado, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-trashcan", bundle: ..., traitCollection: ...)`
-      static func headTrashcan(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headTrashcan, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-turing", bundle: ..., traitCollection: ...)`
-      static func headTuring(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headTuring, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-ufo", bundle: ..., traitCollection: ...)`
-      static func headUfo(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headUfo, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-undead", bundle: ..., traitCollection: ...)`
-      static func headUndead(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headUndead, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-unicorn", bundle: ..., traitCollection: ...)`
-      static func headUnicorn(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headUnicorn, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-vent", bundle: ..., traitCollection: ...)`
-      static func headVent(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headVent, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-void", bundle: ..., traitCollection: ...)`
-      static func headVoid(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headVoid, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-volcano", bundle: ..., traitCollection: ...)`
-      static func headVolcano(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headVolcano, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-volleyball", bundle: ..., traitCollection: ...)`
-      static func headVolleyball(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headVolleyball, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-wall", bundle: ..., traitCollection: ...)`
-      static func headWall(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWall, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-wallet", bundle: ..., traitCollection: ...)`
-      static func headWallet(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWallet, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-wallsafe", bundle: ..., traitCollection: ...)`
-      static func headWallsafe(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWallsafe, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-washingmachine", bundle: ..., traitCollection: ...)`
-      static func headWashingmachine(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWashingmachine, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-watch", bundle: ..., traitCollection: ...)`
-      static func headWatch(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWatch, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-watermelon", bundle: ..., traitCollection: ...)`
-      static func headWatermelon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWatermelon, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-wave", bundle: ..., traitCollection: ...)`
-      static func headWave(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWave, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-weed", bundle: ..., traitCollection: ...)`
-      static func headWeed(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWeed, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-weight", bundle: ..., traitCollection: ...)`
-      static func headWeight(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWeight, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-werewolf", bundle: ..., traitCollection: ...)`
-      static func headWerewolf(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWerewolf, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-whale", bundle: ..., traitCollection: ...)`
-      static func headWhale(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWhale, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-whale-alive", bundle: ..., traitCollection: ...)`
-      static func headWhaleAlive(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWhaleAlive, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-wine", bundle: ..., traitCollection: ...)`
-      static func headWine(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWine, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-wizardhat", bundle: ..., traitCollection: ...)`
-      static func headWizardhat(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headWizardhat, compatibleWith: traitCollection)
-      }
-      #endif
-
-      #if os(iOS) || os(tvOS)
-      /// `UIImage(named: "head-zebra", bundle: ..., traitCollection: ...)`
-      static func headZebra(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-        return UIKit.UIImage(resource: R.image.headsLessMouth.headZebra, compatibleWith: traitCollection)
-      }
-      #endif
-
-      fileprivate init() {}
-    }
-
-    fileprivate init() {}
-  }
-
-  /// This `R.info` struct is generated, and contains static references to 1 properties.
-  struct info {
-    struct uiApplicationSceneManifest {
-      static let _key = "UIApplicationSceneManifest"
-      static let uiApplicationSupportsMultipleScenes = true
-
-      fileprivate init() {}
-    }
-
-    fileprivate init() {}
-  }
-
-  /// This `R.string` struct is generated, and contains static references to 31 localization tables.
+  /// This `_R.string` struct is generated, and contains static references to 31 localization tables.
   struct string {
-    /// This `R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
-    struct aboutNouns {
-      /// Value: Learn more at nouns.wtf
-      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "AboutNouns", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities.   While some projects have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.
-      static let nounsWtfDescription = Rswift.StringResource(key: "nouns.wtf.description", tableName: "AboutNouns", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: WTF?
-      static let title = Rswift.StringResource(key: "title", tableName: "AboutNouns", bundle: R.hostingBundle, locales: [], comment: nil)
+    let bundle: Foundation.Bundle
+    let preferredLanguages: [String]?
+    let locale: Locale?
+    var about: about { .init(source: .init(bundle: bundle, tableName: "About", preferredLanguages: preferredLanguages, locale: locale)) }
+    var aboutNouns: aboutNouns { .init(source: .init(bundle: bundle, tableName: "AboutNouns", preferredLanguages: preferredLanguages, locale: locale)) }
+    var activity: activity { .init(source: .init(bundle: bundle, tableName: "Activity", preferredLanguages: preferredLanguages, locale: locale)) }
+    var appIcon: appIcon { .init(source: .init(bundle: bundle, tableName: "AppIcon", preferredLanguages: preferredLanguages, locale: locale)) }
+    var audioPermissionDialog: audioPermissionDialog { .init(source: .init(bundle: bundle, tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages, locale: locale)) }
+    var audioSettingsDialog: audioSettingsDialog { .init(source: .init(bundle: bundle, tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages, locale: locale)) }
+    var bidHistory: bidHistory { .init(source: .init(bundle: bundle, tableName: "BidHistory", preferredLanguages: preferredLanguages, locale: locale)) }
+    var create: create { .init(source: .init(bundle: bundle, tableName: "Create", preferredLanguages: preferredLanguages, locale: locale)) }
+    var createCoachmark: createCoachmark { .init(source: .init(bundle: bundle, tableName: "CreateCoachmark", preferredLanguages: preferredLanguages, locale: locale)) }
+    var createNounDialog: createNounDialog { .init(source: .init(bundle: bundle, tableName: "CreateNounDialog", preferredLanguages: preferredLanguages, locale: locale)) }
+    var derivativeProjects: derivativeProjects { .init(source: .init(bundle: bundle, tableName: "DerivativeProjects", preferredLanguages: preferredLanguages, locale: locale)) }
+    var documentation: documentation { .init(source: .init(bundle: bundle, tableName: "Documentation", preferredLanguages: preferredLanguages, locale: locale)) }
+    var explore: explore { .init(source: .init(bundle: bundle, tableName: "Explore", preferredLanguages: preferredLanguages, locale: locale)) }
+    var liveAuction: liveAuction { .init(source: .init(bundle: bundle, tableName: "LiveAuction", preferredLanguages: preferredLanguages, locale: locale)) }
+    var localizable: localizable { .init(source: .init(bundle: bundle, tableName: "Localizable", preferredLanguages: preferredLanguages, locale: locale)) }
+    var madhappy: madhappy { .init(source: .init(bundle: bundle, tableName: "Madhappy", preferredLanguages: preferredLanguages, locale: locale)) }
+    var notificationPermission: notificationPermission { .init(source: .init(bundle: bundle, tableName: "NotificationPermission", preferredLanguages: preferredLanguages, locale: locale)) }
+    var nounDAOInfo: nounDAOInfo { .init(source: .init(bundle: bundle, tableName: "NounDAOInfo", preferredLanguages: preferredLanguages, locale: locale)) }
+    var nounDeleteDialog: nounDeleteDialog { .init(source: .init(bundle: bundle, tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages, locale: locale)) }
+    var nounDiscardEditDialog: nounDiscardEditDialog { .init(source: .init(bundle: bundle, tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages, locale: locale)) }
+    var nounPlayground: nounPlayground { .init(source: .init(bundle: bundle, tableName: "NounPlayground", preferredLanguages: preferredLanguages, locale: locale)) }
+    var nounProfile: nounProfile { .init(source: .init(bundle: bundle, tableName: "NounProfile", preferredLanguages: preferredLanguages, locale: locale)) }
+    var onboarding: onboarding { .init(source: .init(bundle: bundle, tableName: "Onboarding", preferredLanguages: preferredLanguages, locale: locale)) }
+    var playExperience: playExperience { .init(source: .init(bundle: bundle, tableName: "PlayExperience", preferredLanguages: preferredLanguages, locale: locale)) }
+    var proposal: proposal { .init(source: .init(bundle: bundle, tableName: "Proposal", preferredLanguages: preferredLanguages, locale: locale)) }
+    var settings: settings { .init(source: .init(bundle: bundle, tableName: "Settings", preferredLanguages: preferredLanguages, locale: locale)) }
+    var settingsNotificationPermission: settingsNotificationPermission { .init(source: .init(bundle: bundle, tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages, locale: locale)) }
+    var shared: shared { .init(source: .init(bundle: bundle, tableName: "Shared", preferredLanguages: preferredLanguages, locale: locale)) }
+    var spaces: spaces { .init(source: .init(bundle: bundle, tableName: "Spaces", preferredLanguages: preferredLanguages, locale: locale)) }
+    var team: team { .init(source: .init(bundle: bundle, tableName: "Team", preferredLanguages: preferredLanguages, locale: locale)) }
+    var offchainNounActions: offchainNounActions { .init(source: .init(bundle: bundle, tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages, locale: locale)) }
 
-      /// Value: Learn more at nouns.wtf
-      static func learnMore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("learn.more", tableName: "AboutNouns", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AboutNouns", preferredLanguages: preferredLanguages) else {
-          return "learn.more"
-        }
-
-        return NSLocalizedString("learn.more", tableName: "AboutNouns", bundle: bundle, comment: "")
-      }
-
-      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities.   While some projects have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.
-      static func nounsWtfDescription(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("nouns.wtf.description", tableName: "AboutNouns", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AboutNouns", preferredLanguages: preferredLanguages) else {
-          return "nouns.wtf.description"
-        }
-
-        return NSLocalizedString("nouns.wtf.description", tableName: "AboutNouns", bundle: bundle, comment: "")
-      }
-
-      /// Value: WTF?
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "AboutNouns", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AboutNouns", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "AboutNouns", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+    func about(preferredLanguages: [String]) -> about {
+      .init(source: .init(bundle: bundle, tableName: "About", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func aboutNouns(preferredLanguages: [String]) -> aboutNouns {
+      .init(source: .init(bundle: bundle, tableName: "AboutNouns", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func activity(preferredLanguages: [String]) -> activity {
+      .init(source: .init(bundle: bundle, tableName: "Activity", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func appIcon(preferredLanguages: [String]) -> appIcon {
+      .init(source: .init(bundle: bundle, tableName: "AppIcon", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func audioPermissionDialog(preferredLanguages: [String]) -> audioPermissionDialog {
+      .init(source: .init(bundle: bundle, tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func audioSettingsDialog(preferredLanguages: [String]) -> audioSettingsDialog {
+      .init(source: .init(bundle: bundle, tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func bidHistory(preferredLanguages: [String]) -> bidHistory {
+      .init(source: .init(bundle: bundle, tableName: "BidHistory", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func create(preferredLanguages: [String]) -> create {
+      .init(source: .init(bundle: bundle, tableName: "Create", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func createCoachmark(preferredLanguages: [String]) -> createCoachmark {
+      .init(source: .init(bundle: bundle, tableName: "CreateCoachmark", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func createNounDialog(preferredLanguages: [String]) -> createNounDialog {
+      .init(source: .init(bundle: bundle, tableName: "CreateNounDialog", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func derivativeProjects(preferredLanguages: [String]) -> derivativeProjects {
+      .init(source: .init(bundle: bundle, tableName: "DerivativeProjects", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func documentation(preferredLanguages: [String]) -> documentation {
+      .init(source: .init(bundle: bundle, tableName: "Documentation", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func explore(preferredLanguages: [String]) -> explore {
+      .init(source: .init(bundle: bundle, tableName: "Explore", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func liveAuction(preferredLanguages: [String]) -> liveAuction {
+      .init(source: .init(bundle: bundle, tableName: "LiveAuction", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func localizable(preferredLanguages: [String]) -> localizable {
+      .init(source: .init(bundle: bundle, tableName: "Localizable", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func madhappy(preferredLanguages: [String]) -> madhappy {
+      .init(source: .init(bundle: bundle, tableName: "Madhappy", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func notificationPermission(preferredLanguages: [String]) -> notificationPermission {
+      .init(source: .init(bundle: bundle, tableName: "NotificationPermission", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func nounDAOInfo(preferredLanguages: [String]) -> nounDAOInfo {
+      .init(source: .init(bundle: bundle, tableName: "NounDAOInfo", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func nounDeleteDialog(preferredLanguages: [String]) -> nounDeleteDialog {
+      .init(source: .init(bundle: bundle, tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func nounDiscardEditDialog(preferredLanguages: [String]) -> nounDiscardEditDialog {
+      .init(source: .init(bundle: bundle, tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func nounPlayground(preferredLanguages: [String]) -> nounPlayground {
+      .init(source: .init(bundle: bundle, tableName: "NounPlayground", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func nounProfile(preferredLanguages: [String]) -> nounProfile {
+      .init(source: .init(bundle: bundle, tableName: "NounProfile", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func onboarding(preferredLanguages: [String]) -> onboarding {
+      .init(source: .init(bundle: bundle, tableName: "Onboarding", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func playExperience(preferredLanguages: [String]) -> playExperience {
+      .init(source: .init(bundle: bundle, tableName: "PlayExperience", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func proposal(preferredLanguages: [String]) -> proposal {
+      .init(source: .init(bundle: bundle, tableName: "Proposal", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func settings(preferredLanguages: [String]) -> settings {
+      .init(source: .init(bundle: bundle, tableName: "Settings", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func settingsNotificationPermission(preferredLanguages: [String]) -> settingsNotificationPermission {
+      .init(source: .init(bundle: bundle, tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func shared(preferredLanguages: [String]) -> shared {
+      .init(source: .init(bundle: bundle, tableName: "Shared", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func spaces(preferredLanguages: [String]) -> spaces {
+      .init(source: .init(bundle: bundle, tableName: "Spaces", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func team(preferredLanguages: [String]) -> team {
+      .init(source: .init(bundle: bundle, tableName: "Team", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func offchainNounActions(preferredLanguages: [String]) -> offchainNounActions {
+      .init(source: .init(bundle: bundle, tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages, locale: locale))
     }
 
-    /// This `R.string.about` struct is generated, and contains static references to 4 localization keys.
+
+    /// This `_R.string.about` struct is generated, and contains static references to 4 localization keys.
     struct about {
-      /// Value: About
-      static let title = Rswift.StringResource(key: "title", tableName: "About", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Learn more
-      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "About", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Treasury
-      static let treasury = Rswift.StringResource(key: "treasury", tableName: "About", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://nouns.wtf
-      static let aboutLink = Rswift.StringResource(key: "about.link", tableName: "About", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: About
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "About", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "About", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "About", bundle: bundle, comment: "")
-      }
-
-      /// Value: Learn more
-      static func learnMore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("learn.more", tableName: "About", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "About", preferredLanguages: preferredLanguages) else {
-          return "learn.more"
-        }
-
-        return NSLocalizedString("learn.more", tableName: "About", bundle: bundle, comment: "")
-      }
-
-      /// Value: Treasury
-      static func treasury(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("treasury", tableName: "About", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "About", preferredLanguages: preferredLanguages) else {
-          return "treasury"
-        }
-
-        return NSLocalizedString("treasury", tableName: "About", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: https://nouns.wtf
-      static func aboutLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("about.link", tableName: "About", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: about.link
+      var aboutLink: RswiftResources.StringResource { .init(key: "about.link", tableName: "About", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "About", preferredLanguages: preferredLanguages) else {
-          return "about.link"
-        }
+      /// Value: Learn more
+      ///
+      /// Key: learn.more
+      var learnMore: RswiftResources.StringResource { .init(key: "learn.more", tableName: "About", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("about.link", tableName: "About", bundle: bundle, comment: "")
-      }
+      /// Value: About
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "About", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Treasury
+      ///
+      /// Key: treasury
+      var treasury: RswiftResources.StringResource { .init(key: "treasury", tableName: "About", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.activity` struct is generated, and contains static references to 9 localization keys.
+    /// This `_R.string.aboutNouns` struct is generated, and contains static references to 3 localization keys.
+    struct aboutNouns {
+      let source: RswiftResources.StringResource.Source
+
+      /// Value: Learn more at nouns.wtf
+      ///
+      /// Key: learn.more
+      var learnMore: RswiftResources.StringResource { .init(key: "learn.more", tableName: "AboutNouns", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Nouns are an experimental attempt to improve the formation of on-chain avatar communities.   While some projects have attempted to bootstrap digital community and identity, Nouns attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.
+      ///
+      /// Key: nouns.wtf.description
+      var nounsWtfDescription: RswiftResources.StringResource { .init(key: "nouns.wtf.description", tableName: "AboutNouns", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: WTF?
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "AboutNouns", source: source, developmentValue: nil, comment: nil) }
+    }
+
+    /// This `_R.string.activity` struct is generated, and contains static references to 9 localization keys.
     struct activity {
-      /// Value: Absent for
-      static let absent = Rswift.StringResource(key: "absent", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Activity
-      static let menuTitle = Rswift.StringResource(key: "menu.title", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Failed to load activity feed
-      static let errorEmptyTitle = Rswift.StringResource(key: "error.empty.title", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Failed to load more activities
-      static let errorLoadMoreTitle = Rswift.StringResource(key: "error.loadMore.title", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: No activity
-      static let emptyState = Rswift.StringResource(key: "empty-state", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Proposal %s • %s
-      static let proposalStatus = Rswift.StringResource(key: "proposal.status", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Untitled
-      static let proposalUntitled = Rswift.StringResource(key: "proposal.untitled", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Vote Against
-      static let against = Rswift.StringResource(key: "against", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Voted for
-      static let `for` = Rswift.StringResource(key: "for", tableName: "Activity", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Absent for
-      static func absent(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("absent", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "absent"
-        }
-
-        return NSLocalizedString("absent", tableName: "Activity", bundle: bundle, comment: "")
-      }
-
-      /// Value: Activity
-      static func menuTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("menu.title", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "menu.title"
-        }
-
-        return NSLocalizedString("menu.title", tableName: "Activity", bundle: bundle, comment: "")
-      }
-
-      /// Value: Failed to load activity feed
-      static func errorEmptyTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("error.empty.title", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "error.empty.title"
-        }
-
-        return NSLocalizedString("error.empty.title", tableName: "Activity", bundle: bundle, comment: "")
-      }
-
-      /// Value: Failed to load more activities
-      static func errorLoadMoreTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("error.loadMore.title", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "error.loadMore.title"
-        }
-
-        return NSLocalizedString("error.loadMore.title", tableName: "Activity", bundle: bundle, comment: "")
-      }
-
-      /// Value: No activity
-      static func emptyState(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("empty-state", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "empty-state"
-        }
-
-        return NSLocalizedString("empty-state", tableName: "Activity", bundle: bundle, comment: "")
-      }
-
-      /// Value: Proposal %s • %s
-      static func proposalStatus(_ value1: UnsafePointer<CChar>, _ value2: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("proposal.status", tableName: "Activity", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1, value2)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "proposal.status"
-        }
-
-        let format = NSLocalizedString("proposal.status", tableName: "Activity", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1, value2)
-      }
-
-      /// Value: Untitled
-      static func proposalUntitled(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("proposal.untitled", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "proposal.untitled"
-        }
-
-        return NSLocalizedString("proposal.untitled", tableName: "Activity", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: absent
+      var absent: RswiftResources.StringResource { .init(key: "absent", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Vote Against
-      static func against(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("against", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: against
+      var against: RswiftResources.StringResource { .init(key: "against", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "against"
-        }
+      /// Value: No activity
+      ///
+      /// Key: empty-state
+      var emptyState: RswiftResources.StringResource { .init(key: "empty-state", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("against", tableName: "Activity", bundle: bundle, comment: "")
-      }
+      /// Value: Failed to load activity feed
+      ///
+      /// Key: error.empty.title
+      var errorEmptyTitle: RswiftResources.StringResource { .init(key: "error.empty.title", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Failed to load more activities
+      ///
+      /// Key: error.loadMore.title
+      var errorLoadMoreTitle: RswiftResources.StringResource { .init(key: "error.loadMore.title", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Voted for
-      static func `for`(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("for", tableName: "Activity", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: for
+      var `for`: RswiftResources.StringResource { .init(key: "for", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Activity", preferredLanguages: preferredLanguages) else {
-          return "for"
-        }
+      /// Value: Activity
+      ///
+      /// Key: menu.title
+      var menuTitle: RswiftResources.StringResource { .init(key: "menu.title", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("for", tableName: "Activity", bundle: bundle, comment: "")
-      }
+      /// Value: Proposal %s • %s
+      ///
+      /// Key: proposal.status
+      var proposalStatus: RswiftResources.StringResource2<UnsafePointer<CChar>, UnsafePointer<CChar>> { .init(key: "proposal.status", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Untitled
+      ///
+      /// Key: proposal.untitled
+      var proposalUntitled: RswiftResources.StringResource { .init(key: "proposal.untitled", tableName: "Activity", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.appIcon` struct is generated, and contains static references to 1 localization keys.
+    /// This `_R.string.appIcon` struct is generated, and contains static references to 1 localization keys.
     struct appIcon {
-      /// Value: App icon
-      static let title = Rswift.StringResource(key: "title", tableName: "AppIcon", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: App icon
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "AppIcon", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AppIcon", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "AppIcon", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "AppIcon", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.audioPermissionDialog` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.audioPermissionDialog` struct is generated, and contains static references to 4 localization keys.
     struct audioPermissionDialog {
-      /// Value: Do it later
-      static let ignore = Rswift.StringResource(key: "ignore", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Enable microphone
-      static let enable = Rswift.StringResource(key: "enable", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Let's get talkin!
-      static let title = Rswift.StringResource(key: "title", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: To make your Noun talk, the app needs your permission to use the microphone.
-      static let body = Rswift.StringResource(key: "body", tableName: "AudioPermissionDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Do it later
-      static func ignore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("ignore", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
-          return "ignore"
-        }
-
-        return NSLocalizedString("ignore", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Enable microphone
-      static func enable(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("enable", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
-          return "enable"
-        }
-
-        return NSLocalizedString("enable", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Let's get talkin!
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: To make your Noun talk, the app needs your permission to use the microphone.
-      static func body(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: body
+      var body: RswiftResources.StringResource { .init(key: "body", tableName: "AudioPermissionDialog", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "AudioPermissionDialog", preferredLanguages: preferredLanguages) else {
-          return "body"
-        }
+      /// Value: Enable microphone
+      ///
+      /// Key: enable
+      var enable: RswiftResources.StringResource { .init(key: "enable", tableName: "AudioPermissionDialog", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("body", tableName: "AudioPermissionDialog", bundle: bundle, comment: "")
-      }
+      /// Value: Do it later
+      ///
+      /// Key: ignore
+      var ignore: RswiftResources.StringResource { .init(key: "ignore", tableName: "AudioPermissionDialog", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Let's get talkin!
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "AudioPermissionDialog", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.audioSettingsDialog` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.audioSettingsDialog` struct is generated, and contains static references to 4 localization keys.
     struct audioSettingsDialog {
-      /// Value: Do it later
-      static let ignore = Rswift.StringResource(key: "ignore", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Enable Audio in Settings
-      static let title = Rswift.StringResource(key: "title", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Open Settings
-      static let enable = Rswift.StringResource(key: "enable", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: To access the play experience, you'll need to enable audio permissions through the Settings app.
-      static let body = Rswift.StringResource(key: "body", tableName: "AudioSettingsDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Do it later
-      static func ignore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("ignore", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
-          return "ignore"
-        }
-
-        return NSLocalizedString("ignore", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Enable Audio in Settings
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Open Settings
-      static func enable(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("enable", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
-          return "enable"
-        }
-
-        return NSLocalizedString("enable", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: To access the play experience, you'll need to enable audio permissions through the Settings app.
-      static func body(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("body", tableName: "AudioSettingsDialog", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: body
+      var body: RswiftResources.StringResource { .init(key: "body", tableName: "AudioSettingsDialog", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "AudioSettingsDialog", preferredLanguages: preferredLanguages) else {
-          return "body"
-        }
+      /// Value: Open Settings
+      ///
+      /// Key: enable
+      var enable: RswiftResources.StringResource { .init(key: "enable", tableName: "AudioSettingsDialog", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("body", tableName: "AudioSettingsDialog", bundle: bundle, comment: "")
-      }
+      /// Value: Do it later
+      ///
+      /// Key: ignore
+      var ignore: RswiftResources.StringResource { .init(key: "ignore", tableName: "AudioSettingsDialog", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Enable Audio in Settings
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "AudioSettingsDialog", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.bidHistory` struct is generated, and contains static references to 6 localization keys.
+    /// This `_R.string.bidHistory` struct is generated, and contains static references to 6 localization keys.
     struct bidHistory {
-      /// Value: %s at %s
-      static let blockDate = Rswift.StringResource(key: "block.date", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Bid history
-      static let menuTitle = Rswift.StringResource(key: "menu.title", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Failed to load bid history
-      static let errorEmptyTitle = Rswift.StringResource(key: "error.empty.title", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Failed to load more bids
-      static let errorLoadMoreTitle = Rswift.StringResource(key: "error.loadMore.title", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: No bid history registered.
-      static let emptyState = Rswift.StringResource(key: "empty-state", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Unavailable
-      static let blockUnavailable = Rswift.StringResource(key: "block.unavailable", tableName: "BidHistory", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: %s at %s
-      static func blockDate(_ value1: UnsafePointer<CChar>, _ value2: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("block.date", tableName: "BidHistory", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1, value2)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
-          return "block.date"
-        }
-
-        let format = NSLocalizedString("block.date", tableName: "BidHistory", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1, value2)
-      }
-
-      /// Value: Bid history
-      static func menuTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("menu.title", tableName: "BidHistory", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
-          return "menu.title"
-        }
-
-        return NSLocalizedString("menu.title", tableName: "BidHistory", bundle: bundle, comment: "")
-      }
-
-      /// Value: Failed to load bid history
-      static func errorEmptyTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("error.empty.title", tableName: "BidHistory", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
-          return "error.empty.title"
-        }
-
-        return NSLocalizedString("error.empty.title", tableName: "BidHistory", bundle: bundle, comment: "")
-      }
-
-      /// Value: Failed to load more bids
-      static func errorLoadMoreTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("error.loadMore.title", tableName: "BidHistory", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
-          return "error.loadMore.title"
-        }
-
-        return NSLocalizedString("error.loadMore.title", tableName: "BidHistory", bundle: bundle, comment: "")
-      }
-
-      /// Value: No bid history registered.
-      static func emptyState(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("empty-state", tableName: "BidHistory", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
-          return "empty-state"
-        }
-
-        return NSLocalizedString("empty-state", tableName: "BidHistory", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: block.date
+      var blockDate: RswiftResources.StringResource2<UnsafePointer<CChar>, UnsafePointer<CChar>> { .init(key: "block.date", tableName: "BidHistory", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Unavailable
-      static func blockUnavailable(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("block.unavailable", tableName: "BidHistory", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: block.unavailable
+      var blockUnavailable: RswiftResources.StringResource { .init(key: "block.unavailable", tableName: "BidHistory", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "BidHistory", preferredLanguages: preferredLanguages) else {
-          return "block.unavailable"
-        }
+      /// Value: No bid history registered.
+      ///
+      /// Key: empty-state
+      var emptyState: RswiftResources.StringResource { .init(key: "empty-state", tableName: "BidHistory", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("block.unavailable", tableName: "BidHistory", bundle: bundle, comment: "")
-      }
+      /// Value: Failed to load bid history
+      ///
+      /// Key: error.empty.title
+      var errorEmptyTitle: RswiftResources.StringResource { .init(key: "error.empty.title", tableName: "BidHistory", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Failed to load more bids
+      ///
+      /// Key: error.loadMore.title
+      var errorLoadMoreTitle: RswiftResources.StringResource { .init(key: "error.loadMore.title", tableName: "BidHistory", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Bid history
+      ///
+      /// Key: menu.title
+      var menuTitle: RswiftResources.StringResource { .init(key: "menu.title", tableName: "BidHistory", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.createCoachmark` struct is generated, and contains static references to 2 localization keys.
-    struct createCoachmark {
-      /// Value: Shake to shuffle
-      static let shake = Rswift.StringResource(key: "shake", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Swipe to pick %@
-      static let swipe = Rswift.StringResource(key: "swipe", tableName: "CreateCoachmark", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Shake to shuffle
-      static func shake(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
-          return "shake"
-        }
-
-        return NSLocalizedString("shake", tableName: "CreateCoachmark", bundle: bundle, comment: "")
-      }
-
-      /// Value: Swipe to pick %@
-      static func swipe(_ value1: String, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "CreateCoachmark", preferredLanguages: preferredLanguages) else {
-          return "swipe"
-        }
-
-        let format = NSLocalizedString("swipe", tableName: "CreateCoachmark", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
-
-      fileprivate init() {}
-    }
-
-    /// This `R.string.createNounDialog` struct is generated, and contains static references to 5 localization keys.
-    struct createNounDialog {
-      /// Value: Born %s
-      static let nounBirthdayLabel = Rswift.StringResource(key: "noun.birthday.label", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Created by you
-      static let ownerLabel = Rswift.StringResource(key: "owner.label", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Name your Noun!
-      static let inputPlaceholder = Rswift.StringResource(key: "input.placeholder", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Save & finish
-      static let actionSave = Rswift.StringResource(key: "action.save", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Share your Noun
-      static let actionShare = Rswift.StringResource(key: "action.share", tableName: "CreateNounDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Born %s
-      static func nounBirthdayLabel(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("noun.birthday.label", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
-          return "noun.birthday.label"
-        }
-
-        let format = NSLocalizedString("noun.birthday.label", tableName: "CreateNounDialog", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
-
-      /// Value: Created by you
-      static func ownerLabel(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("owner.label", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
-          return "owner.label"
-        }
-
-        return NSLocalizedString("owner.label", tableName: "CreateNounDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Name your Noun!
-      static func inputPlaceholder(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("input.placeholder", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
-          return "input.placeholder"
-        }
-
-        return NSLocalizedString("input.placeholder", tableName: "CreateNounDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Save & finish
-      static func actionSave(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("action.save", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
-          return "action.save"
-        }
-
-        return NSLocalizedString("action.save", tableName: "CreateNounDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Share your Noun
-      static func actionShare(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("action.share", tableName: "CreateNounDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "CreateNounDialog", preferredLanguages: preferredLanguages) else {
-          return "action.share"
-        }
-
-        return NSLocalizedString("action.share", tableName: "CreateNounDialog", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
-    }
-
-    /// This `R.string.create` struct is generated, and contains static references to 3 localization keys.
+    /// This `_R.string.create` struct is generated, and contains static references to 3 localization keys.
     struct create {
-      /// Value: Build a completely custom Noun
-      static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Create
-      static let title = Rswift.StringResource(key: "title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Get going
-      static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "Create", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Build a completely custom Noun
-      static func subheadline(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("subheadline", tableName: "Create", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
-          return "subheadline"
-        }
-
-        return NSLocalizedString("subheadline", tableName: "Create", bundle: bundle, comment: "")
-      }
-
-      /// Value: Create
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Create", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Create", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Get going
-      static func proceedTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("proceed.title", tableName: "Create", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: proceed.title
+      var proceedTitle: RswiftResources.StringResource { .init(key: "proceed.title", tableName: "Create", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Create", preferredLanguages: preferredLanguages) else {
-          return "proceed.title"
-        }
+      /// Value: Build a completely custom Noun
+      ///
+      /// Key: subheadline
+      var subheadline: RswiftResources.StringResource { .init(key: "subheadline", tableName: "Create", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("proceed.title", tableName: "Create", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: Create
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Create", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.derivativeProjects` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.createCoachmark` struct is generated, and contains static references to 2 localization keys.
+    struct createCoachmark {
+      let source: RswiftResources.StringResource.Source
+
+      /// Value: Shake to shuffle
+      ///
+      /// Key: shake
+      var shake: RswiftResources.StringResource { .init(key: "shake", tableName: "CreateCoachmark", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Swipe to pick %@
+      ///
+      /// Key: swipe
+      var swipe: RswiftResources.StringResource1<String> { .init(key: "swipe", tableName: "CreateCoachmark", source: source, developmentValue: nil, comment: nil) }
+    }
+
+    /// This `_R.string.createNounDialog` struct is generated, and contains static references to 5 localization keys.
+    struct createNounDialog {
+      let source: RswiftResources.StringResource.Source
+
+      /// Value: Save & finish
+      ///
+      /// Key: action.save
+      var actionSave: RswiftResources.StringResource { .init(key: "action.save", tableName: "CreateNounDialog", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Share your Noun
+      ///
+      /// Key: action.share
+      var actionShare: RswiftResources.StringResource { .init(key: "action.share", tableName: "CreateNounDialog", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Name your Noun!
+      ///
+      /// Key: input.placeholder
+      var inputPlaceholder: RswiftResources.StringResource { .init(key: "input.placeholder", tableName: "CreateNounDialog", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Born %s
+      ///
+      /// Key: noun.birthday.label
+      var nounBirthdayLabel: RswiftResources.StringResource1<UnsafePointer<CChar>> { .init(key: "noun.birthday.label", tableName: "CreateNounDialog", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Created by you
+      ///
+      /// Key: owner.label
+      var ownerLabel: RswiftResources.StringResource { .init(key: "owner.label", tableName: "CreateNounDialog", source: source, developmentValue: nil, comment: nil) }
+    }
+
+    /// This `_R.string.derivativeProjects` struct is generated, and contains static references to 4 localization keys.
     struct derivativeProjects {
-      /// Value: Derivative projects
-      static let title = Rswift.StringResource(key: "title", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Derivative projects take the DNA of Nouns to build something new, and are key to growing the Nouns community.
-      static let message = Rswift.StringResource(key: "message", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Nouns Center
-      static let nounsCenterTitle = Rswift.StringResource(key: "nouns-center.title", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://nouns.center/projects
-      static let nounsCenterLink = Rswift.StringResource(key: "nouns-center.link", tableName: "DerivativeProjects", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Derivative projects
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "DerivativeProjects", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Derivative projects take the DNA of Nouns to build something new, and are key to growing the Nouns community.
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "DerivativeProjects", bundle: bundle, comment: "")
-      }
-
-      /// Value: Nouns Center
-      static func nounsCenterTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("nouns-center.title", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
-          return "nouns-center.title"
-        }
-
-        return NSLocalizedString("nouns-center.title", tableName: "DerivativeProjects", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: message
+      var message: RswiftResources.StringResource { .init(key: "message", tableName: "DerivativeProjects", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://nouns.center/projects
-      static func nounsCenterLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("nouns-center.link", tableName: "DerivativeProjects", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: nouns-center.link
+      var nounsCenterLink: RswiftResources.StringResource { .init(key: "nouns-center.link", tableName: "DerivativeProjects", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "DerivativeProjects", preferredLanguages: preferredLanguages) else {
-          return "nouns-center.link"
-        }
+      /// Value: Nouns Center
+      ///
+      /// Key: nouns-center.title
+      var nounsCenterTitle: RswiftResources.StringResource { .init(key: "nouns-center.title", tableName: "DerivativeProjects", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("nouns-center.link", tableName: "DerivativeProjects", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: Derivative projects
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "DerivativeProjects", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.documentation` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.documentation` struct is generated, and contains static references to 4 localization keys.
     struct documentation {
-      /// Value: Explore Nouns
-      static let title = Rswift.StringResource(key: "title", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Learn More
-      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Want to dive into the details? Follow the link below to get a more in-depth understanding of the Nouns DAO.
-      static let message = Rswift.StringResource(key: "message", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://nouns.notion.site/Explore-Nouns-a2a9dceeb1d54e10b9cbf3f931c2266f
-      static let documentationLink = Rswift.StringResource(key: "documentation.link", tableName: "Documentation", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Explore Nouns
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Documentation", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Documentation", bundle: bundle, comment: "")
-      }
-
-      /// Value: Learn More
-      static func learnMore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("learn.more", tableName: "Documentation", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "learn.more"
-        }
-
-        return NSLocalizedString("learn.more", tableName: "Documentation", bundle: bundle, comment: "")
-      }
-
-      /// Value: Want to dive into the details? Follow the link below to get a more in-depth understanding of the Nouns DAO.
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "Documentation", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "Documentation", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: https://nouns.notion.site/Explore-Nouns-a2a9dceeb1d54e10b9cbf3f931c2266f
-      static func documentationLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("documentation.link", tableName: "Documentation", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: documentation.link
+      var documentationLink: RswiftResources.StringResource { .init(key: "documentation.link", tableName: "Documentation", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Documentation", preferredLanguages: preferredLanguages) else {
-          return "documentation.link"
-        }
+      /// Value: Learn More
+      ///
+      /// Key: learn.more
+      var learnMore: RswiftResources.StringResource { .init(key: "learn.more", tableName: "Documentation", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("documentation.link", tableName: "Documentation", bundle: bundle, comment: "")
-      }
+      /// Value: Want to dive into the details? Follow the link below to get a more in-depth understanding of the Nouns DAO.
+      ///
+      /// Key: message
+      var message: RswiftResources.StringResource { .init(key: "message", tableName: "Documentation", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Explore Nouns
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Documentation", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.explore` struct is generated, and contains static references to 7 localization keys.
+    /// This `_R.string.explore` struct is generated, and contains static references to 7 localization keys.
     struct explore {
-      /// Value: About
-      static let about = Rswift.StringResource(key: "about", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Dude, something’s wrong with the auction
-      static let liveError = Rswift.StringResource(key: "live.error", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Explore
-      static let title = Rswift.StringResource(key: "title", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Failed to load more auctions
-      static let settledErrorLoadMore = Rswift.StringResource(key: "settled.error.loadMore", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Failed to load settled auctions
-      static let settledErrorEmpty = Rswift.StringResource(key: "settled.error.empty", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Lame. Looks like wifi or cellular data is totally borked. Check your connection and try again.
-      static let allErrorEmpty = Rswift.StringResource(key: "all.error.empty", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Noun %s
-      static let noun = Rswift.StringResource(key: "noun", tableName: "Explore", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: About
-      static func about(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("about", tableName: "Explore", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
-          return "about"
-        }
-
-        return NSLocalizedString("about", tableName: "Explore", bundle: bundle, comment: "")
-      }
-
-      /// Value: Dude, something’s wrong with the auction
-      static func liveError(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("live.error", tableName: "Explore", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
-          return "live.error"
-        }
-
-        return NSLocalizedString("live.error", tableName: "Explore", bundle: bundle, comment: "")
-      }
-
-      /// Value: Explore
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Explore", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Explore", bundle: bundle, comment: "")
-      }
-
-      /// Value: Failed to load more auctions
-      static func settledErrorLoadMore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("settled.error.loadMore", tableName: "Explore", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
-          return "settled.error.loadMore"
-        }
-
-        return NSLocalizedString("settled.error.loadMore", tableName: "Explore", bundle: bundle, comment: "")
-      }
-
-      /// Value: Failed to load settled auctions
-      static func settledErrorEmpty(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("settled.error.empty", tableName: "Explore", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
-          return "settled.error.empty"
-        }
-
-        return NSLocalizedString("settled.error.empty", tableName: "Explore", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: about
+      var about: RswiftResources.StringResource { .init(key: "about", tableName: "Explore", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Lame. Looks like wifi or cellular data is totally borked. Check your connection and try again.
-      static func allErrorEmpty(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("all.error.empty", tableName: "Explore", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: all.error.empty
+      var allErrorEmpty: RswiftResources.StringResource { .init(key: "all.error.empty", tableName: "Explore", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
-          return "all.error.empty"
-        }
-
-        return NSLocalizedString("all.error.empty", tableName: "Explore", bundle: bundle, comment: "")
-      }
+      /// Value: Dude, something’s wrong with the auction
+      ///
+      /// Key: live.error
+      var liveError: RswiftResources.StringResource { .init(key: "live.error", tableName: "Explore", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Noun %s
-      static func noun(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("noun", tableName: "Explore", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
+      ///
+      /// Key: noun
+      var noun: RswiftResources.StringResource1<UnsafePointer<CChar>> { .init(key: "noun", tableName: "Explore", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (locale, bundle) = localeBundle(tableName: "Explore", preferredLanguages: preferredLanguages) else {
-          return "noun"
-        }
+      /// Value: Failed to load settled auctions
+      ///
+      /// Key: settled.error.empty
+      var settledErrorEmpty: RswiftResources.StringResource { .init(key: "settled.error.empty", tableName: "Explore", source: source, developmentValue: nil, comment: nil) }
 
-        let format = NSLocalizedString("noun", tableName: "Explore", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
+      /// Value: Failed to load more auctions
+      ///
+      /// Key: settled.error.loadMore
+      var settledErrorLoadMore: RswiftResources.StringResource { .init(key: "settled.error.loadMore", tableName: "Explore", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Explore
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Explore", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.liveAuction` struct is generated, and contains static references to 5 localization keys.
+    /// This `_R.string.liveAuction` struct is generated, and contains static references to 5 localization keys.
     struct liveAuction {
-      /// Value: %dh %dm %ds
-      static let timeLeft = Rswift.StringResource(key: "time.left", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Current bid
-      static let currentBid = Rswift.StringResource(key: "current.bid", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Remaining
-      static let timeLeftLabel = Rswift.StringResource(key: "time.left.label", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Winner
-      static let winner = Rswift.StringResource(key: "winner", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Winning bid
-      static let winningBid = Rswift.StringResource(key: "winning.bid", tableName: "LiveAuction", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: %dh %dm %ds
-      static func timeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("time.left", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1, value2, value3)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
-          return "time.left"
-        }
-
-        let format = NSLocalizedString("time.left", tableName: "LiveAuction", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1, value2, value3)
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Current bid
-      static func currentBid(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("current.bid", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: current.bid
+      var currentBid: RswiftResources.StringResource { .init(key: "current.bid", tableName: "LiveAuction", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
-          return "current.bid"
-        }
-
-        return NSLocalizedString("current.bid", tableName: "LiveAuction", bundle: bundle, comment: "")
-      }
+      /// Value: %dh %dm %ds
+      ///
+      /// Key: time.left
+      var timeLeft: RswiftResources.StringResource3<Int, Int, Int> { .init(key: "time.left", tableName: "LiveAuction", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Remaining
-      static func timeLeftLabel(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("time.left.label", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
-          return "time.left.label"
-        }
-
-        return NSLocalizedString("time.left.label", tableName: "LiveAuction", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: time.left.label
+      var timeLeftLabel: RswiftResources.StringResource { .init(key: "time.left.label", tableName: "LiveAuction", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Winner
-      static func winner(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("winner", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
-          return "winner"
-        }
-
-        return NSLocalizedString("winner", tableName: "LiveAuction", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: winner
+      var winner: RswiftResources.StringResource { .init(key: "winner", tableName: "LiveAuction", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Winning bid
-      static func winningBid(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("winning.bid", tableName: "LiveAuction", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "LiveAuction", preferredLanguages: preferredLanguages) else {
-          return "winning.bid"
-        }
-
-        return NSLocalizedString("winning.bid", tableName: "LiveAuction", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      ///
+      /// Key: winning.bid
+      var winningBid: RswiftResources.StringResource { .init(key: "winning.bid", tableName: "LiveAuction", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.localizable` struct is generated, and contains static references to 0 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 0 localization keys.
     struct localizable {
-      fileprivate init() {}
+      let source: RswiftResources.StringResource.Source
     }
 
-    /// This `R.string.madhappy` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.madhappy` struct is generated, and contains static references to 4 localization keys.
     struct madhappy {
-      /// Value: Available now
-      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Madhappy for Nouns
-      static let title = Rswift.StringResource(key: "title", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health through products, content, experiences and philanthropy.  Madhappy is excited to partner with Nouns DAO to create an exclusive capsule featuring our Fleece Crewneck and Dad Hat. A portion of proceeds will benefit The Madhappy Foundation™, our non-profit organization with a mission to advance global mental health efforts.  Feel Together™
-      static let description = Rswift.StringResource(key: "description", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://www.madhappy.com/collections/new-arrivals/
-      static let website = Rswift.StringResource(key: "website", tableName: "Madhappy", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Available now
-      static func learnMore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("learn.more", tableName: "Madhappy", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
-          return "learn.more"
-        }
-
-        return NSLocalizedString("learn.more", tableName: "Madhappy", bundle: bundle, comment: "")
-      }
-
-      /// Value: Madhappy for Nouns
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Madhappy", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Madhappy", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Madhappy is a fashion and lifestyle brand that focuses on creating conversation around mental health through products, content, experiences and philanthropy.  Madhappy is excited to partner with Nouns DAO to create an exclusive capsule featuring our Fleece Crewneck and Dad Hat. A portion of proceeds will benefit The Madhappy Foundation™, our non-profit organization with a mission to advance global mental health efforts.  Feel Together™
-      static func description(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("description", tableName: "Madhappy", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: description
+      var description: RswiftResources.StringResource { .init(key: "description", tableName: "Madhappy", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
-          return "description"
-        }
+      /// Value: Available now
+      ///
+      /// Key: learn.more
+      var learnMore: RswiftResources.StringResource { .init(key: "learn.more", tableName: "Madhappy", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("description", tableName: "Madhappy", bundle: bundle, comment: "")
-      }
+      /// Value: Madhappy for Nouns
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Madhappy", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://www.madhappy.com/collections/new-arrivals/
-      static func website(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("website", tableName: "Madhappy", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Madhappy", preferredLanguages: preferredLanguages) else {
-          return "website"
-        }
-
-        return NSLocalizedString("website", tableName: "Madhappy", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      ///
+      /// Key: website
+      var website: RswiftResources.StringResource { .init(key: "website", tableName: "Madhappy", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.notificationPermission` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.notificationPermission` struct is generated, and contains static references to 4 localization keys.
     struct notificationPermission {
-      /// Value: Do it later
-      static let ignore = Rswift.StringResource(key: "ignore", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Every day a new Noun is randomly created as the previous Noun's day comes to an end. Get notified when this glorious hour approaches!
-      static let body = Rswift.StringResource(key: "body", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Turn on notifications
-      static let enable = Rswift.StringResource(key: "enable", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Wanna know when it’s Noun O’Clock?
-      static let title = Rswift.StringResource(key: "title", tableName: "NotificationPermission", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Do it later
-      static func ignore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("ignore", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
-          return "ignore"
-        }
-
-        return NSLocalizedString("ignore", tableName: "NotificationPermission", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Every day a new Noun is randomly created as the previous Noun's day comes to an end. Get notified when this glorious hour approaches!
-      static func body(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("body", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
-          return "body"
-        }
-
-        return NSLocalizedString("body", tableName: "NotificationPermission", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: body
+      var body: RswiftResources.StringResource { .init(key: "body", tableName: "NotificationPermission", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Turn on notifications
-      static func enable(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("enable", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: enable
+      var enable: RswiftResources.StringResource { .init(key: "enable", tableName: "NotificationPermission", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
-          return "enable"
-        }
-
-        return NSLocalizedString("enable", tableName: "NotificationPermission", bundle: bundle, comment: "")
-      }
+      /// Value: Do it later
+      ///
+      /// Key: ignore
+      var ignore: RswiftResources.StringResource { .init(key: "ignore", tableName: "NotificationPermission", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Wanna know when it’s Noun O’Clock?
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "NotificationPermission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NotificationPermission", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "NotificationPermission", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "NotificationPermission", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.nounDAOInfo` struct is generated, and contains static references to 3 localization keys.
+    /// This `_R.string.nounDAOInfo` struct is generated, and contains static references to 3 localization keys.
     struct nounDAOInfo {
-      /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The holder of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
-      static let activityDescription = Rswift.StringResource(key: "activity.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: This page shows all bids submitted for Noun %@.
-      static let bidHistoryDescription = Rswift.StringResource(key: "bid.history.description", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: What is this?
-      static let title = Rswift.StringResource(key: "title", tableName: "NounDAOInfo", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Each Noun represents one vote in all governance matters of the Nouns DAO. The holder of Noun %@ can vote on proposals submitted to the DAO and this is their voting activity.
-      static func activityDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("activity.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
-          return "activity.description"
-        }
-
-        let format = NSLocalizedString("activity.description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
+      ///
+      /// Key: activity.description
+      var activityDescription: RswiftResources.StringResource1<String> { .init(key: "activity.description", tableName: "NounDAOInfo", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: This page shows all bids submitted for Noun %@.
-      static func bidHistoryDescription(_ value1: String, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("bid.history.description", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
-          return "bid.history.description"
-        }
-
-        let format = NSLocalizedString("bid.history.description", tableName: "NounDAOInfo", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
+      ///
+      /// Key: bid.history.description
+      var bidHistoryDescription: RswiftResources.StringResource1<String> { .init(key: "bid.history.description", tableName: "NounDAOInfo", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: What is this?
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "NounDAOInfo", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounDAOInfo", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "NounDAOInfo", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "NounDAOInfo", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.nounDeleteDialog` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.nounDeleteDialog` struct is generated, and contains static references to 4 localization keys.
     struct nounDeleteDialog {
-      /// Value: Are you sure you want to leave and lose the precious Nouniness you’ve created?
-      static let message = Rswift.StringResource(key: "message", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: For reals?
-      static let title = Rswift.StringResource(key: "title", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: No, I want to keep creating
-      static let nounCancelAction = Rswift.StringResource(key: "noun.cancel.action", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Yeah, get rid of it
-      static let nounDeleteAction = Rswift.StringResource(key: "noun.delete.action", tableName: "NounDeleteDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Are you sure you want to leave and lose the precious Nouniness you’ve created?
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: For reals?
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: message
+      var message: RswiftResources.StringResource { .init(key: "message", tableName: "NounDeleteDialog", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: No, I want to keep creating
-      static func nounCancelAction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("noun.cancel.action", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
-          return "noun.cancel.action"
-        }
-
-        return NSLocalizedString("noun.cancel.action", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: noun.cancel.action
+      var nounCancelAction: RswiftResources.StringResource { .init(key: "noun.cancel.action", tableName: "NounDeleteDialog", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Yeah, get rid of it
-      static func nounDeleteAction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("noun.delete.action", tableName: "NounDeleteDialog", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: noun.delete.action
+      var nounDeleteAction: RswiftResources.StringResource { .init(key: "noun.delete.action", tableName: "NounDeleteDialog", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounDeleteDialog", preferredLanguages: preferredLanguages) else {
-          return "noun.delete.action"
-        }
-
-        return NSLocalizedString("noun.delete.action", tableName: "NounDeleteDialog", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: For reals?
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "NounDeleteDialog", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.nounDiscardEditDialog` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.nounDiscardEditDialog` struct is generated, and contains static references to 4 localization keys.
     struct nounDiscardEditDialog {
-      /// Value: Are you sure you want to get rid of this edit and lose the awesomeness?
-      static let message = Rswift.StringResource(key: "message", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Leavin'?
-      static let title = Rswift.StringResource(key: "title", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: No, I want to keep editing
-      static let nounCancelAction = Rswift.StringResource(key: "noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Yeah, get rid of the edit
-      static let nounDeleteAction = Rswift.StringResource(key: "noun.delete.action", tableName: "NounDiscardEditDialog", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Are you sure you want to get rid of this edit and lose the awesomeness?
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
-      }
-
-      /// Value: Leavin'?
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: message
+      var message: RswiftResources.StringResource { .init(key: "message", tableName: "NounDiscardEditDialog", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: No, I want to keep editing
-      static func nounCancelAction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
-          return "noun.cancel.action"
-        }
-
-        return NSLocalizedString("noun.cancel.action", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: noun.cancel.action
+      var nounCancelAction: RswiftResources.StringResource { .init(key: "noun.cancel.action", tableName: "NounDiscardEditDialog", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Yeah, get rid of the edit
-      static func nounDeleteAction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("noun.delete.action", tableName: "NounDiscardEditDialog", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: noun.delete.action
+      var nounDeleteAction: RswiftResources.StringResource { .init(key: "noun.delete.action", tableName: "NounDiscardEditDialog", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounDiscardEditDialog", preferredLanguages: preferredLanguages) else {
-          return "noun.delete.action"
-        }
-
-        return NSLocalizedString("noun.delete.action", tableName: "NounDiscardEditDialog", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: Leavin'?
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "NounDiscardEditDialog", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.nounPlayground` struct is generated, and contains static references to 3 localization keys.
+    /// This `_R.string.nounPlayground` struct is generated, and contains static references to 3 localization keys.
     struct nounPlayground {
-      /// Value: Hold to record
-      static let holdToRecordCoachmark = Rswift.StringResource(key: "hold-to-record.coachmark", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: I’m recording…
-      static let voiceStateRecording = Rswift.StringResource(key: "voice.state.recording", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Say something!
-      static let voiceStateNotRecording = Rswift.StringResource(key: "voice.state.not-recording", tableName: "NounPlayground", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Hold to record
-      static func holdToRecordCoachmark(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("hold-to-record.coachmark", tableName: "NounPlayground", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounPlayground", preferredLanguages: preferredLanguages) else {
-          return "hold-to-record.coachmark"
-        }
-
-        return NSLocalizedString("hold-to-record.coachmark", tableName: "NounPlayground", bundle: bundle, comment: "")
-      }
-
-      /// Value: I’m recording…
-      static func voiceStateRecording(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("voice.state.recording", tableName: "NounPlayground", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounPlayground", preferredLanguages: preferredLanguages) else {
-          return "voice.state.recording"
-        }
-
-        return NSLocalizedString("voice.state.recording", tableName: "NounPlayground", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: hold-to-record.coachmark
+      var holdToRecordCoachmark: RswiftResources.StringResource { .init(key: "hold-to-record.coachmark", tableName: "NounPlayground", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Say something!
-      static func voiceStateNotRecording(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("voice.state.not-recording", tableName: "NounPlayground", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: voice.state.not-recording
+      var voiceStateNotRecording: RswiftResources.StringResource { .init(key: "voice.state.not-recording", tableName: "NounPlayground", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounPlayground", preferredLanguages: preferredLanguages) else {
-          return "voice.state.not-recording"
-        }
-
-        return NSLocalizedString("voice.state.not-recording", tableName: "NounPlayground", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: I’m recording…
+      ///
+      /// Key: voice.state.recording
+      var voiceStateRecording: RswiftResources.StringResource { .init(key: "voice.state.recording", tableName: "NounPlayground", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.nounProfile` struct is generated, and contains static references to 12 localization keys.
+    /// This `_R.string.nounProfile` struct is generated, and contains static references to 12 localization keys.
     struct nounProfile {
-      /// Value: %dh %dm %ds
-      static let auctionUnsettledTimeLeft = Rswift.StringResource(key: "auction.unsettled.time-left", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Activity
-      static let auctionSettledGovernanceNounder = Rswift.StringResource(key: "auction.settled.governance.nounder", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Activity & bid history
-      static let auctionSettledGovernance = Rswift.StringResource(key: "auction.settled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Bid history
-      static let auctionUnsettledGovernance = Rswift.StringResource(key: "auction.unsettled.governance", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Born %s
-      static let birthday = Rswift.StringResource(key: "birthday", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Current bid
-      static let auctionUnsettledLastBid = Rswift.StringResource(key: "auction.unsettled.last-bid", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Ends in
-      static let auctionUnsettledTimeLeftLabel = Rswift.StringResource(key: "auction.unsettled.time-left.label", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Held by
-      static let heldBy = Rswift.StringResource(key: "held-by", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Nounders
-      static let nounders = Rswift.StringResource(key: "nounders", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Won for
-      static let bidWinner = Rswift.StringResource(key: "bid-winner", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: nounders.eth
-      static let noundersEth = Rswift.StringResource(key: "nounders.eth", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 👋 sup! check out Noun %s
-      static let shareMessage = Rswift.StringResource(key: "share.message", tableName: "NounProfile", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: %dh %dm %ds
-      static func auctionUnsettledTimeLeft(_ value1: Int, _ value2: Int, _ value3: Int, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("auction.unsettled.time-left", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1, value2, value3)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.unsettled.time-left"
-        }
-
-        let format = NSLocalizedString("auction.unsettled.time-left", tableName: "NounProfile", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1, value2, value3)
-      }
-
-      /// Value: Activity
-      static func auctionSettledGovernanceNounder(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.settled.governance.nounder"
-        }
-
-        return NSLocalizedString("auction.settled.governance.nounder", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Activity & bid history
-      static func auctionSettledGovernance(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: auction.settled.governance
+      var auctionSettledGovernance: RswiftResources.StringResource { .init(key: "auction.settled.governance", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.settled.governance"
-        }
-
-        return NSLocalizedString("auction.settled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
+      /// Value: Activity
+      ///
+      /// Key: auction.settled.governance.nounder
+      var auctionSettledGovernanceNounder: RswiftResources.StringResource { .init(key: "auction.settled.governance.nounder", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Bid history
-      static func auctionUnsettledGovernance(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("auction.unsettled.governance", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.unsettled.governance"
-        }
-
-        return NSLocalizedString("auction.unsettled.governance", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
-
-      /// Value: Born %s
-      static func birthday(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("birthday", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "birthday"
-        }
-
-        let format = NSLocalizedString("birthday", tableName: "NounProfile", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
+      ///
+      /// Key: auction.unsettled.governance
+      var auctionUnsettledGovernance: RswiftResources.StringResource { .init(key: "auction.unsettled.governance", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Current bid
-      static func auctionUnsettledLastBid(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("auction.unsettled.last-bid", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: auction.unsettled.last-bid
+      var auctionUnsettledLastBid: RswiftResources.StringResource { .init(key: "auction.unsettled.last-bid", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.unsettled.last-bid"
-        }
-
-        return NSLocalizedString("auction.unsettled.last-bid", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
+      /// Value: %dh %dm %ds
+      ///
+      /// Key: auction.unsettled.time-left
+      var auctionUnsettledTimeLeft: RswiftResources.StringResource3<Int, Int, Int> { .init(key: "auction.unsettled.time-left", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Ends in
-      static func auctionUnsettledTimeLeftLabel(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("auction.unsettled.time-left.label", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "auction.unsettled.time-left.label"
-        }
-
-        return NSLocalizedString("auction.unsettled.time-left.label", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
-
-      /// Value: Held by
-      static func heldBy(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("held-by", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "held-by"
-        }
-
-        return NSLocalizedString("held-by", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
-
-      /// Value: Nounders
-      static func nounders(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("nounders", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "nounders"
-        }
-
-        return NSLocalizedString("nounders", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: auction.unsettled.time-left.label
+      var auctionUnsettledTimeLeftLabel: RswiftResources.StringResource { .init(key: "auction.unsettled.time-left.label", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Won for
-      static func bidWinner(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("bid-winner", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: bid-winner
+      var bidWinner: RswiftResources.StringResource { .init(key: "bid-winner", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "bid-winner"
-        }
+      /// Value: Born %s
+      ///
+      /// Key: birthday
+      var birthday: RswiftResources.StringResource1<UnsafePointer<CChar>> { .init(key: "birthday", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("bid-winner", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
+      /// Value: Held by
+      ///
+      /// Key: held-by
+      var heldBy: RswiftResources.StringResource { .init(key: "held-by", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Nounders
+      ///
+      /// Key: nounders
+      var nounders: RswiftResources.StringResource { .init(key: "nounders", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: nounders.eth
-      static func noundersEth(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("nounders.eth", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "nounders.eth"
-        }
-
-        return NSLocalizedString("nounders.eth", tableName: "NounProfile", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: nounders.eth
+      var noundersEth: RswiftResources.StringResource { .init(key: "nounders.eth", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: 👋 sup! check out Noun %s
-      static func shareMessage(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("share.message", tableName: "NounProfile", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "NounProfile", preferredLanguages: preferredLanguages) else {
-          return "share.message"
-        }
-
-        let format = NSLocalizedString("share.message", tableName: "NounProfile", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
-
-      fileprivate init() {}
+      ///
+      /// Key: share.message
+      var shareMessage: RswiftResources.StringResource1<UnsafePointer<CChar>> { .init(key: "share.message", tableName: "NounProfile", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.offchainNounActions` struct is generated, and contains static references to 7 localization keys.
-    struct offchainNounActions {
-      /// Value: Delete your Noun
-      static let delete = Rswift.StringResource(key: "delete", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Edit your Noun
-      static let edit = Rswift.StringResource(key: "edit", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: More Actions
-      static let title = Rswift.StringResource(key: "title", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Play with you Noun
-      static let play = Rswift.StringResource(key: "play", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Rename your Noun
-      static let rename = Rswift.StringResource(key: "rename", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Use this dope new name
-      static let useName = Rswift.StringResource(key: "use.name", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 👋 sup! check out this fresh Noun
-      static let shareMessage = Rswift.StringResource(key: "share.message", tableName: "offchain.noun.actions", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Delete your Noun
-      static func delete(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
-          return "delete"
-        }
-
-        return NSLocalizedString("delete", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
-      }
-
-      /// Value: Edit your Noun
-      static func edit(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("edit", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
-          return "edit"
-        }
-
-        return NSLocalizedString("edit", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
-      }
-
-      /// Value: More Actions
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
-      }
-
-      /// Value: Play with you Noun
-      static func play(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
-          return "play"
-        }
-
-        return NSLocalizedString("play", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
-      }
-
-      /// Value: Rename your Noun
-      static func rename(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("rename", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
-          return "rename"
-        }
-
-        return NSLocalizedString("rename", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
-      }
-
-      /// Value: Use this dope new name
-      static func useName(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("use.name", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
-          return "use.name"
-        }
-
-        return NSLocalizedString("use.name", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
-      }
-
-      /// Value: 👋 sup! check out this fresh Noun
-      static func shareMessage(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("share.message", tableName: "offchain.noun.actions", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "offchain.noun.actions", preferredLanguages: preferredLanguages) else {
-          return "share.message"
-        }
-
-        return NSLocalizedString("share.message", tableName: "offchain.noun.actions", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
-    }
-
-    /// This `R.string.onboarding` struct is generated, and contains static references to 3 localization keys.
+    /// This `_R.string.onboarding` struct is generated, and contains static references to 3 localization keys.
     struct onboarding {
-      /// Value: There are many to explore...
-      static let explore = Rswift.StringResource(key: "explore", tableName: "Onboarding", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: This is a Noun.
-      static let introduction = Rswift.StringResource(key: "introduction", tableName: "Onboarding", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: You can create your own!
-      static let create = Rswift.StringResource(key: "create", tableName: "Onboarding", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: There are many to explore...
-      static func explore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("explore", tableName: "Onboarding", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Onboarding", preferredLanguages: preferredLanguages) else {
-          return "explore"
-        }
-
-        return NSLocalizedString("explore", tableName: "Onboarding", bundle: bundle, comment: "")
-      }
-
-      /// Value: This is a Noun.
-      static func introduction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("introduction", tableName: "Onboarding", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Onboarding", preferredLanguages: preferredLanguages) else {
-          return "introduction"
-        }
-
-        return NSLocalizedString("introduction", tableName: "Onboarding", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: You can create your own!
-      static func create(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("create", tableName: "Onboarding", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: create
+      var create: RswiftResources.StringResource { .init(key: "create", tableName: "Onboarding", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Onboarding", preferredLanguages: preferredLanguages) else {
-          return "create"
-        }
+      /// Value: There are many to explore...
+      ///
+      /// Key: explore
+      var explore: RswiftResources.StringResource { .init(key: "explore", tableName: "Onboarding", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("create", tableName: "Onboarding", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: This is a Noun.
+      ///
+      /// Key: introduction
+      var introduction: RswiftResources.StringResource { .init(key: "introduction", tableName: "Onboarding", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.playExperience` struct is generated, and contains static references to 10 localization keys.
+    /// This `_R.string.playExperience` struct is generated, and contains static references to 10 localization keys.
     struct playExperience {
-      /// Value: Create a Noun
-      static let createNoun = Rswift.StringResource(key: "create.noun", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Get going
-      static let proceedTitle = Rswift.StringResource(key: "proceed.title", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Give your Noun something to say!
-      static let subheadline = Rswift.StringResource(key: "subheadline", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: New
-      static let createNounAction = Rswift.StringResource(key: "create-noun.action", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Pick a Noun, yo
-      static let chooseNoun = Rswift.StringResource(key: "choose.noun", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Play
-      static let title = Rswift.StringResource(key: "title", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Swipe to pick a Noun
-      static let chooseCoachmark = Rswift.StringResource(key: "choose.coachmark", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Yo, you don't have any Nouns. Create one and give it something to say!
-      static let createNounSpeechBubble = Rswift.StringResource(key: "create.noun.speech.bubble", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: You need a Noun!
-      static let noNouns = Rswift.StringResource(key: "no.nouns", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: sup home slice
-      static let speechBubble = Rswift.StringResource(key: "speech.bubble", tableName: "PlayExperience", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Create a Noun
-      static func createNoun(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("create.noun", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "create.noun"
-        }
-
-        return NSLocalizedString("create.noun", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
-
-      /// Value: Get going
-      static func proceedTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("proceed.title", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "proceed.title"
-        }
-
-        return NSLocalizedString("proceed.title", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
-
-      /// Value: Give your Noun something to say!
-      static func subheadline(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("subheadline", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "subheadline"
-        }
-
-        return NSLocalizedString("subheadline", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
-
-      /// Value: New
-      static func createNounAction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("create-noun.action", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "create-noun.action"
-        }
-
-        return NSLocalizedString("create-noun.action", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
-
-      /// Value: Pick a Noun, yo
-      static func chooseNoun(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("choose.noun", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "choose.noun"
-        }
-
-        return NSLocalizedString("choose.noun", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
-
-      /// Value: Play
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Swipe to pick a Noun
-      static func chooseCoachmark(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("choose.coachmark", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: choose.coachmark
+      var chooseCoachmark: RswiftResources.StringResource { .init(key: "choose.coachmark", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "choose.coachmark"
-        }
+      /// Value: Pick a Noun, yo
+      ///
+      /// Key: choose.noun
+      var chooseNoun: RswiftResources.StringResource { .init(key: "choose.noun", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("choose.coachmark", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
+      /// Value: New
+      ///
+      /// Key: create-noun.action
+      var createNounAction: RswiftResources.StringResource { .init(key: "create-noun.action", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Create a Noun
+      ///
+      /// Key: create.noun
+      var createNoun: RswiftResources.StringResource { .init(key: "create.noun", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Yo, you don't have any Nouns. Create one and give it something to say!
-      static func createNounSpeechBubble(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("create.noun.speech.bubble", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "create.noun.speech.bubble"
-        }
-
-        return NSLocalizedString("create.noun.speech.bubble", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: create.noun.speech.bubble
+      var createNounSpeechBubble: RswiftResources.StringResource { .init(key: "create.noun.speech.bubble", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: You need a Noun!
-      static func noNouns(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("no.nouns", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: no.nouns
+      var noNouns: RswiftResources.StringResource { .init(key: "no.nouns", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "no.nouns"
-        }
-
-        return NSLocalizedString("no.nouns", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
+      /// Value: Get going
+      ///
+      /// Key: proceed.title
+      var proceedTitle: RswiftResources.StringResource { .init(key: "proceed.title", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: sup home slice
-      static func speechBubble(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("speech.bubble", tableName: "PlayExperience", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: speech.bubble
+      var speechBubble: RswiftResources.StringResource { .init(key: "speech.bubble", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "PlayExperience", preferredLanguages: preferredLanguages) else {
-          return "speech.bubble"
-        }
+      /// Value: Give your Noun something to say!
+      ///
+      /// Key: subheadline
+      var subheadline: RswiftResources.StringResource { .init(key: "subheadline", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("speech.bubble", tableName: "PlayExperience", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: Play
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "PlayExperience", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.proposal` struct is generated, and contains static references to 4 localization keys.
+    /// This `_R.string.proposal` struct is generated, and contains static references to 4 localization keys.
     struct proposal {
-      /// Value: Proposal %s
-      static let identifier = Rswift.StringResource(key: "identifier", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Proposals
-      static let title = Rswift.StringResource(key: "title", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Proposals are used to make changes to the DAO or request use of treasury funds. Here are the latest proposals submitted to the Nouns DAO and their status.
-      static let message = Rswift.StringResource(key: "message", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: See all proposals
-      static let seeAll = Rswift.StringResource(key: "see.all", tableName: "Proposal", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Proposal %s
-      static func identifier(_ value1: UnsafePointer<CChar>, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("identifier", tableName: "Proposal", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
-          return "identifier"
-        }
-
-        let format = NSLocalizedString("identifier", tableName: "Proposal", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
-
-      /// Value: Proposals
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Proposal", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Proposal", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: identifier
+      var identifier: RswiftResources.StringResource1<UnsafePointer<CChar>> { .init(key: "identifier", tableName: "Proposal", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Proposals are used to make changes to the DAO or request use of treasury funds. Here are the latest proposals submitted to the Nouns DAO and their status.
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "Proposal", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "Proposal", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: message
+      var message: RswiftResources.StringResource { .init(key: "message", tableName: "Proposal", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: See all proposals
-      static func seeAll(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("see.all", tableName: "Proposal", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: see.all
+      var seeAll: RswiftResources.StringResource { .init(key: "see.all", tableName: "Proposal", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Proposal", preferredLanguages: preferredLanguages) else {
-          return "see.all"
-        }
-
-        return NSLocalizedString("see.all", tableName: "Proposal", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: Proposals
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Proposal", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.settingsNotificationPermission` struct is generated, and contains static references to 7 localization keys.
-    struct settingsNotificationPermission {
-      /// Value: Go to iOS Settings
-      static let enableNotificationAction = Rswift.StringResource(key: "enable-notification.action", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Here’s how:
-      static let instructionTitle = Rswift.StringResource(key: "instruction.title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Push Notifications
-      static let title = Rswift.StringResource(key: "title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Tap “Notifications”
-      static let instructionStep1 = Rswift.StringResource(key: "instruction.step.1", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: To get notifications about Nouns, you’ll need to turn them on in your iOS settings.
-      static let motivationContent = Rswift.StringResource(key: "motivation.content", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Turn on notifications?
-      static let motivationTitle = Rswift.StringResource(key: "motivation.title", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Turn “Allow Notifications” on
-      static let instructionStep2 = Rswift.StringResource(key: "instruction.step.2", tableName: "Settings.Notification.Permission", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Go to iOS Settings
-      static func enableNotificationAction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("enable-notification.action", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
-          return "enable-notification.action"
-        }
-
-        return NSLocalizedString("enable-notification.action", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
-      }
-
-      /// Value: Here’s how:
-      static func instructionTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("instruction.title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
-          return "instruction.title"
-        }
-
-        return NSLocalizedString("instruction.title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
-      }
-
-      /// Value: Push Notifications
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
-      }
-
-      /// Value: Tap “Notifications”
-      static func instructionStep1(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("instruction.step.1", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
-          return "instruction.step.1"
-        }
-
-        return NSLocalizedString("instruction.step.1", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
-      }
-
-      /// Value: To get notifications about Nouns, you’ll need to turn them on in your iOS settings.
-      static func motivationContent(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("motivation.content", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
-          return "motivation.content"
-        }
-
-        return NSLocalizedString("motivation.content", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
-      }
-
-      /// Value: Turn on notifications?
-      static func motivationTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("motivation.title", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
-          return "motivation.title"
-        }
-
-        return NSLocalizedString("motivation.title", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
-      }
-
-      /// Value: Turn “Allow Notifications” on
-      static func instructionStep2(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("instruction.step.2", tableName: "Settings.Notification.Permission", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings.Notification.Permission", preferredLanguages: preferredLanguages) else {
-          return "instruction.step.2"
-        }
-
-        return NSLocalizedString("instruction.step.2", tableName: "Settings.Notification.Permission", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
-    }
-
-    /// This `R.string.settings` struct is generated, and contains static references to 8 localization keys.
+    /// This `_R.string.settings` struct is generated, and contains static references to 8 localization keys.
     struct settings {
-      /// Value: App Icon
-      static let appIconTitle = Rswift.StringResource(key: "app.icon.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: App Intro
-      static let appIntroTitle = Rswift.StringResource(key: "app.intro.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Every day a new Noun is born. Get notified when this glorious hour approaches.
-      static let notificationNote = Rswift.StringResource(key: "notification.note", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Noun O’Clock
-      static let newNounNotificationTitle = Rswift.StringResource(key: "new-noun.notification.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Settings
-      static let title = Rswift.StringResource(key: "title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Share with friends
-      static let shareFriends = Rswift.StringResource(key: "share.friends", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: System
-      static let themeSystem = Rswift.StringResource(key: "theme.system", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Theme
-      static let themeTitle = Rswift.StringResource(key: "theme.title", tableName: "Settings", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: App Icon
-      static func appIconTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("app.icon.title", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "app.icon.title"
-        }
-
-        return NSLocalizedString("app.icon.title", tableName: "Settings", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: app.icon.title
+      var appIconTitle: RswiftResources.StringResource { .init(key: "app.icon.title", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: App Intro
-      static func appIntroTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "app.intro.title"
-        }
-
-        return NSLocalizedString("app.intro.title", tableName: "Settings", bundle: bundle, comment: "")
-      }
-
-      /// Value: Every day a new Noun is born. Get notified when this glorious hour approaches.
-      static func notificationNote(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("notification.note", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "notification.note"
-        }
-
-        return NSLocalizedString("notification.note", tableName: "Settings", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: app.intro.title
+      var appIntroTitle: RswiftResources.StringResource { .init(key: "app.intro.title", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Noun O’Clock
-      static func newNounNotificationTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("new-noun.notification.title", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: new-noun.notification.title
+      var newNounNotificationTitle: RswiftResources.StringResource { .init(key: "new-noun.notification.title", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "new-noun.notification.title"
-        }
-
-        return NSLocalizedString("new-noun.notification.title", tableName: "Settings", bundle: bundle, comment: "")
-      }
-
-      /// Value: Settings
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Settings", bundle: bundle, comment: "")
-      }
+      /// Value: Every day a new Noun is born. Get notified when this glorious hour approaches.
+      ///
+      /// Key: notification.note
+      var notificationNote: RswiftResources.StringResource { .init(key: "notification.note", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Share with friends
-      static func shareFriends(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("share.friends", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "share.friends"
-        }
-
-        return NSLocalizedString("share.friends", tableName: "Settings", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: share.friends
+      var shareFriends: RswiftResources.StringResource { .init(key: "share.friends", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: System
-      static func themeSystem(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("theme.system", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "theme.system"
-        }
-
-        return NSLocalizedString("theme.system", tableName: "Settings", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: theme.system
+      var themeSystem: RswiftResources.StringResource { .init(key: "theme.system", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Theme
-      static func themeTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("theme.title", tableName: "Settings", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: theme.title
+      var themeTitle: RswiftResources.StringResource { .init(key: "theme.title", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Settings", preferredLanguages: preferredLanguages) else {
-          return "theme.title"
-        }
-
-        return NSLocalizedString("theme.title", tableName: "Settings", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: Settings
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Settings", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.shared` struct is generated, and contains static references to 18 localization keys.
+    /// This `_R.string.settingsNotificationPermission` struct is generated, and contains static references to 7 localization keys.
+    struct settingsNotificationPermission {
+      let source: RswiftResources.StringResource.Source
+
+      /// Value: Go to iOS Settings
+      ///
+      /// Key: enable-notification.action
+      var enableNotificationAction: RswiftResources.StringResource { .init(key: "enable-notification.action", tableName: "Settings.Notification.Permission", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Tap “Notifications”
+      ///
+      /// Key: instruction.step.1
+      var instructionStep1: RswiftResources.StringResource { .init(key: "instruction.step.1", tableName: "Settings.Notification.Permission", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Turn “Allow Notifications” on
+      ///
+      /// Key: instruction.step.2
+      var instructionStep2: RswiftResources.StringResource { .init(key: "instruction.step.2", tableName: "Settings.Notification.Permission", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Here’s how:
+      ///
+      /// Key: instruction.title
+      var instructionTitle: RswiftResources.StringResource { .init(key: "instruction.title", tableName: "Settings.Notification.Permission", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: To get notifications about Nouns, you’ll need to turn them on in your iOS settings.
+      ///
+      /// Key: motivation.content
+      var motivationContent: RswiftResources.StringResource { .init(key: "motivation.content", tableName: "Settings.Notification.Permission", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Turn on notifications?
+      ///
+      /// Key: motivation.title
+      var motivationTitle: RswiftResources.StringResource { .init(key: "motivation.title", tableName: "Settings.Notification.Permission", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Push Notifications
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Settings.Notification.Permission", source: source, developmentValue: nil, comment: nil) }
+    }
+
+    /// This `_R.string.shared` struct is generated, and contains static references to 18 localization keys.
     struct shared {
-      /// Value: Accessory
-      static let accessory = Rswift.StringResource(key: "accessory", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Background
-      static let background = Rswift.StringResource(key: "background", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Body
-      static let body = Rswift.StringResource(key: "body", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Done
-      static let done = Rswift.StringResource(key: "done", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Get Started
-      static let getStarted = Rswift.StringResource(key: "get.started", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Glasses
-      static let glasses = Rswift.StringResource(key: "glasses", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Head
-      static let head = Rswift.StringResource(key: "head", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Learn more
-      static let learnMore = Rswift.StringResource(key: "learn.more", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: N/A
-      static let notApplicable = Rswift.StringResource(key: "not.applicable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: New Noun!
-      static let liveAuction = Rswift.StringResource(key: "live.auction", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Remix
-      static let remix = Rswift.StringResource(key: "remix", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Share
-      static let share = Rswift.StringResource(key: "share", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Try Again
-      static let tryAgain = Rswift.StringResource(key: "try.again", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Unavailable
-      static let unavailable = Rswift.StringResource(key: "unavailable", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Untitled
-      static let untitled = Rswift.StringResource(key: "untitled", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://nouns.wtf
-      static let nounsWebsite = Rswift.StringResource(key: "nouns.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://nouns.wtf/noun/%@
-      static let nounsProfileWebsite = Rswift.StringResource(key: "nouns.profile.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://nouns.wtf/vote
-      static let nounsProposalsWebsite = Rswift.StringResource(key: "nouns.proposals.website", tableName: "Shared", bundle: R.hostingBundle, locales: [], comment: nil)
+      let source: RswiftResources.StringResource.Source
 
       /// Value: Accessory
-      static func accessory(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("accessory", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "accessory"
-        }
-
-        return NSLocalizedString("accessory", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: accessory
+      var accessory: RswiftResources.StringResource { .init(key: "accessory", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Background
-      static func background(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("background", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "background"
-        }
-
-        return NSLocalizedString("background", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: background
+      var background: RswiftResources.StringResource { .init(key: "background", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Body
-      static func body(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("body", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "body"
-        }
-
-        return NSLocalizedString("body", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: body
+      var body: RswiftResources.StringResource { .init(key: "body", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Done
-      static func done(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("done", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "done"
-        }
-
-        return NSLocalizedString("done", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: done
+      var done: RswiftResources.StringResource { .init(key: "done", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Get Started
-      static func getStarted(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("get.started", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "get.started"
-        }
-
-        return NSLocalizedString("get.started", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: get.started
+      var getStarted: RswiftResources.StringResource { .init(key: "get.started", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Glasses
-      static func glasses(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("glasses", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "glasses"
-        }
-
-        return NSLocalizedString("glasses", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: glasses
+      var glasses: RswiftResources.StringResource { .init(key: "glasses", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Head
-      static func head(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("head", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "head"
-        }
-
-        return NSLocalizedString("head", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: head
+      var head: RswiftResources.StringResource { .init(key: "head", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Learn more
-      static func learnMore(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("learn.more", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "learn.more"
-        }
-
-        return NSLocalizedString("learn.more", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
-      /// Value: N/A
-      static func notApplicable(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("not.applicable", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "not.applicable"
-        }
-
-        return NSLocalizedString("not.applicable", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      ///
+      /// Key: learn.more
+      var learnMore: RswiftResources.StringResource { .init(key: "learn.more", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: New Noun!
-      static func liveAuction(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("live.auction", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: live.auction
+      var liveAuction: RswiftResources.StringResource { .init(key: "live.auction", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "live.auction"
-        }
-
-        return NSLocalizedString("live.auction", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
-      /// Value: Remix
-      static func remix(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("remix", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "remix"
-        }
-
-        return NSLocalizedString("remix", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
-      /// Value: Share
-      static func share(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("share", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "share"
-        }
-
-        return NSLocalizedString("share", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
-      /// Value: Try Again
-      static func tryAgain(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("try.again", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "try.again"
-        }
-
-        return NSLocalizedString("try.again", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
-      /// Value: Unavailable
-      static func unavailable(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("unavailable", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "unavailable"
-        }
-
-        return NSLocalizedString("unavailable", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
-      /// Value: Untitled
-      static func untitled(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("untitled", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "untitled"
-        }
-
-        return NSLocalizedString("untitled", tableName: "Shared", bundle: bundle, comment: "")
-      }
-
-      /// Value: https://nouns.wtf
-      static func nounsWebsite(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("nouns.website", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "nouns.website"
-        }
-
-        return NSLocalizedString("nouns.website", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      /// Value: N/A
+      ///
+      /// Key: not.applicable
+      var notApplicable: RswiftResources.StringResource { .init(key: "not.applicable", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://nouns.wtf/noun/%@
-      static func nounsProfileWebsite(_ value1: String, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("nouns.profile.website", tableName: "Shared", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "nouns.profile.website"
-        }
-
-        let format = NSLocalizedString("nouns.profile.website", tableName: "Shared", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
+      ///
+      /// Key: nouns.profile.website
+      var nounsProfileWebsite: RswiftResources.StringResource1<String> { .init(key: "nouns.profile.website", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://nouns.wtf/vote
-      static func nounsProposalsWebsite(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("nouns.proposals.website", tableName: "Shared", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: nouns.proposals.website
+      var nounsProposalsWebsite: RswiftResources.StringResource { .init(key: "nouns.proposals.website", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Shared", preferredLanguages: preferredLanguages) else {
-          return "nouns.proposals.website"
-        }
+      /// Value: https://nouns.wtf
+      ///
+      /// Key: nouns.website
+      var nounsWebsite: RswiftResources.StringResource { .init(key: "nouns.website", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("nouns.proposals.website", tableName: "Shared", bundle: bundle, comment: "")
-      }
+      /// Value: Remix
+      ///
+      /// Key: remix
+      var remix: RswiftResources.StringResource { .init(key: "remix", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
 
-      fileprivate init() {}
+      /// Value: Share
+      ///
+      /// Key: share
+      var share: RswiftResources.StringResource { .init(key: "share", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Try Again
+      ///
+      /// Key: try.again
+      var tryAgain: RswiftResources.StringResource { .init(key: "try.again", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Unavailable
+      ///
+      /// Key: unavailable
+      var unavailable: RswiftResources.StringResource { .init(key: "unavailable", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Untitled
+      ///
+      /// Key: untitled
+      var untitled: RswiftResources.StringResource { .init(key: "untitled", tableName: "Shared", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.spaces` struct is generated, and contains static references to 10 localization keys.
+    /// This `_R.string.spaces` struct is generated, and contains static references to 10 localization keys.
     struct spaces {
-      /// Value: Discord
-      static let discordTitle = Rswift.StringResource(key: "discord.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Discourse
-      static let discourseTitle = Rswift.StringResource(key: "discourse.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Etherscan
-      static let etherscanTitle = Rswift.StringResource(key: "etherscan.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Follow the links below to get involved with the Nouns community or to take a look at on-chain data.
-      static let message = Rswift.StringResource(key: "message", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Get involved
-      static let title = Rswift.StringResource(key: "title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: Twitter
-      static let twitterTitle = Rswift.StringResource(key: "twitter.title", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://discord.gg/nouns
-      static let discordLink = Rswift.StringResource(key: "discord.link", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://discourse.nouns.wtf
-      static let discourseLink = Rswift.StringResource(key: "discourse.link", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://etherscan.io/address/0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03
-      static let etherscanLink = Rswift.StringResource(key: "etherscan.link", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://twitter.com/nounsdao
-      static let twitterLink = Rswift.StringResource(key: "twitter.link", tableName: "Spaces", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Discord
-      static func discordTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("discord.title", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "discord.title"
-        }
-
-        return NSLocalizedString("discord.title", tableName: "Spaces", bundle: bundle, comment: "")
-      }
-
-      /// Value: Discourse
-      static func discourseTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("discourse.title", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "discourse.title"
-        }
-
-        return NSLocalizedString("discourse.title", tableName: "Spaces", bundle: bundle, comment: "")
-      }
-
-      /// Value: Etherscan
-      static func etherscanTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("etherscan.title", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "etherscan.title"
-        }
-
-        return NSLocalizedString("etherscan.title", tableName: "Spaces", bundle: bundle, comment: "")
-      }
-
-      /// Value: Follow the links below to get involved with the Nouns community or to take a look at on-chain data.
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "Spaces", bundle: bundle, comment: "")
-      }
-
-      /// Value: Get involved
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Spaces", bundle: bundle, comment: "")
-      }
-
-      /// Value: Twitter
-      static func twitterTitle(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("twitter.title", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "twitter.title"
-        }
-
-        return NSLocalizedString("twitter.title", tableName: "Spaces", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: https://discord.gg/nouns
-      static func discordLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("discord.link", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: discord.link
+      var discordLink: RswiftResources.StringResource { .init(key: "discord.link", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "discord.link"
-        }
-
-        return NSLocalizedString("discord.link", tableName: "Spaces", bundle: bundle, comment: "")
-      }
+      /// Value: Discord
+      ///
+      /// Key: discord.title
+      var discordTitle: RswiftResources.StringResource { .init(key: "discord.title", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://discourse.nouns.wtf
-      static func discourseLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("discourse.link", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: discourse.link
+      var discourseLink: RswiftResources.StringResource { .init(key: "discourse.link", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "discourse.link"
-        }
-
-        return NSLocalizedString("discourse.link", tableName: "Spaces", bundle: bundle, comment: "")
-      }
+      /// Value: Discourse
+      ///
+      /// Key: discourse.title
+      var discourseTitle: RswiftResources.StringResource { .init(key: "discourse.title", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://etherscan.io/address/0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03
-      static func etherscanLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("etherscan.link", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: etherscan.link
+      var etherscanLink: RswiftResources.StringResource { .init(key: "etherscan.link", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "etherscan.link"
-        }
+      /// Value: Etherscan
+      ///
+      /// Key: etherscan.title
+      var etherscanTitle: RswiftResources.StringResource { .init(key: "etherscan.title", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
-        return NSLocalizedString("etherscan.link", tableName: "Spaces", bundle: bundle, comment: "")
-      }
+      /// Value: Follow the links below to get involved with the Nouns community or to take a look at on-chain data.
+      ///
+      /// Key: message
+      var message: RswiftResources.StringResource { .init(key: "message", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Get involved
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://twitter.com/nounsdao
-      static func twitterLink(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("twitter.link", tableName: "Spaces", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: twitter.link
+      var twitterLink: RswiftResources.StringResource { .init(key: "twitter.link", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Spaces", preferredLanguages: preferredLanguages) else {
-          return "twitter.link"
-        }
-
-        return NSLocalizedString("twitter.link", tableName: "Spaces", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
+      /// Value: Twitter
+      ///
+      /// Key: twitter.title
+      var twitterTitle: RswiftResources.StringResource { .init(key: "twitter.title", tableName: "Spaces", source: source, developmentValue: nil, comment: nil) }
     }
 
-    /// This `R.string.team` struct is generated, and contains static references to 3 localization keys.
+    /// This `_R.string.team` struct is generated, and contains static references to 3 localization keys.
     struct team {
-      /// Value: Made with 🖤
-      static let title = Rswift.StringResource(key: "title", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: The Nouns app was created by a crew of frens from Nouns Collective.
-      static let message = Rswift.StringResource(key: "message", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: https://twitter.com/%@
-      static let twitterProfileUrl = Rswift.StringResource(key: "twitter.profile.url", tableName: "Team", bundle: R.hostingBundle, locales: [], comment: nil)
-
-      /// Value: Made with 🖤
-      static func title(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("title", tableName: "Team", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
-          return "title"
-        }
-
-        return NSLocalizedString("title", tableName: "Team", bundle: bundle, comment: "")
-      }
+      let source: RswiftResources.StringResource.Source
 
       /// Value: The Nouns app was created by a crew of frens from Nouns Collective.
-      static func message(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("message", tableName: "Team", bundle: hostingBundle, comment: "")
-        }
+      ///
+      /// Key: message
+      var message: RswiftResources.StringResource { .init(key: "message", tableName: "Team", source: source, developmentValue: nil, comment: nil) }
 
-        guard let (_, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
-          return "message"
-        }
-
-        return NSLocalizedString("message", tableName: "Team", bundle: bundle, comment: "")
-      }
+      /// Value: Made with 🖤
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "Team", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: https://twitter.com/%@
-      static func twitterProfileUrl(_ value1: String, preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          let format = NSLocalizedString("twitter.profile.url", tableName: "Team", bundle: hostingBundle, comment: "")
-          return String(format: format, locale: applicationLocale, value1)
-        }
-
-        guard let (locale, bundle) = localeBundle(tableName: "Team", preferredLanguages: preferredLanguages) else {
-          return "twitter.profile.url"
-        }
-
-        let format = NSLocalizedString("twitter.profile.url", tableName: "Team", bundle: bundle, comment: "")
-        return String(format: format, locale: locale, value1)
-      }
-
-      fileprivate init() {}
+      ///
+      /// Key: twitter.profile.url
+      var twitterProfileUrl: RswiftResources.StringResource1<String> { .init(key: "twitter.profile.url", tableName: "Team", source: source, developmentValue: nil, comment: nil) }
     }
 
-    fileprivate init() {}
+    /// This `_R.string.offchainNounActions` struct is generated, and contains static references to 7 localization keys.
+    struct offchainNounActions {
+      let source: RswiftResources.StringResource.Source
+
+      /// Value: Delete your Noun
+      ///
+      /// Key: delete
+      var delete: RswiftResources.StringResource { .init(key: "delete", tableName: "offchain.noun.actions", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Edit your Noun
+      ///
+      /// Key: edit
+      var edit: RswiftResources.StringResource { .init(key: "edit", tableName: "offchain.noun.actions", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Play with you Noun
+      ///
+      /// Key: play
+      var play: RswiftResources.StringResource { .init(key: "play", tableName: "offchain.noun.actions", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Rename your Noun
+      ///
+      /// Key: rename
+      var rename: RswiftResources.StringResource { .init(key: "rename", tableName: "offchain.noun.actions", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: 👋 sup! check out this fresh Noun
+      ///
+      /// Key: share.message
+      var shareMessage: RswiftResources.StringResource { .init(key: "share.message", tableName: "offchain.noun.actions", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: More Actions
+      ///
+      /// Key: title
+      var title: RswiftResources.StringResource { .init(key: "title", tableName: "offchain.noun.actions", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Use this dope new name
+      ///
+      /// Key: use.name
+      var useName: RswiftResources.StringResource { .init(key: "use.name", tableName: "offchain.noun.actions", source: source, developmentValue: nil, comment: nil) }
+    }
   }
 
-  fileprivate struct intern: Rswift.Validatable {
-    fileprivate static func validate() throws {
-      try _R.validate()
+  /// This `_R.data` struct is generated, and contains static references to 1 datas.
+  struct data {
+    let bundle: Foundation.Bundle
+
+    /// Data asset `noun-activity`.
+    var nounActivity: RswiftResources.DataResource { .init(name: "noun-activity", path: [], bundle: bundle, onDemandResourceTags: nil) }
+  }
+
+  /// This `_R.color` struct is generated, and contains static references to 2 colors.
+  struct color {
+    let bundle: Foundation.Bundle
+
+    /// Color `AccentColor`.
+    var accentColor: RswiftResources.ColorResource { .init(name: "AccentColor", path: [], bundle: bundle) }
+
+    /// Color `launch.screen.background`.
+    var launchScreenBackground: RswiftResources.ColorResource { .init(name: "launch.screen.background", path: [], bundle: bundle) }
+  }
+
+  /// This `_R.image` struct is generated, and contains static references to 451 images, and 1 namespaces.
+  struct image {
+    let bundle: Foundation.Bundle
+
+    /// Image `AppIcon0_Preview`.
+    var appIcon0_Preview: RswiftResources.ImageResource { .init(name: "AppIcon0_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon10_Preview`.
+    var appIcon10_Preview: RswiftResources.ImageResource { .init(name: "AppIcon10_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon11_Preview`.
+    var appIcon11_Preview: RswiftResources.ImageResource { .init(name: "AppIcon11_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon12_Preview`.
+    var appIcon12_Preview: RswiftResources.ImageResource { .init(name: "AppIcon12_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon13_Preview`.
+    var appIcon13_Preview: RswiftResources.ImageResource { .init(name: "AppIcon13_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon14_Preview`.
+    var appIcon14_Preview: RswiftResources.ImageResource { .init(name: "AppIcon14_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon15_Preview`.
+    var appIcon15_Preview: RswiftResources.ImageResource { .init(name: "AppIcon15_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon16_Preview`.
+    var appIcon16_Preview: RswiftResources.ImageResource { .init(name: "AppIcon16_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon17_Preview`.
+    var appIcon17_Preview: RswiftResources.ImageResource { .init(name: "AppIcon17_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon18_Preview`.
+    var appIcon18_Preview: RswiftResources.ImageResource { .init(name: "AppIcon18_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon19_Preview`.
+    var appIcon19_Preview: RswiftResources.ImageResource { .init(name: "AppIcon19_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon1_Preview`.
+    var appIcon1_Preview: RswiftResources.ImageResource { .init(name: "AppIcon1_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon20_Preview`.
+    var appIcon20_Preview: RswiftResources.ImageResource { .init(name: "AppIcon20_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon21_Preview`.
+    var appIcon21_Preview: RswiftResources.ImageResource { .init(name: "AppIcon21_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon22_Preview`.
+    var appIcon22_Preview: RswiftResources.ImageResource { .init(name: "AppIcon22_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon23_Preview`.
+    var appIcon23_Preview: RswiftResources.ImageResource { .init(name: "AppIcon23_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon24_Preview`.
+    var appIcon24_Preview: RswiftResources.ImageResource { .init(name: "AppIcon24_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon25_Preview`.
+    var appIcon25_Preview: RswiftResources.ImageResource { .init(name: "AppIcon25_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon2_Preview`.
+    var appIcon2_Preview: RswiftResources.ImageResource { .init(name: "AppIcon2_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon3_Preview`.
+    var appIcon3_Preview: RswiftResources.ImageResource { .init(name: "AppIcon3_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon4_Preview`.
+    var appIcon4_Preview: RswiftResources.ImageResource { .init(name: "AppIcon4_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon5_Preview`.
+    var appIcon5_Preview: RswiftResources.ImageResource { .init(name: "AppIcon5_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon6_Preview`.
+    var appIcon6_Preview: RswiftResources.ImageResource { .init(name: "AppIcon6_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon7_Preview`.
+    var appIcon7_Preview: RswiftResources.ImageResource { .init(name: "AppIcon7_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon8_Preview`.
+    var appIcon8_Preview: RswiftResources.ImageResource { .init(name: "AppIcon8_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon9_Preview`.
+    var appIcon9_Preview: RswiftResources.ImageResource { .init(name: "AppIcon9_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `AppIcon_Preview`.
+    var appIcon_Preview: RswiftResources.ImageResource { .init(name: "AppIcon_Preview", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00000`.
+    var nounFetti_00000: RswiftResources.ImageResource { .init(name: "Noun-fetti_00000", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00001`.
+    var nounFetti_00001: RswiftResources.ImageResource { .init(name: "Noun-fetti_00001", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00002`.
+    var nounFetti_00002: RswiftResources.ImageResource { .init(name: "Noun-fetti_00002", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00003`.
+    var nounFetti_00003: RswiftResources.ImageResource { .init(name: "Noun-fetti_00003", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00004`.
+    var nounFetti_00004: RswiftResources.ImageResource { .init(name: "Noun-fetti_00004", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00005`.
+    var nounFetti_00005: RswiftResources.ImageResource { .init(name: "Noun-fetti_00005", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00006`.
+    var nounFetti_00006: RswiftResources.ImageResource { .init(name: "Noun-fetti_00006", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00007`.
+    var nounFetti_00007: RswiftResources.ImageResource { .init(name: "Noun-fetti_00007", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00008`.
+    var nounFetti_00008: RswiftResources.ImageResource { .init(name: "Noun-fetti_00008", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00009`.
+    var nounFetti_00009: RswiftResources.ImageResource { .init(name: "Noun-fetti_00009", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00010`.
+    var nounFetti_00010: RswiftResources.ImageResource { .init(name: "Noun-fetti_00010", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00011`.
+    var nounFetti_00011: RswiftResources.ImageResource { .init(name: "Noun-fetti_00011", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00012`.
+    var nounFetti_00012: RswiftResources.ImageResource { .init(name: "Noun-fetti_00012", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00013`.
+    var nounFetti_00013: RswiftResources.ImageResource { .init(name: "Noun-fetti_00013", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00014`.
+    var nounFetti_00014: RswiftResources.ImageResource { .init(name: "Noun-fetti_00014", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00015`.
+    var nounFetti_00015: RswiftResources.ImageResource { .init(name: "Noun-fetti_00015", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00016`.
+    var nounFetti_00016: RswiftResources.ImageResource { .init(name: "Noun-fetti_00016", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00017`.
+    var nounFetti_00017: RswiftResources.ImageResource { .init(name: "Noun-fetti_00017", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00018`.
+    var nounFetti_00018: RswiftResources.ImageResource { .init(name: "Noun-fetti_00018", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00019`.
+    var nounFetti_00019: RswiftResources.ImageResource { .init(name: "Noun-fetti_00019", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00020`.
+    var nounFetti_00020: RswiftResources.ImageResource { .init(name: "Noun-fetti_00020", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00021`.
+    var nounFetti_00021: RswiftResources.ImageResource { .init(name: "Noun-fetti_00021", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00022`.
+    var nounFetti_00022: RswiftResources.ImageResource { .init(name: "Noun-fetti_00022", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00023`.
+    var nounFetti_00023: RswiftResources.ImageResource { .init(name: "Noun-fetti_00023", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00024`.
+    var nounFetti_00024: RswiftResources.ImageResource { .init(name: "Noun-fetti_00024", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00025`.
+    var nounFetti_00025: RswiftResources.ImageResource { .init(name: "Noun-fetti_00025", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00026`.
+    var nounFetti_00026: RswiftResources.ImageResource { .init(name: "Noun-fetti_00026", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00027`.
+    var nounFetti_00027: RswiftResources.ImageResource { .init(name: "Noun-fetti_00027", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00028`.
+    var nounFetti_00028: RswiftResources.ImageResource { .init(name: "Noun-fetti_00028", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00029`.
+    var nounFetti_00029: RswiftResources.ImageResource { .init(name: "Noun-fetti_00029", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00030`.
+    var nounFetti_00030: RswiftResources.ImageResource { .init(name: "Noun-fetti_00030", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00031`.
+    var nounFetti_00031: RswiftResources.ImageResource { .init(name: "Noun-fetti_00031", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00032`.
+    var nounFetti_00032: RswiftResources.ImageResource { .init(name: "Noun-fetti_00032", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00033`.
+    var nounFetti_00033: RswiftResources.ImageResource { .init(name: "Noun-fetti_00033", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00034`.
+    var nounFetti_00034: RswiftResources.ImageResource { .init(name: "Noun-fetti_00034", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00035`.
+    var nounFetti_00035: RswiftResources.ImageResource { .init(name: "Noun-fetti_00035", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00036`.
+    var nounFetti_00036: RswiftResources.ImageResource { .init(name: "Noun-fetti_00036", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00037`.
+    var nounFetti_00037: RswiftResources.ImageResource { .init(name: "Noun-fetti_00037", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00038`.
+    var nounFetti_00038: RswiftResources.ImageResource { .init(name: "Noun-fetti_00038", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00039`.
+    var nounFetti_00039: RswiftResources.ImageResource { .init(name: "Noun-fetti_00039", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00040`.
+    var nounFetti_00040: RswiftResources.ImageResource { .init(name: "Noun-fetti_00040", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00041`.
+    var nounFetti_00041: RswiftResources.ImageResource { .init(name: "Noun-fetti_00041", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00042`.
+    var nounFetti_00042: RswiftResources.ImageResource { .init(name: "Noun-fetti_00042", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00043`.
+    var nounFetti_00043: RswiftResources.ImageResource { .init(name: "Noun-fetti_00043", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00044`.
+    var nounFetti_00044: RswiftResources.ImageResource { .init(name: "Noun-fetti_00044", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00045`.
+    var nounFetti_00045: RswiftResources.ImageResource { .init(name: "Noun-fetti_00045", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00046`.
+    var nounFetti_00046: RswiftResources.ImageResource { .init(name: "Noun-fetti_00046", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00047`.
+    var nounFetti_00047: RswiftResources.ImageResource { .init(name: "Noun-fetti_00047", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00048`.
+    var nounFetti_00048: RswiftResources.ImageResource { .init(name: "Noun-fetti_00048", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00049`.
+    var nounFetti_00049: RswiftResources.ImageResource { .init(name: "Noun-fetti_00049", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00050`.
+    var nounFetti_00050: RswiftResources.ImageResource { .init(name: "Noun-fetti_00050", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00051`.
+    var nounFetti_00051: RswiftResources.ImageResource { .init(name: "Noun-fetti_00051", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00052`.
+    var nounFetti_00052: RswiftResources.ImageResource { .init(name: "Noun-fetti_00052", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00053`.
+    var nounFetti_00053: RswiftResources.ImageResource { .init(name: "Noun-fetti_00053", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00054`.
+    var nounFetti_00054: RswiftResources.ImageResource { .init(name: "Noun-fetti_00054", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00055`.
+    var nounFetti_00055: RswiftResources.ImageResource { .init(name: "Noun-fetti_00055", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00056`.
+    var nounFetti_00056: RswiftResources.ImageResource { .init(name: "Noun-fetti_00056", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00057`.
+    var nounFetti_00057: RswiftResources.ImageResource { .init(name: "Noun-fetti_00057", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00058`.
+    var nounFetti_00058: RswiftResources.ImageResource { .init(name: "Noun-fetti_00058", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00059`.
+    var nounFetti_00059: RswiftResources.ImageResource { .init(name: "Noun-fetti_00059", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00060`.
+    var nounFetti_00060: RswiftResources.ImageResource { .init(name: "Noun-fetti_00060", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00061`.
+    var nounFetti_00061: RswiftResources.ImageResource { .init(name: "Noun-fetti_00061", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00062`.
+    var nounFetti_00062: RswiftResources.ImageResource { .init(name: "Noun-fetti_00062", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00063`.
+    var nounFetti_00063: RswiftResources.ImageResource { .init(name: "Noun-fetti_00063", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00064`.
+    var nounFetti_00064: RswiftResources.ImageResource { .init(name: "Noun-fetti_00064", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00065`.
+    var nounFetti_00065: RswiftResources.ImageResource { .init(name: "Noun-fetti_00065", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00066`.
+    var nounFetti_00066: RswiftResources.ImageResource { .init(name: "Noun-fetti_00066", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00067`.
+    var nounFetti_00067: RswiftResources.ImageResource { .init(name: "Noun-fetti_00067", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00068`.
+    var nounFetti_00068: RswiftResources.ImageResource { .init(name: "Noun-fetti_00068", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00069`.
+    var nounFetti_00069: RswiftResources.ImageResource { .init(name: "Noun-fetti_00069", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00070`.
+    var nounFetti_00070: RswiftResources.ImageResource { .init(name: "Noun-fetti_00070", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00071`.
+    var nounFetti_00071: RswiftResources.ImageResource { .init(name: "Noun-fetti_00071", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00072`.
+    var nounFetti_00072: RswiftResources.ImageResource { .init(name: "Noun-fetti_00072", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00073`.
+    var nounFetti_00073: RswiftResources.ImageResource { .init(name: "Noun-fetti_00073", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00074`.
+    var nounFetti_00074: RswiftResources.ImageResource { .init(name: "Noun-fetti_00074", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00075`.
+    var nounFetti_00075: RswiftResources.ImageResource { .init(name: "Noun-fetti_00075", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00076`.
+    var nounFetti_00076: RswiftResources.ImageResource { .init(name: "Noun-fetti_00076", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00077`.
+    var nounFetti_00077: RswiftResources.ImageResource { .init(name: "Noun-fetti_00077", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00078`.
+    var nounFetti_00078: RswiftResources.ImageResource { .init(name: "Noun-fetti_00078", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00079`.
+    var nounFetti_00079: RswiftResources.ImageResource { .init(name: "Noun-fetti_00079", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00080`.
+    var nounFetti_00080: RswiftResources.ImageResource { .init(name: "Noun-fetti_00080", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00081`.
+    var nounFetti_00081: RswiftResources.ImageResource { .init(name: "Noun-fetti_00081", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00082`.
+    var nounFetti_00082: RswiftResources.ImageResource { .init(name: "Noun-fetti_00082", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00083`.
+    var nounFetti_00083: RswiftResources.ImageResource { .init(name: "Noun-fetti_00083", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00084`.
+    var nounFetti_00084: RswiftResources.ImageResource { .init(name: "Noun-fetti_00084", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00085`.
+    var nounFetti_00085: RswiftResources.ImageResource { .init(name: "Noun-fetti_00085", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00086`.
+    var nounFetti_00086: RswiftResources.ImageResource { .init(name: "Noun-fetti_00086", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00087`.
+    var nounFetti_00087: RswiftResources.ImageResource { .init(name: "Noun-fetti_00087", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00088`.
+    var nounFetti_00088: RswiftResources.ImageResource { .init(name: "Noun-fetti_00088", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00089`.
+    var nounFetti_00089: RswiftResources.ImageResource { .init(name: "Noun-fetti_00089", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00090`.
+    var nounFetti_00090: RswiftResources.ImageResource { .init(name: "Noun-fetti_00090", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00091`.
+    var nounFetti_00091: RswiftResources.ImageResource { .init(name: "Noun-fetti_00091", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00092`.
+    var nounFetti_00092: RswiftResources.ImageResource { .init(name: "Noun-fetti_00092", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00093`.
+    var nounFetti_00093: RswiftResources.ImageResource { .init(name: "Noun-fetti_00093", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00094`.
+    var nounFetti_00094: RswiftResources.ImageResource { .init(name: "Noun-fetti_00094", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00095`.
+    var nounFetti_00095: RswiftResources.ImageResource { .init(name: "Noun-fetti_00095", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00096`.
+    var nounFetti_00096: RswiftResources.ImageResource { .init(name: "Noun-fetti_00096", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00097`.
+    var nounFetti_00097: RswiftResources.ImageResource { .init(name: "Noun-fetti_00097", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00098`.
+    var nounFetti_00098: RswiftResources.ImageResource { .init(name: "Noun-fetti_00098", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00099`.
+    var nounFetti_00099: RswiftResources.ImageResource { .init(name: "Noun-fetti_00099", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00100`.
+    var nounFetti_00100: RswiftResources.ImageResource { .init(name: "Noun-fetti_00100", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00101`.
+    var nounFetti_00101: RswiftResources.ImageResource { .init(name: "Noun-fetti_00101", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00102`.
+    var nounFetti_00102: RswiftResources.ImageResource { .init(name: "Noun-fetti_00102", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00103`.
+    var nounFetti_00103: RswiftResources.ImageResource { .init(name: "Noun-fetti_00103", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00104`.
+    var nounFetti_00104: RswiftResources.ImageResource { .init(name: "Noun-fetti_00104", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00105`.
+    var nounFetti_00105: RswiftResources.ImageResource { .init(name: "Noun-fetti_00105", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00106`.
+    var nounFetti_00106: RswiftResources.ImageResource { .init(name: "Noun-fetti_00106", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00107`.
+    var nounFetti_00107: RswiftResources.ImageResource { .init(name: "Noun-fetti_00107", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00108`.
+    var nounFetti_00108: RswiftResources.ImageResource { .init(name: "Noun-fetti_00108", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00109`.
+    var nounFetti_00109: RswiftResources.ImageResource { .init(name: "Noun-fetti_00109", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00110`.
+    var nounFetti_00110: RswiftResources.ImageResource { .init(name: "Noun-fetti_00110", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00111`.
+    var nounFetti_00111: RswiftResources.ImageResource { .init(name: "Noun-fetti_00111", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00112`.
+    var nounFetti_00112: RswiftResources.ImageResource { .init(name: "Noun-fetti_00112", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00113`.
+    var nounFetti_00113: RswiftResources.ImageResource { .init(name: "Noun-fetti_00113", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00114`.
+    var nounFetti_00114: RswiftResources.ImageResource { .init(name: "Noun-fetti_00114", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00115`.
+    var nounFetti_00115: RswiftResources.ImageResource { .init(name: "Noun-fetti_00115", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00116`.
+    var nounFetti_00116: RswiftResources.ImageResource { .init(name: "Noun-fetti_00116", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00117`.
+    var nounFetti_00117: RswiftResources.ImageResource { .init(name: "Noun-fetti_00117", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00118`.
+    var nounFetti_00118: RswiftResources.ImageResource { .init(name: "Noun-fetti_00118", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `Noun-fetti_00119`.
+    var nounFetti_00119: RswiftResources.ImageResource { .init(name: "Noun-fetti_00119", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `NounsWatermark`.
+    var nounsWatermark: RswiftResources.ImageResource { .init(name: "NounsWatermark", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `arslan-noun`.
+    var arslanNoun: RswiftResources.ImageResource { .init(name: "arslan-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `bell-noun`.
+    var bellNoun: RswiftResources.ImageResource { .init(name: "bell-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-1`.
+    var confetti1: RswiftResources.ImageResource { .init(name: "confetti-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-10`.
+    var confetti10: RswiftResources.ImageResource { .init(name: "confetti-10", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-2`.
+    var confetti2: RswiftResources.ImageResource { .init(name: "confetti-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-3`.
+    var confetti3: RswiftResources.ImageResource { .init(name: "confetti-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-4`.
+    var confetti4: RswiftResources.ImageResource { .init(name: "confetti-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-5`.
+    var confetti5: RswiftResources.ImageResource { .init(name: "confetti-5", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-6`.
+    var confetti6: RswiftResources.ImageResource { .init(name: "confetti-6", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-7`.
+    var confetti7: RswiftResources.ImageResource { .init(name: "confetti-7", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-8`.
+    var confetti8: RswiftResources.ImageResource { .init(name: "confetti-8", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `confetti-9`.
+    var confetti9: RswiftResources.ImageResource { .init(name: "confetti-9", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `create-noun-pizza`.
+    var createNounPizza: RswiftResources.ImageResource { .init(name: "create-noun-pizza", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `explore-onboarding`.
+    var exploreOnboarding: RswiftResources.ImageResource { .init(name: "explore-onboarding", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-fullblack_1`.
+    var eyesBlinkFullblack_1: RswiftResources.ImageResource { .init(name: "eyes-blink-fullblack_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-fullblack_2`.
+    var eyesBlinkFullblack_2: RswiftResources.ImageResource { .init(name: "eyes-blink-fullblack_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-fullblack_3`.
+    var eyesBlinkFullblack_3: RswiftResources.ImageResource { .init(name: "eyes-blink-fullblack_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-fullblack_4`.
+    var eyesBlinkFullblack_4: RswiftResources.ImageResource { .init(name: "eyes-blink-fullblack_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-red_1`.
+    var eyesBlinkRed_1: RswiftResources.ImageResource { .init(name: "eyes-blink-red_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-red_2`.
+    var eyesBlinkRed_2: RswiftResources.ImageResource { .init(name: "eyes-blink-red_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-red_3`.
+    var eyesBlinkRed_3: RswiftResources.ImageResource { .init(name: "eyes-blink-red_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-red_4`.
+    var eyesBlinkRed_4: RswiftResources.ImageResource { .init(name: "eyes-blink-red_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-rgb_1`.
+    var eyesBlinkRgb_1: RswiftResources.ImageResource { .init(name: "eyes-blink-rgb_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-rgb_2`.
+    var eyesBlinkRgb_2: RswiftResources.ImageResource { .init(name: "eyes-blink-rgb_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-rgb_3`.
+    var eyesBlinkRgb_3: RswiftResources.ImageResource { .init(name: "eyes-blink-rgb_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink-rgb_4`.
+    var eyesBlinkRgb_4: RswiftResources.ImageResource { .init(name: "eyes-blink-rgb_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink_1`.
+    var eyesBlink_1: RswiftResources.ImageResource { .init(name: "eyes-blink_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink_2`.
+    var eyesBlink_2: RswiftResources.ImageResource { .init(name: "eyes-blink_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink_3`.
+    var eyesBlink_3: RswiftResources.ImageResource { .init(name: "eyes-blink_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink_4`.
+    var eyesBlink_4: RswiftResources.ImageResource { .init(name: "eyes-blink_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-blink_5`.
+    var eyesBlink_5: RswiftResources.ImageResource { .init(name: "eyes-blink_5", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-fullblack_1`.
+    var eyesShiftFullblack_1: RswiftResources.ImageResource { .init(name: "eyes-shift-fullblack_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-fullblack_2`.
+    var eyesShiftFullblack_2: RswiftResources.ImageResource { .init(name: "eyes-shift-fullblack_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-fullblack_3`.
+    var eyesShiftFullblack_3: RswiftResources.ImageResource { .init(name: "eyes-shift-fullblack_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-fullblack_4`.
+    var eyesShiftFullblack_4: RswiftResources.ImageResource { .init(name: "eyes-shift-fullblack_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-fullblack_5`.
+    var eyesShiftFullblack_5: RswiftResources.ImageResource { .init(name: "eyes-shift-fullblack_5", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-fullblack_6`.
+    var eyesShiftFullblack_6: RswiftResources.ImageResource { .init(name: "eyes-shift-fullblack_6", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-red_1`.
+    var eyesShiftRed_1: RswiftResources.ImageResource { .init(name: "eyes-shift-red_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-red_2`.
+    var eyesShiftRed_2: RswiftResources.ImageResource { .init(name: "eyes-shift-red_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-red_3`.
+    var eyesShiftRed_3: RswiftResources.ImageResource { .init(name: "eyes-shift-red_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-red_4`.
+    var eyesShiftRed_4: RswiftResources.ImageResource { .init(name: "eyes-shift-red_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-red_5`.
+    var eyesShiftRed_5: RswiftResources.ImageResource { .init(name: "eyes-shift-red_5", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-red_6`.
+    var eyesShiftRed_6: RswiftResources.ImageResource { .init(name: "eyes-shift-red_6", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-rgb_1`.
+    var eyesShiftRgb_1: RswiftResources.ImageResource { .init(name: "eyes-shift-rgb_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-rgb_2`.
+    var eyesShiftRgb_2: RswiftResources.ImageResource { .init(name: "eyes-shift-rgb_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-rgb_3`.
+    var eyesShiftRgb_3: RswiftResources.ImageResource { .init(name: "eyes-shift-rgb_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-rgb_4`.
+    var eyesShiftRgb_4: RswiftResources.ImageResource { .init(name: "eyes-shift-rgb_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-rgb_5`.
+    var eyesShiftRgb_5: RswiftResources.ImageResource { .init(name: "eyes-shift-rgb_5", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift-rgb_6`.
+    var eyesShiftRgb_6: RswiftResources.ImageResource { .init(name: "eyes-shift-rgb_6", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift_0`.
+    var eyesShift_0: RswiftResources.ImageResource { .init(name: "eyes-shift_0", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift_1`.
+    var eyesShift_1: RswiftResources.ImageResource { .init(name: "eyes-shift_1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift_2`.
+    var eyesShift_2: RswiftResources.ImageResource { .init(name: "eyes-shift_2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift_3`.
+    var eyesShift_3: RswiftResources.ImageResource { .init(name: "eyes-shift_3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift_4`.
+    var eyesShift_4: RswiftResources.ImageResource { .init(name: "eyes-shift_4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift_5`.
+    var eyesShift_5: RswiftResources.ImageResource { .init(name: "eyes-shift_5", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `eyes-shift_6`.
+    var eyesShift_6: RswiftResources.ImageResource { .init(name: "eyes-shift_6", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-deep-teal`.
+    var glassesDeepTeal: RswiftResources.ImageResource { .init(name: "glasses-deep-teal", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-grass`.
+    var glassesGrass: RswiftResources.ImageResource { .init(name: "glasses-grass", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-hip-rose`.
+    var glassesHipRose: RswiftResources.ImageResource { .init(name: "glasses-hip-rose", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-black`.
+    var glassesSquareBlack: RswiftResources.ImageResource { .init(name: "glasses-square-black", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-blue`.
+    var glassesSquareBlue: RswiftResources.ImageResource { .init(name: "glasses-square-blue", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-blue-med-saturated`.
+    var glassesSquareBlueMedSaturated: RswiftResources.ImageResource { .init(name: "glasses-square-blue-med-saturated", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-frog-green`.
+    var glassesSquareFrogGreen: RswiftResources.ImageResource { .init(name: "glasses-square-frog-green", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-green-blue-multi`.
+    var glassesSquareGreenBlueMulti: RswiftResources.ImageResource { .init(name: "glasses-square-green-blue-multi", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-grey-light`.
+    var glassesSquareGreyLight: RswiftResources.ImageResource { .init(name: "glasses-square-grey-light", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-guava`.
+    var glassesSquareGuava: RswiftResources.ImageResource { .init(name: "glasses-square-guava", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-honey`.
+    var glassesSquareHoney: RswiftResources.ImageResource { .init(name: "glasses-square-honey", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-magenta`.
+    var glassesSquareMagenta: RswiftResources.ImageResource { .init(name: "glasses-square-magenta", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-orange`.
+    var glassesSquareOrange: RswiftResources.ImageResource { .init(name: "glasses-square-orange", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-pink-purple-multi`.
+    var glassesSquarePinkPurpleMulti: RswiftResources.ImageResource { .init(name: "glasses-square-pink-purple-multi", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-red`.
+    var glassesSquareRed: RswiftResources.ImageResource { .init(name: "glasses-square-red", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-smoke`.
+    var glassesSquareSmoke: RswiftResources.ImageResource { .init(name: "glasses-square-smoke", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-teal`.
+    var glassesSquareTeal: RswiftResources.ImageResource { .init(name: "glasses-square-teal", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-watermelon`.
+    var glassesSquareWatermelon: RswiftResources.ImageResource { .init(name: "glasses-square-watermelon", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-yellow-orange-multi`.
+    var glassesSquareYellowOrangeMulti: RswiftResources.ImageResource { .init(name: "glasses-square-yellow-orange-multi", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `glasses-square-yellow-saturated`.
+    var glassesSquareYellowSaturated: RswiftResources.ImageResource { .init(name: "glasses-square-yellow-saturated", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ape-mouth-1`.
+    var headApeMouth1: RswiftResources.ImageResource { .init(name: "head-ape-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ape-mouth-2`.
+    var headApeMouth2: RswiftResources.ImageResource { .init(name: "head-ape-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ape-mouth-3`.
+    var headApeMouth3: RswiftResources.ImageResource { .init(name: "head-ape-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ape-mouth-4`.
+    var headApeMouth4: RswiftResources.ImageResource { .init(name: "head-ape-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-baseball-gameball-mouth-1`.
+    var headBaseballGameballMouth1: RswiftResources.ImageResource { .init(name: "head-baseball-gameball-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-baseball-gameball-mouth-2`.
+    var headBaseballGameballMouth2: RswiftResources.ImageResource { .init(name: "head-baseball-gameball-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-baseball-gameball-mouth-3`.
+    var headBaseballGameballMouth3: RswiftResources.ImageResource { .init(name: "head-baseball-gameball-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-baseball-gameball-mouth-4`.
+    var headBaseballGameballMouth4: RswiftResources.ImageResource { .init(name: "head-baseball-gameball-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-basketball-mouth-1`.
+    var headBasketballMouth1: RswiftResources.ImageResource { .init(name: "head-basketball-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-basketball-mouth-2`.
+    var headBasketballMouth2: RswiftResources.ImageResource { .init(name: "head-basketball-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-basketball-mouth-3`.
+    var headBasketballMouth3: RswiftResources.ImageResource { .init(name: "head-basketball-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-basketball-mouth-4`.
+    var headBasketballMouth4: RswiftResources.ImageResource { .init(name: "head-basketball-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bat-mouth-1`.
+    var headBatMouth1: RswiftResources.ImageResource { .init(name: "head-bat-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bat-mouth-2`.
+    var headBatMouth2: RswiftResources.ImageResource { .init(name: "head-bat-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bat-mouth-3`.
+    var headBatMouth3: RswiftResources.ImageResource { .init(name: "head-bat-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bat-mouth-4`.
+    var headBatMouth4: RswiftResources.ImageResource { .init(name: "head-bat-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bear-mouth-1`.
+    var headBearMouth1: RswiftResources.ImageResource { .init(name: "head-bear-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bear-mouth-2`.
+    var headBearMouth2: RswiftResources.ImageResource { .init(name: "head-bear-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bear-mouth-3`.
+    var headBearMouth3: RswiftResources.ImageResource { .init(name: "head-bear-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-bear-mouth-4`.
+    var headBearMouth4: RswiftResources.ImageResource { .init(name: "head-bear-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-blueberry-mouth-1`.
+    var headBlueberryMouth1: RswiftResources.ImageResource { .init(name: "head-blueberry-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-blueberry-mouth-2`.
+    var headBlueberryMouth2: RswiftResources.ImageResource { .init(name: "head-blueberry-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-blueberry-mouth-3`.
+    var headBlueberryMouth3: RswiftResources.ImageResource { .init(name: "head-blueberry-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-blueberry-mouth-4`.
+    var headBlueberryMouth4: RswiftResources.ImageResource { .init(name: "head-blueberry-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cannedham-mouth-1`.
+    var headCannedhamMouth1: RswiftResources.ImageResource { .init(name: "head-cannedham-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cannedham-mouth-2`.
+    var headCannedhamMouth2: RswiftResources.ImageResource { .init(name: "head-cannedham-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cannedham-mouth-3`.
+    var headCannedhamMouth3: RswiftResources.ImageResource { .init(name: "head-cannedham-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cannedham-mouth-4`.
+    var headCannedhamMouth4: RswiftResources.ImageResource { .init(name: "head-cannedham-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cash-register-mouth-1`.
+    var headCashRegisterMouth1: RswiftResources.ImageResource { .init(name: "head-cash-register-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cash-register-mouth-2`.
+    var headCashRegisterMouth2: RswiftResources.ImageResource { .init(name: "head-cash-register-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cash-register-mouth-3`.
+    var headCashRegisterMouth3: RswiftResources.ImageResource { .init(name: "head-cash-register-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cash-register-mouth-4`.
+    var headCashRegisterMouth4: RswiftResources.ImageResource { .init(name: "head-cash-register-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chainsaw-mouth-1`.
+    var headChainsawMouth1: RswiftResources.ImageResource { .init(name: "head-chainsaw-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chainsaw-mouth-2`.
+    var headChainsawMouth2: RswiftResources.ImageResource { .init(name: "head-chainsaw-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chainsaw-mouth-3`.
+    var headChainsawMouth3: RswiftResources.ImageResource { .init(name: "head-chainsaw-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chainsaw-mouth-4`.
+    var headChainsawMouth4: RswiftResources.ImageResource { .init(name: "head-chainsaw-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chameleon-mouth-1`.
+    var headChameleonMouth1: RswiftResources.ImageResource { .init(name: "head-chameleon-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chameleon-mouth-2`.
+    var headChameleonMouth2: RswiftResources.ImageResource { .init(name: "head-chameleon-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chameleon-mouth-3`.
+    var headChameleonMouth3: RswiftResources.ImageResource { .init(name: "head-chameleon-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chameleon-mouth-4`.
+    var headChameleonMouth4: RswiftResources.ImageResource { .init(name: "head-chameleon-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chicken-mouth-1`.
+    var headChickenMouth1: RswiftResources.ImageResource { .init(name: "head-chicken-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chicken-mouth-2`.
+    var headChickenMouth2: RswiftResources.ImageResource { .init(name: "head-chicken-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chicken-mouth-3`.
+    var headChickenMouth3: RswiftResources.ImageResource { .init(name: "head-chicken-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chicken-mouth-4`.
+    var headChickenMouth4: RswiftResources.ImageResource { .init(name: "head-chicken-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chipboard-mouth-1`.
+    var headChipboardMouth1: RswiftResources.ImageResource { .init(name: "head-chipboard-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chipboard-mouth-2`.
+    var headChipboardMouth2: RswiftResources.ImageResource { .init(name: "head-chipboard-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chipboard-mouth-3`.
+    var headChipboardMouth3: RswiftResources.ImageResource { .init(name: "head-chipboard-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-chipboard-mouth-4`.
+    var headChipboardMouth4: RswiftResources.ImageResource { .init(name: "head-chipboard-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-clutch-mouth-1`.
+    var headClutchMouth1: RswiftResources.ImageResource { .init(name: "head-clutch-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-clutch-mouth-2`.
+    var headClutchMouth2: RswiftResources.ImageResource { .init(name: "head-clutch-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-clutch-mouth-3`.
+    var headClutchMouth3: RswiftResources.ImageResource { .init(name: "head-clutch-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-clutch-mouth-4`.
+    var headClutchMouth4: RswiftResources.ImageResource { .init(name: "head-clutch-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cow-mouth-1`.
+    var headCowMouth1: RswiftResources.ImageResource { .init(name: "head-cow-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cow-mouth-2`.
+    var headCowMouth2: RswiftResources.ImageResource { .init(name: "head-cow-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cow-mouth-3`.
+    var headCowMouth3: RswiftResources.ImageResource { .init(name: "head-cow-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-cow-mouth-4`.
+    var headCowMouth4: RswiftResources.ImageResource { .init(name: "head-cow-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-croc-hat-mouth-1`.
+    var headCrocHatMouth1: RswiftResources.ImageResource { .init(name: "head-croc-hat-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-croc-hat-mouth-2`.
+    var headCrocHatMouth2: RswiftResources.ImageResource { .init(name: "head-croc-hat-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-croc-hat-mouth-3`.
+    var headCrocHatMouth3: RswiftResources.ImageResource { .init(name: "head-croc-hat-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-croc-hat-mouth-4`.
+    var headCrocHatMouth4: RswiftResources.ImageResource { .init(name: "head-croc-hat-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-default-mouth-1`.
+    var headDefaultMouth1: RswiftResources.ImageResource { .init(name: "head-default-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-default-mouth-2`.
+    var headDefaultMouth2: RswiftResources.ImageResource { .init(name: "head-default-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-default-mouth-3`.
+    var headDefaultMouth3: RswiftResources.ImageResource { .init(name: "head-default-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-default-mouth-4`.
+    var headDefaultMouth4: RswiftResources.ImageResource { .init(name: "head-default-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dino-mouth-1`.
+    var headDinoMouth1: RswiftResources.ImageResource { .init(name: "head-dino-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dino-mouth-2`.
+    var headDinoMouth2: RswiftResources.ImageResource { .init(name: "head-dino-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dino-mouth-3`.
+    var headDinoMouth3: RswiftResources.ImageResource { .init(name: "head-dino-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dino-mouth-4`.
+    var headDinoMouth4: RswiftResources.ImageResource { .init(name: "head-dino-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dog-mouth-1`.
+    var headDogMouth1: RswiftResources.ImageResource { .init(name: "head-dog-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dog-mouth-2`.
+    var headDogMouth2: RswiftResources.ImageResource { .init(name: "head-dog-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dog-mouth-3`.
+    var headDogMouth3: RswiftResources.ImageResource { .init(name: "head-dog-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-dog-mouth-4`.
+    var headDogMouth4: RswiftResources.ImageResource { .init(name: "head-dog-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-drill-mouth-1`.
+    var headDrillMouth1: RswiftResources.ImageResource { .init(name: "head-drill-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-drill-mouth-2`.
+    var headDrillMouth2: RswiftResources.ImageResource { .init(name: "head-drill-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-drill-mouth-3`.
+    var headDrillMouth3: RswiftResources.ImageResource { .init(name: "head-drill-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-drill-mouth-4`.
+    var headDrillMouth4: RswiftResources.ImageResource { .init(name: "head-drill-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-duck-mouth-1`.
+    var headDuckMouth1: RswiftResources.ImageResource { .init(name: "head-duck-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-duck-mouth-2`.
+    var headDuckMouth2: RswiftResources.ImageResource { .init(name: "head-duck-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-duck-mouth-3`.
+    var headDuckMouth3: RswiftResources.ImageResource { .init(name: "head-duck-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-duck-mouth-4`.
+    var headDuckMouth4: RswiftResources.ImageResource { .init(name: "head-duck-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-factory-dark-mouth-1`.
+    var headFactoryDarkMouth1: RswiftResources.ImageResource { .init(name: "head-factory-dark-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-factory-dark-mouth-2`.
+    var headFactoryDarkMouth2: RswiftResources.ImageResource { .init(name: "head-factory-dark-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-factory-dark-mouth-3`.
+    var headFactoryDarkMouth3: RswiftResources.ImageResource { .init(name: "head-factory-dark-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-factory-dark-mouth-4`.
+    var headFactoryDarkMouth4: RswiftResources.ImageResource { .init(name: "head-factory-dark-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-frog-mouth-1`.
+    var headFrogMouth1: RswiftResources.ImageResource { .init(name: "head-frog-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-frog-mouth-2`.
+    var headFrogMouth2: RswiftResources.ImageResource { .init(name: "head-frog-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-frog-mouth-3`.
+    var headFrogMouth3: RswiftResources.ImageResource { .init(name: "head-frog-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-frog-mouth-4`.
+    var headFrogMouth4: RswiftResources.ImageResource { .init(name: "head-frog-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-gnome-mouth-1`.
+    var headGnomeMouth1: RswiftResources.ImageResource { .init(name: "head-gnome-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-gnome-mouth-2`.
+    var headGnomeMouth2: RswiftResources.ImageResource { .init(name: "head-gnome-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-gnome-mouth-3`.
+    var headGnomeMouth3: RswiftResources.ImageResource { .init(name: "head-gnome-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-gnome-mouth-4`.
+    var headGnomeMouth4: RswiftResources.ImageResource { .init(name: "head-gnome-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goat-mouth-1`.
+    var headGoatMouth1: RswiftResources.ImageResource { .init(name: "head-goat-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goat-mouth-2`.
+    var headGoatMouth2: RswiftResources.ImageResource { .init(name: "head-goat-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goat-mouth-3`.
+    var headGoatMouth3: RswiftResources.ImageResource { .init(name: "head-goat-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goat-mouth-4`.
+    var headGoatMouth4: RswiftResources.ImageResource { .init(name: "head-goat-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goldfish-mouth-1`.
+    var headGoldfishMouth1: RswiftResources.ImageResource { .init(name: "head-goldfish-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goldfish-mouth-2`.
+    var headGoldfishMouth2: RswiftResources.ImageResource { .init(name: "head-goldfish-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goldfish-mouth-3`.
+    var headGoldfishMouth3: RswiftResources.ImageResource { .init(name: "head-goldfish-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-goldfish-mouth-4`.
+    var headGoldfishMouth4: RswiftResources.ImageResource { .init(name: "head-goldfish-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-hardhat-mouth-1`.
+    var headHardhatMouth1: RswiftResources.ImageResource { .init(name: "head-hardhat-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-hardhat-mouth-2`.
+    var headHardhatMouth2: RswiftResources.ImageResource { .init(name: "head-hardhat-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-hardhat-mouth-3`.
+    var headHardhatMouth3: RswiftResources.ImageResource { .init(name: "head-hardhat-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-hardhat-mouth-4`.
+    var headHardhatMouth4: RswiftResources.ImageResource { .init(name: "head-hardhat-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-horse-deepfried-mouth-1`.
+    var headHorseDeepfriedMouth1: RswiftResources.ImageResource { .init(name: "head-horse-deepfried-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-horse-deepfried-mouth-2`.
+    var headHorseDeepfriedMouth2: RswiftResources.ImageResource { .init(name: "head-horse-deepfried-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-horse-deepfried-mouth-3`.
+    var headHorseDeepfriedMouth3: RswiftResources.ImageResource { .init(name: "head-horse-deepfried-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-horse-deepfried-mouth-4`.
+    var headHorseDeepfriedMouth4: RswiftResources.ImageResource { .init(name: "head-horse-deepfried-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-jupiter-mouth-1`.
+    var headJupiterMouth1: RswiftResources.ImageResource { .init(name: "head-jupiter-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-jupiter-mouth-2`.
+    var headJupiterMouth2: RswiftResources.ImageResource { .init(name: "head-jupiter-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-jupiter-mouth-3`.
+    var headJupiterMouth3: RswiftResources.ImageResource { .init(name: "head-jupiter-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-jupiter-mouth-4`.
+    var headJupiterMouth4: RswiftResources.ImageResource { .init(name: "head-jupiter-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-laptop-mouth-1`.
+    var headLaptopMouth1: RswiftResources.ImageResource { .init(name: "head-laptop-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-laptop-mouth-2`.
+    var headLaptopMouth2: RswiftResources.ImageResource { .init(name: "head-laptop-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-laptop-mouth-3`.
+    var headLaptopMouth3: RswiftResources.ImageResource { .init(name: "head-laptop-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-laptop-mouth-4`.
+    var headLaptopMouth4: RswiftResources.ImageResource { .init(name: "head-laptop-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-moose-mouth-1`.
+    var headMooseMouth1: RswiftResources.ImageResource { .init(name: "head-moose-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-moose-mouth-2`.
+    var headMooseMouth2: RswiftResources.ImageResource { .init(name: "head-moose-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-moose-mouth-3`.
+    var headMooseMouth3: RswiftResources.ImageResource { .init(name: "head-moose-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-moose-mouth-4`.
+    var headMooseMouth4: RswiftResources.ImageResource { .init(name: "head-moose-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-mushroom-mouth-1`.
+    var headMushroomMouth1: RswiftResources.ImageResource { .init(name: "head-mushroom-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-mushroom-mouth-2`.
+    var headMushroomMouth2: RswiftResources.ImageResource { .init(name: "head-mushroom-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-mushroom-mouth-3`.
+    var headMushroomMouth3: RswiftResources.ImageResource { .init(name: "head-mushroom-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-mushroom-mouth-4`.
+    var headMushroomMouth4: RswiftResources.ImageResource { .init(name: "head-mushroom-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-orangutan-mouth-1`.
+    var headOrangutanMouth1: RswiftResources.ImageResource { .init(name: "head-orangutan-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-orangutan-mouth-2`.
+    var headOrangutanMouth2: RswiftResources.ImageResource { .init(name: "head-orangutan-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-orangutan-mouth-3`.
+    var headOrangutanMouth3: RswiftResources.ImageResource { .init(name: "head-orangutan-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-orangutan-mouth-4`.
+    var headOrangutanMouth4: RswiftResources.ImageResource { .init(name: "head-orangutan-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-peyote-mouth-1`.
+    var headPeyoteMouth1: RswiftResources.ImageResource { .init(name: "head-peyote-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-peyote-mouth-2`.
+    var headPeyoteMouth2: RswiftResources.ImageResource { .init(name: "head-peyote-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-peyote-mouth-3`.
+    var headPeyoteMouth3: RswiftResources.ImageResource { .init(name: "head-peyote-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-peyote-mouth-4`.
+    var headPeyoteMouth4: RswiftResources.ImageResource { .init(name: "head-peyote-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-piano-mouth-1`.
+    var headPianoMouth1: RswiftResources.ImageResource { .init(name: "head-piano-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-piano-mouth-2`.
+    var headPianoMouth2: RswiftResources.ImageResource { .init(name: "head-piano-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-piano-mouth-3`.
+    var headPianoMouth3: RswiftResources.ImageResource { .init(name: "head-piano-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-piano-mouth-4`.
+    var headPianoMouth4: RswiftResources.ImageResource { .init(name: "head-piano-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pineapple-mouth-1`.
+    var headPineappleMouth1: RswiftResources.ImageResource { .init(name: "head-pineapple-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pineapple-mouth-2`.
+    var headPineappleMouth2: RswiftResources.ImageResource { .init(name: "head-pineapple-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pineapple-mouth-3`.
+    var headPineappleMouth3: RswiftResources.ImageResource { .init(name: "head-pineapple-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pineapple-mouth-4`.
+    var headPineappleMouth4: RswiftResources.ImageResource { .init(name: "head-pineapple-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pipe-mouth-1`.
+    var headPipeMouth1: RswiftResources.ImageResource { .init(name: "head-pipe-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pipe-mouth-2`.
+    var headPipeMouth2: RswiftResources.ImageResource { .init(name: "head-pipe-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pipe-mouth-3`.
+    var headPipeMouth3: RswiftResources.ImageResource { .init(name: "head-pipe-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pipe-mouth-4`.
+    var headPipeMouth4: RswiftResources.ImageResource { .init(name: "head-pipe-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pirateship-mouth-1`.
+    var headPirateshipMouth1: RswiftResources.ImageResource { .init(name: "head-pirateship-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pirateship-mouth-2`.
+    var headPirateshipMouth2: RswiftResources.ImageResource { .init(name: "head-pirateship-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pirateship-mouth-3`.
+    var headPirateshipMouth3: RswiftResources.ImageResource { .init(name: "head-pirateship-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pirateship-mouth-4`.
+    var headPirateshipMouth4: RswiftResources.ImageResource { .init(name: "head-pirateship-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pufferfish-mouth-1`.
+    var headPufferfishMouth1: RswiftResources.ImageResource { .init(name: "head-pufferfish-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pufferfish-mouth-2`.
+    var headPufferfishMouth2: RswiftResources.ImageResource { .init(name: "head-pufferfish-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pufferfish-mouth-3`.
+    var headPufferfishMouth3: RswiftResources.ImageResource { .init(name: "head-pufferfish-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pufferfish-mouth-4`.
+    var headPufferfishMouth4: RswiftResources.ImageResource { .init(name: "head-pufferfish-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pumpkin-mouth-1`.
+    var headPumpkinMouth1: RswiftResources.ImageResource { .init(name: "head-pumpkin-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pumpkin-mouth-2`.
+    var headPumpkinMouth2: RswiftResources.ImageResource { .init(name: "head-pumpkin-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pumpkin-mouth-3`.
+    var headPumpkinMouth3: RswiftResources.ImageResource { .init(name: "head-pumpkin-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-pumpkin-mouth-4`.
+    var headPumpkinMouth4: RswiftResources.ImageResource { .init(name: "head-pumpkin-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-rabbit-mouth-1`.
+    var headRabbitMouth1: RswiftResources.ImageResource { .init(name: "head-rabbit-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-rabbit-mouth-2`.
+    var headRabbitMouth2: RswiftResources.ImageResource { .init(name: "head-rabbit-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-rabbit-mouth-3`.
+    var headRabbitMouth3: RswiftResources.ImageResource { .init(name: "head-rabbit-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-rabbit-mouth-4`.
+    var headRabbitMouth4: RswiftResources.ImageResource { .init(name: "head-rabbit-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-raven-mouth-1`.
+    var headRavenMouth1: RswiftResources.ImageResource { .init(name: "head-raven-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-raven-mouth-2`.
+    var headRavenMouth2: RswiftResources.ImageResource { .init(name: "head-raven-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-raven-mouth-3`.
+    var headRavenMouth3: RswiftResources.ImageResource { .init(name: "head-raven-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-raven-mouth-4`.
+    var headRavenMouth4: RswiftResources.ImageResource { .init(name: "head-raven-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-retainer-mouth-1`.
+    var headRetainerMouth1: RswiftResources.ImageResource { .init(name: "head-retainer-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-retainer-mouth-2`.
+    var headRetainerMouth2: RswiftResources.ImageResource { .init(name: "head-retainer-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-retainer-mouth-3`.
+    var headRetainerMouth3: RswiftResources.ImageResource { .init(name: "head-retainer-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-retainer-mouth-4`.
+    var headRetainerMouth4: RswiftResources.ImageResource { .init(name: "head-retainer-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-robot-mouth-1`.
+    var headRobotMouth1: RswiftResources.ImageResource { .init(name: "head-robot-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-robot-mouth-2`.
+    var headRobotMouth2: RswiftResources.ImageResource { .init(name: "head-robot-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-robot-mouth-3`.
+    var headRobotMouth3: RswiftResources.ImageResource { .init(name: "head-robot-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-robot-mouth-4`.
+    var headRobotMouth4: RswiftResources.ImageResource { .init(name: "head-robot-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-scorpion-mouth-1`.
+    var headScorpionMouth1: RswiftResources.ImageResource { .init(name: "head-scorpion-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-scorpion-mouth-2`.
+    var headScorpionMouth2: RswiftResources.ImageResource { .init(name: "head-scorpion-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-scorpion-mouth-3`.
+    var headScorpionMouth3: RswiftResources.ImageResource { .init(name: "head-scorpion-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-scorpion-mouth-4`.
+    var headScorpionMouth4: RswiftResources.ImageResource { .init(name: "head-scorpion-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-shark-mouth-1`.
+    var headSharkMouth1: RswiftResources.ImageResource { .init(name: "head-shark-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-shark-mouth-2`.
+    var headSharkMouth2: RswiftResources.ImageResource { .init(name: "head-shark-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-shark-mouth-3`.
+    var headSharkMouth3: RswiftResources.ImageResource { .init(name: "head-shark-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-shark-mouth-4`.
+    var headSharkMouth4: RswiftResources.ImageResource { .init(name: "head-shark-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-skeleton-hat-mouth-1`.
+    var headSkeletonHatMouth1: RswiftResources.ImageResource { .init(name: "head-skeleton-hat-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-skeleton-hat-mouth-2`.
+    var headSkeletonHatMouth2: RswiftResources.ImageResource { .init(name: "head-skeleton-hat-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-skeleton-hat-mouth-3`.
+    var headSkeletonHatMouth3: RswiftResources.ImageResource { .init(name: "head-skeleton-hat-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-skeleton-hat-mouth-4`.
+    var headSkeletonHatMouth4: RswiftResources.ImageResource { .init(name: "head-skeleton-hat-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-squid-mouth-1`.
+    var headSquidMouth1: RswiftResources.ImageResource { .init(name: "head-squid-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-squid-mouth-2`.
+    var headSquidMouth2: RswiftResources.ImageResource { .init(name: "head-squid-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-squid-mouth-3`.
+    var headSquidMouth3: RswiftResources.ImageResource { .init(name: "head-squid-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-squid-mouth-4`.
+    var headSquidMouth4: RswiftResources.ImageResource { .init(name: "head-squid-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-steak-mouth-1`.
+    var headSteakMouth1: RswiftResources.ImageResource { .init(name: "head-steak-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-steak-mouth-2`.
+    var headSteakMouth2: RswiftResources.ImageResource { .init(name: "head-steak-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-steak-mouth-3`.
+    var headSteakMouth3: RswiftResources.ImageResource { .init(name: "head-steak-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-steak-mouth-4`.
+    var headSteakMouth4: RswiftResources.ImageResource { .init(name: "head-steak-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-toiletpaper-full-mouth-1`.
+    var headToiletpaperFullMouth1: RswiftResources.ImageResource { .init(name: "head-toiletpaper-full-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-toiletpaper-full-mouth-2`.
+    var headToiletpaperFullMouth2: RswiftResources.ImageResource { .init(name: "head-toiletpaper-full-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-toiletpaper-full-mouth-3`.
+    var headToiletpaperFullMouth3: RswiftResources.ImageResource { .init(name: "head-toiletpaper-full-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-toiletpaper-full-mouth-4`.
+    var headToiletpaperFullMouth4: RswiftResources.ImageResource { .init(name: "head-toiletpaper-full-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-turing-mouth-1`.
+    var headTuringMouth1: RswiftResources.ImageResource { .init(name: "head-turing-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-turing-mouth-2`.
+    var headTuringMouth2: RswiftResources.ImageResource { .init(name: "head-turing-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-turing-mouth-3`.
+    var headTuringMouth3: RswiftResources.ImageResource { .init(name: "head-turing-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-turing-mouth-4`.
+    var headTuringMouth4: RswiftResources.ImageResource { .init(name: "head-turing-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ufo-mouth-1`.
+    var headUfoMouth1: RswiftResources.ImageResource { .init(name: "head-ufo-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ufo-mouth-2`.
+    var headUfoMouth2: RswiftResources.ImageResource { .init(name: "head-ufo-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ufo-mouth-3`.
+    var headUfoMouth3: RswiftResources.ImageResource { .init(name: "head-ufo-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-ufo-mouth-4`.
+    var headUfoMouth4: RswiftResources.ImageResource { .init(name: "head-ufo-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-werewolf-mouth-1`.
+    var headWerewolfMouth1: RswiftResources.ImageResource { .init(name: "head-werewolf-mouth-1", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-werewolf-mouth-2`.
+    var headWerewolfMouth2: RswiftResources.ImageResource { .init(name: "head-werewolf-mouth-2", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-werewolf-mouth-3`.
+    var headWerewolfMouth3: RswiftResources.ImageResource { .init(name: "head-werewolf-mouth-3", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `head-werewolf-mouth-4`.
+    var headWerewolfMouth4: RswiftResources.ImageResource { .init(name: "head-werewolf-mouth-4", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `home-slice-chat`.
+    var homeSliceChat: RswiftResources.ImageResource { .init(name: "home-slice-chat", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `krish-noun`.
+    var krishNoun: RswiftResources.ImageResource { .init(name: "krish-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `matt-noun`.
+    var mattNoun: RswiftResources.ImageResource { .init(name: "matt-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `mo-noun`.
+    var moNoun: RswiftResources.ImageResource { .init(name: "mo-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `noun`.
+    var noun: RswiftResources.ImageResource { .init(name: "noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `noun-logo`.
+    var nounLogo: RswiftResources.ImageResource { .init(name: "noun-logo", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `nouns-ios-01-marquee`.
+    var nounsIos01Marquee: RswiftResources.ImageResource { .init(name: "nouns-ios-01-marquee", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `nouns-ios-02-marquee`.
+    var nounsIos02Marquee: RswiftResources.ImageResource { .init(name: "nouns-ios-02-marquee", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `nouns-ios-03-marquee`.
+    var nounsIos03Marquee: RswiftResources.ImageResource { .init(name: "nouns-ios-03-marquee", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `nouns-onboarding-02-cards`.
+    var nounsOnboarding02Cards: RswiftResources.ImageResource { .init(name: "nouns-onboarding-02-cards", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `pizza-noun`.
+    var pizzaNoun: RswiftResources.ImageResource { .init(name: "pizza-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `placeholder`.
+    var placeholder: RswiftResources.ImageResource { .init(name: "placeholder", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `placeholder-ens`.
+    var placeholderEns: RswiftResources.ImageResource { .init(name: "placeholder-ens", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `red_glasses`.
+    var red_glasses: RswiftResources.ImageResource { .init(name: "red_glasses", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `robleh-noun`.
+    var roblehNoun: RswiftResources.ImageResource { .init(name: "robleh-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `shadow`.
+    var shadow: RswiftResources.ImageResource { .init(name: "shadow", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `shark-noun`.
+    var sharkNoun: RswiftResources.ImageResource { .init(name: "shark-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `shawn-noun`.
+    var shawnNoun: RswiftResources.ImageResource { .init(name: "shawn-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ziad-noun`.
+    var ziadNoun: RswiftResources.ImageResource { .init(name: "ziad-noun", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+    var headsLessMouth: headsLessMouth { .init(bundle: bundle) }
+
+    func headsLessMouth(bundle: Foundation.Bundle) -> headsLessMouth {
+      .init(bundle: bundle)
     }
 
-    fileprivate init() {}
+
+    /// This `_R.image.headsLessMouth` struct is generated, and contains static references to 234 headsLessMouths.
+    struct headsLessMouth {
+      let bundle: Foundation.Bundle
+
+      /// Image `heads-less-mouth/head-aardvark`.
+      var headAardvark: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-aardvark", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-abstract`.
+      var headAbstract: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-abstract", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-ape`.
+      var headApe: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-ape", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bag`.
+      var headBag: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bag", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bagpipe`.
+      var headBagpipe: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bagpipe", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-banana`.
+      var headBanana: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-banana", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bank`.
+      var headBank: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bank", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-baseball-gameball`.
+      var headBaseballGameball: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-baseball-gameball", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-basketball`.
+      var headBasketball: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-basketball", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bat`.
+      var headBat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bear`.
+      var headBear: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bear", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-beer`.
+      var headBeer: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-beer", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-beet`.
+      var headBeet: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-beet", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bell`.
+      var headBell: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bell", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bigfoot`.
+      var headBigfoot: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bigfoot", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bigfoot-yeti`.
+      var headBigfootYeti: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bigfoot-yeti", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-blackhole`.
+      var headBlackhole: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-blackhole", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-blueberry`.
+      var headBlueberry: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-blueberry", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bomb`.
+      var headBomb: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bomb", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bonsai`.
+      var headBonsai: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bonsai", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-boombox`.
+      var headBoombox: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-boombox", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-boot`.
+      var headBoot: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-boot", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-box`.
+      var headBox: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-box", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-boxingglove`.
+      var headBoxingglove: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-boxingglove", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-brain`.
+      var headBrain: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-brain", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bubble-speech`.
+      var headBubbleSpeech: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bubble-speech", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-bubblegum`.
+      var headBubblegum: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-bubblegum", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-burger-dollarmenu`.
+      var headBurgerDollarmenu: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-burger-dollarmenu", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cake`.
+      var headCake: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cake", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-calculator`.
+      var headCalculator: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-calculator", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-calendar`.
+      var headCalendar: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-calendar", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-camcorder`.
+      var headCamcorder: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-camcorder", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cannedham`.
+      var headCannedham: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cannedham", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-car`.
+      var headCar: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-car", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cash-register`.
+      var headCashRegister: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cash-register", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cassettetape`.
+      var headCassettetape: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cassettetape", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cat`.
+      var headCat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cd`.
+      var headCd: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cd", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chain`.
+      var headChain: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chain", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chainsaw`.
+      var headChainsaw: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chainsaw", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chameleon`.
+      var headChameleon: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chameleon", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chart-bars`.
+      var headChartBars: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chart-bars", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cheese`.
+      var headCheese: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cheese", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chefhat`.
+      var headChefhat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chefhat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cherry`.
+      var headCherry: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cherry", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chicken`.
+      var headChicken: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chicken", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chilli`.
+      var headChilli: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chilli", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chipboard`.
+      var headChipboard: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chipboard", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chips`.
+      var headChips: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chips", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-chocolate`.
+      var headChocolate: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-chocolate", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cloud`.
+      var headCloud: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cloud", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-clover`.
+      var headClover: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-clover", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-clutch`.
+      var headClutch: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-clutch", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-coffeebean`.
+      var headCoffeebean: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-coffeebean", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cone`.
+      var headCone: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cone", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-console-handheld`.
+      var headConsoleHandheld: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-console-handheld", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cookie`.
+      var headCookie: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cookie", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cordlessphone`.
+      var headCordlessphone: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cordlessphone", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cottonball`.
+      var headCottonball: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cottonball", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-cow`.
+      var headCow: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-cow", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-crab`.
+      var headCrab: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-crab", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-crane`.
+      var headCrane: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-crane", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-croc-hat`.
+      var headCrocHat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-croc-hat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-crown`.
+      var headCrown: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-crown", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-crt-bsod`.
+      var headCrtBsod: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-crt-bsod", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-crystalball`.
+      var headCrystalball: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-crystalball", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-diamond-blue`.
+      var headDiamondBlue: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-diamond-blue", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-diamond-red`.
+      var headDiamondRed: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-diamond-red", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-dictionary`.
+      var headDictionary: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-dictionary", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-dino`.
+      var headDino: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-dino", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-dna`.
+      var headDna: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-dna", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-dog`.
+      var headDog: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-dog", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-doughnut`.
+      var headDoughnut: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-doughnut", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-drill`.
+      var headDrill: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-drill", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-duck`.
+      var headDuck: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-duck", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-ducky`.
+      var headDucky: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-ducky", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-earth`.
+      var headEarth: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-earth", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-egg`.
+      var headEgg: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-egg", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-faberge`.
+      var headFaberge: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-faberge", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-factory-dark`.
+      var headFactoryDark: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-factory-dark", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-fan`.
+      var headFan: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-fan", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-fence`.
+      var headFence: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-fence", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-film-35mm`.
+      var headFilm35mm: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-film-35mm", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-film-strip`.
+      var headFilmStrip: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-film-strip", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-fir`.
+      var headFir: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-fir", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-firehydrant`.
+      var headFirehydrant: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-firehydrant", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-flamingo`.
+      var headFlamingo: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-flamingo", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-flower`.
+      var headFlower: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-flower", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-fox`.
+      var headFox: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-fox", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-frog`.
+      var headFrog: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-frog", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-garlic`.
+      var headGarlic: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-garlic", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-gavel`.
+      var headGavel: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-gavel", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-ghost-B`.
+      var headGhostB: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-ghost-B", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-glasses-big`.
+      var headGlassesBig: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-glasses-big", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-gnome`.
+      var headGnome: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-gnome", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-goat`.
+      var headGoat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-goat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-goldcoin`.
+      var headGoldcoin: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-goldcoin", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-goldfish`.
+      var headGoldfish: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-goldfish", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-grouper`.
+      var headGrouper: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-grouper", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-hair`.
+      var headHair: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-hair", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-hardhat`.
+      var headHardhat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-hardhat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-heart`.
+      var headHeart: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-heart", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-helicopter`.
+      var headHelicopter: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-helicopter", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-highheel`.
+      var headHighheel: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-highheel", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-hockeypuck`.
+      var headHockeypuck: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-hockeypuck", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-horse-deepfried`.
+      var headHorseDeepfried: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-horse-deepfried", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-hotdog`.
+      var headHotdog: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-hotdog", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-house`.
+      var headHouse: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-house", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-icepop-b`.
+      var headIcepopB: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-icepop-b", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-igloo`.
+      var headIgloo: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-igloo", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-island`.
+      var headIsland: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-island", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-jellyfish`.
+      var headJellyfish: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-jellyfish", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-jupiter`.
+      var headJupiter: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-jupiter", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-kangaroo`.
+      var headKangaroo: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-kangaroo", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-ketchup`.
+      var headKetchup: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-ketchup", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-laptop`.
+      var headLaptop: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-laptop", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-lightning-bolt`.
+      var headLightningBolt: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-lightning-bolt", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-lint`.
+      var headLint: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-lint", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-lips`.
+      var headLips: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-lips", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-lipstick2`.
+      var headLipstick2: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-lipstick2", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-lock`.
+      var headLock: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-lock", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-macaroni`.
+      var headMacaroni: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-macaroni", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mailbox`.
+      var headMailbox: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mailbox", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-maze`.
+      var headMaze: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-maze", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-microwave`.
+      var headMicrowave: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-microwave", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-milk`.
+      var headMilk: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-milk", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mirror`.
+      var headMirror: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mirror", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mixer`.
+      var headMixer: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mixer", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-moon`.
+      var headMoon: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-moon", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-moose`.
+      var headMoose: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-moose", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mosquito`.
+      var headMosquito: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mosquito", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mountain-snowcap`.
+      var headMountainSnowcap: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mountain-snowcap", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mouse`.
+      var headMouse: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mouse", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mug`.
+      var headMug: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mug", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mushroom`.
+      var headMushroom: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mushroom", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-mustard`.
+      var headMustard: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-mustard", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-nigiri`.
+      var headNigiri: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-nigiri", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-noodles`.
+      var headNoodles: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-noodles", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-onion`.
+      var headOnion: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-onion", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-orangutan`.
+      var headOrangutan: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-orangutan", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-orca`.
+      var headOrca: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-orca", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-otter`.
+      var headOtter: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-otter", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-outlet`.
+      var headOutlet: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-outlet", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-owl`.
+      var headOwl: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-owl", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-oyster`.
+      var headOyster: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-oyster", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-paintbrush`.
+      var headPaintbrush: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-paintbrush", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-panda`.
+      var headPanda: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-panda", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-paperclip`.
+      var headPaperclip: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-paperclip", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-peanut`.
+      var headPeanut: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-peanut", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pencil-tip`.
+      var headPencilTip: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pencil-tip", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-peyote`.
+      var headPeyote: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-peyote", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-piano`.
+      var headPiano: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-piano", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pickle`.
+      var headPickle: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pickle", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pie`.
+      var headPie: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pie", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-piggybank`.
+      var headPiggybank: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-piggybank", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pill`.
+      var headPill: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pill", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pillow`.
+      var headPillow: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pillow", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pineapple`.
+      var headPineapple: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pineapple", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pipe`.
+      var headPipe: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pipe", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pirateship`.
+      var headPirateship: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pirateship", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pizza`.
+      var headPizza: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pizza", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-plane`.
+      var headPlane: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-plane", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pop`.
+      var headPop: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pop", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-porkbao`.
+      var headPorkbao: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-porkbao", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-potato`.
+      var headPotato: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-potato", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pufferfish`.
+      var headPufferfish: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pufferfish", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pumpkin`.
+      var headPumpkin: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pumpkin", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-pyramid`.
+      var headPyramid: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-pyramid", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-queencrown`.
+      var headQueencrown: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-queencrown", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-rabbit`.
+      var headRabbit: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-rabbit", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-rainbow`.
+      var headRainbow: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-rainbow", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-rangefinder`.
+      var headRangefinder: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-rangefinder", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-raven`.
+      var headRaven: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-raven", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-retainer`.
+      var headRetainer: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-retainer", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-rgb`.
+      var headRgb: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-rgb", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-ring`.
+      var headRing: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-ring", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-road`.
+      var headRoad: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-road", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-robot`.
+      var headRobot: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-robot", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-rock`.
+      var headRock: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-rock", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-rosebud`.
+      var headRosebud: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-rosebud", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-ruler-triangular`.
+      var headRulerTriangular: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-ruler-triangular", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-saguaro`.
+      var headSaguaro: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-saguaro", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-sailboat`.
+      var headSailboat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-sailboat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-sandwich`.
+      var headSandwich: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-sandwich", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-saturn`.
+      var headSaturn: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-saturn", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-saw`.
+      var headSaw: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-saw", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-scorpion`.
+      var headScorpion: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-scorpion", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-shark`.
+      var headShark: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-shark", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-shower`.
+      var headShower: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-shower", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-skateboard`.
+      var headSkateboard: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-skateboard", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-skeleton-hat`.
+      var headSkeletonHat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-skeleton-hat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-skilift`.
+      var headSkilift: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-skilift", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-smile`.
+      var headSmile: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-smile", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-snowglobe`.
+      var headSnowglobe: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-snowglobe", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-snowmobile`.
+      var headSnowmobile: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-snowmobile", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-spaghetti`.
+      var headSpaghetti: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-spaghetti", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-sponge`.
+      var headSponge: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-sponge", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-squid`.
+      var headSquid: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-squid", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-stapler`.
+      var headStapler: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-stapler", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-star-sparkles`.
+      var headStarSparkles: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-star-sparkles", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-steak`.
+      var headSteak: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-steak", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-sunset`.
+      var headSunset: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-sunset", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-taco-classic`.
+      var headTacoClassic: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-taco-classic", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-taxi`.
+      var headTaxi: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-taxi", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-thumbsup`.
+      var headThumbsup: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-thumbsup", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-toaster`.
+      var headToaster: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-toaster", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-toiletpaper-full`.
+      var headToiletpaperFull: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-toiletpaper-full", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-tooth`.
+      var headTooth: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-tooth", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-toothbrush-fresh`.
+      var headToothbrushFresh: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-toothbrush-fresh", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-tornado`.
+      var headTornado: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-tornado", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-trashcan`.
+      var headTrashcan: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-trashcan", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-turing`.
+      var headTuring: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-turing", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-ufo`.
+      var headUfo: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-ufo", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-undead`.
+      var headUndead: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-undead", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-unicorn`.
+      var headUnicorn: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-unicorn", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-vent`.
+      var headVent: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-vent", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-void`.
+      var headVoid: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-void", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-volcano`.
+      var headVolcano: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-volcano", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-volleyball`.
+      var headVolleyball: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-volleyball", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-wall`.
+      var headWall: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-wall", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-wallet`.
+      var headWallet: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-wallet", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-wallsafe`.
+      var headWallsafe: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-wallsafe", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-washingmachine`.
+      var headWashingmachine: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-washingmachine", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-watch`.
+      var headWatch: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-watch", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-watermelon`.
+      var headWatermelon: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-watermelon", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-wave`.
+      var headWave: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-wave", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-weed`.
+      var headWeed: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-weed", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-weight`.
+      var headWeight: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-weight", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-werewolf`.
+      var headWerewolf: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-werewolf", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-whale`.
+      var headWhale: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-whale", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-whale-alive`.
+      var headWhaleAlive: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-whale-alive", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-wine`.
+      var headWine: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-wine", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-wizardhat`.
+      var headWizardhat: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-wizardhat", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+      /// Image `heads-less-mouth/head-zebra`.
+      var headZebra: RswiftResources.ImageResource { .init(name: "heads-less-mouth/head-zebra", path: ["heads-less-mouth"], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+    }
   }
 
-  fileprivate class Class {}
+  /// This `_R.info` struct is generated, and contains static references to 1 properties.
+  struct info {
+    let bundle: Foundation.Bundle
+    var uiApplicationSceneManifest: uiApplicationSceneManifest { .init(bundle: bundle) }
 
-  fileprivate init() {}
-}
-
-struct _R: Rswift.Validatable {
-  static func validate() throws {
-    #if os(iOS) || os(tvOS)
-    try storyboard.validate()
-    #endif
-  }
-
-  #if os(iOS) || os(tvOS)
-  struct storyboard: Rswift.Validatable {
-    static func validate() throws {
-      #if os(iOS) || os(tvOS)
-      try launchScreen.validate()
-      #endif
+    func uiApplicationSceneManifest(bundle: Foundation.Bundle) -> uiApplicationSceneManifest {
+      .init(bundle: bundle)
     }
 
-    #if os(iOS) || os(tvOS)
-    struct launchScreen: Rswift.StoryboardResourceWithInitialControllerType, Rswift.Validatable {
+    struct uiApplicationSceneManifest {
+      let bundle: Foundation.Bundle
+
+      let uiApplicationSupportsMultipleScenes: Bool = true
+
+      var _key: String { bundle.infoDictionaryString(path: ["UIApplicationSceneManifest"], key: "_key") ?? "UIApplicationSceneManifest" }
+    }
+  }
+
+  /// This `_R.entitlements` struct is generated, and contains static references to 0 properties.
+  struct entitlements {
+    let apsEnvironment: String = "development"
+  }
+
+  /// This `_R.file` struct is generated, and contains static references to 6 resource files.
+  struct file {
+    let bundle: Foundation.Bundle
+
+    /// Resource file `AppIcons.plist`.
+    var appIconsPlist: RswiftResources.FileResource { .init(name: "AppIcons", pathExtension: "plist", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `GoogleService-Info.plist`.
+    var googleServiceInfoPlist: RswiftResources.FileResource { .init(name: "GoogleService-Info", pathExtension: "plist", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `ci_post_clone.sh`.
+    var ci_post_cloneSh: RswiftResources.FileResource { .init(name: "ci_post_clone", pathExtension: "sh", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `ci_post_xcodebuild.sh`.
+    var ci_post_xcodebuildSh: RswiftResources.FileResource { .init(name: "ci_post_xcodebuild", pathExtension: "sh", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `ci_pre_xcodebuild.sh`.
+    var ci_pre_xcodebuildSh: RswiftResources.FileResource { .init(name: "ci_pre_xcodebuild", pathExtension: "sh", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `nounfetti.json`.
+    var nounfettiJson: RswiftResources.FileResource { .init(name: "nounfetti", pathExtension: "json", bundle: bundle, locale: LocaleReference.none) }
+  }
+
+  /// This `_R.storyboard` struct is generated, and contains static references to 1 storyboards.
+  struct storyboard {
+    let bundle: Foundation.Bundle
+    var launchScreen: launchScreen { .init(bundle: bundle) }
+
+    func launchScreen(bundle: Foundation.Bundle) -> launchScreen {
+      .init(bundle: bundle)
+    }
+    func validate() throws {
+      try self.launchScreen.validate()
+    }
+
+
+    /// Storyboard `LaunchScreen`.
+    struct launchScreen: RswiftResources.StoryboardReference, RswiftResources.InitialControllerContainer {
       typealias InitialController = UIKit.UIViewController
 
-      let bundle = R.hostingBundle
+      let bundle: Foundation.Bundle
+
       let name = "LaunchScreen"
-
-      static func validate() throws {
-        if UIKit.UIImage(named: "red_glasses", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'red_glasses' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
-        if #available(iOS 11.0, tvOS 11.0, *) {
-          if UIKit.UIColor(named: "launch.screen.background", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Color named 'launch.screen.background' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
-        }
+      func validate() throws {
+        if UIKit.UIImage(named: "red_glasses", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'red_glasses' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
+        if UIKit.UIColor(named: "launch.screen.background", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Color named 'launch.screen.background' is used in storyboard 'LaunchScreen', but couldn't be loaded.") }
       }
-
-      fileprivate init() {}
     }
-    #endif
-
-    fileprivate init() {}
   }
-  #endif
-
-  fileprivate init() {}
 }

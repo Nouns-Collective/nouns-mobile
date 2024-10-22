@@ -32,6 +32,4 @@ final class FetchBidsHitRealBackendTests: XCTestCase {
         // then
         XCTAssertFalse(page.data.isEmpty)
     }
-    
 }
-

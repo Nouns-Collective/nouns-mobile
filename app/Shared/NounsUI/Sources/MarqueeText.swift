@@ -31,7 +31,7 @@ public struct MarqueeText: View {
   
   @State private var animate = false
   
-  public var body : some View {
+  public var body: some View {
     let stringWidth = text.widthOfString(usingFont: font)
     let stringHeight = text.heightOfString(usingFont: font)
     

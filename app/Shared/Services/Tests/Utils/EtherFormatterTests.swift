@@ -116,4 +116,3 @@ final class EtherFormatterTests: XCTestCase {
     XCTAssertNil(result)
   }
 }
-

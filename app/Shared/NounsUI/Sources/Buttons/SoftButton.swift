@@ -19,8 +19,8 @@ import SwiftUI
 
 /// The button style configuration for the SoftButton
 public struct SoftButtonStyle: ButtonStyle {
-  @Environment (\.controlSize) var controlSize: ControlSize
-  @Environment (\.isEnabled) var isEnabled: Bool
+  @Environment(\.controlSize) var controlSize: ControlSize
+  @Environment(\.isEnabled) var isEnabled: Bool
   
   /// The width of the button, determined by the controlSize environment property
   /// The two options are either an automatic width where it expands to fit it's contents (nil)
@@ -59,7 +59,7 @@ public struct SoftButtonStyle: ButtonStyle {
 
 /// A label for buttons with text and an optional icon on the left of the text as well as an optional accessory image
 public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
-  @Environment (\.controlSize) var controlSize: ControlSize
+  @Environment(\.controlSize) var controlSize: ControlSize
   
   /// The optional icon to show on the left of the text
   let icon: Image?
@@ -158,8 +158,8 @@ public struct AccessoryButtonLabel<Accessory>: View where Accessory: View {
 
 /// A label for buttons with text as well as an optional large accessory image
 public struct LargeAccessoryButtonLabel<Accessory: View>: View {
-  @Environment (\.controlSize) var controlSize: ControlSize
-  @Environment (\.isEnabled) var isEnabled: Bool
+  @Environment(\.controlSize) var controlSize: ControlSize
+  @Environment(\.isEnabled) var isEnabled: Bool
   
   /// The accessory for the button on the far right of the button
   let accessory: Accessory?

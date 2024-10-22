@@ -156,14 +156,6 @@ struct ActionSheetStackItem<T: RawRepresentable & Hashable>: Equatable, Hashable
   /// if the user taps on the close bar button
   let exit: (() -> Void)?
   
-  init(tag: T, view: AnyView, title: String?, isEditing: Bool, exit: (() -> Void)?) {
-    self.tag = tag
-    self.view = view
-    self.title = title
-    self.isEditing = isEditing
-    self.exit = exit
-  }
-  
   func hash(into hasher: inout Hasher) {
     hasher.combine(tag.rawValue)
   }

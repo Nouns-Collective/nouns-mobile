@@ -81,7 +81,6 @@ final class AutoStoreFetcherTests: XCTestCase {
       _ = try? NounManagedObject.insert(into: viewContext, noun: fakeNoun)
       try? viewContext.save()
       
-      
       let fetchedNoun = autoStoreFetcher.fetchedObjects.first
       
       XCTAssertTrue(Thread.isMainThread)

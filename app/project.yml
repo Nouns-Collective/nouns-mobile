@@ -18,8 +18,8 @@ options:
 
 packages:
   Rswift:
-    url: https://github.com/mac-cain13/R.swift.Library.git
-    from: 5.4.0
+    url: https://github.com/mac-cain13/R.swift.git
+    from: 7.6.1
   NounsUI:
     path: shared/NounsUI
   Services:
